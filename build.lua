@@ -891,10 +891,14 @@ if options["target"] == "release" then
     end
   end
 
-  -- 7. Perform CTAN upload dry run
+  -- 7. Perform CTAN upload dry run. With --debug l3build posts the form to
+  -- httpbin.org and always exits with status 1, so the check looks at the
+  -- echoed form (package and version) instead of the exit status.
   os_message("Running dry-run upload check")
-  local res = os.execute("l3build upload -F ctan.ann --debug > " .. os_null)
-  if res ~= 0 and res ~= true then
+  local dryrun = os_capture("l3build upload -F ctan.ann --debug 2>&1", true)
+  local okpkg = string.find(dryrun, '"pkg": "spintent"', 1, true)
+  local okver = string.find(dryrun, '"version": "' .. pkgversion .. '"', 1, true)
+  if not (okpkg and okver) then
     error("** Error!!: dry-run upload check failed; nothing was tagged or pushed")
   end
 
