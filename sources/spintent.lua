@@ -328,7 +328,7 @@ local function spintent_load_scaled(spec, size)
     if spintent_mathfb_font_cache[key] then return spintent_mathfb_font_cache[key] end
     local id = luaotfload.define_font(spec, size)
     if not id or id == 0 or type(id) ~= "number" then
-        texio.write_nl("term and log", "[spintent] ERROR: id invalido para " .. spec .. " @ " .. size)
+        luatexbase.module_error("spintent", "id invalido para " .. spec .. " @ " .. size)
         return nil
     end
     spintent_mathfb_font_cache[key] = id
@@ -338,16 +338,15 @@ end
 local function spintent_load_family(fontfile, features, fam)
     local path = kpse.find_file(fontfile, "opentype fonts")
     if not path or path == "" then
-        texio.write_nl("term and log", "[spintent] ERROR FATAL: kpse no encontro '" .. fontfile .. "'")
+        luatexbase.module_error("spintent", "kpse no encontro '" .. fontfile .. "'")
         return false
     end
     local spec = "[" .. path .. "]:mode=base;script=math;language=dflt;" .. features
     local main_id = tex.getfontoffamily(0)
     local main_fd = main_id and font.getfont(main_id)
     if not main_fd then
-        texio.write_nl("term and log",
-            "[spintent] ERROR: familia matematica 0 sin fuente -- llama a "
-            .. "\\setmathfont antes de \\begin{document}")
+        luatexbase.module_error("spintent", "familia matematica 0 sin fuente \z
+            -- llama a \\setmathfont antes de \\begin{document}")
         return false
     end
     local cur_size = main_fd.size
