@@ -23555,6 +23555,7 @@ local d_getfield = node.direct.getfield
 local d_new      = node.direct.new
 local d_setfield = node.direct.setfield
 local token_set_macro = token.set_macro
+local document_cctab = luatexbase.registernumber("c_document_cctab")
 
 local lpeg_base = lpeg or require("lpeg")
 local P, R, S, Cs, Ct, Cg, C, Cc =
@@ -23906,10 +23907,10 @@ local function spintent_load_family(fontfile, features, fam)
     tex.definefont(true, "MathFBtmpScriptScr", scriptscript_id)
 
     tex.runtoks(function()
-        tex.sprint(string.format(
-            "\\global\\textfont%d=\\MathFBtmpText"
-            .."\\global\\scriptfont%d=\\MathFBtmpScript"
-            .."\\global\\scriptscriptfont%d=\\MathFBtmpScriptScr",
+        tex.sprint(document_cctab, string.format(
+            "\\global\\textfont%d=\\MathFBtmpText\z
+            \\global\\scriptfont%d=\\MathFBtmpScript\z
+            \\global\\scriptscriptfont%d=\\MathFBtmpScriptScr",
             fam, fam, fam))
     end)
     return true
@@ -23927,20 +23928,20 @@ local spintent_cal_fam, spintent_cal_fam_ok
 local spintent_sym_fam, spintent_sym_fam_ok
 
 local function spintent_classic_mathcal(letters)
-    if not spintent_cal_fam_ok then tex.sprint(letters); return end
+    if not spintent_cal_fam_ok then tex.sprint(document_cctab, letters); return end
     local parts = {}
     for i = 1, #letters do
         local ch = letters:sub(i,i)
         local cp = spintent_cal_slots[ch]
-        parts[#parts+1] = cp and string.format("\\Umathchar 0 %d \"%X ", spintent_cal_fam, cp) or ch
+        parts[#parts+1] = cp and string.format([[\Umathchar 0 %d "%X ]], spintent_cal_fam, cp) or ch
     end
-    tex.sprint(table.concat(parts))
+    tex.sprint(document_cctab, parts)
 end
 register_tex_cmd("luafun_classic_mathcal", spintent_classic_mathcal, {"string"})
 
 local function spintent_right_angle_sqr()
     if not spintent_sym_fam_ok then return end
-    tex.sprint(string.format("\\Umathchar 0 %d \"299C ", spintent_sym_fam))
+    tex.sprint(document_cctab, string.format([[\Umathchar 0 %d "299C ]], spintent_sym_fam))
 end
 register_tex_cmd("luafun_right_angle_sqr", spintent_right_angle_sqr, {})
 
@@ -25315,9 +25316,8 @@ end
 local function spintent_medir_frac(dt, cmd)
     spintent_measuring = true
     tex.runtoks(function()
-        tex.sprint(
-            "\\setbox0\\hbox{$\\" .. dt .. "style" ..
-            "\\" .. cmd .. "{0}{0}$}"
+        tex.sprint(document_cctab,
+            string.format([[\setbox0\hbox{$\%sstyle\%s{0}{0}$}]], dt, cmd)
         )
     end)
     spintent_measuring = false
