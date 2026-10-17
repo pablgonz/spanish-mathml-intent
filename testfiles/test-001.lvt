@@ -1,0 +1,206 @@
+% test-001.lvt -- regresion de los cuatro grandes
+%
+% Regresion:  l3build save test-001
+%             l3build check test-001
+%
+% Test de regresion de \spnum, \spunit, \spnewunit, \spunitalias, \spmoney
+% y \spshort: las formas de cada comando y sus llaves. Los "doc:" son
+% lecturas reales de NVDA 2026.2 con MathCAT. En las unidades, el
+% plural (metros, segundos) es lectura propia de MathCAT, no del paquete.
+\input{regression-test}
+
+\DocumentMetadata
+  {
+    lang=es-CL,
+    pdfversion=2.0,
+    pdfstandard=ua-2,
+    tagging=on,
+    tagging-setup={math/setup={mathml-SE}},
+  }
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{unicode-math}
+\ExplSyntaxOn
+\debug_on:n { check-declarations }
+\ExplSyntaxOff
+\usepackage{spintent}
+\usepackage{hyperref}
+\hypersetup
+  {
+    pdfdisplaydoctitle = true,
+    pdftitle           = {test-001: spnum, spunit, spmoney y spshort},
+  }
+\begin{document}
+
+\section*{A. El comando \texttt{\textbackslash spnum}}
+
+% doc: «más 23»
+1. Entero positivo: $\spnum{+23}$.
+
+% doc: «menos 23»
+2. Entero negativo: $\spnum{-23}$.
+
+% doc: «3 coma 14»
+3. Decimal con coma: $\spnum{3,14}$.
+
+% doc: «3 punto 14»
+4. Decimal con punto: $\spnum{3.14}$.
+
+% doc: «3 coma 1 con 4 periódico»
+5. Decimal periódico: $\spnum{3,1;4}$.
+
+% doc: «3 coma 4 periódico»
+6. Periódico puro: $\spnum{3;4}$.
+
+% doc: «3 coma 14 por 10 al cubo»
+7. Notación científica: $\spnum{3,14e3}$.
+
+% doc: «100000»
+8. Separación de cifras: $\spnum{100000}$.
+
+% doc: «100000»
+9. Sin separación automática: $\spnum[cifras-sep=false]{10\,00\,00}$.
+
+% doc: «23 negativo»
+10. Lectura del signo: $\spnum[read-sign=clear]{-23}$.
+
+% doc: «3 punto 4 periódico»
+11. Periódico puro con punto: $\spnum[read-period-sep=punto]{3;4}$.
+
+% doc: «3 coma 14 por 10 al cubo»
+12. Símbolo de la notación: $\spnum[notation-sym=times]{3,14e3}$.
+
+\section*{B. El comando \texttt{\textbackslash spunit}}
+
+% doc: «23 metros»
+13. Unidad con número: $\spunit{23 m}$.
+
+% doc: «metro»
+14. Unidad sola: $\spunit{m}$.
+
+% doc: «23 metros segundos cuadrado»
+15. Producto de unidades: $\spunit{23 m*s^{2}}$.
+
+% doc: «23 metros por segundos cuadrado»
+16. Unidades en fracción lineal: $\spunit{23 m/s^{2}}$.
+
+% doc: «90 kilómetros por horas»
+17. Velocidad: $\spunit{90 km/h}$.
+
+% doc: «25 grados Celsius»
+18. Temperatura: $\spunit{25 °C}$.
+
+% doc: «100 kilogramos»
+19. Masa: $\spunit{100 kg}$.
+
+% doc: «23 metros segundos cuadrado»
+20. Producto con punto: $\spunit[print-cdot=true]{23 m*s^{2}}$.
+
+% doc: «23 metros por segundos cuadrado»
+21. Lectura del producto: $\spunit[read-cdot=true]{23 m*s^{2}}$.
+
+% doc: «23 metros partido por segundos cuadrado»
+22. Lectura de la barra: $\spunit[read-slash=partido-por]{23 m/s^{2}}$.
+
+% doc: «3 coma 14 por 10 al cubo metros»
+23. Llaves de \texttt{\textbackslash spnum}: $\spunit[notation-sym=times]{3,14e3 m}$.
+
+\section*{C. Los comandos \texttt{\textbackslash spnewunit} y \texttt{\textbackslash spunit}alias}
+
+\spnewunit{px}{píxeles}
+\spunitalias{caudal}{m^{3}/s}
+
+% doc: «100 píxeles»
+24. Nueva unidad: $\spunit{100 px}$.
+
+% doc: «50 metros al cubo por segundos»
+25. Nuevo alias: $\spunit{50 caudal}$.
+
+\section*{D. El comando \texttt{\textbackslash spmoney}}
+
+% doc: «500 pesos»
+26. Moneda por defecto: $\spmoney{500}$.
+
+% doc: «menos 500 pesos»
+27. Cifra negativa: $\spmoney{-500}$.
+
+% doc: «1000000 de pesos»
+28. Con separación de cifras: $\spmoney{1000000}$.
+
+% doc: «500 dólares»
+29. Alias de moneda: $\spmoney{500 dolares}$.
+
+% doc: «500 dólares»
+30. Alias con tilde: $\spmoney{500 dólares}$.
+
+% doc: «500 euros»
+31. Euros: $\spmoney{500 euro}$.
+
+% doc: «500 libras»
+32. Libras: $\spmoney{500 libra}$.
+
+% doc: «500 pesos chilenos»
+33. Código ISO: $\spmoney{500 CLP}$.
+
+% doc: «500 dólares estadounidenses»
+34. Código ISO en dólares: $\spmoney{500 USD}$.
+
+% doc: «500 euros»
+35. Moneda por defecto distinta: $\spmoney[currency=euro]{500}$.
+
+% doc: «100 dólares con 50 centavos»
+36. Subunidades: $\spmoney[sub-units=true]{100,5 dolares}$.
+
+% doc: «500 pesos»
+37. Símbolo del modo texto: $\spmoney[money-math=false]{500}$.
+
+\section*{E. El comando \texttt{\textbackslash spshort}}
+
+% doc: «doctora»
+38. Abreviatura con letra volada: \spshort{dr.a}.
+
+% doc: «doctoras»
+39. Abreviatura plural: \spshort{dr.as}.
+
+% doc: «profesora»
+40. Abreviatura de título: \spshort{prof.a}.
+
+% doc: «número»
+41. Abreviatura de número: \spshort{n.o}.
+
+% doc: «organización de las naciones unidas»
+42. Acrónimo: \spshort{onu}.
+
+% doc: «ministerio de educación»
+43. Sigla: \spshort{mineduc}.
+
+% doc: «primera»
+44. Ordinal femenino: \spshort{1.a}.
+
+% doc: «primero»
+45. Ordinal masculino: \spshort{1.o}.
+
+% doc: «doctora»
+46. Con versalitas: \spshort[small-caps=true]{dr.a}.
+
+% doc: «octavo»
+47. Abreviatura nueva: \spshort[read-arg={octavo}]{8.\textsuperscript{\emph{avo}}}.
+
+\section*{F. Casos adicionales de \texttt{\textbackslash spunit} y \texttt{\textbackslash spnum}}
+
+% doc: «9 coma 8 kilogramos metros por segundos cuadrado»
+48. Producto y cociente con exponente: $\spunit{9,8 kg*m/s^{2}}$.
+
+% doc: «12 kilómetros cuadrado»
+49. Exponente en una sola unidad: $\spunit{12 km^{2}}$.
+
+% doc: «1 coma 5 por 10 a la menos 3 potencia»
+50. Exponente negativo en notación científica: $\spnum{1,5e-3}$.
+
+\START
+
+\SHOWPDFTAGS
+
+\OMIT
+
+\end{document}

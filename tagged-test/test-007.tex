@@ -1,0 +1,165 @@
+% test-007.tex -- tagged-PDF test de llaves y valores adicionales
+%
+% Compilar:  lualatex-dev test-007.tex
+% Validar:   show-pdf-tags --xml test-007.pdf | rnv-wrapp
+%            verapdf --flavour ua2 --format text test-007.pdf
+%
+% Test de prueba de los valores de llaves y de las llaves por comando
+% que no cubren los tests 001 a 006: tamanos de delimitadores, simbolo y
+% subindice de la circunferencia, medidas estadisticas, cifras-sep en
+% otros comandos y \setspintent con valores validos. Los "doc:" son
+% lecturas reales de NVDA 2026.2 con MathCAT.
+\DocumentMetadata
+  {
+    lang=es-CL,
+    pdfversion=2.0,
+    pdfstandard=ua-2,
+    tagging=on,
+    tagging-setup={math/setup={mathml-SE}},
+  }
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{unicode-math}
+\usepackage{spintent}
+\usepackage{hyperref}
+\hypersetup
+  {
+    pdfdisplaydoctitle = true,
+    pdftitle           = {test-007: llaves y valores adicionales},
+  }
+
+\begin{document}
+
+\section*{A. Tamaño de los delimitadores}
+
+% doc: «intervalo cerrado de 1 a 5»
+1. Intervalo sin tamaño: $\spinterval[size=none]{[1,5]}$.
+
+% doc: «intervalo cerrado de 1 a 5»
+2. Intervalo con delimitadores \texttt{big}: $\spinterval[size=big]{[1,5]}$.
+
+% doc: «intervalo cerrado de 1 a 5»
+3. Intervalo con delimitadores \texttt{bigg}: $\spinterval[size=bigg]{[1,5]}$.
+
+% doc: «intervalo cerrado de 1 a 5»
+4. Intervalo con delimitadores \texttt{Bigg}: $\spinterval[size=Bigg]{[1,5]}$.
+
+% doc: «valor absoluto de x»
+5. Valor absoluto sin tamaño: $\spabs[size=none]{x}$.
+
+% doc: «valor absoluto de x»
+6. Valor absoluto con barras \texttt{big}: $\spabs[size=big]{x}$.
+
+% doc: «valor absoluto de x»
+7. Valor absoluto con barras \texttt{bigg}: $\spabs[size=bigg]{x}$.
+
+% doc: «valor absoluto de x»
+8. Valor absoluto con barras \texttt{Bigg}: $\spabs[size=Bigg]{x}$.
+
+\section*{B. Circunferencia: símbolo y subíndice}
+
+% doc: «circunferencia de centro en O»
+9. Circunferencia con símbolo \texttt{odot}: $\spcirc[print-sym=odot](O)$.
+
+% doc: «área de la circunferencia con centro en O»
+10. Área con símbolo \texttt{odot}: $\spAcirc[print-sym=odot](O)$.
+
+% doc: «perímetro de la circunferencia con centro en O»
+11. Perímetro con símbolo \texttt{odot}: $\spPcirc[print-sym=odot](O)$.
+
+% doc: «circunferencia sub 1 de centro en O»
+12. Circunferencia con subíndice leído: $\spcirc[sub-index={1},read-sub=true](O)$.
+
+% doc: «área de la circunferencia sub 1 con centro en O»
+13. Área con subíndice leído: $\spAcirc[sub-index={1},read-sub=true](O)$.
+
+% doc: «perímetro de la circunferencia sub 1 con centro en O»
+14. Perímetro con subíndice leído: $\spPcirc[sub-index={1},read-sub=true](O)$.
+
+\section*{C. Llaves de las medidas estadísticas}
+
+% doc: «moda de x»
+15. Moda con subíndice: $\spmoda[sub-index={x}]$.
+
+% doc: «moda sub x»
+16. Moda con subíndice leído: $\spmoda[sub-index={x},read-sub=true]$.
+
+% doc: «mediana de x»
+17. Mediana con subíndice: $\spmediana[sub-index={x}]$.
+
+% doc: «rango de x»
+18. Rango con subíndice: $\sprango[sub-index={x}]$.
+
+% doc: «amplitud»
+19. Rango con verbalización propia: $\sprango[read-arg={amplitud}]$.
+
+% doc: «(silencio)»
+20. Rango intercuartil silenciado: $\spriq[silent=true]$.
+
+% doc: «mínimo muestral»
+21. Mínimo con verbalización propia: $\spmin[read-arg={mínimo muestral}]$.
+
+% doc: «(silencio)»
+22. Máximo silenciado: $\spmax[silent=true]$.
+
+% doc: «varianza»
+23. Varianza con verbalización propia: $\spvarz[read-arg={varianza}]$.
+
+% doc: «varianza s de x al cuadrado»
+24. Varianza con subíndice sin leer: $\spvarz[sub-index={x},read-sub=false]$.
+
+% doc: «(silencio)»
+25. Desviación estándar silenciada: $\spdesv[silent=true]$.
+
+% doc: «primer decil»
+26. Decil con verbalización propia: $\spdecil[read-arg={primer decil}]{1}$.
+
+% doc: «(silencio)»
+27. Percentil silenciado: $\spPerc[silent=true]{25}$.
+
+% doc: «percentil veinticinco»
+28. Percentil con verbalización propia: $\spPerc[read-arg={percentil veinticinco}]{25}$.
+
+\section*{D. Separación de cifras en otros comandos}
+
+% doc: «1000000 de pesos»
+29. Dinero sin separación de cifras: $\spmoney[cifras-sep=false]{1000000}$.
+
+% doc: «1000000 metros»
+30. Unidad sin separación de cifras: $\spunit[cifras-sep=false]{1000000 m}$.
+
+% doc: «1000000 dividido 2»
+31. División sin separación de cifras: $\spdiv[cifras-sep=false]{1000000}{2}$.
+
+% doc: «1000000 por 2»
+32. Multiplicación sin separación de cifras: $\spmul[cifras-sep=false]{1000000}{2}$.
+
+\section*{E. El comando \texttt{\textbackslash setspintent}}
+
+% doc: «media aritmética de x»
+33. Media con subíndice configurado: {\setspintent{spmedia}{sub-index={x}}$\spmedia$}.
+
+% doc: «media aritmética»
+% en AF: «media aritmética de x» (misma fuente que el caso 33)
+34. Media sin configurar, después del grupo: $\spmedia$.
+
+% doc: «23 metros partido por segundos cuadrado»
+35. Unidad con barra configurada: {\setspintent{\spunit}{read-slash=partido-por}$\spunit{23 m/s^{2}}$}.
+
+% doc: «23 metros por segundos cuadrado»
+% en AF: «23 metros partido por segundos cuadrado» (misma fuente que el 35)
+36. Unidad sin configurar, después del grupo: $\spunit{23 m/s^{2}}$.
+
+% doc: «23 negativo»
+37. Signo leído configurado: {\setspintent{\spnum}{read-sign=clear}$\spnum{-23}$}.
+
+% doc: «(silencio)»
+38. Probabilidad silenciada por configuración: {\setspintent{spProb}{silent=true}$\spProb{A}$}.
+
+% doc: «20 dividido por 5»
+39. Lectura del dividido configurada: {\setspintent{\spdsym}{read-sym=dividido-por}$20 \spdsym 5$}.
+
+% doc: «mcd entre 2 3 y 6»
+40. Lectura abreviada configurada: {\setspintent{spmcd}{read-sty=terse}$\spmcd(2, 3, 6)$}.
+
+\end{document}

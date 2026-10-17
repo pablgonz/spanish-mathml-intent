@@ -1,0 +1,446 @@
+% test-005.tex -- tagged-PDF test de las utilidades de algebra y estadistica
+%
+% Compilar:  lualatex-dev test-005.tex
+% Validar:   show-pdf-tags --xml test-005.pdf | rnv-wrapp
+%            verapdf --flavour ua2 --format text test-005.pdf
+%
+% Test de prueba para las utilidades de álgebra y estadística: las formas de
+% cada comando y sus llaves. Los "doc:" son lecturas reales de NVDA 2026.2 con MathCAT.
+\DocumentMetadata
+  {
+    lang=es-CL,
+    pdfversion=2.0,
+    pdfstandard=ua-2,
+    tagging=on,
+    tagging-setup={math/setup={mathml-SE}},
+  }
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{unicode-math}
+\usepackage{spintent}
+\usepackage{hyperref}
+\hypersetup
+  {
+    pdfdisplaydoctitle = true,
+    pdftitle           = {test-005: utilidades de álgebra y estadística},
+  }
+
+\begin{document}
+
+\section*{A. El comando \texttt{\textbackslash spinterval}}
+
+% doc: «intervalo abierto de 1 a 5»
+1. Intervalo abierto: $\spinterval{(1,5)}$.
+
+% doc: «intervalo abierto de 1 a 5»
+2. Intervalo abierto a la chilena: $\spinterval{]1,5[}$.
+
+% doc: «intervalo cerrado de 1 a 5»
+3. Intervalo cerrado: $\spinterval{[1,5]}$.
+
+% doc: «intervalo abierto en 1 y cerrado en 5»
+4. Intervalo semiabierto a la izquierda: $\spinterval{]1,5]}$.
+
+% doc: «intervalo cerrado en 1 y abierto en 5»
+5. Intervalo semiabierto a la derecha: $\spinterval{[1,5[}$.
+
+% doc: «intervalo abierto en menos infinito y cerrado en 3»
+6. Intervalo con extremo infinito: $\spinterval{]-\infty,3]}$.
+
+% doc: «intervalo cerrado de 3 coma 5 a 4 coma 2»
+7. Intervalo con decimales: $\spinterval{[3,5;4,2]}$.
+
+% doc: «intervalo cerrado de 1 a 5»
+8. Intervalo con lectura \texttt{school}: $\spinterval[read-cmd=school]{[1,5]}$.
+
+% doc: «el intervalo abierto de 1 a 5»
+9. Intervalo con prefijo: $\spinterval[prefix={el}]{(1,5)}$.
+
+% doc: «intervalo cerrado»
+10. Intervalo con verbalización propia: $\spinterval[read-arg={intervalo cerrado}]{[1,5]}$.
+
+% doc: «cerrado de 1 a 5»
+11. Intervalo sin el concepto: $\spinterval[concept=false]{[1,5]}$.
+
+% doc: «intervalo cerrado de 1 a 5»
+12. Intervalo con delimitadores grandes: $\spinterval[size=Big]{[1,5]}$.
+
+% doc: «intervalo cerrado de 1 mitad a 5»
+13. Intervalo con delimitadores automáticos: $\spinterval[size=auto]{[\frac{1}{2},5]}$.
+
+% doc: «(silencio)»
+14. Intervalo silenciado: $\spinterval[silent=true]{[1,5]}$.
+
+\section*{B. El comando \texttt{\textbackslash spfun}}
+
+% doc: «f de x»
+15. Función: $\spfun{f(x)}$.
+
+% doc: «f sub uno de x»
+16. Función con subíndice: $\spfun{f_{1}(x)}$.
+
+% doc: «f prima de x»
+17. Función con prima: $\spfun{f'(x)}$.
+
+% doc: «f doble prima de x»
+18. Función con doble prima: $\spfun{f''(x)}$.
+
+% doc: «f de x coma y»
+19. Función de dos variables: $\spfun{f(x,y)}$.
+
+% doc: «f de x más 1»
+20. Función con una expresión: $\spfun{f(x+1)}$.
+
+% doc: «f de g de x»
+21. Función anidada: $\spfun{f(g(x))}$.
+
+% doc: «f de f inversa de y»
+22. Función con inversa: $\spfun{f(f^{-1}(y))}$.
+
+% doc: «f de g de x coma h de y»
+23. Función anidada con dos argumentos: $\spfun{f(g(x),h(y))}$.
+
+% doc: «f de 1,5»
+24. Función con decimal: $\spfun{f(1{,}5)}$.
+
+% doc: «f de x»
+25. Función con lectura \texttt{school}: $\spfun[read-cmd=school]{f(x)}$.
+
+% doc: «f de x»
+26. Función con prefijo: $\spfun[prefix={sea}]{f(x)}$.
+
+% doc: «función f de x»
+27. Función con concepto: $\spfun[concept=true]{f(x)}$.
+
+% doc: «(silencio)»
+28. Función silenciada: $\spfun[silent=true]{f(x)}$.
+
+\section*{C. Los comandos \texttt{\textbackslash spdom}, \texttt{\textbackslash sprec} y \texttt{\textbackslash spcod}}
+
+% doc: «dominio de f»
+29. Dominio: $\spdom{f}$.
+
+% doc: «recorrido de f»
+30. Recorrido: $\sprec{f}$.
+
+% doc: «codominio de f»
+31. Codominio: $\spcod{f}$.
+
+% doc: «dominio de f prima»
+32. Dominio con prima: $\spdom{f'}$.
+
+% doc: «recorrido de f sub uno»
+33. Recorrido con subíndice: $\sprec{f_{1}}$.
+
+% doc: «codominio de F doble prima»
+34. Codominio con doble prima: $\spcod{F''}$.
+
+% doc: «dominio de f inversa»
+35. Dominio de la inversa: $\spdom{f^{-1}}$.
+
+% doc: «recorrido de f inversa»
+36. Recorrido de la inversa: $\sprec{f^{-1}}$.
+
+% doc: «el dominio de f»
+37. Dominio con prefijo: $\spdom[prefix={el}]{f}$.
+
+% doc: «(silencio)»
+38. Dominio silenciado: $\spdom[silent=true]{f}$.
+
+\section*{D. El comando \texttt{\textbackslash spfuncomp}}
+
+% doc: «f compuesta con g»
+39. Composición: $\spfuncomp{f\circ g}$.
+
+% doc: «f compuesta con g compuesta con h»
+40. Composición de tres funciones: $\spfuncomp{f\circ g\circ h}$.
+
+% doc: «f compuesta con g de x»
+41. Composición evaluada: $\spfuncomp{(f\circ g)(x)}$.
+
+% doc: «f inversa compuesta con g de x»
+42. Composición con inversa: $\spfuncomp{(f^{-1}\circ g)(x)}$.
+
+% doc: «(silencio)»
+43. Composición silenciada: $\spfuncomp[silent=true]{f\circ g}$.
+
+\section*{E. El comando \texttt{\textbackslash spabs}}
+
+% doc: «valor absoluto de x»
+44. Valor absoluto: $\spabs{x}$.
+
+% doc: «valor absoluto de menos 5»
+45. Valor absoluto de un número negativo: $\spabs{-5}$.
+
+% doc: «valor absoluto de x menos 3 fin valor absoluto»
+46. Valor absoluto de una expresión: $\spabs{x-3}$.
+
+% doc: «valor absoluto de x fin valor absoluto»
+47. Valor absoluto con cierre: $\spabs[close=true]{x}$.
+
+% doc: «valor absoluto de x menos 3»
+48. Valor absoluto sin cierre: $\spabs[close=false]{x-3}$.
+
+% doc: «valor absoluto de x partido por 2 fin valor absoluto»
+49. Valor absoluto con barras grandes: $\spabs[size=Big]{\dfrac{x}{2}}$.
+
+% doc: «módulo de x»
+50. Valor absoluto con verbalización propia: $\spabs[read-arg={módulo de x}]{x}$.
+
+% doc: «(silencio)»
+51. Valor absoluto silenciado: $\spabs[silent=true]{x}$.
+
+\section*{F. Los comandos \texttt{\textbackslash spProm} y las medidas de tendencia central y dispersión}
+
+% doc: «promedio de x»
+52. Promedio: $\spProm{x}$.
+
+% doc: «promedio de x subíndice 1»
+53. Promedio con subíndice: $\spProm{x_{1}}$.
+
+% doc: «media de x»
+54. Promedio con verbalización propia: $\spProm[read-arg={media de}]{x}$.
+
+% doc: «(silencio)»
+55. Promedio silenciado: $\spProm[silent=true]{x}$.
+
+% doc: «media aritmética»
+56. Media aritmética: $\spmedia$.
+
+% doc: «mediana»
+57. Mediana: $\spmediana$.
+
+% doc: «moda»
+58. Moda: $\spmoda$.
+
+% doc: «desviación estándar s»
+59. Desviación estándar: $\spdesv$.
+
+% doc: «varianza s al cuadrado»
+60. Varianza: $\spvarz$.
+
+% doc: «desviación estándar sigma»
+61. Desviación estándar poblacional: $\spdesv[sigma=true]$.
+
+% doc: «varianza sigma al cuadrado»
+62. Varianza poblacional: $\spvarz[sigma=true]$.
+
+% doc: «media aritmética de x»
+63. Media con subíndice: $\spmedia[sub-index={x}]$.
+
+% doc: «media aritmética sub x»
+64. Media con subíndice leído: $\spmedia[sub-index={x},read-sub=true]$.
+
+% doc: «desviación estándar s sub x»
+65. Desviación con subíndice: $\spdesv[sub-index={x}]$.
+
+% doc: «varianza s sub x al cuadrado»
+66. Varianza con subíndice: $\spvarz[sub-index={x}]$.
+
+% doc: «desviación estándar poblacional»
+67. Desviación con verbalización propia: $\spdesv[read-arg={desviación estándar poblacional}]$.
+
+% doc: «(silencio)»
+68. Mediana silenciada: $\spmediana[silent=true]$.
+
+% doc: «rango»
+69. Rango: $\sprango$.
+
+% doc: «rango intercuartil»
+70. Rango intercuartil: $\spriq$.
+
+% doc: «mínimo»
+71. Mínimo: $\spmin$.
+
+% doc: «máximo»
+72. Máximo: $\spmax$.
+
+\section*{G. Los comandos \texttt{\textbackslash spcuartil}, \texttt{\textbackslash spdecil} y \texttt{\textbackslash spPerc}}
+
+% doc: «cuartil 1»
+73. Cuartil: $\spcuartil{1}$.
+
+% doc: «decil 3»
+74. Decil: $\spdecil{3}$.
+
+% doc: «percentil 25»
+75. Percentil: $\spPerc{25}$.
+
+% doc: «primer cuartil»
+76. Cuartil con verbalización propia: $\spcuartil[read-arg={primer cuartil}]{1}$.
+
+% doc: «(silencio)»
+77. Cuartil silenciado: $\spcuartil[silent=true]{1}$.
+
+\section*{H. El comando \texttt{\textbackslash spFrec}}
+
+% doc: «frecuencia absoluta»
+78. Frecuencia absoluta: $\spFrec{f}$.
+
+% doc: «frecuencia absoluta acumulada»
+79. Frecuencia absoluta acumulada: $\spFrec{F}$.
+
+% doc: «frecuencia relativa»
+80. Frecuencia relativa: $\spFrec{f_{r}}$.
+
+% doc: «frecuencia relativa acumulada»
+81. Frecuencia relativa acumulada: $\spFrec{F_{r}}$.
+
+% doc: «frecuencia porcentual»
+82. Frecuencia porcentual: $\spFrec{f_{r}\%}$.
+
+% doc: «frecuencia porcentual acumulada»
+83. Frecuencia porcentual acumulada: $\spFrec{F_{r}\%}$.
+
+% doc: «frecuencia absoluta sub i»
+84. Frecuencia con subíndice: $\spFrec[sub-index={i}]{f}$.
+
+% doc: «frecuencia absoluta de i»
+85. Frecuencia con subíndice sin leer: $\spFrec[sub-index={i},read-sub=false]{f}$.
+
+% doc: «frecuencia absoluta»
+86. Frecuencia con verbalización propia: $\spFrec[read-arg={frecuencia absoluta}]{n_{i}}$.
+
+% doc: «(silencio)»
+87. Frecuencia silenciada: $\spFrec[silent=true]{f}$.
+
+\section*{I. Los comandos de probabilidad}
+
+% doc: «casos favorables»
+88. Casos favorables: $\spcase{f}$.
+
+% doc: «casos posibles»
+89. Casos posibles: $\spcase{p}$.
+
+% doc: «casos totales»
+90. Casos totales: $\spcase{t}$.
+
+% doc: «casos que cumplen»
+91. Casos con verbalización propia: $\spcase[read-arg={casos que cumplen}]{f}$.
+
+% doc: «(silencio)»
+92. Casos silenciados: $\spcase[silent=true]{f}$.
+
+% doc: «espacio muestral»
+93. Espacio muestral: $\spOmega$.
+
+% doc: «cardinalidad del espacio muestral»
+94. Cardinal del espacio muestral: $\spOmega[card=true]$.
+
+% doc: «espacio muestral sub 1»
+95. Espacio muestral con subíndice: $\spOmega[sub-index={1}]$.
+
+% doc: «cardinalidad del espacio muestral sub 1»
+96. Cardinal con subíndice: $\spOmega[card=true,sub-index={1}]$.
+
+% doc: «universo»
+97. Espacio muestral con verbalización propia: $\spOmega[read-arg={universo}]$.
+
+% doc: «(silencio)»
+98. Espacio muestral silenciado: $\spOmega[silent=true]$.
+
+% doc: «1 de 5»
+99. Probabilidad como fracción: $\spPval{1}{5}$.
+
+% doc: «1 de 5»
+100. Probabilidad como fracción grande: $\spPval[use-dfrac=true]{1}{5}$.
+
+% doc: «(silencio)»
+101. Probabilidad silenciada: $\spPval[silent=true]{1}{5}$.
+
+% doc: «probabilidad de a»
+102. Probabilidad de un suceso: $\spProb{A}$.
+
+% doc: «probabilidad de a y b»
+103. Probabilidad de la intersección: $\spProb{A \cap B}$.
+
+% doc: «probabilidad de a o b»
+104. Probabilidad de la unión: $\spProb{A \cup B}$.
+
+% doc: «probabilidad de a dado b»
+105. Probabilidad condicional: $\spProb{A \mid B}$.
+
+% doc: «probabilidad de a y complemento de b»
+106. Probabilidad con complemento: $\spProb{A \cap \spcomp{B}}$.
+
+% doc: «probabilidad del suceso»
+107. Probabilidad con verbalización propia: $\spProb[read-arg={probabilidad del suceso}]{A}$.
+
+% doc: «(silencio)»
+108. Probabilidad silenciada: $\spProb[silent=true]{A}$.
+
+% doc: «complemento de a»
+109. Complemento: $\spcomp{A}$.
+
+% doc: «complemento de se abren paréntesis a o b se cierran paréntesis»
+110. Complemento de una unión: $\spcomp{A \cup B}$.
+
+% doc: «complemento de a»
+111. Complemento con barra: $\spcomp[bar=true]{A}$.
+
+% doc: «complemento de la expresión a o b»
+112. Complemento de una unión con barra: $\spcomp[bar=true]{A \cup B}$.
+
+% doc: «complemento de a»
+113. Complemento con paréntesis: $\spcomp[wrap-parens=true]{A}$.
+
+% doc: «complemento de a o b»
+114. Complemento sin paréntesis: $\spcomp[wrap-parens=false]{A \cup B}$.
+
+% doc: «no ocurre A»
+115. Complemento con verbalización propia: $\spcomp[read-arg={no ocurre A}]{A}$.
+
+% doc: «(silencio)»
+116. Complemento silenciado: $\spcomp[silent=true]{A}$.
+
+\section*{J. Los comandos \texttt{\textbackslash spcomb} y \texttt{\textbackslash spfact}}
+
+% doc: «5 sobre 2»
+117. Combinaciones: $\spcomb{5,2}$.
+
+% doc: «combinación de 5 elementos tomados de a 2»
+118. Combinaciones con letra: $\spcomb[print-sty=letter]{5,2}$.
+
+% doc: «5 sobre 2»
+119. Combinaciones con coeficiente binomial: $\spcomb[print-sty=binom]{5,2}$.
+
+% doc: «variación de 5 elementos tomados de a 2»
+120. Variaciones: $\spcomb[kind=variation]{5,2}$.
+
+% doc: «arreglo de 5 elementos tomados de a 2»
+121. Arreglos: $\spcomb[kind=arrangement]{5,2}$.
+
+% doc: «permutación de n elementos»
+122. Permutaciones: $\spcomb[kind=permutation]{n}$.
+
+% doc: «permutación de n elementos tomados de a k»
+123. Permutaciones en $k$: $\spcomb[kind=permutation]{n,k}$.
+
+% doc: «variación con repetición de 5 elementos tomados de a 2»
+124. Variaciones con repetición: $\spcomb[kind=variation,repeat=true]{5,2}$.
+
+% doc: «permutación con repetición de 10 elementos con repeticiones 3 3 y 4»
+125. Permutaciones con repetición: $\spcomb[kind=permutation,repeat=true]{10,3,3,4}$.
+
+% doc: «permutación circular de n elementos»
+126. Permutaciones circulares: $\spcomb[kind=permutation,circular=true]{n}$.
+
+% doc: «cinco sobre dos»
+127. Combinaciones con verbalización propia: $\spcomb[read-arg={cinco sobre dos}]{5,2}$.
+
+% doc: «(silencio)»
+128. Combinaciones silenciadas: $\spcomb[silent=true]{5,2}$.
+
+% doc: «5 factorial»
+129. Factorial: $\spfact{5}$.
+
+% doc: «se abren paréntesis n menos 1 se cierran paréntesis factorial»
+130. Factorial de una expresión: $\spfact{(n-1)}$.
+
+% doc: «cinco factorial»
+131. Factorial con verbalización propia: $\spfact[read-arg={cinco factorial}]{5}$.
+
+% doc: «(silencio)»
+132. Factorial silenciado: $\spfact[silent=true]{5}$.
+
+\end{document}

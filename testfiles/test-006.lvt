@@ -1,0 +1,198 @@
+% test-006.lvt -- regresion de los comandos dentro de formulas
+%
+% Regresion:  l3build save test-006
+%             l3build check test-006
+%
+% Test de regresion del contexto: cada comando junto a otros simbolos
+% (igual, suma, desigualdad, fraccion, raiz, otro comando de spintent).
+% Comprueba que la anotacion no cambia la lectura de lo que la rodea y que
+% los cierres ("fin valor absoluto") aparecen cuando corresponde. Los
+% "doc:" son lecturas reales de NVDA 2026.2 con MathCAT,
+% tomadas de los tests 021 a 031 que este reemplaza.
+\input{regression-test}
+
+\DocumentMetadata
+  {
+    lang=es-CL,
+    pdfversion=2.0,
+    pdfstandard=ua-2,
+    tagging=on,
+    tagging-setup={math/setup={mathml-SE}},
+  }
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{unicode-math}
+\ExplSyntaxOn
+\debug_on:n { check-declarations }
+\ExplSyntaxOff
+\usepackage{spintent}
+\usepackage{hyperref}
+\hypersetup
+  {
+    pdfdisplaydoctitle = true,
+    pdftitle           = {test-006: comandos dentro de fórmulas},
+  }
+
+\begin{document}
+
+\section*{A. Funciones en fórmulas}
+
+% doc: «f de x es igual a 5»
+1. Igual y un número: $\spfun{f(x)} = 5$.
+
+% doc: «f de x más g de x»
+2. Dos funciones: $\spfun{f(x)} + \spfun{g(x)}$.
+
+% doc: «y es igual a f de x»
+3. Una función después del igual: $y = \spfun{f(x)}$.
+
+% doc: «f de 1 es igual a f de 2»
+4. Dos valores de la misma función: $\spfun{f(1)} = \spfun{f(2)}$.
+
+% doc: «f inversa de f de x es igual a x»
+5. La composición: $\spfun{f^{-1}(f(x))} = x$.
+
+% doc: «f de f inversa de y es igual a y»
+6. La otra composición: $\spfun{f(f^{-1}(y))} = y$.
+
+% doc: «f de g de x es igual a h de x»
+7. Anidada e igual: $\spfun{f(g(x))} = \spfun{h(x)}$.
+
+% doc: «f de g de x más h de k de y»
+8. Dos anidadas en una suma: $\spfun{f(g(x))} + \spfun{h(k(y))}$.
+
+% doc: «f de g de x coma h de y»
+9. Anidada con dos argumentos: $\spfun{f(g(x),h(y))}$.
+
+\section*{B. Composición, dominio y recorrido en fórmulas}
+
+% doc: «f compuesta con g de x es igual a f de g de x»
+10. Composición y llamada: $\spfuncomp{(f\circ g)(x)} = \spfun{f(g(x))}$.
+
+% doc: «f compuesta con g es igual a k»
+11. Composición igual a una función: $\spfuncomp{f\circ g} = k$.
+
+% doc: «f compuesta con g de x más h de x»
+12. Composición en una suma: $\spfuncomp{(f\circ g)(x)} + \spfun{h(x)}$.
+
+% doc: «f compuesta con g de x es mayor que 0»
+13. Composición y desigualdad: $\spfuncomp{(f\circ g)(x)} > 0$.
+
+% doc: «dominio de f es igual a números reales»
+14. Dominio igual a un conjunto: $\spdom{f} = \mathbb{R}$.
+
+% doc: «recorrido de f es igual a intervalo cerrado en 0 y abierto en más infinito»
+15. Recorrido igual a un intervalo: $\sprec{f} = \spinterval{[0,+\infty[}$.
+
+% doc: «dominio de f inversa es igual a recorrido de f»
+16. Dominio de la inversa y recorrido: $\spdom{f^{-1}} = \sprec{f}$.
+
+\section*{C. Valor absoluto en fórmulas}
+
+% doc: «valor absoluto de valor absoluto de x menos 3 fin valor absoluto»
+17. Anidado: $\spabs{\spabs{x}-3}$.
+
+% doc: «valor absoluto de x menos 3 fin valor absoluto es menor que 2»
+18. Desigualdad: $\spabs{x-3} < 2$.
+
+% doc: «valor absoluto de a b fin valor absoluto es igual a valor absoluto de a valor absoluto de b»
+19. Propiedad del producto: $\spabs{ab} = \spabs{a}\,\spabs{b}$.
+
+% doc: «d de se abren paréntesis a coma b se cierran paréntesis es igual a valor absoluto de a menos b fin valor absoluto»
+20. Distancia: $d(a,b) = \spabs{a-b}$.
+
+% doc: «valor absoluto de x fin valor absoluto más 3»
+21. Cierre forzado antes de una suma: $\spabs[close=true]{x} + 3$.
+
+% doc: «valor absoluto de x menos 3 fin valor absoluto menos 1»
+22. Cierre antes de una resta: $\spabs{x-3} - 1$.
+
+\section*{D. Estadística y frecuencias en fórmulas}
+
+% doc: «promedio de x es igual a la fracción con numerador x subíndice 1 más x subíndice 2 más x subíndice 3 y denominador 3»
+23. Promedio: $\spProm{x} = \dfrac{x_{1}+x_{2}+x_{3}}{3}$.
+
+% doc: «desviación estándar s es igual a el raíz cuadrada de varianza s al cuadrado»
+24. Desviación estándar y varianza: $\spdesv = \sqrt{\spvarz}$.
+
+% doc: «media aritmética es igual a promedio de x»
+25. Media aritmética y promedio: $\spmedia = \spProm{x}$.
+
+% doc: «media aritmética, mediana y moda»
+26. Los tres juntos: $\spmedia$, $\spmediana$ y $\spmoda$.
+
+% doc: «rango intercuartil es igual a cuartil 3 menos cuartil 1»
+27. Rango intercuartil: $\spriq = \spcuartil{3} - \spcuartil{1}$.
+
+% doc: «rango es igual a máximo menos mínimo»
+28. Rango: $\sprango = \spmax - \spmin$.
+
+% doc: «percentil 50 es igual a mediana»
+29. Percentil 50 y mediana: $\spPerc{50} = \spmediana$.
+
+% doc: «frecuencia relativa es igual a la fracción con numerador frecuencia absoluta y denominador n»
+30. Frecuencia relativa: $\spFrec{f_{r}} = \dfrac{\spFrec{f}}{n}$.
+
+% doc: «frecuencia relativa acumulada es igual a frecuencia absoluta sub 1 más frecuencia absoluta sub 2»
+31. Frecuencia acumulada: $\spFrec{F_{r}} = \spFrec[sub-index={1}]{f} + \spFrec[sub-index={2}]{f}$.
+
+\section*{E. Probabilidad en fórmulas}
+
+% doc: «p es igual a la fracción con numerador casos favorables y denominador casos posibles»
+% en AF: «p es igual a casos favorables partido por casos posibles»
+32. Regla de Laplace: $P = \dfrac{\spcase{f}}{\spcase{p}}$.
+
+% doc: «p es igual a la fracción con numerador casos favorables y denominador cardinalidad del espacio muestral»
+% en AF: «p es igual a casos favorables partido por cardinalidad del espacio muestral»
+33. Laplace con la cardinalidad: $P = \dfrac{\spcase{f}}{\spOmega[card=true]}$.
+
+% doc: «p de a es igual a 1 de 5»
+34. Una igualdad: $P(A) = \spPval{1}{5}$.
+
+% doc: «1 de 5 más 2 de 5»
+35. Dos valores sumados: $\spPval{1}{5} + \spPval{2}{5}$.
+
+% doc: «probabilidad de a es igual a 1 de 5»
+36. Probabilidad con valor: $\spProb{A} = \spPval{1}{5}$.
+
+% doc: «probabilidad de a o b es igual a probabilidad de a más probabilidad de b menos probabilidad de a y b»
+37. Unión de dos eventos: $\spProb{A \cup B} = \spProb{A} + \spProb{B} - \spProb{A \cap B}$.
+
+% doc: «probabilidad de a y b es igual a probabilidad de a punto probabilidad de b dado a»
+38. Producto: $\spProb{A \cap B} = \spProb{A} \cdot \spProb{B \mid A}$.
+
+% doc: «probabilidad de complemento de a es igual a 1 menos probabilidad de a»
+39. Regla del complemento: $\spProb{\spcomp{A}} = 1 - \spProb{A}$.
+
+% doc: «probabilidad de complemento de se abren paréntesis a o b se cierran paréntesis es igual a probabilidad de complemento de a y complemento de b»
+40. Complemento de la unión: $\spProb{\spcomp{A \cup B}} = \spProb{\spcomp{A} \cap \spcomp{B}}$.
+
+% doc: «probabilidad de complemento de la expresión a y b es igual a 1 menos probabilidad de a y b»
+41. Barra sobre una intersección: $\spProb{\spcomp[bar=true]{A \cap B}} = 1 - \spProb{A \cap B}$.
+
+\section*{F. Coordenadas y números mixtos}
+
+% doc: «1 y 1 mitad coma 3»
+42. Número mixto en una coordenada: $\spcoord{\spmQ{1}{1}{2}, 3}$.
+
+% doc: «x es igual a 3 y 1 cuarto más 1»
+43. Número mixto en una fórmula: $x = \spmQ{3}{1}{4} + 1$.
+
+\section*{G. Combinatoria en fórmulas}
+
+% doc: «n sobre k es igual a la fracción con numerador n factorial y denominador k factorial se abren paréntesis n menos k se cierran paréntesis factorial»
+44. Fórmula de la combinación: $\spcomb{n,k} = \dfrac{\spfact{n}}{\spfact{k}\,\spfact{(n-k)}}$.
+
+% doc: «probabilidad de a es igual a la fracción con numerador 5 sobre 2 y denominador 10 sobre 2»
+45. Probabilidad clásica con combinaciones: $\spProb{A} = \dfrac{\spcomb{5,2}}{\spcomb{10,2}}$.
+
+% doc: «permutación de n elementos es igual a n factorial»
+46. Permutaciones y factorial: $\spcomb[kind=permutation]{n} = \spfact{n}$.
+
+\START
+
+\SHOWPDFTAGS
+
+\OMIT
+
+\end{document}

@@ -1,0 +1,167 @@
+% test-002.tex -- tagged-PDF test de las utilidades generales y de simbolos
+%
+% Compilar:  lualatex-dev test-002.tex
+% Validar:   show-pdf-tags --xml test-002.pdf | rnv-wrapp
+%            verapdf --flavour ua2 --format text test-002.pdf
+%
+% Test de prueba para \spsiglo, \sptime, \spdate, \spnewread, \spread,
+% \spusep, \spdsym y \spmsym: las formas de cada comando y sus llaves. Los
+% "doc:" son lecturas reales de NVDA 2026.2 con MathCAT.
+\DocumentMetadata
+  {
+    lang=es-CL,
+    pdfversion=2.0,
+    pdfstandard=ua-2,
+    tagging=on,
+    tagging-setup={math/setup={mathml-SE}},
+  }
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{unicode-math}
+\usepackage{spintent}
+\usepackage{hyperref}
+\hypersetup
+  {
+    pdfdisplaydoctitle = true,
+    pdftitle           = {test-002: utilidades generales y de símbolos},
+  }
+
+\newcommand{\xcuad}{x^2}
+
+\begin{document}
+
+\section*{A. El comando \texttt{\textbackslash spsiglo}}
+
+% doc: «siglo 21»
+1. En modo texto con número arábigo: siglo \spsiglo{21}.
+
+% doc: «siglo 21»
+2. En modo texto con número romano: siglo \spsiglo{XXI}.
+
+% doc: «19»
+3. En modo matemático: $\spsiglo{XIX}$.
+
+% doc: «5 antes de cristo»
+4. Con \emph{a.~C.}: \spsiglo[print-era=ac]{V}.
+
+% doc: «21 después de cristo»
+5. Con \emph{d.~C.}: \spsiglo[print-era=dc]{XXI}.
+
+% doc: «21»
+6. Sin época: \spsiglo[print-era=none]{XXI}.
+
+\section*{B. El comando \texttt{\textbackslash sptime}}
+
+% doc: «23:45 minutos»
+7. Horas y minutos: $\sptime{23:45}$.
+
+% doc: «23:45 minutos con 10 segundos»
+8. Con segundos: $\sptime{23:45:10}$.
+
+\section*{C. El comando \texttt{\textbackslash spdate}}
+
+% doc: «dos de enero de mil novecientos ochenta y uno»
+9. Año-mes-día con guiones: $\spdate{1981-01-02}$.
+
+% doc: «dos de enero de mil novecientos ochenta y uno»
+10. Día/mes/año con barras: $\spdate{02/01/1981}$.
+
+% doc: «dos de enero de mil novecientos ochenta y uno»
+11. Día-mes-año con guiones: $\spdate{02-01-1981}$.
+
+% doc: «dos de enero de mil novecientos ochenta y uno»
+12. Año/mes/día con barras: $\spdate{1981/01/02}$.
+
+\spnewread{\cong}{es-congruente-con}
+\spnewread{\xcuad}{x-al-cuadrado}
+
+\section*{D. Los comandos \texttt{\textbackslash spnewread} y \texttt{\textbackslash spread}}
+
+% doc: «triángulo blanco apuntando hacia arriba a b c es congruente con triángulo blanco apuntando hacia arriba d e f»
+13. Símbolo registrado: $\triangle ABC \spread{\cong} \triangle DEF$.
+
+% doc: «x al cuadrado»
+14. Comando del usuario registrado: $\spread{\xcuad}$.
+
+% doc: «r es paralela a s»
+15. Verbalización propia: $r \spread[read-arg={es-paralela-a}]{\parallel} s$.
+
+% doc: «a b»
+16. Verbalización silenciada: $A \spread[silent=true]{\parallel} B$.
+
+\section*{E. El comando \texttt{\textbackslash spusep}}
+
+% doc: «se abren paréntesis a más b se cierran paréntesis»
+17. Paréntesis: $\spusep{(} a + b \spusep{)}$.
+
+% doc: «abrir corchetes a más b cerrar corchetes»
+18. Corchetes: $\spusep{[} a + b \spusep{]}$.
+
+% doc: «abrir llaves a más b cerrar llaves»
+19. Llaves: $\spusep{\{} a + b \spusep{\}}$.
+
+% doc: «se abren paréntesis a más b se cierran paréntesis»
+20. Tamaño \texttt{big}: $\spusep[size=big]{(} a + b \spusep[size=big]{)}$.
+
+% doc: «se abren paréntesis a más b se cierran paréntesis»
+21. Tamaño \texttt{Big}: $\spusep[size=Big]{(} a + b \spusep[size=Big]{)}$.
+
+% doc: «se abren paréntesis a más b se cierran paréntesis»
+22. Tamaño \texttt{bigg}: $\spusep[size=bigg]{(} a + b \spusep[size=bigg]{)}$.
+
+% doc: «se abren paréntesis a más b se cierran paréntesis»
+23. Tamaño \texttt{Bigg}: $\spusep[size=Bigg]{(} a + b \spusep[size=Bigg]{)}$.
+
+% doc: «a más b»
+24. Silenciado: $\spusep[silent=true]{(} a + b \spusep[silent=true]{)}$.
+
+\section*{F. El comando \texttt{\textbackslash spdsym}}
+
+% doc: «20 dividido 5»
+25. Por defecto: $20 \spdsym 5$.
+
+% doc: «20 dividido 5»
+26. Símbolo \texttt{old-style}: $20 \spdsym[set-sym=old-style] 5$.
+
+% doc: «20 dividido 5»
+27. Símbolo \texttt{slash}: $20 \spdsym[set-sym=slash] 5$.
+
+% doc: «20 dividido por 5»
+28. Lectura \texttt{dividido-por}: $20 \spdsym[read-sym=dividido-por] 5$.
+
+% doc: «20 dividido entre 5»
+29. Lectura \texttt{dividido-entre}: $20 \spdsym[read-sym=dividido-entre] 5$.
+
+% doc: «20 exactamente dividido 5»
+30. Con prefijo: $20 \spdsym[prefix={exactamente}] 5$.
+
+% doc: «20 dividido veces 5»
+31. Con sufijo: $20 \spdsym[suffix={veces}] 5$.
+
+\section*{G. El comando \texttt{\textbackslash spmsym}}
+
+% doc: «4 por 3»
+32. Por defecto: $4 \spmsym 3$.
+
+% doc: «4 por 3»
+33. Símbolo \texttt{cross}: $4 \spmsym[set-sym=cross] 3$.
+
+% doc: «4 por 3»
+34. Símbolo \texttt{asterisk}: $4 \spmsym[set-sym=asterisk] 3$.
+
+% doc: «4 multiplicado por 3»
+35. Lectura \texttt{multiplicado-por}: $4 \spmsym[read-sym=multiplicado-por] 3$.
+
+% doc: «4 veces 3»
+36. Lectura \texttt{veces}: $4 \spmsym[read-sym=veces] 3$.
+
+% doc: «4 exactamente por 3»
+37. Con prefijo: $4 \spmsym[prefix={exactamente}] 3$.
+
+% doc: «4 por veces 3»
+38. Con sufijo: $4 \spmsym[suffix={veces}] 3$.
+
+% doc: «2 por x»
+39. Sin imprimir el símbolo: $2 \spmsym[print-sym=false] x$.
+
+\end{document}

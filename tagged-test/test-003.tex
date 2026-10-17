@@ -1,0 +1,253 @@
+% test-003.tex -- tagged-PDF test de las utilidades para números
+%
+% Compilar:  lualatex-dev test-003.tex
+% Validar:   show-pdf-tags --xml test-003.pdf | rnv-wrapp
+%            verapdf --flavour ua2 --format text test-003.pdf
+%
+% Test de prueba para \spdiv, \spmul, \spnD, \spnM, \spmcd, \spmcm,
+% \spnZ, \spmQ, \sprazon y \spProp: las formas de cada comando y sus
+% llaves. Los "doc:" son lecturas reales de NVDA 2026.2 con MathCAT.
+\DocumentMetadata
+  {
+    lang=es-CL,
+    pdfversion=2.0,
+    pdfstandard=ua-2,
+    tagging=on,
+    tagging-setup={math/setup={mathml-SE}},
+  }
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{unicode-math}
+\usepackage{spintent}
+\usepackage{hyperref}
+\hypersetup
+  {
+    pdfdisplaydoctitle = true,
+    pdftitle           = {test-003: utilidades para números},
+  }
+
+\begin{document}
+
+\section*{A. Los comandos \texttt{\textbackslash spdiv} y \texttt{\textbackslash spmul}}
+
+% doc: «20 dividido 26»
+1. División: $\spdiv{20}{26}$.
+
+% doc: «se abren paréntesis 20 dividido 26 se cierran paréntesis»
+2. División con paréntesis: $\spdiv[wrap-parens=true]{20}{26}$.
+
+% doc: «20 dividido 26»
+3. División con paréntesis sin leerlos: $\spdiv[wrap-parens=true,read-parens=false]{20}{26}$.
+
+% doc: «20 dividido 26»
+4. División con barra: $\spdiv[set-sym=slash]{20}{26}$.
+
+% doc: «20 dividido por 26»
+5. División con otra lectura: $\spdiv[read-sym=dividido-por]{20}{26}$.
+
+% doc: «20 negativo dividido 5»
+6. División con signo leído: $\spdiv[read-sign=clear]{-20}{5}$.
+
+% doc: «20 por 26»
+7. Multiplicación: $\spmul{20}{26}$.
+
+% doc: «se abren paréntesis 20 por 26 se cierran paréntesis»
+8. Multiplicación con paréntesis: $\spmul[wrap-parens=true]{20}{26}$.
+
+% doc: «20 por 26»
+9. Multiplicación con paréntesis sin leerlos: $\spmul[wrap-parens=true,read-parens=false]{20}{26}$.
+
+% doc: «20 por 26»
+10. Multiplicación con cruz: $\spmul[set-sym=cross]{20}{26}$.
+
+% doc: «20 veces 26»
+11. Multiplicación con otra lectura: $\spmul[read-sym=veces]{20}{26}$.
+
+% doc: «20 negativo por 5»
+12. Multiplicación con signo leído: $\spmul[read-sign=clear]{-20}{5}$.
+
+\section*{B. Los comandos \texttt{\textbackslash spnD} y \texttt{\textbackslash spnM}}
+
+% doc: «divisores de n»
+13. Divisores sin argumento: $\spnD$.
+
+% doc: «divisores de 6»
+14. Divisores de un número: $\spnD(6)$.
+
+% doc: «divisores de m»
+15. Divisores de una letra: $\spnD(m)$.
+
+% doc: «divisores de 6 son 1 2 3 y 6»
+16. Divisores con resultado: $\spnD[result=true](6)$.
+
+% doc: «divisores de 12 son 1 2 puntos suspensivos»
+17. Divisores con resultado acotado: $\spnD[result=true,result-num=2](12)$.
+
+% doc: «6»
+18. Divisores sin el concepto: $\spnD[concept=false](6)$.
+
+% doc: «calcule divisores de 6»
+19. Divisores con prefijo: $\spnD[prefix={calcule}](6)$.
+
+% doc: «(silencio)»
+20. Divisores silenciados: $\spnD[silent=true](6)$.
+
+% doc: «múltiplos de n»
+21. Múltiplos sin argumento: $\spnM$.
+
+% doc: «múltiplos de 6»
+22. Múltiplos de un número: $\spnM(6)$.
+
+% doc: «múltiplos de m»
+23. Múltiplos de una letra: $\spnM(m)$.
+
+% doc: «múltiplos de 6 son 6 12 18 24 30 puntos suspensivos»
+24. Múltiplos con resultado: $\spnM[result=true](6)$.
+
+% doc: «múltiplos de 6 son 6 12 18 puntos suspensivos»
+25. Múltiplos con resultado acotado: $\spnM[result=true,result-num=3](6)$.
+
+% doc: «6»
+26. Múltiplos sin el concepto: $\spnM[concept=false](6)$.
+
+% doc: «calcule múltiplos de 6»
+27. Múltiplos con prefijo: $\spnM[prefix={calcule}](6)$.
+
+% doc: «(silencio)»
+28. Múltiplos silenciados: $\spnM[silent=true](6)$.
+
+\section*{C. Los comandos \texttt{\textbackslash spmcd} y \texttt{\textbackslash spmcm}}
+
+% doc: «máximo común divisor»
+29. Máximo común divisor sin argumento: $\spmcd$.
+
+% doc: «máximo común divisor entre 2 3 y 6»
+30. Máximo común divisor de números: $\spmcd(2, 3, 6)$.
+
+% doc: «máximo común divisor entre m y n»
+31. Máximo común divisor de letras: $\spmcd(m, n)$.
+
+% doc: «máximo común divisor entre 2 3 y 6 es igual a 1»
+32. Máximo común divisor con resultado: $\spmcd[result=true](2, 3, 6)$.
+
+% doc: «mcd entre 2 3 y 6»
+33. Máximo común divisor abreviado: $\spmcd[read-sty=terse](2, 3, 6)$.
+
+% doc: «máximo común divisor entre 2 3 y 6»
+34. Máximo común divisor en mayúsculas: $\spmcd[upper-case=true](2, 3, 6)$.
+
+% doc: «2 3 y 6»
+35. Máximo común divisor sin el concepto: $\spmcd[concept=false](2, 3, 6)$.
+
+% doc: «calcule máximo común divisor entre 2 3 y 6»
+36. Máximo común divisor con prefijo: $\spmcd[prefix={calcule}](2, 3, 6)$.
+
+% doc: «(silencio)»
+37. Máximo común divisor silenciado: $\spmcd[silent=true](2, 3, 6)$.
+
+% doc: «mínimo común múltiplo»
+38. Mínimo común múltiplo sin argumento: $\spmcm$.
+
+% doc: «mínimo común múltiplo entre 2 3 y 6»
+39. Mínimo común múltiplo de números: $\spmcm(2, 3, 6)$.
+
+% doc: «mínimo común múltiplo entre m y n»
+40. Mínimo común múltiplo de letras: $\spmcm(m, n)$.
+
+% doc: «mínimo común múltiplo entre 2 3 y 6 es igual a 6»
+41. Mínimo común múltiplo con resultado: $\spmcm[result=true](2, 3, 6)$.
+
+% doc: «mcm entre 2 3 y 6»
+42. Mínimo común múltiplo abreviado: $\spmcm[read-sty=terse](2, 3, 6)$.
+
+% doc: «mínimo común múltiplo entre 2 3 y 6»
+43. Mínimo común múltiplo en mayúsculas: $\spmcm[upper-case=true](2, 3, 6)$.
+
+% doc: «2 3 y 6»
+44. Mínimo común múltiplo sin el concepto: $\spmcm[concept=false](2, 3, 6)$.
+
+% doc: «calcule mínimo común múltiplo entre 2 3 y 6»
+45. Mínimo común múltiplo con prefijo: $\spmcm[prefix={calcule}](2, 3, 6)$.
+
+% doc: «(silencio)»
+46. Mínimo común múltiplo silenciado: $\spmcm[silent=true](2, 3, 6)$.
+
+\section*{D. El comando \texttt{\textbackslash spnZ}}
+
+% doc: «23»
+47. Entero positivo: $\spnZ{23}$.
+
+% doc: «menos 23»
+48. Entero negativo: $\spnZ{-23}$.
+
+% doc: «se abren paréntesis menos 23 se cierran paréntesis»
+49. Entero con paréntesis: $\spnZ[wrap-parens=true]{-23}$.
+
+% doc: «menos 23»
+50. Entero con paréntesis sin leerlos: $\spnZ[wrap-parens=true,read-parens=false]{-23}$.
+
+% doc: «23 negativo»
+51. Entero con signo leído: $\spnZ[read-sign=clear]{-23}$.
+
+% doc: «1000000»
+52. Entero grande: $\spnZ{1000000}$.
+
+% doc: «1000000»
+53. Entero grande sin separación: $\spnZ[cifras-sep=false]{1000000}$.
+
+\section*{E. El comando \texttt{\textbackslash spmQ}}
+
+% doc: «2 y 5 séptimos»
+54. Número mixto: $\spmQ{2}{5}{7}$.
+
+% doc: «1 entero 5 séptimos»
+55. Unión con \emph{entero}: $\spmQ[join-word=entero]{1}{5}{7}$.
+
+% doc: «2 enteros 5 séptimos»
+56. Unión con \emph{enteros}: $\spmQ[join-word=enteros]{2}{5}{7}$.
+
+% doc: «2 y 5 séptimos»
+57. Unión con \emph{y}: $\spmQ[join-word=y]{2}{5}{7}$.
+
+% doc: «2 y 5 séptimos»
+58. Sin semántica de entero: $\spmQ[use-spnZ=false]{2}{5}{7}$.
+
+% doc: «2 y 5 séptimos»
+59. Fracción en tamaño \emph{display}: $\spmQ[use-dfrac=true]{2}{5}{7}$.
+
+% doc: «se abren paréntesis 2 y 5 séptimos se cierran paréntesis»
+60. Con paréntesis: $\spmQ[wrap-parens=true]{2}{5}{7}$.
+
+% doc: «2 y 5 séptimos»
+61. Con paréntesis sin leerlos: $\spmQ[wrap-parens=true,read-parens=false]{2}{5}{7}$.
+
+% doc: «(silencio)»
+62. Silenciado: $\spmQ[silent=true]{2}{5}{7}$.
+
+\section*{F. Los comandos \texttt{\textbackslash sprazon} y \texttt{\textbackslash spProp}}
+
+% doc: «3 es a 4»
+63. Razón: $\sprazon{3}{4}$.
+
+% doc: «3 es a 4»
+64. Razón en tamaño \emph{display}: $\sprazon[use-dfrac=true]{3}{4}$.
+
+% doc: «3 es a 4»
+65. Razón en línea: $\sprazon[inline=true]{3}{4}$.
+
+% doc: «(silencio)»
+66. Razón silenciada: $\sprazon[silent=true]{3}{4}$.
+
+% doc: «3 es a 4 como 6 es a 8»
+67. Proporción: $\spProp{3}{4}{6}{8}$.
+
+% doc: «3 es a 4 como 6 es a 8»
+68. Proporción en tamaño \emph{display}: $\spProp[use-dfrac=true]{3}{4}{6}{8}$.
+
+% doc: «3 es a 4 como 6 es a 8»
+69. Proporción en línea: $\spProp[inline=true]{3}{4}{6}{8}$.
+
+% doc: «(silencio)»
+70. Proporción silenciada: $\spProp[silent=true]{3}{4}{6}{8}$.
+
+\end{document}
