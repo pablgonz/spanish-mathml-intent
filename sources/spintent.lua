@@ -76,6 +76,24 @@ local spintent_num_chunk_keep = Cs(
     )^0
 )
 
+-- luaotfload workaround (https://github.com/latex3/luaotfload/pull/342)
+do
+    local original = luatexbase.remove_from_callback(
+        "luaotfload.patch_font", "luaotfload.rewrite_fontname"
+    )
+    if original then
+        luatexbase.add_to_callback(
+            "luaotfload.patch_font", function(tfmdata, specification)
+                if type(specification) == "string" then
+                    return original(tfmdata, specification)
+                else
+                    tfmdata.name = specification.name
+                end
+            end, "luaotfload.rewrite_fontname"
+        )
+    end
+end
+
 -- Registro de las funciones para expl3
 
 local function register_tex_cmd(name, func, args)
@@ -322,26 +340,22 @@ local function spintent_find_free_family()
     return nil
 end
 
-local spintent_mathfb_font_cache = {}
-local function spintent_load_scaled(spec, size)
-    local key = spec .. ":" .. size
-    if spintent_mathfb_font_cache[key] then return spintent_mathfb_font_cache[key] end
-    local id = luaotfload.define_font(spec, size)
-    if not id or id == 0 or type(id) ~= "number" then
-        luatexbase.module_error("spintent", "id invalido para " .. spec .. " @ " .. size)
-        return nil
-    end
-    spintent_mathfb_font_cache[key] = id
-    return id
+local function spintent_load_scaled(filename, size, features)
+    return luaotfload.define_font {
+        lookup = "file",
+        name = filename,
+        size = size,
+        features = { normal = features },
+    }
 end
 
 local function spintent_load_family(fontfile, features, fam)
-    local path = kpse.find_file(fontfile, "opentype fonts")
-    if not path or path == "" then
-        luatexbase.module_error("spintent", "kpse no encontro '" .. fontfile .. "'")
-        return false
-    end
-    local spec = "[" .. path .. "]:mode=base;script=math;language=dflt;" .. features
+    features = table.merged(features, {
+        mode = "base",
+        script = "math",
+        language = "dflt",
+    })
+
     local main_id = tex.getfontoffamily(0)
     local main_fd = main_id and font.getfont(main_id)
     if not main_fd then
@@ -351,13 +365,13 @@ local function spintent_load_family(fontfile, features, fam)
     end
     local cur_size = main_fd.size
 
-    local text_id = spintent_load_scaled(spec, cur_size)
+    local text_id = spintent_load_scaled(fontfile, cur_size, features)
     if not text_id then return false end
     local mc = font.getfont(text_id).MathConstants
     local script_pct    = (mc and mc.ScriptPercentScaleDown or 70) / 100
     local scriptscr_pct = (mc and mc.ScriptScriptPercentScaleDown or 50) / 100
-    local script_id       = spintent_load_scaled(spec, math.floor(cur_size * script_pct))
-    local scriptscript_id = spintent_load_scaled(spec, math.floor(cur_size * scriptscr_pct))
+    local script_id       = spintent_load_scaled(fontfile, math.floor(cur_size * script_pct), features)
+    local scriptscript_id = spintent_load_scaled(fontfile, math.floor(cur_size * scriptscr_pct), features)
     if not script_id or not scriptscript_id then return false end
 
     tex.definefont(true, "MathFBtmpText",      text_id)
@@ -407,11 +421,11 @@ register_tex_cmd("luafun_right_angle_sqr", spintent_right_angle_sqr, {})
 -- Si no hay fuente matematica cargada, degrada con un aviso..
 local function spintent_init_math_fallbacks()
     spintent_cal_fam = spintent_find_free_family()
-    spintent_cal_fam_ok = spintent_cal_fam and spintent_load_family("NewCMMath-Regular.otf", "", spintent_cal_fam)
+    spintent_cal_fam_ok = spintent_cal_fam and spintent_load_family("NewCMMath-Regular.otf", {}, spintent_cal_fam)
     token_set_macro("l__spintent_luaset_cal_fam_ok_str", spintent_cal_fam_ok and "true" or "false")
 
     spintent_sym_fam = spintent_find_free_family()
-    spintent_sym_fam_ok = spintent_sym_fam and spintent_load_family("NewCMMath-Regular.otf", "", spintent_sym_fam)
+    spintent_sym_fam_ok = spintent_sym_fam and spintent_load_family("NewCMMath-Regular.otf", {}, spintent_sym_fam)
     token_set_macro("l__spintent_luaset_sym_fam_ok_str", spintent_sym_fam_ok and "true" or "false")
 end
 register_tex_cmd("luafun_init_math_fallbacks", spintent_init_math_fallbacks, {})
@@ -1739,15 +1753,10 @@ local function spintent_get_scaled_font(id, factor)
     local old_font = font.getfont(id)
     if not old_font or not old_font.specification then return id end
 
-    local spec_str = old_font.specification.specification
-    if not spec_str then return id end
-    local new_size = math_floor(old_font.size * factor)
+    local specification = old_font.specification
+    specification.size = math_floor(old_font.size * factor)
 
-    local ok, new_id = pcall(luaotfload.define_font, spec_str, new_size)
-    if not ok or not new_id or new_id == 0 or type(new_id) ~= "number" then
-        return id
-    end
-
+    local new_id = luaotfload.define_font(specification)
     spintent_font_cache[key] = new_id
     return new_id
 end
