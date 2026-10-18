@@ -26,21 +26,23 @@ script distributed with the
 LaTeX package.
 It prepares the MathML produced by
 .B luamml
-for the associated-files (mathml-AF) mode of a tagged PDF, and checks
+for the associated-files mode of a tagged PDF, named
+.BR mathml\-AF ,
+and checks
 that the tag structure and the PDF/UA-2 conformance of a document are
 correct.
 .PP
 The package
 .B spintent
-can write invisible marker characters (U+2063, with the attribute
+can write invisible marker characters in the MathML that
+.B luamml
+produces.
+They are the character U+2063 with the attribute
 .B sptmp
 set to
 .B outer
 or
-.BR inner )
-in the MathML that
-.B luamml
-produces.
+.BR inner .
 They protect the structure of the formulas, but must not remain in the
 MathML file that is attached to the PDF.
 .B spitool
@@ -75,7 +77,7 @@ The result is reported as
 or
 .BR FAIL ,
 and the output of the failing validator is shown.
-If neither pair of tools is found, the run ends with an error.
+If none of the checks can be run, the run ends with an error.
 .TP
 .B .html
 The file must be named
@@ -214,13 +216,13 @@ the log file can be read.
 .SH ENVIRONMENT
 .TP
 .B TMPDIR
-Directory where the temporary directory is created on POSIX systems
-(default
-.BR /tmp ).
+Directory where the temporary directory is created on POSIX systems;
+the default is
+.BR /tmp .
 On Windows
 .B TEMP
 or
-.BR TMP
+.B TMP
 is used instead.
 .SH EXIT STATUS
 .TP
@@ -252,8 +254,8 @@ $ spitool \-c \-s sample
 .PP
 Compile a document with the ghost characters enabled, write the cleaned
 MathML in the directory
-.B build
-(replacing it if it exists):
+.BR build ,
+replacing the output file if it exists:
 .PP
 .RS
 .nf

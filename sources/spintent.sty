@@ -21,7 +21,7 @@
 %% by Pablo González L.
 %% 
 %% This work consists of the files spintent.dtx and spintent.ins and the files
-%% generated from them (spintent.sty, spintent.lua and spitools.lua).
+%% generated from them (spintent.sty, spintent.lua and spitool.lua).
 %% 
 %% The released version of this package is available from CTAN.
 %% 
@@ -278,7 +278,7 @@
   {
     \__spintent_unknown_keys_cmd:Vn \l_keys_key_str {#1}
   }
-%% Core base variables set in Lua module spintent.lua (\__spintent_luafun_clean_split_and_set:n)
+%% Core base variables set in Lua module spintent.lua by \__spintent_luafun_clean_split_and_set:n
 \tl_new:N  \l__spintent_luaset_sign_tl
 \tl_new:N  \l__spintent_luaset_part_int_tl
 \tl_new:N  \l__spintent_luaset_dec_sep_tl
@@ -552,7 +552,7 @@
           }
       }
   }
-\cs_new_protected:Nn \__spintent_spnum_print_number_core:
+\cs_new_protected:Nn \__spintent_spnum_mathml:
   {
     \__spintent_spnum_print_num_start:
     \str_if_eq:VnT \l__spintent_luaset_has_exponent_str { true }
@@ -573,7 +573,7 @@
             {
               \tl_if_empty:NTF \l__spintent_luaset_part_int_tl
                 { \msg_error:nnn { spintent } { spnum-no-digits } {#2} }
-                { \__spintent_spnum_print_number_core: }
+                { \__spintent_spnum_mathml: }
             }
         \group_end:
       }
@@ -714,7 +714,7 @@
           }
       }
   }
-\cs_new_protected:Nn \__spintent_spunit_safe_exec:n
+\cs_new_protected:Nn \__spintent_spunit_exec:n
   {
     \str_if_eq:VnTF \l__spintent_luaset_has_units_str { false }
       { \msg_error:nnn { spintent } { spunit-no-units } {#1} }
@@ -749,52 +749,56 @@
                       }
                   }
                   {
-                    \str_if_eq:VnTF \l__spintent_spunit_luaset_above_sexa_str { true }
-                      {
-                        \__spintent_spunit_load_term:nn { above } { 1 }
-                        \tl_if_empty:NF \l__spintent_luaset_part_int_tl
-                          {
-                            \__spintent_spnum_print_number_core:
-                          }
-                        \bool_lazy_and:nnT
-                          { \str_if_eq_p:ee { \l__spintent_luaset_part_int_tl } { 1 } }
-                          { \tl_if_empty_p:N \l__spintent_luaset_part_dec_tl }
-                          {
-                            \str_set:Ne \l__spintent_spunit_luaset_read_str
-                              {
-                                \str_case:Vn \l__spintent_spunit_luaset_canonical_str
-                                  {
-                                    { ° } { _grado:unit   }
-                                    { ′ } { _minuto:unit  }
-                                    { ″ } { _segundo:unit }
-                                  }
-                              }
-                          }
-                        \MathMLintent { \l__spintent_spunit_luaset_read_str }
-                          {
-                            \mathord
-                              {
-                                \str_case:Vn \l__spintent_spunit_luaset_canonical_str
-                                  {
-                                    { ″ } { \prime \! \prime }
-                                    { ′ } { \prime           }
-                                    { ° } { °                }
-                                  }
-                              }
-                          }
-                      }
-                      {
-                        \tl_if_empty:NF \l__spintent_luaset_part_int_tl
-                          {
-                            \__spintent_spnum_print_number_core: \,
-                          }
-                        \__spintent_print_spunit_hierarchy:
-                      }
+                    \__spintent_spunit_mathml:
                   }
                   { \msg_error:nnn { spintent } { spunit-invalid-unit } {#1} }
               }
           }
           { \msg_error:nnn { spintent } { spunit-invalid-unit } {#1} }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spunit_mathml:
+  {
+    \str_if_eq:VnTF \l__spintent_spunit_luaset_above_sexa_str { true }
+      {
+        \__spintent_spunit_load_term:nn { above } { 1 }
+        \tl_if_empty:NF \l__spintent_luaset_part_int_tl
+          {
+            \__spintent_spnum_mathml:
+          }
+        \bool_lazy_and:nnT
+          { \str_if_eq_p:ee { \l__spintent_luaset_part_int_tl } { 1 } }
+          { \tl_if_empty_p:N \l__spintent_luaset_part_dec_tl }
+          {
+            \str_set:Ne \l__spintent_spunit_luaset_read_str
+              {
+                \str_case:Vn \l__spintent_spunit_luaset_canonical_str
+                  {
+                    { ° } { _grado:unit   }
+                    { ′ } { _minuto:unit  }
+                    { ″ } { _segundo:unit }
+                  }
+              }
+          }
+        \MathMLintent { \l__spintent_spunit_luaset_read_str }
+          {
+            \mathord
+              {
+                \str_case:Vn \l__spintent_spunit_luaset_canonical_str
+                  {
+                    { ″ } { \prime \! \prime }
+                    { ′ } { \prime           }
+                    { ° } { °                }
+                  }
+              }
+          }
+      }
+      {
+        \tl_if_empty:NF \l__spintent_luaset_part_int_tl
+          {
+            \__spintent_spnum_mathml: \,
+          }
+        \__spintent_print_spunit_hierarchy:
       }
   }
 \NewDocumentCommand \spunit { O{} m }
@@ -804,7 +808,7 @@
         \group_begin:
           \keys_set:nn { spintent / spunit } {#1}
           \__spintent_luafun_clean_split_and_set:n { \exp_not:n {#2} }
-          \__spintent_spunit_safe_exec:n {#2}
+          \__spintent_spunit_exec:n {#2}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spunit } }
@@ -985,7 +989,7 @@
   {
     \__spintent_spnum_render_int:
   }
-\cs_new_protected:Nn \__spintent_spmoney_print_int:
+\cs_new_protected:Nn \__spintent_spmoney_mathml:
   {
     \tl_if_empty:NTF \l__spintent_luaset_sign_tl
       {
@@ -1159,7 +1163,7 @@
     \__spintent_spmoney_validate_money:
     \bool_if:NT \l__spintent_spmoney_sub_units_bool
       { \__spintent_spmoney_check_sub_units: }
-    \__spintent_spmoney_print_int:
+    \__spintent_spmoney_mathml:
   }
 \NewDocumentCommand \spmoney { O{} m }
   {
@@ -1218,13 +1222,13 @@
     \keys_set:nn { spintent / spshort } {#1}
     \str_if_empty:NTF \l__spintent_spshort_read_arg_str
       {
-        \__spintent_spshort_process_and_render:n {#2}
+        \__spintent_spshort_exec:n {#2}
       }
       {
         \__spintent_spshort_render_bypass:n {#2}
       }
   }
-\cs_new_protected:Nn \__spintent_spshort_process_and_render:n
+\cs_new_protected:Nn \__spintent_spshort_exec:n
   {
     \__spintent_luafun_spshort_process:n {#1}
     \str_case:VnF \l__spintent_spshort_luaset_status_str
@@ -1399,57 +1403,57 @@
     \tag_mc_begin_pop:n {}
   }
 \cs_generate_variant:Nn \__spintent_spsiglo_tag_span:nn { en }
-\cs_new_protected:Nn \__spintent_spsiglo_print_math:n
+\cs_new_protected:Nn \__spintent_spsiglo_exec:n
   {
+    \mode_if_math:F { \mode_leave_vertical: }
     \str_if_eq:VnTF \l__spintent_spsiglo_luaset_error_str { true }
       {
         \msg_error:nnnn { spintent } { spsiglo-invalid-arg }
           { \spsiglo } {#1}
       }
       {
-        \str_if_eq:VnTF \l__spintent_spsiglo_print_era_str { none }
-          {
-            \__spintent_spsiglo_render_simple:VV
-              \l__spintent_spsiglo_luaset_arabic_str
-              \l__spintent_spsiglo_luaset_roman_min_str
-          }
-          {
-            \__spintent_spsiglo_render_with_era:VVV
-              \l__spintent_spsiglo_print_era_str
-              \l__spintent_spsiglo_luaset_arabic_str
-              \l__spintent_spsiglo_luaset_roman_min_str
-          }
+        \mode_if_math:TF
+          { \__spintent_spsiglo_mathml: }
+          { \__spintent_spsiglo_text: }
       }
   }
-\cs_new_protected:Nn \__spintent_spsiglo_print_text:n
+\cs_new_protected:Nn \__spintent_spsiglo_mathml:
   {
-    \str_if_eq:VnTF \l__spintent_spsiglo_luaset_error_str { true }
+    \str_if_eq:VnTF \l__spintent_spsiglo_print_era_str { none }
       {
-        \msg_error:nnnn { spintent } { spsiglo-invalid-arg }
-          { \spsiglo } {#1}
+        \__spintent_spsiglo_render_simple:VV
+          \l__spintent_spsiglo_luaset_arabic_str
+          \l__spintent_spsiglo_luaset_roman_min_str
       }
       {
-         \str_case:Vn \l__spintent_spsiglo_print_era_str
-          {
-            { none }
-            {
-              \__spintent_spsiglo_tag_span:en
-                { \l__spintent_spsiglo_luaset_arabic_str }
-                { \textsc { \l__spintent_spsiglo_luaset_roman_min_str } }
-            }
-            { ac }
-            {
-              \__spintent_spsiglo_tag_span:en
-                { \l__spintent_spsiglo_luaset_arabic_str ~ antes ~ de ~ cristo }
-                { \textsc { \l__spintent_spsiglo_luaset_roman_min_str } ~ a.~C. }
-            }
-            { dc }
-            {
-              \__spintent_spsiglo_tag_span:en
-                { \l__spintent_spsiglo_luaset_arabic_str ~ después ~ de ~ cristo }
-                { \textsc { \l__spintent_spsiglo_luaset_roman_min_str } ~ d.~C. }
-            }
-          }
+        \__spintent_spsiglo_render_with_era:VVV
+          \l__spintent_spsiglo_print_era_str
+          \l__spintent_spsiglo_luaset_arabic_str
+          \l__spintent_spsiglo_luaset_roman_min_str
+      }
+  }
+\cs_new_protected:Nn \__spintent_spsiglo_text:
+  {
+    \str_case:Vn \l__spintent_spsiglo_print_era_str
+      {
+        { none }
+        {
+          \__spintent_spsiglo_tag_span:en
+            { \l__spintent_spsiglo_luaset_arabic_str }
+            { \textsc { \l__spintent_spsiglo_luaset_roman_min_str } }
+        }
+        { ac }
+        {
+          \__spintent_spsiglo_tag_span:en
+            { \l__spintent_spsiglo_luaset_arabic_str ~ antes ~ de ~ cristo }
+            { \textsc { \l__spintent_spsiglo_luaset_roman_min_str } ~ a.~C. }
+        }
+        { dc }
+        {
+          \__spintent_spsiglo_tag_span:en
+            { \l__spintent_spsiglo_luaset_arabic_str ~ después ~ de ~ cristo }
+            { \textsc { \l__spintent_spsiglo_luaset_roman_min_str } ~ d.~C. }
+        }
       }
   }
 \NewDocumentCommand \spsiglo { O{} m }
@@ -1457,12 +1461,7 @@
     \group_begin:
       \keys_set:nn { spintent / spsiglo } {#1}
       \__spintent_luafun_spsiglo_parse:n {#2}
-      \mode_if_math:TF
-        { \__spintent_spsiglo_print_math:n {#2} }
-        {
-          \mode_leave_vertical:
-          \__spintent_spsiglo_print_text:n {#2}
-        }
+      \__spintent_spsiglo_exec:n {#2}
     \group_end:
   }
 \str_new:N \l__spintent_sptime_luaset_seconds_str
@@ -1496,7 +1495,7 @@
           }
       }
   }
-\cs_new_protected:Nn \__spintent_sptime_build_tree:
+\cs_new_protected:Nn \__spintent_sptime_mathml:
   {
     \str_if_eq:VnTF \l__spintent_sptime_luaset_has_seconds_str { true }
       {
@@ -1540,7 +1539,7 @@
                  { \sptime } {#1}
             }
             {
-               \__spintent_sptime_build_tree:
+               \__spintent_sptime_mathml:
             }
         \group_end:
       }
@@ -1556,7 +1555,7 @@
     Use~'DD/MM/YYYY',~'DD-MM-YYYY'~or~'YYYY-MM-DD',~with~a~valid~day~
     and~month.
   }
-\cs_new_protected:Nn \__spintent_spdate_process:n
+\cs_new_protected:Nn \__spintent_spdate_exec:n
   {
     \__spintent_luafun_spdate_parse:n {#1}
     \str_if_eq:VnTF \l__spintent_spdate_luaset_error_str { true }
@@ -1564,11 +1563,13 @@
         \msg_error:nnnn { spintent } { spdate-invalid-arg }
           { \spdate } {#1}
       }
+      { \__spintent_spdate_mathml: }
+  }
+\cs_new_protected:Nn \__spintent_spdate_mathml:
+  {
+    \MathMLintent { :date }
       {
-        \MathMLintent { :date }
-          {
-            \text { \l__spintent_spdate_luaset_output_str }
-          }
+        \text { \l__spintent_spdate_luaset_output_str }
       }
   }
 \NewDocumentCommand \spdate { m }
@@ -1576,7 +1577,7 @@
     \mode_if_math:TF
       {
         \group_begin:
-          \__spintent_spdate_process:n {#1}
+          \__spintent_spdate_exec:n {#1}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spdate } }
@@ -1647,7 +1648,7 @@
         \__spintent_unknown_keys_cmd:n {#1}
       },
   }
-\cs_new_protected:Nn \__spintent_spusep_set_parens:nn
+\cs_new_protected:Nn \__spintent_spusep_mathml:nn
   {
     \tl_put_right:cn { l__spintent_spusep_ #1 _tl } {#2}
     \bool_if:NTF \l__spintent_spusep_silent_bool
@@ -1658,7 +1659,7 @@
         \tl_use:c { l__spintent_spusep_ #1 _tl }
       }
   }
-\cs_new_protected:Nn \__spintent_spusep_convert:n
+\cs_new_protected:Nn \__spintent_spusep_exec:n
   {
     \tl_set:Ne \l__spintent_spusep_arg_tl { \tl_trim_spaces:n {#1} }
     \tl_if_empty:NT \l__spintent_spusep_arg_tl
@@ -1669,27 +1670,27 @@
       {
         { (  }
           {
-            \__spintent_spusep_set_parens:nn { left } { \lparen }
+            \__spintent_spusep_mathml:nn { left } { \lparen }
           }
         { )  }
           {
-            \__spintent_spusep_set_parens:nn { right } { \rparen }
+            \__spintent_spusep_mathml:nn { right } { \rparen }
           }
         { [  }
           {
-            \__spintent_spusep_set_parens:nn { left } { \lbrack }
+            \__spintent_spusep_mathml:nn { left } { \lbrack }
           }
         { ]  }
           {
-            \__spintent_spusep_set_parens:nn { right } { \rbrack }
+            \__spintent_spusep_mathml:nn { right } { \rbrack }
           }
         { \{ }
           {
-            \__spintent_spusep_set_parens:nn { left } { \lbrace }
+            \__spintent_spusep_mathml:nn { left } { \lbrace }
           }
         { \} }
           {
-            \__spintent_spusep_set_parens:nn { right } { \rbrace }
+            \__spintent_spusep_mathml:nn { right } { \rbrace }
           }
       }
       {
@@ -1703,7 +1704,7 @@
       {
         \group_begin:
           \keys_set:nn { spintent / spusep } {#1}
-          \__spintent_spusep_convert:n {#2}
+          \__spintent_spusep_exec:n {#2}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spusep } }
@@ -1764,31 +1765,31 @@
     \tl_if_blank:nTF {#2}
       { \msg_error:nn { spintent } { spread-empty-sym } }
       {
-        \__spintent_invisible_sep:
         \bool_if:NTF \l__spintent_spread_silent_bool
-          {
-            \MathMLintent { _- } { \__spintent_inner_sep: #2 }
-          }
+          { \__spintent_spread_mathml:nn {#2} { - } }
           {
             \tl_if_empty:NTF \l__spintent_spread_read_arg_tl
               {
                 \__spintent_luafun_spread_lookup:n { \exp_not:n {#2} }
                 \str_if_eq:VnTF \l__spintent_spread_luaset_status_str { found }
                   {
-                    \MathMLintent { _\l__spintent_spread_luaset_reading_str }
-                      { \__spintent_inner_sep: #2 }
+                    \__spintent_spread_mathml:nV {#2}
+                      \l__spintent_spread_luaset_reading_str
                   }
                   {
                     \msg_error:nne { spintent } { spread-unknown-sym } { \exp_not:n {#2} }
                   }
               }
-              {
-                \MathMLintent { _\l__spintent_spread_read_arg_tl }
-                  { \__spintent_inner_sep: #2 }
-              }
+              { \__spintent_spread_mathml:nV {#2} \l__spintent_spread_read_arg_tl }
           }
       }
   }
+\cs_new_protected:Nn \__spintent_spread_mathml:nn
+  {
+    \__spintent_invisible_sep:
+    \MathMLintent { _#2 } { \__spintent_inner_sep: #1 }
+  }
+\cs_generate_variant:Nn \__spintent_spread_mathml:nn { nV }
 \NewDocumentCommand \spread { O{} m }
   {
     \mode_if_math:TF
@@ -1871,22 +1872,26 @@
         \__spintent_unknown_keys_cmd:n {#1}
       },
   }
+\cs_new_protected:Nn \__spintent_spdsym_mathml:
+  {
+    \MathMLintent
+      {
+        _
+        \tl_if_empty:NF \l__spintent_spdsym_prefix_tl
+          { \l__spintent_spdsym_prefix_tl - }
+        \l__spintent_spdsym_read_sym_tl
+        \tl_if_empty:NF \l__spintent_spdsym_suffix_tl
+          { - \l__spintent_spdsym_suffix_tl }
+      }
+      { \l__spintent_spdsym_symbol_tl }
+  }
 \NewDocumentCommand \spdsym { O{} }
   {
     \mode_if_math:TF
       {
         \group_begin:
           \keys_set:nn { spintent / spdsym } {#1}
-          \MathMLintent
-            {
-              _
-              \tl_if_empty:NF \l__spintent_spdsym_prefix_tl
-                { \l__spintent_spdsym_prefix_tl - }
-              \l__spintent_spdsym_read_sym_tl
-              \tl_if_empty:NF \l__spintent_spdsym_suffix_tl
-                { - \l__spintent_spdsym_suffix_tl }
-            }
-            { \l__spintent_spdsym_symbol_tl }
+          \__spintent_spdsym_mathml:
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spdsym } }
@@ -1944,28 +1949,32 @@
         \__spintent_unknown_keys_cmd:n {#1}
       },
   }
+\cs_new_protected:Nn \__spintent_spmsym_mathml:
+  {
+    \MathMLintent
+      {
+        _
+        \tl_if_empty:NF \l__spintent_spmsym_prefix_tl
+          { \l__spintent_spmsym_prefix_tl - }
+        \l__spintent_spmsym_read_sym_tl
+        \tl_if_empty:NF \l__spintent_spmsym_suffix_tl
+          { - \l__spintent_spmsym_suffix_tl }
+      }
+      {
+        \bool_if:NTF \l__spintent_spmsym_print_sym_bool
+          { \l__spintent_spmsym_symbol_tl }
+          {
+            \mathopen { \c__spintent_invisible_sep_int }
+          }
+      }
+  }
 \NewDocumentCommand \spmsym { O{} }
   {
     \mode_if_math:TF
       {
         \group_begin:
           \keys_set:nn { spintent / spmsym } {#1}
-          \MathMLintent
-            {
-              _
-              \tl_if_empty:NF \l__spintent_spmsym_prefix_tl
-                { \l__spintent_spmsym_prefix_tl - }
-              \l__spintent_spmsym_read_sym_tl
-              \tl_if_empty:NF \l__spintent_spmsym_suffix_tl
-                { - \l__spintent_spmsym_suffix_tl }
-            }
-            {
-              \bool_if:NTF \l__spintent_spmsym_print_sym_bool
-                { \l__spintent_spmsym_symbol_tl }
-                {
-                  \mathopen { \c__spintent_invisible_sep_int }
-                }
-            }
+          \__spintent_spmsym_mathml:
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spmsym } }
@@ -2006,19 +2015,23 @@
       }
     \spnum {#2}
   }
-\cs_new_protected:Nn \__spintent_spdiv_render_parens:nn
+\cs_new_protected:Nn \__spintent_spdiv_mathml:nn
   {
-    \bool_if:NTF \l__spintent_spdiv_read_parens_bool
+    \bool_if:NTF \l__spintent_spdiv_wrap_parens_bool
       {
-        ( \__spintent_spdiv_render_op:nn {#1} {#2} )
+        \bool_if:NTF \l__spintent_spdiv_read_parens_bool
+          {
+            ( \__spintent_spdiv_render_op:nn {#1} {#2} )
+          }
+          {
+            \MathMLintent { :silent } { ( }
+            \__spintent_spdiv_render_op:nn {#1} {#2}
+            \MathMLintent { :silent } { ) }
+          }
       }
-      {
-        \MathMLintent { :silent } { ( }
-        \__spintent_spdiv_render_op:nn {#1} {#2}
-        \MathMLintent { :silent } { ) }
-      }
+      { \__spintent_spdiv_render_op:nn {#1} {#2} }
   }
-\cs_new_protected:Nn \__spintent_spdiv_process:nnn
+\cs_new_protected:Nn \__spintent_spdiv_exec:nnn
   {
     \keys_set:nn { spintent / spdiv } {#1}
     \tl_if_blank:nTF {#2}
@@ -2027,9 +2040,7 @@
         \tl_if_blank:nTF {#3}
           { \msg_error:nn { spintent } { spdiv-empty-arg } }
           {
-            \bool_if:NTF \l__spintent_spdiv_wrap_parens_bool
-              { \__spintent_spdiv_render_parens:nn {#2} {#3} }
-              { \__spintent_spdiv_render_op:nn {#2} {#3} }
+            \__spintent_spdiv_mathml:nn {#2} {#3}
           }
       }
   }
@@ -2038,7 +2049,7 @@
     \mode_if_math:TF
       {
         \group_begin:
-          \__spintent_spdiv_process:nnn {#1} {#2} {#3}
+          \__spintent_spdiv_exec:nnn {#1} {#2} {#3}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spdiv } }
@@ -2079,19 +2090,23 @@
       }
     \spnum {#2}
   }
-\cs_new_protected:Nn \__spintent_spmul_render_parens:nn
+\cs_new_protected:Nn \__spintent_spmul_mathml:nn
   {
-    \bool_if:NTF \l__spintent_spmul_read_parens_bool
+    \bool_if:NTF \l__spintent_spmul_wrap_parens_bool
       {
-        ( \__spintent_spmul_render_op:nn {#1} {#2} )
+        \bool_if:NTF \l__spintent_spmul_read_parens_bool
+          {
+            ( \__spintent_spmul_render_op:nn {#1} {#2} )
+          }
+          {
+            \MathMLintent { :silent } { ( }
+            \__spintent_spmul_render_op:nn {#1} {#2}
+            \MathMLintent { :silent } { ) }
+          }
       }
-      {
-        \MathMLintent { :silent } { ( }
-        \__spintent_spmul_render_op:nn {#1} {#2}
-        \MathMLintent { :silent } { ) }
-      }
+      { \__spintent_spmul_render_op:nn {#1} {#2} }
   }
-\cs_new_protected:Nn \__spintent_spmul_process:nnn
+\cs_new_protected:Nn \__spintent_spmul_exec:nnn
   {
     \keys_set:nn { spintent / spmul } {#1}
     \tl_if_blank:nTF {#2}
@@ -2100,9 +2115,7 @@
         \tl_if_blank:nTF {#3}
           { \msg_error:nn { spintent } { spmul-empty-arg } }
           {
-            \bool_if:NTF \l__spintent_spmul_wrap_parens_bool
-              { \__spintent_spmul_render_parens:nn {#2} {#3} }
-              { \__spintent_spmul_render_op:nn {#2} {#3} }
+            \__spintent_spmul_mathml:nn {#2} {#3}
           }
       }
   }
@@ -2111,7 +2124,7 @@
     \mode_if_math:TF
       {
         \group_begin:
-          \__spintent_spmul_process:nnn {#1} {#2} {#3}
+          \__spintent_spmul_exec:nnn {#1} {#2} {#3}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spmul } }
@@ -2187,6 +2200,10 @@
           }
           { \seq_put_right:Nn \l__spintent_mc_args_seq {##1} }
       }
+    \__spintent_mc_mathml_args:n {#1}
+  }
+\cs_new_protected:Nn \__spintent_mc_mathml_args:n
+  {
     \bool_if:cTF { l__spintent_sp #1 _silent_bool }
       {
         \seq_set_map:NNn \l__spintent_mc_args_seq \l__spintent_mc_args_seq
@@ -2228,9 +2245,30 @@
       }
     \MathMLintent { :silent } { ) }
   }
-\cs_new_protected:Nn \__spintent_spmc_process:nnnn
+\cs_new_protected:Nn \__spintent_spmc_exec:nnnn
   {
     \keys_set:nn { spintent / sp #1 } {#3}
+    \__spintent_spmc_mathml:nn {#1} {#2}
+    \tl_if_novalue:nF {#4}
+      {
+        \seq_set_from_clist:Nn \l__spintent_mc_raw_args_seq {#4}
+        \int_compare:nNnTF { \seq_count:N \l__spintent_mc_raw_args_seq } < { 2 }
+          {
+            \msg_error:nne { spintent } { mc-too-few-args } { \exp_not:c { sp #1 } }
+          }
+          {
+            \__spintent_luafun_mc_classify_args:n {#4}
+            \str_if_eq:VnT \l__spintent_mc_luaset_all_numeric_str { true }
+              {
+                \use:c { __spintent_luafun_calculate_ #1 :n } {#4}
+              }
+            \__spintent_mc_process_args:nn {#1} {#4}
+            \__spintent_spmc_result_mathml:n {#1}
+          }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spmc_mathml:nn
+  {
     \bool_if:cTF { l__spintent_sp #1 _silent_bool }
       {
         \MathMLintent { :silent }
@@ -2274,38 +2312,25 @@
               }
           }
       }
-    \tl_if_novalue:nF {#4}
+  }
+\cs_new_protected:Nn \__spintent_spmc_result_mathml:n
+  {
+    \str_if_eq:VnT \l__spintent_mc_luaset_all_numeric_str { true }
       {
-        \seq_set_from_clist:Nn \l__spintent_mc_raw_args_seq {#4}
-        \int_compare:nNnTF { \seq_count:N \l__spintent_mc_raw_args_seq } < { 2 }
+        \bool_if:cT { l__spintent_sp #1 _print_result_bool }
           {
-            \msg_error:nne { spintent } { mc-too-few-args } { \exp_not:c { sp #1 } }
-          }
-          {
-            \__spintent_luafun_mc_classify_args:n {#4}
-            \str_if_eq:VnT \l__spintent_mc_luaset_all_numeric_str { true }
+            \bool_if:cTF { l__spintent_sp #1 _silent_bool }
               {
-                \use:c { __spintent_luafun_calculate_ #1 :n } {#4}
-              }
-            \__spintent_mc_process_args:nn {#1} {#4}
-            \str_if_eq:VnT \l__spintent_mc_luaset_all_numeric_str { true }
-              {
-                \bool_if:cT { l__spintent_sp #1 _print_result_bool }
+                \MathMLintent { :silent } { = }
+                \MathMLintent { _- }
                   {
-                    \bool_if:cTF { l__spintent_sp #1 _silent_bool }
-                      {
-                        \MathMLintent { :silent } { = }
-                        \MathMLintent { _- }
-                          {
-                            \__spintent_inner_sep:
-                            \tl_use:c { l__spintent_sp #1 _luaset_ #1 _value_tl }
-                          }
-                      }
-                      {
-                        \MathMLintent { _es-igual-a } { = }
-                        \tl_use:c { l__spintent_sp #1 _luaset_ #1 _value_tl }
-                      }
+                    \__spintent_inner_sep:
+                    \tl_use:c { l__spintent_sp #1 _luaset_ #1 _value_tl }
                   }
+              }
+              {
+                \MathMLintent { _es-igual-a } { = }
+                \tl_use:c { l__spintent_sp #1 _luaset_ #1 _value_tl }
               }
           }
       }
@@ -2315,7 +2340,7 @@
     \mode_if_math:TF
       {
         \group_begin:
-          \__spintent_spmc_process:nnnn { mcd } { máximo-común-divisor } {#1} {#2}
+          \__spintent_spmc_exec:nnnn { mcd } { máximo-común-divisor } {#1} {#2}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spmcd } }
@@ -2325,7 +2350,7 @@
     \mode_if_math:TF
       {
         \group_begin:
-          \__spintent_spmc_process:nnnn { mcm } { mínimo-común-múltiplo } {#1} {#2}
+          \__spintent_spmc_exec:nnnn { mcm } { mínimo-común-múltiplo } {#1} {#2}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spmcm } }
@@ -2379,11 +2404,6 @@
             \__spintent_unknown_keys_cmd:n {##1}
           },
       }
-  }
-\cs_new_protected:Nn \__spintent_spnM_spnD_process:nnnnn
-  {
-    \keys_set:nn { spintent / sp #1 } {#4}
-    \__spintent_spnM_spnD_exec:nnnn {#1} {#2} {#3} {#5}
   }
 \cs_new:Nn \__spintent_spnM_spnD_intent:nn
   {
@@ -2440,7 +2460,18 @@
         \MathMLintent { :silent } { \} }
       }
   }
-\cs_new_protected:Nn \__spintent_spnM_spnD_exec:nnnn
+\cs_new_protected:Nn \__spintent_spnM_spnD_exec:nnnnn
+  {
+    \keys_set:nn { spintent / sp #1 } {#4}
+    \tl_if_novalue:nF {#5}
+      {
+        \__spintent_luafun_spnmd_classify:n { \exp_not:n {#5} }
+        \str_if_eq:VnT \l__spintent_spnM_spnD_luaset_error_str { true }
+          { \msg_error:nne { spintent } { md-invalid-arg } { \exp_not:c { sp #1 } } }
+      }
+    \__spintent_spnM_spnD_mathml:nnnn {#1} {#2} {#3} {#5}
+  }
+\cs_new_protected:Nn \__spintent_spnM_spnD_mathml:nnnn
   {
     \tl_if_novalue:nTF {#4}
       {
@@ -2462,9 +2493,6 @@
           }
       }
       {
-        \__spintent_luafun_spnmd_classify:n { \exp_not:n {#4} }
-        \str_if_eq:VnT \l__spintent_spnM_spnD_luaset_error_str { true }
-          { \msg_error:nne { spintent } { md-invalid-arg } { \exp_not:c { sp #1 } } }
         \bool_if:cTF { l__spintent_sp #1 _silent_bool }
           {
             \str_if_eq:VnTF \l__spintent_spnmd_luaset_is_number_str { true }
@@ -2513,7 +2541,7 @@
     \mode_if_math:TF
       {
         \group_begin:
-          \__spintent_spnM_spnD_process:nnnnn { nM } { M } { multiplos } {#1} {#2}
+          \__spintent_spnM_spnD_exec:nnnnn { nM } { M } { multiplos } {#1} {#2}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spnM } }
@@ -2523,7 +2551,7 @@
     \mode_if_math:TF
       {
         \group_begin:
-          \__spintent_spnM_spnD_process:nnnnn { nD } { D } { divisores } {#1} {#2}
+          \__spintent_spnM_spnD_exec:nnnnn { nD } { D } { divisores } {#1} {#2}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spnD } }
@@ -2550,6 +2578,10 @@
 \cs_new_protected:Nn \__spintent_sprazon_exec:nnn
   {
     \keys_set:nn { spintent / sprazon } {#1}
+    \__spintent_sprazon_mathml:nn {#2} {#3}
+  }
+\cs_new_protected:Nn \__spintent_sprazon_mathml:nn
+  {
     \__spintent_invisible_sep:
     \bool_if:NTF \l__spintent_sprazon_silent_bool
       {
@@ -2557,11 +2589,11 @@
           {
             \__spintent_inner_sep:
             \bool_if:NTF \l__spintent_sprazon_inline_bool
-              { #2 : #3 }
+              { #1 : #2 }
               {
                 \bool_if:NTF \l__spintent_sprazon_use_dfrac_bool
-                  { \dfrac {#2} {#3} }
-                  { \frac  {#2} {#3} }
+                  { \dfrac {#1} {#2} }
+                  { \frac  {#1} {#2} }
               }
           }
       }
@@ -2570,9 +2602,9 @@
           {
             \MathMLintent { _es-a:infix($num,$denom) }
               {
-                \MathMLarg { num } {#2}
+                \MathMLarg { num } {#1}
                 :
-                \MathMLarg { denom } {#3}
+                \MathMLarg { denom } {#2}
               }
           }
           {
@@ -2581,9 +2613,9 @@
                 \__spintent_inner_sep:
                 \bool_if:NTF \l__spintent_sprazon_use_dfrac_bool
                   {
-                    \dfrac { \MathMLarg { num } {#2} } { \MathMLarg { denom } {#3} }
+                    \dfrac { \MathMLarg { num } {#1} } { \MathMLarg { denom } {#2} }
                   }
-                  { \frac  { \MathMLarg { num } {#2} } { \MathMLarg { denom } {#3} } }
+                  { \frac  { \MathMLarg { num } {#1} } { \MathMLarg { denom } {#2} } }
               }
           }
       }
@@ -2627,7 +2659,7 @@
     The~argument~must~have~the~form~'degrees',~'degrees:minutes'~or~
     'degrees:minutes:seconds'.
   }
-\cs_new_protected:Nn \__spintent_spang_process:n
+\cs_new_protected:Nn \__spintent_spang_exec:n
   {
     \str_set:Nn \l__spintent_spang_luaset_error_str { false }
     \__spintent_luafun_spang_parse:n {#1}
@@ -2635,29 +2667,31 @@
       {
         \msg_error:nnnn { spintent } { spang-invalid-arg } { \spang } {#1}
       }
+      { \__spintent_spang_mathml: }
+  }
+\cs_new_protected:Nn \__spintent_spang_mathml:
+  {
+    \str_if_empty:NF \l__spintent_spang_luaset_grado_str
       {
-        \str_if_empty:NF \l__spintent_spang_luaset_grado_str
+        \exp_args:Ne \spunit { \l__spintent_spang_luaset_grado_str ° }
+      }
+    \str_if_empty:NF \l__spintent_spang_luaset_minuto_str
+      {
+        \MathMLintent { _minutos:postfix($m) }
           {
-            \exp_args:Ne \spunit { \l__spintent_spang_luaset_grado_str ° }
-          }
-        \str_if_empty:NF \l__spintent_spang_luaset_minuto_str
-          {
-            \MathMLintent { _minutos:postfix($m) }
+            \MathMLarg { m }
               {
-                \MathMLarg { m }
-                  {
-                    \exp_args:Ne \spunit { \l__spintent_spang_luaset_minuto_str ′ }
-                  }
+                \exp_args:Ne \spunit { \l__spintent_spang_luaset_minuto_str ′ }
               }
           }
-        \str_if_empty:NF \l__spintent_spang_luaset_segundo_str
+      }
+    \str_if_empty:NF \l__spintent_spang_luaset_segundo_str
+      {
+        \MathMLintent { _segundos:postfix($s) }
           {
-            \MathMLintent { _segundos:postfix($s) }
+            \MathMLarg { s }
               {
-                \MathMLarg { s }
-                  {
-                    \exp_args:Ne \spunit { \l__spintent_spang_luaset_segundo_str ″ }
-                  }
+                \exp_args:Ne \spunit { \l__spintent_spang_luaset_segundo_str ″ }
               }
           }
       }
@@ -2667,7 +2701,7 @@
     \mode_if_math:TF
       {
         \group_begin:
-          \__spintent_spang_process:n {#1}
+          \__spintent_spang_exec:n {#1}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spang } }
@@ -2695,28 +2729,28 @@
         \__spintent_unknown_keys_cmd:n {#1}
       },
   }
-\cs_new_protected:Nn \__spintent_spnz_render_parens:
+\cs_new_protected:Nn \__spintent_spnz_mathml:
   {
-    \bool_if:NTF \l__spintent_spnz_read_parens_bool
+    \bool_if:NTF \l__spintent_spnz_wrap_parens_bool
       {
-        ( \__spintent_spnum_print_num_start: )
+        \bool_if:NTF \l__spintent_spnz_read_parens_bool
+          {
+            ( \__spintent_spnum_print_num_start: )
+          }
+          {
+            \MathMLintent { :silent } { ( }
+            \__spintent_spnum_print_num_start:
+            \MathMLintent { :silent } { ) }
+          }
       }
-      {
-        \MathMLintent { :silent } { ( }
-        \__spintent_spnum_print_num_start:
-        \MathMLintent { :silent } { ) }
-      }
+      { \__spintent_spnum_print_num_start: }
   }
-\cs_new_protected:Nn \__spintent_spnz_process:nn
+\cs_new_protected:Nn \__spintent_spnz_exec:nn
   {
     \keys_set:nn { spintent / spnZ } {#1}
     \__spintent_luafun_clean_split_and_set:n { \exp_not:n {#2} }
     \str_if_eq:VnTF \l__spintent_luaset_has_integer_str { true }
-      {
-        \bool_if:NTF \l__spintent_spnz_wrap_parens_bool
-          { \__spintent_spnz_render_parens: }
-          { \__spintent_spnum_print_num_start: }
-      }
+      { \__spintent_spnz_mathml: }
       { \msg_error:nnn { spintent } { spnZ-not-integer } {#2} }
   }
 \NewDocumentCommand \spnZ { O{} m }
@@ -2724,7 +2758,7 @@
     \mode_if_math:TF
       {
         \group_begin:
-          \__spintent_spnz_process:nn {#1} {#2}
+          \__spintent_spnz_exec:nn {#1} {#2}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spnZ } }
@@ -2959,18 +2993,20 @@
     \__spintent_spmQ_check_part:nn { num } {#3}
     \__spintent_spmQ_check_part:nn { den } {#4}
     \bool_if:NF \l__spintent_spmQ_error_bool
+      { \__spintent_spmQ_mathml:nnn {#2} {#3} {#4} }
+  }
+\cs_new_protected:Nn \__spintent_spmQ_mathml:nnn
+  {
+    \bool_if:NTF \l__spintent_spmQ_silent_bool
       {
-        \bool_if:NTF \l__spintent_spmQ_silent_bool
+        \__spintent_invisible_sep:
+        \MathMLintent { _- }
           {
-            \__spintent_invisible_sep:
-            \MathMLintent { _- }
-              {
-                \__spintent_inner_sep:
-                \__spintent_spmQ_print:nnn {#2} {#3} {#4}
-              }
+            \__spintent_inner_sep:
+            \__spintent_spmQ_print:nnn {#1} {#2} {#3}
           }
-          { \__spintent_spmQ_print:nnn {#2} {#3} {#4} }
       }
+      { \__spintent_spmQ_print:nnn {#1} {#2} {#3} }
   }
 \NewDocumentCommand \spmQ { O{} m m m }
   {
@@ -4461,12 +4497,13 @@
         \__spintent_unknown_keys_cmd:n {#1}
       },
   }
-\cs_new_protected:Nn \__spintent_spPoint_print:n
+\cs_new_protected:Nn \__spintent_spPoint_exec:nnn
   {
-    \__spintent_luafun_geo_point_parse_and_set:n { \exp_not:n {#1} }
+    \keys_set:nn { spintent / spPoint } {#1}
+    \__spintent_luafun_geo_point_parse_and_set:n { \exp_not:n {#2} }
     \str_if_eq:VnT \l__spintent_geo_luaset_error_str { true }
       {
-        \msg_error:nne { spintent } { spPoint-invalid-point } { \exp_not:n {#1} }
+        \msg_error:nne { spintent } { spPoint-invalid-point } { \exp_not:n {#2} }
       }
     \bool_if:nTF
       {
@@ -4492,21 +4529,7 @@
             punto:prefix($pt)
           }
       }
-    \__spintent_spPoint_mathml:n {#1}
-  }
-\cs_new_protected:Nn \__spintent_spPoint_mathml:n
-  {
-    \__spintent_invisible_sep:
-    \MathMLintent { \l__spintent_spPoint_intent_arg_tl }
-      {
-        \__spintent_inner_sep:
-        \__spintent_mathmlarg_point:nnn { pt } { spPoint } {#1}
-      }
-  }
-\cs_new_protected:Nn \__spintent_spPoint_exec:nnn
-  {
-    \keys_set:nn { spintent / spPoint } {#1}
-    \__spintent_spPoint_print:n {#2}
+    \__spintent_spPoint_mathml:n {#2}
     \tl_if_novalue:nF {#3}
       {
         \MathMLintent { :silent } { \c__spintent_invisible_sep_int } % silencia el "por"
@@ -4519,6 +4542,15 @@
         \__spintent_spcoord_set_wrap_parens_size:
         \str_if_eq:VnF \l__spintent_spcoord_luaset_error_str { true }
           { \__spintent_spcoord_mathml: }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spPoint_mathml:n
+  {
+    \__spintent_invisible_sep:
+    \MathMLintent { \l__spintent_spPoint_intent_arg_tl }
+      {
+        \__spintent_inner_sep:
+        \__spintent_mathmlarg_point:nnn { pt } { spPoint } {#1}
       }
   }
 \NewDocumentCommand \spPoint { O{} m d() }
@@ -4580,9 +4612,10 @@
         \__spintent_unknown_keys_cmd:n {#1}
       },
   }
-\cs_new_protected:Nn \__spintent_spvec_print:n
+\cs_new_protected:Nn \__spintent_spvec_exec:nnn
   {
-    \__spintent_luafun_geo_parse_and_set:n { \exp_not:n {#1} }
+    \keys_set:nn { spintent / spvec } {#1}
+    \__spintent_luafun_geo_parse_and_set:n { \exp_not:n {#2} }
     \str_if_eq:VnT \l__spintent_geo_luaset_is_name_str { true }
       {
         \str_if_eq:VnT \l__spintent_geo_luaset_tipo_str { prima }
@@ -4594,8 +4627,24 @@
           { \str_set:Nn \l__spintent_geo_luaset_error_str { true } }
       }
     \str_if_eq:VnTF \l__spintent_geo_luaset_error_str { true }
-      { \msg_error:nne { spintent } { spvec-invalid-arg } { \exp_not:n {#1} } }
-      { \__spintent_spvec_mathml:n {#1} }
+      { \msg_error:nne { spintent } { spvec-invalid-arg } { \exp_not:n {#2} } }
+      { \__spintent_spvec_mathml:n {#2} }
+    \tl_if_novalue:nF {#3}
+      {
+        \bool_if:NTF \l__spintent_spvec_silent_bool
+      { \MathMLintent { :silent } { \equal } }
+      { \equal } % notación de vector =( , )
+        % previene lectura de intervalo
+        \MathMLintent { :silent } { \c__spintent_invisible_sep_int }
+        \bool_set_eq:NN \l__spintent_spcoord_silent_bool \l__spintent_spvec_silent_bool
+        \tl_set:Nn \l__spintent_spcoord_raw_arg_tl {#3}
+        \__spintent_luafun_spcoord_parse_and_set:n { \exp_not:n {#3} }
+        \str_if_eq:VnT \l__spintent_spcoord_luaset_error_str { true }
+          { \msg_error:nne { spintent } { spcoord-invalid-arg } { \exp_not:n {#3} } }
+        \__spintent_spcoord_set_wrap_parens_size:
+        \str_if_eq:VnF \l__spintent_spcoord_luaset_error_str { true }
+          { \__spintent_spcoord_mathml: }
+      }
   }
 \cs_new_protected:Nn \__spintent_spvec_mathml:n
   {
@@ -4754,27 +4803,6 @@
           }
       }
   }
-\cs_new_protected:Nn \__spintent_spvec_exec:nnn
-  {
-    \keys_set:nn { spintent / spvec } {#1}
-    \__spintent_spvec_print:n {#2}
-    \tl_if_novalue:nF {#3}
-      {
-        \bool_if:NTF \l__spintent_spvec_silent_bool
-      { \MathMLintent { :silent } { \equal } }
-      { \equal } % notación de vector =( , )
-        % previene lectura de intervalo
-        \MathMLintent { :silent } { \c__spintent_invisible_sep_int }
-        \bool_set_eq:NN \l__spintent_spcoord_silent_bool \l__spintent_spvec_silent_bool
-        \tl_set:Nn \l__spintent_spcoord_raw_arg_tl {#3}
-        \__spintent_luafun_spcoord_parse_and_set:n { \exp_not:n {#3} }
-        \str_if_eq:VnT \l__spintent_spcoord_luaset_error_str { true }
-          { \msg_error:nne { spintent } { spcoord-invalid-arg } { \exp_not:n {#3} } }
-        \__spintent_spcoord_set_wrap_parens_size:
-        \str_if_eq:VnF \l__spintent_spcoord_luaset_error_str { true }
-          { \__spintent_spcoord_mathml: }
-      }
-  }
 \NewDocumentCommand \spvec { O{} m d() }
   {
     \mode_if_math:TF
@@ -4831,14 +4859,15 @@
         \__spintent_unknown_keys_cmd:n {#1}
       },
   }
-\cs_new_protected:Nn \__spintent_sprecta_print:n
+\cs_new_protected:Nn \__spintent_sprecta_exec:nn
   {
-    \__spintent_luafun_geo_parse_and_set:n { \exp_not:n {#1} }
+    \keys_set:nn { spintent / sprecta } {#1}
+    \__spintent_luafun_geo_parse_and_set:n { \exp_not:n {#2} }
     \str_if_eq:VnT \l__spintent_geo_luaset_error_str { true }
       {
-        \msg_error:nne { spintent } { sprecta-invalid-points } { \exp_not:n {#1} }
+        \msg_error:nne { spintent } { sprecta-invalid-points } { \exp_not:n {#2} }
       }
-    \__spintent_sprecta_mathml:n {#1}
+    \__spintent_sprecta_mathml:n {#2}
   }
 \cs_new_protected:Nn \__spintent_sprecta_mathml:n
   {
@@ -5034,11 +5063,6 @@
           }
       }
   }
-\cs_new_protected:Nn \__spintent_sprecta_exec:nn
-  {
-    \keys_set:nn { spintent / sprecta } {#1}
-    \__spintent_sprecta_print:n {#2}
-  }
 \NewDocumentCommand \sprecta { O{} m }
   {
     \mode_if_math:TF
@@ -5108,16 +5132,17 @@
 \tl_new:N  \l__spintent_sprayo_refs_tl
 \tl_new:N  \l__spintent_sprayo_intent_arg_tl
 \int_new:N \l__spintent_sprayo_pt_idx_int
-\cs_new_protected:Nn \__spintent_sprayo_print:n
+\cs_new_protected:Nn \__spintent_sprayo_exec:nn
   {
-    \__spintent_luafun_geo_parse_and_set:n { \exp_not:n {#1} }
+    \keys_set:nn { spintent / sprayo } {#1}
+    \__spintent_luafun_geo_parse_and_set:n { \exp_not:n {#2} }
     \bool_if:nT
       {
         \str_if_eq_p:Vn \l__spintent_geo_luaset_error_str { true } ||
         \str_if_eq_p:Vn \l__spintent_geo_luaset_is_name_str { true }
       }
       {
-        \msg_error:nne { spintent } { sprayo-invalid-points } { \exp_not:n {#1} }
+        \msg_error:nne { spintent } { sprayo-invalid-points } { \exp_not:n {#2} }
       }
     \__spintent_sprayo_mathml:
   }
@@ -5173,11 +5198,6 @@
               }
           }
       }
-  }
-\cs_new_protected:Nn \__spintent_sprayo_exec:nn
-  {
-    \keys_set:nn { spintent / sprayo } {#1}
-    \__spintent_sprayo_print:n {#2}
   }
 \NewDocumentCommand \sprayo { O{} m }
   {
@@ -5269,9 +5289,10 @@
 \tl_new:N  \l__spintent_spside_refs_tl
 \tl_new:N  \l__spintent_spside_intent_arg_tl
 \int_new:N \l__spintent_spside_pt_idx_int
-\cs_new_protected:Nn \__spintent_spside_process:nn
+\cs_new_protected:Nn \__spintent_spside_exec:nnn
   {
-    \__spintent_luafun_geo_parse_and_set:n { \exp_not:n {#2} }
+    \keys_set:nn { spintent / sp #1 } {#2}
+    \__spintent_luafun_geo_parse_and_set:n { \exp_not:n {#3} }
     \bool_if:nT
       {
         \str_if_eq_p:Vn \l__spintent_geo_luaset_error_str { true } ||
@@ -5279,7 +5300,7 @@
       }
       {
         \msg_error:nnee { spintent } { sp #1 -invalid-points }
-          { \c_backslash_str sp #1 } { \exp_not:n {#2} }
+          { \c_backslash_str sp #1 } { \exp_not:n {#3} }
       }
     \tl_if_empty:cTF { l__spintent_sp #1 _read_arg_tl }
       {
@@ -5382,11 +5403,6 @@
           { sp #1 }
           { ##1 }
       }
-  }
-\cs_new_protected:Nn \__spintent_spside_exec:nnn
-  {
-    \keys_set:nn { spintent / sp #1 } {#2}
-    \__spintent_spside_process:nn {#1} {#3}
   }
 \NewDocumentCommand \spside { O{} m }
   {
@@ -5492,13 +5508,14 @@
 \int_new:N  \l__spintent_spangle_pt_idx_int
 \tl_new:N   \l__spintent_spangle_kv_tl
 \bool_new:N \l__spintent_spangle_print_sym_now_bool
-\cs_new_protected:Nn \__spintent_spangle_process:nn
+\cs_new_protected:Nn \__spintent_spangle_exec:nnn
   {
-    \__spintent_luafun_geo_angulo_parse_and_set:n { \exp_not:n {#2} }
+    \keys_set:nn { spintent / sp #1 } {#2}
+    \__spintent_luafun_geo_angulo_parse_and_set:n { \exp_not:n {#3} }
     \str_if_eq:VnT \l__spintent_geo_luaset_error_str { true }
       {
         \msg_error:nnee { spintent } { sp #1 -invalid-arg }
-          { \c_backslash_str sp #1 } { \exp_not:n {#2} }
+          { \c_backslash_str sp #1 } { \exp_not:n {#3} }
       }
     \str_if_eq:VnT \l__spintent_geo_luaset_angulo_case_str { nombre }
       {
@@ -5510,7 +5527,7 @@
                   { \str_uppercase:n { \l__spintent_geo_luaset_letra_str } }
                   {
                     \msg_error:nnee { spintent } { sp #1 -invalid-arg }
-                      { \c_backslash_str sp #1 } { \exp_not:n {#2} }
+                      { \c_backslash_str sp #1 } { \exp_not:n {#3} }
                   }
               }
           }
@@ -5687,11 +5704,6 @@
           }
       }
   }
-\cs_new_protected:Nn \__spintent_spangle_exec:nnn
-  {
-    \keys_set:nn { spintent / sp #1 } {#2}
-    \__spintent_spangle_process:nn {#1} {#3}
-  }
 \NewDocumentCommand \spangle { O{} m }
   {
     \mode_if_math:TF
@@ -5778,9 +5790,10 @@
 \tl_new:N  \l__spintent_sparc_refs_tl
 \tl_new:N  \l__spintent_sparc_intent_arg_tl
 \int_new:N \l__spintent_sparc_pt_idx_int
-\cs_new_protected:Nn \__spintent_sparc_process:nn
+\cs_new_protected:Nn \__spintent_sparc_exec:nnn
   {
-    \__spintent_luafun_geo_parse_and_set:n { \exp_not:n {#2} }
+    \keys_set:nn { spintent / sp #1 } {#2}
+    \__spintent_luafun_geo_parse_and_set:n { \exp_not:n {#3} }
     \bool_if:nT
       {
         \str_if_eq_p:Vn \l__spintent_geo_luaset_error_str { true } ||
@@ -5788,7 +5801,7 @@
       }
       {
         \msg_error:nnee { spintent } { sp #1 -invalid-points }
-          { \c_backslash_str sp #1 } { \exp_not:n {#2} }
+          { \c_backslash_str sp #1 } { \exp_not:n {#3} }
       }
     \str_if_eq:eeTF {#1} { marc }
       { \tl_set:Nn \l__spintent_sparc_intent_tl { medida-del-arco } }
@@ -5853,11 +5866,6 @@
               }
           }
       }
-  }
-\cs_new_protected:Nn \__spintent_sparc_exec:nnn
-  {
-    \keys_set:nn { spintent / sp #1 } {#2}
-    \__spintent_sparc_process:nn {#1} {#3}
   }
 \NewDocumentCommand \sparc { O{} m }
   {
@@ -5987,13 +5995,14 @@
           { ##1 }
       }
   }
-\cs_new_protected:Nn \__spintent_spPoly_process:n
+\cs_new_protected:Nn \__spintent_spPoly_exec:nn
   {
-    \__spintent_luafun_geo_poly_parse_and_set:n { \exp_not:n {#1} }
+    \keys_set:nn { spintent / spPoly } {#1}
+    \__spintent_luafun_geo_poly_parse_and_set:n { \exp_not:n {#2} }
     \str_if_eq:VnT \l__spintent_geo_luaset_error_str { true }
       {
         \msg_error:nne { spintent } { spPoly-invalid-points }
-          { \exp_not:n {#1} }
+          { \exp_not:n {#2} }
       }
     \__spintent_spPoly_mathml:
   }
@@ -6016,11 +6025,6 @@
           }
         \__spintent_spPoly_points_loop:
       }
-  }
-\cs_new_protected:Nn \__spintent_spPoly_exec:nn
-  {
-    \keys_set:nn { spintent / spPoly } {#1}
-    \__spintent_spPoly_process:n {#2}
   }
 \NewDocumentCommand \spPoly { O{} m }
   {
@@ -6161,15 +6165,16 @@
 \int_new:N \l__spintent_spfig_pt_idx_int
 \str_new:N \l__spintent_geo_print_sym_str
 \tl_new:N  \l__spintent_geo_temp_tl
-\cs_new_protected:Nn \__spintent_spfig_process:nn
+\cs_new_protected:Nn \__spintent_spfig_exec:nnn
   {
+    \keys_set:nn { spintent / sp #1 } {#2}
     \str_if_eq:eeTF {#1} { Afig }
-      { \__spintent_luafun_geo_afig_parse_and_set:n { \exp_not:n {#2} } }
-      { \__spintent_luafun_geo_pfig_parse_and_set:n { \exp_not:n {#2} } }
+      { \__spintent_luafun_geo_afig_parse_and_set:n { \exp_not:n {#3} } }
+      { \__spintent_luafun_geo_pfig_parse_and_set:n { \exp_not:n {#3} } }
     \str_if_eq:VnT \l__spintent_geo_luaset_error_str { true }
       {
         \msg_error:nnee { spintent } { sp #1 -invalid-arg }
-          { \c_backslash_str sp #1 } { \exp_not:n {#2} }
+          { \c_backslash_str sp #1 } { \exp_not:n {#3} }
       }
     \clist_if_empty:NT \l__spintent_geo_luaset_points_clist
       {
@@ -6469,11 +6474,6 @@
           }
       }
   }
-\cs_new_protected:Nn \__spintent_spfig_exec:nnn
-  {
-    \keys_set:nn { spintent / sp #1 } {#2}
-    \__spintent_spfig_process:nn {#1} {#3}
-  }
 \NewDocumentCommand \spAfig { O{} d() }
   {
     \mode_if_math:TF
@@ -6556,7 +6556,7 @@
           },
       }
   }
-\cs_new_protected:Nn \__spintent_sp_rad_diam_print:n
+\cs_new_protected:Nn \__spintent_sp_rad_diam_mathml:n
   {
     \bool_if:cTF { l__spintent_sp #1 _upper_case_bool }
       {
@@ -6723,7 +6723,7 @@
 \cs_new_protected:Nn \__spintent_sp_rad_diam_exec:nn
   {
     \keys_set:nn { spintent / sp #1 } {#2}
-    \__spintent_sp_rad_diam_print:n {#1}
+    \__spintent_sp_rad_diam_mathml:n {#1}
   }
 \NewDocumentCommand \sprad { O{} }
   {
@@ -6972,18 +6972,19 @@
           }
       }
   }
-\cs_new_protected:Nn \__spintent_spcirc_process:n
+\cs_new_protected:Nn \__spintent_spcirc_exec:nn
   {
-    \tl_if_empty:nTF {#1}
+    \keys_set:nn { spintent / spcirc } {#1}
+    \tl_if_empty:nTF {#2}
       {
         \bool_set_false:N \l__spintent_spcirc_has_arg_bool
       }
       {
         \bool_set_true:N \l__spintent_spcirc_has_arg_bool
-        \__spintent_luafun_geo_circ_parse_and_set:n { \exp_not:n {#1} }
+        \__spintent_luafun_geo_circ_parse_and_set:n { \exp_not:n {#2} }
         \str_if_eq:VnT \l__spintent_geo_luaset_error_str { true }
           {
-            \msg_error:nne { spintent } { spcirc-invalid-arg } { \exp_not:n {#1} }
+            \msg_error:nne { spintent } { spcirc-invalid-arg } { \exp_not:n {#2} }
           }
       }
     \__spintent_spcirc_mathml:
@@ -7042,11 +7043,6 @@
             \MathMLintent { :silent } { \rparen }
           }
       }
-  }
-\cs_new_protected:Nn \__spintent_spcirc_exec:nn
-  {
-    \keys_set:nn { spintent / spcirc } {#1}
-    \__spintent_spcirc_process:n {#2}
   }
 \NewDocumentCommand \spcirc { O{} d() }
   {
@@ -7279,30 +7275,31 @@
           }
       }
   }
-\cs_new_protected:Nn \__spintent_spcircfig_process:nn
+\cs_new_protected:Nn \__spintent_spcircfig_exec:nnn
   {
+    \keys_set:nn { spintent / sp #1 } {#2}
     \str_if_eq:eeTF {#1} { Acirc }
       { \tl_set:Nn \l__spintent_spcircfig_op_tl { área } }
       { \tl_set:Nn \l__spintent_spcircfig_op_tl { perímetro } }
-    \tl_if_empty:nTF {#2}
+    \tl_if_empty:nTF {#3}
       {
         \bool_set_false:N \l__spintent_spcircfig_short_bool
       }
       {
         \bool_set_false:N \l__spintent_spcircfig_short_bool
-        \__spintent_luafun_spcircfig_comma:n { \exp_not:n {#2} }
+        \__spintent_luafun_spcircfig_comma:n { \exp_not:n {#3} }
         \str_if_eq:VnTF \l__spintent_spcircfig_luaset_comma_str { true }
           {
             \msg_error:nnee { spintent } { sp #1 -invalid-arg }
-              { \c_backslash_str sp #1 } { \exp_not:n {#2} }
+              { \c_backslash_str sp #1 } { \exp_not:n {#3} }
           }
           {
-            \__spintent_luafun_geo_circ_parse_and_set:n { \exp_not:n {#2} }
+            \__spintent_luafun_geo_circ_parse_and_set:n { \exp_not:n {#3} }
             \str_if_eq:VnT \l__spintent_geo_luaset_error_str { true }
               {
                 \str_if_eq:eeTF {#1} { Acirc }
-                  { \__spintent_luafun_geo_afig_parse_and_set:n { \exp_not:n {#2} } }
-                  { \__spintent_luafun_geo_pfig_parse_and_set:n { \exp_not:n {#2} } }
+                  { \__spintent_luafun_geo_afig_parse_and_set:n { \exp_not:n {#3} } }
+                  { \__spintent_luafun_geo_pfig_parse_and_set:n { \exp_not:n {#3} } }
                 \str_if_eq:VnF \l__spintent_geo_luaset_error_str { true }
                   {
                     \str_if_empty:NTF \l__spintent_geo_luaset_letra_word_str
@@ -7315,15 +7312,15 @@
                 \str_if_eq:VnT \l__spintent_geo_luaset_error_str { true }
                   {
                     \msg_error:nnee { spintent } { sp #1 -invalid-arg }
-                      { \c_backslash_str sp #1 } { \exp_not:n {#2} }
+                      { \c_backslash_str sp #1 } { \exp_not:n {#3} }
                   }
               }
           }
       }
     \bool_if:NTF \l__spintent_spcircfig_short_bool
       { \__spintent_spcircfig_build_short:n {#1} }
-      { \__spintent_spcircfig_build_concept:nn {#1} {#2} }
-    \__spintent_spcircfig_mathml:nn {#1} {#2}
+      { \__spintent_spcircfig_build_concept:nn {#1} {#3} }
+    \__spintent_spcircfig_mathml:nn {#1} {#3}
   }
 \cs_new_protected:Nn \__spintent_spcircfig_mathml:nn
   {
@@ -7367,11 +7364,6 @@
               }
           }
       }
-  }
-\cs_new_protected:Nn \__spintent_spcircfig_exec:nnn
-  {
-    \keys_set:nn { spintent / sp #1 } {#2}
-    \__spintent_spcircfig_process:nn {#1} {#3}
   }
 \NewDocumentCommand \spAcirc { O{} d() }
   {
@@ -7444,7 +7436,7 @@
         \__spintent_unknown_keys_cmd:n {#1}
       },
   }
-\cs_new_protected:Nn \__spintent_spVol_print:
+\cs_new_protected:Nn \__spintent_spVol_mathml:
   {
     \__spintent_invisible_sep:
     \bool_if:NTF \l__spintent_spVol_silent_bool
@@ -7600,7 +7592,7 @@
         \group_begin:
           \attribute \l__spintent_scope_attr_int = 1
           \keys_set:nn { spintent / spVol } {#1}
-          \__spintent_spVol_print:
+          \__spintent_spVol_mathml:
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spVol } }
@@ -7625,13 +7617,17 @@
 \cs_new_protected:Nn \__spintent_spProm_exec:nn
   {
     \keys_set:nn { spintent / spProm } {#1}
+    \__spintent_spProm_mathml:n {#2}
+  }
+\cs_new_protected:Nn \__spintent_spProm_mathml:n
+  {
     \__spintent_invisible_sep:
     \bool_if:NTF \l__spintent_spProm_silent_bool
       {
         \MathMLintent { _- }
           {
             \__spintent_inner_sep:
-            \bar {#2}
+            \bar {#1}
           }
       }
       {
@@ -7643,7 +7639,7 @@
         \MathMLintent { _ \l__spintent_spProm_intent_tl :prefix($a) }
           {
             \__spintent_inner_sep:
-            \bar { \MathMLarg { a } { \__spintent_inner_sep: #2 } }
+            \bar { \MathMLarg { a } { \__spintent_inner_sep: #1 } }
           }
       }
   }
@@ -7737,7 +7733,7 @@
     \tl_if_blank:nF {#3}
       { \c_math_superscript_token {#3} }
   }
-\cs_new_protected:Nn \__spintent_stat_print:nnnnnn
+\cs_new_protected:Nn \__spintent_stat_mathml:nnnnnn
   {
     \__spintent_invisible_sep:
     \bool_if:cTF { l__spintent_ #1 _silent_bool }
@@ -7804,7 +7800,7 @@
   }
 \cs_new_protected:Nn \__spintent_stat_simple:nnn
   {
-    \__spintent_stat_print:nnnnnn {#1} {#2} { } {#3} { } { }
+    \__spintent_stat_mathml:nnnnnn {#1} {#2} { } {#3} { } { }
   }
 \NewDocumentCommand \spmedia { O{} }
   {
@@ -7827,11 +7823,11 @@
       {
         \bool_if:NTF \l__spintent_spdesv_sigma_bool
           {
-            \__spintent_stat_print:nnnnnn { spdesv } { \sigma } { }
+            \__spintent_stat_mathml:nnnnnn { spdesv } { \sigma } { }
               { desviación-estándar } { sigma } { }
           }
           {
-            \__spintent_stat_print:nnnnnn { spdesv } { s } { }
+            \__spintent_stat_mathml:nnnnnn { spdesv } { s } { }
               { desviación-estándar } { s } { }
           }
       }
@@ -7842,11 +7838,11 @@
       {
         \bool_if:NTF \l__spintent_spvarz_sigma_bool
           {
-            \__spintent_stat_print:nnnnnn { spvarz } { \sigma } { 2 }
+            \__spintent_stat_mathml:nnnnnn { spvarz } { \sigma } { 2 }
               { varianza } { sigma } { al-cuadrado }
           }
           {
-            \__spintent_stat_print:nnnnnn { spvarz } { s } { 2 }
+            \__spintent_stat_mathml:nnnnnn { spvarz } { s } { 2 }
               { varianza } { s } { al-cuadrado }
           }
       }
@@ -7930,7 +7926,7 @@
     #1
     \c_math_subscript_token { \MathMLintent { :silent } {#2} }
   }
-\cs_new_protected:Nn \__spintent_pos_print:nnnn
+\cs_new_protected:Nn \__spintent_pos_mathml:nnnn
   {
     \__spintent_invisible_sep:
     \bool_if:cTF { l__spintent_ #1 _silent_bool }
@@ -7959,14 +7955,14 @@
           }
       }
   }
-\cs_generate_variant:Nn \__spintent_pos_print:nnnn { nnnV }
+\cs_generate_variant:Nn \__spintent_pos_mathml:nnnn { nnnV }
 \cs_new_protected:Nn \__spintent_pos_exec:nnnnn
   {
     \__spintent_pos_check:nnn {#1} {#4} {#5}
     \bool_if:NF \l__spintent_pos_error_bool
       {
         \int_set:NV \l__spintent_pos_value_int \l__spintent_luaset_only_part_int_str
-        \__spintent_pos_print:nnnV {#1} {#2} {#3} \l__spintent_pos_value_int
+        \__spintent_pos_mathml:nnnV {#1} {#2} {#3} \l__spintent_pos_value_int
       }
   }
 \NewDocumentCommand \spcuartil { O{} m }
@@ -8089,7 +8085,7 @@
             \msg_error:nnn { spintent } { spFrec-invalid-sub-index } {#1}
           }
           {
-            \__spintent_stat_print:nnnnnn { spFrec } {#1} { }
+            \__spintent_stat_mathml:nnnnnn { spFrec } {#1} { }
               { \l__spintent_spFrec_concept_tl } { } { }
           }
       }
@@ -8146,7 +8142,7 @@
     \tl_if_empty:NTF \l__spintent_spcase_concept_tl
       { \msg_error:nnn { spintent } { spcase-invalid-letter } {#1} }
       {
-        \__spintent_stat_print:nnnnnn { spcase }
+        \__spintent_stat_mathml:nnnnnn { spcase }
           { C \c_math_subscript_token { \str_use:N \l__spintent_spcase_letter_str } }
           { } { \l__spintent_spcase_concept_tl } { } { }
       }
@@ -8198,11 +8194,11 @@
           \keys_set:nn { spintent / spOmega } {#1}
           \bool_if:NTF \l__spintent_spOmega_card_bool
             {
-              \__spintent_stat_print:nnnnnn { spOmega } { \# \Omega } { }
+              \__spintent_stat_mathml:nnnnnn { spOmega } { \# \Omega } { }
                 { cardinalidad-del-espacio-muestral } { } { }
             }
             {
-              \__spintent_stat_print:nnnnnn { spOmega } { \Omega } { }
+              \__spintent_stat_mathml:nnnnnn { spOmega } { \Omega } { }
                 { espacio-muestral } { } { }
             }
         \group_end:
@@ -8226,6 +8222,10 @@
 \cs_new_protected:Nn \__spintent_spPval_exec:nnn
   {
     \keys_set:nn { spintent / spPval } {#1}
+    \__spintent_spPval_mathml:nn {#2} {#3}
+  }
+\cs_new_protected:Nn \__spintent_spPval_mathml:nn
+  {
     \__spintent_invisible_sep:
     \bool_if:NTF \l__spintent_spPval_silent_bool
       {
@@ -8233,8 +8233,8 @@
           {
             \__spintent_inner_sep:
             \bool_if:NTF \l__spintent_spPval_use_dfrac_bool
-              { \dfrac {#2} {#3} }
-              { \frac  {#2} {#3} }
+              { \dfrac {#1} {#2} }
+              { \frac  {#1} {#2} }
           }
       }
       {
@@ -8243,9 +8243,9 @@
             \__spintent_inner_sep:
             \bool_if:NTF \l__spintent_spPval_use_dfrac_bool
               {
-                \dfrac { \MathMLarg { num } {#2} } { \MathMLarg { denom } {#3} }
+                \dfrac { \MathMLarg { num } {#1} } { \MathMLarg { denom } {#2} }
               }
-              { \frac  { \MathMLarg { num } {#2} } { \MathMLarg { denom } {#3} } }
+              { \frac  { \MathMLarg { num } {#1} } { \MathMLarg { denom } {#2} } }
           }
       }
   }
@@ -8331,7 +8331,7 @@
         { mid } { \mid \str_use:N \l__spintent_spProb_luaset_b_str }
       }
   }
-\cs_new_protected:Nn \__spintent_spProb_print:
+\cs_new_protected:Nn \__spintent_spProb_mathml:
   {
     \__spintent_invisible_sep:
     \bool_if:NTF \l__spintent_spProb_silent_bool
@@ -8410,7 +8410,7 @@
     \__spintent_luafun_spProb_parse_and_set:n { \exp_not:n {#2} }
     \str_if_eq:VnTF \l__spintent_spProb_luaset_error_str { true }
       { \msg_error:nnn { spintent } { spProb-invalid-arg } {#2} }
-      { \__spintent_spProb_print: }
+      { \__spintent_spProb_mathml: }
   }
 \NewDocumentCommand \spProb { O{} m }
   {
@@ -8499,13 +8499,17 @@
   {
     \keys_set:nn { spintent / spcomp } {#1}
     \__spintent_spcomp_set_paren:n {#2}
+    \__spintent_spcomp_mathml:n {#2}
+  }
+\cs_new_protected:Nn \__spintent_spcomp_mathml:n
+  {
     \__spintent_invisible_sep:
     \bool_if:NTF \l__spintent_spcomp_silent_bool
       {
         \MathMLintent { _- }
           {
             \__spintent_inner_sep:
-            \__spintent_spcomp_typeset:n { \__spintent_spcomp_event:n {#2} }
+            \__spintent_spcomp_typeset:n { \__spintent_spcomp_event:n {#1} }
           }
       }
       {
@@ -8524,7 +8528,7 @@
                 \__spintent_spcomp_typeset:n
                   {
                     \MathMLarg { a }
-                      { \__spintent_inner_sep: \__spintent_spcomp_event:n {#2} }
+                      { \__spintent_inner_sep: \__spintent_spcomp_event:n {#1} }
                   }
               }
           }
@@ -8532,7 +8536,7 @@
             \MathMLintent { _ \tl_use:N \l__spintent_spcomp_read_arg_tl :nofix }
               {
                 \__spintent_inner_sep:
-                \__spintent_spcomp_typeset:n { \__spintent_spcomp_event:n {#2} }
+                \__spintent_spcomp_typeset:n { \__spintent_spcomp_event:n {#1} }
               }
           }
       }
@@ -8815,7 +8819,7 @@
           }
       }
   }
-\cs_new_protected:Nn \__spintent_spcomb_print:
+\cs_new_protected:Nn \__spintent_spcomb_mathml:
   {
     \__spintent_invisible_sep:
     \bool_if:NTF \l__spintent_spcomb_silent_bool
@@ -8945,7 +8949,7 @@
                   { \l__spintent_spcomb_luaset_raw_n_str }
                   { \l__spintent_spcomb_luaset_raw_k_str }
               }
-              { \__spintent_spcomb_print: }
+              { \__spintent_spcomb_mathml: }
           }
       }
       {
@@ -8992,18 +8996,22 @@
 \cs_new_protected:Nn \__spintent_spfact_exec:nn
   {
     \keys_set:nn { spintent / spfact } {#1}
+    \__spintent_spfact_mathml:n {#2}
+  }
+\cs_new_protected:Nn \__spintent_spfact_mathml:n
+  {
     \__spintent_invisible_sep:
     \bool_if:NTF \l__spintent_spfact_silent_bool
-      { \MathMLintent { _- } { \__spintent_inner_sep: #2 ! } }
+      { \MathMLintent { _- } { \__spintent_inner_sep: #1 ! } }
       {
         \tl_if_empty:NTF \l__spintent_spfact_read_arg_tl
           {
             \MathMLintent { _factorial:postfix($n) }
-              { \__spintent_inner_sep: \MathMLarg { n } { \__spintent_inner_sep: #2 } ! }
+              { \__spintent_inner_sep: \MathMLarg { n } { \__spintent_inner_sep: #1 } ! }
           }
           {
             \MathMLintent { _ \tl_use:N \l__spintent_spfact_read_arg_tl :nofix }
-              { \__spintent_inner_sep: #2 ! }
+              { \__spintent_inner_sep: #1 ! }
           }
       }
   }
