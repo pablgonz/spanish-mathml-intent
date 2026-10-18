@@ -95,12 +95,8 @@ writes the ghost characters in the HTML file.
 The HTML file is then cleaned as in the
 .B .html
 mode.
-Afterwards, if the validators are available, the PDF just produced is
-validated as in the
-.B .pdf
-mode.
-That PDF stays in the temporary directory and is discarded; only the
-cleaned HTML file is kept.
+The PDF just produced is not validated; it stays in the temporary
+directory and is discarded, and only the cleaned HTML file is kept.
 .SH OPTIONS
 .TP
 .BR \-c ", " \-\-check\-only
@@ -257,7 +253,7 @@ $ spitool \-c \-s sample
 Compile a document with the ghost characters enabled, write the cleaned
 MathML in the directory
 .B build
-(replacing it if it exists) and validate the PDF:
+(replacing it if it exists):
 .PP
 .RS
 .nf

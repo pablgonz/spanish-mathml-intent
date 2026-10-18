@@ -197,9 +197,10 @@ Description:
   and writes the result to <name>-mathml.html.
 
   Depending on the input file:
-  .pdf    runs the PDF/UA-2 and RNC tag validations (if the tools exist).
+  .pdf    validates the tag structure (rnv-wrapp) and the PDF/UA-2
+          conformance (veraPDF), if the tools exist.
   .html   cleans an existing <name>-luamml-mathml.html.
-  .tex    runs LuaTeX once in a temporary directory with AFghost=true to
+  .tex    runs the TeX engine once in a temporary directory with AFghost=true to
           obtain the luamml HTML, then cleans it. The temporary PDF is
           discarded and not validated.
 
@@ -503,7 +504,7 @@ local function run_clean_mode(html_filename)
     end
 end
 
--- Mode 3: Compile .tex/.ltx, clean HTML and validate PDF
+-- Mode 3: Compile .tex/.ltx and clean the generated HTML
 local function run_generate_mode(tex_filename)
     local basename, ext = tex_filename:match("^(.*)%.(%a+)$")
     if not basename or (ext ~= "tex" and ext ~= "ltx") then
