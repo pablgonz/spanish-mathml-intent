@@ -39,7 +39,7 @@
         later.~Update~your~TeX~distribution.
       }
   }
-\ProvidesExplPackage {spintent} {2026-10-16} {1.0} {Spanish parse intents}
+\ProvidesExplPackage {spintent} {2026-10-18} {1.0} {Spanish parse intents}
 \keys_define:nn { spintent }
   {
     mathcal .usage:n = load,
@@ -4291,24 +4291,28 @@
   {
     \keys_set:nn { spintent / spabs } {#1}
     \__spintent_spabs_set_delims:
+    \__spintent_spabs_mathml:n {#2}
+  }
+\cs_new_protected:Nn \__spintent_spabs_mathml:n
+  {
     \bool_if:NTF \l__spintent_spabs_silent_bool
       {
         \__spintent_invisible_sep:
         \MathMLintent { _- }
           {
-            \l__spintent_spabs_delim_l_tl \__spintent_inner_sep: #2
+            \l__spintent_spabs_delim_l_tl \__spintent_inner_sep: #1
               \l__spintent_spabs_delim_r_tl
           }
       }
       {
         \tl_if_empty:NTF \l__spintent_spabs_read_arg_tl
           {
-            \__spintent_spabs_set_close:n {#2}
+            \__spintent_spabs_set_close:n {#1}
             \bool_if:NF \l__spintent_spabs_close_bool { \__spintent_invisible_sep: }
             \MathMLintent { _valor-absoluto($x) }
               {
                 \l__spintent_spabs_delim_l_tl
-                \MathMLarg { x } { \__spintent_inner_sep: #2 }
+                \MathMLarg { x } { \__spintent_inner_sep: #1 }
                 \l__spintent_spabs_delim_r_tl
               }
             \bool_if:NT \l__spintent_spabs_close_bool
@@ -4321,7 +4325,7 @@
             \__spintent_invisible_sep:
             \MathMLintent { _ \tl_use:N \l__spintent_spabs_read_arg_tl :nofix }
               {
-                \l__spintent_spabs_delim_l_tl \__spintent_inner_sep: #2
+                \l__spintent_spabs_delim_l_tl \__spintent_inner_sep: #1
                   \l__spintent_spabs_delim_r_tl
               }
           }

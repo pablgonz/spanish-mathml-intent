@@ -220,7 +220,7 @@ end, "shekel_fallback_patch")
 \definecolor{mathmlblue}{HTML}{1F5FBF}               % Azul para "Math" de MathML
 % File info
 \def\fileversion{v1.0}
-\def\filedate{2026-10-16}
+\def\filedate{2026-10-18}
 \def\fileinfo{Spanish parse intents}
 
 % Config hyperref
@@ -570,6 +570,7 @@ end, "shekel_fallback_patch")
 % Entorno de notas
 \NewDocumentEnvironment { important } { s }
   {
+    \par\addvspace { \smallskipamount }
     \small\sffamily
     \IfBooleanTF { #1 }
       {
@@ -692,7 +693,8 @@ end, "shekel_fallback_patch")
                     left, right, Uleft, Uright, overleftrightarrow, overrightarrow, overline, triangle, rightangle,%
                     rightanglesqr, operatorname, angle, measuredangle, measuredrightangle,alpha, beta, mathcal, pi, %
                     attribute, vec, vphantom, widearc, cong, bigl, bigr, Bigl, Bigr,, biggl, biggr,Biggl, Biggr, %
-                    cup, cap, mid, setminus, infty, lvert, rvert, xcuad, Omega, },%
+                    cup, cap, mid, setminus, infty, lvert, rvert, xcuad, Omega, %
+                    chardef, mathchardef, ell, lparen, rparen, textsc, },%
 % Other words 5
     keywordstyle  = [5]{\bfseries\color{pkgname}},%
     keywords      = [5]{babel,spintent,libertinus-otf,sourcecodepro,fourier-otf,Erewhon-Math,hyperref,},%,
@@ -996,8 +998,6 @@ end, "shekel_fallback_patch")
 % se pueden probar en línea; como referencia general sirve el manual no oficial
 % de \hologo{LaTeX2e}\cite{latexref}.
 %
-% \medskip
-%
 % Se otorga permiso para copiar, distribuir y/o modificar este paquete bajo
 % los términos de \LaTeX{} Project Public License (\textsc{lppl}), versión
 % 1.3 o posterior (\url{https://www.latex-project.org/lppl.txt}). El paquete
@@ -1007,8 +1007,6 @@ end, "shekel_fallback_patch")
 % El nombre no pretende formar parte de la terminología de la
 % \textsc{lppl}; simplemente describe el estado permanente de este paquete
 % mientras sigo aprendiendo sobre \emph{accesibilidad} en \texttt{PDF}.}»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %  El requerimiento mínimo es \hologo{LaTeX}\cite{latex2e} release 2026-11-01.
@@ -1055,8 +1053,6 @@ end, "shekel_fallback_patch")
 % el nivel de aprendizaje del estudiante. El paquete intenta sobrescribir
 % muchas de las reglas dictadas por la heurística de \mynvmath{NVDA/MathCAT}
 % teniendo esto presente.
-%
-% \smallskip
 %
 % \begin{important}*
 %  El paquete \mypkg*[no-index]{spintent} usa y abusa del atributo |:intent| de \mynvmath{MathML}
@@ -1601,8 +1597,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % del tipo \mymeta{valor prohibido} se devuelve un \enquote{error}
 % y se detiene la compilación del documento.
 %
-%  \smallskip
-%
 % \begin{important}*
 %  En el modo \texttt{mathml-AF} (\S\ref{sec:af}), dos fórmulas con
 %  \emph{exactamente la misma fuente} reciben el mismo \mynvmath{MathML}
@@ -1621,14 +1615,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \section{The big four}
 %
 % El paquete \mypkg*[no-index]{spintent} provee cuatro grandes comandos
-% \emph{(«the big four\footnote{Los \emph{«cuatro grandes»} del
+% \emph{«the big four»}\footnote{Los \emph{«cuatro grandes»} del
 % Thrash Metal: Metallica, Megadeth, Slayer y Anthrax, que me acompañan
-% mientras desarrollo \mypkg*[no-index]{spintent}.}»)}:
+% mientras desarrollo \mypkg*[no-index]{spintent}.}:
 % |\spnum| para el manejo de números, |\spunit| para el manejo
 % de unidades, |\spmoney| para el manejo de dinero y |\spshort|
 % para el manejo de abreviaturas, acrónimos y números ordinales.
-%
-% \smallskip
 %
 % \begin{important}*
 %  También se incluyen las utilidades |\spnewunit| y |\spunitalias| asociadas
@@ -1670,8 +1662,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % `$\mathcolor{red}{-}$' seguidos por los dígitos del exponente.
 % Por ejemplo, |$\spnum{3,14e3}$| imprimirá `$3{,}14\cdot 10^{3}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«tres coma catorce por diez al cubo»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %  La \emph{coma} `\textcolor{red}{\texttt{,}}' o el \emph{punto} `\textcolor{red}{\texttt{.}}'
@@ -1722,8 +1712,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«tres punto cuatro periódico»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %  Esta llave es necesaria SOLO cuando se utilizan \emph{«decimales periódicos puros»},
 %  es decir, cuando no se ha incluido en el \mymarg{argumento} una \emph{coma}
@@ -1744,8 +1732,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{«tres coma catorce por diez al cubo»} y |$\spnum[notation-sym=times]{3,14e3}$|
 % imprimirá `$3{,}14\times 10^{3}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«tres coma catorce por diez al cubo»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %  Decir \emph{«notación científica»} aquí es un poco exagerado, en realidad
@@ -1790,8 +1776,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % teniendo presente que el denominador NO puede contener números de ningún
 % tipo. Por ejemplo: |$\spunit{23 m/s^{2}}$| imprimirá `$23\,\mathrm{m}/\mathrm{s}^{2}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintitrés metros por segundos cuadrado»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %  Solo imprimiremos \emph{fracciones lineales}, si se requiere otra forma
@@ -1839,8 +1823,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % El cuadro~\ref{tab:spunit-unidades} resume las \mymarg{unidades} y los \mymarg{alias}
 % soportados por \ics*{spunit}.
-%
-% \smallskip
 %
 % \begingroup\small
 % \begin{longtable}{@{}cllcl@{}}
@@ -2011,8 +1993,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spmoney|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra alias moneda}
 %   \end{minipage}
 %
-%   \medskip
-%
 %   El comando \ics*{spmoney} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento obligatorio} \mymarg{cifra} que contiene la
 %   \emph{«cifra numérica»} positiva o negativa la cual se procesa internamente
@@ -2031,14 +2011,14 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %  y \mynvmath{NVDA/MathCAT} verbalizará \emph{«quinientos dólares»}
 %  aunque la moneda por defecto sean pesos.
 %
-% Si se pasa un \emph{«alias moneda»} del tipo \texttt{ISO} (código de divisas)
-% como |CLP| o |USD| (mayúsculas) se modifica la verbalización en \mynvmath{NVDA/MathCAT}
+% Si se pasa un \emph{«alias moneda»} del tipo \texttt{ISO}, el código de divisas,
+% como |CLP| o |USD| escrito en mayúsculas, se modifica la verbalización en \mynvmath{NVDA/MathCAT}
 % agregando el país y se ajusta la salida \texttt{PDF} al estándar \texttt{ISO}. Por ejemplo:
 % |$\spmoney{500 CLP}$| imprimirá `$\mathrm{CLP}500$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«quinientos pesos chilenos»}.
 %
 % Si se pasa un \emph{«alias moneda»} del tipo \texttt{ISO}
-% como |clp| o |usd| (minúsculas) se modifica la verbalización en \mynvmath{NVDA/MathCAT}
+% como |clp| o |usd| escrito en minúsculas, se modifica la verbalización en \mynvmath{NVDA/MathCAT}
 % agregando el país, pero NO se modifica la salida \texttt{PDF} imprimiendo
 % el \emph{«símbolo de moneda»} correspondiente. Por ejemplo: |$\spmoney{500 clp}$|
 % imprimirá `$\$500$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
@@ -2050,8 +2030,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % la salida \texttt{PDF} y verbalización estándar esperada para \mynvmath{NVDA/MathCAT}.
 % Los \emph{«alias moneda»} se pueden pasar con o sin tilde, por ejemplo |dolares| o |dólares|.
 %
-% \smallskip
-%
 % \begin{important}*
 %  Los \emph{«alias moneda»} se deben escribir en minúsculas y los códigos
 %  \texttt{ISO} en minúsculas o todo en mayúsculas. Cualquier otra
@@ -2059,16 +2037,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %  se detiene la compilación del documento.
 % \end{important}
 %
-% \smallskip
-%
 % \begin{important}*
 %  La posición del \emph{«símbolo moneda»} a la izquierda o a la derecha
 %  de la \emph{«cifra numérica»} y la verbalización para \mynvmath{NVDA/MathCAT}
 %  se manejan desde el módulo Lua \myluamod{} y no se proveen llaves para
 %  modificar este comportamiento.
 % \end{important}
-%
-% \smallskip
 %
 % \begin{important}*
 %  El \emph{«símbolo moneda»} es tomado de la fuente tipográfica definida
@@ -2104,8 +2078,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{subunidades}. Por ejemplo: |$\spmoney[sub-units=true]{100,5 dolares}$|
 % imprimirá `$\$100{,}5$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«cien dólares con cincuenta centavos»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %  Si la \emph{«cifra numérica»} no tiene parte decimal, la llave
@@ -2204,8 +2176,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spshort|\myoarg{read-arg\textnormal{\textcolor{gray}{=}}\mymarg{verbalización \textnormal{NVDA}}}\mymarg{comandos \textnormal{\hologo{LaTeX}}}
 %   \end{syntax}
 %
-% \smallskip
-%
 %   El comando \ics*{spshort} trabaja \emph{solo en modo texto} y recibe
 %   \emph{un argumento obligatorio} del tipo \mymarg{abreviaturas}, \mymarg{acrónimos} o \mymarg{números ordinales}
 %   descritos en~\S\ref{subsec:arg-spshort}.
@@ -2232,8 +2202,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % que puede contener \mymarg{comandos \hologo{LaTeX}} \emph{en modo texto}
 % los cuales se imprimirán en salida \texttt{PDF}.
 %
-% \smallskip
-%
 % \begin{important}*
 %   Para la escritura de \mymarg{números ordinales} se debe tener cuidado
 %   y no confundir la \emph{«letra o volada»} `\textsuperscript{o}' con
@@ -2243,15 +2211,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   dentro de un grupo junto al comando: |{\addfontfeatures{Numbers=Lining}\spshort{1.o}}|.
 % \end{important}
 %
-% \smallskip
-%
 % \begin{important}*
 %   El comando |\spshort| está pensado como un reemplazo para \emph{shorthands}
 %   y el comando |\sptext| provistos por el paquete \mypkg{babel} en español
 %   compatible con \emph{tagged} \texttt{PDF}. Es de las pocas utilidades que provee
 %   el paquete \mypkg*[no-index]{spintent} que trabajan \emph{solo en modo texto}. Internamente
-%   utiliza la llave \mykey{E} \emph{(expansion text)} provista por el paquete
-%   \mypkg{tagpdf}\cite{tagpdf}.
+%   utiliza la llave \mykey{E} provista por el paquete
+%   \mypkg{tagpdf}\cite{tagpdf} para el \emph{expansion text}.
 % \end{important}
 %
 % \subsubsection{Llaves para \cs[no-index]{spshort}}
@@ -2430,8 +2396,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \texttt{5.as} & --- & 5.$^{\text{as}}$ & \emph{«quintas»} \\
 % \end{longtable}
 %
-% \smallskip
-%
 % \begin{important}*
 %   Los números ordinales se verbalizan con palabras desde el |1| hasta
 %   el |99|. Desde el |100| el ordinal no se convierte en palabras y se
@@ -2470,8 +2434,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % y se ejecuta |\spsiglo{21}| o |\spsiglo{XXI}| se imprimirá `\textsc{xxi}' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintiuno»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %  El \emph{argumento obligatorio} \mymarg{siglo} \emph{«siempre»} es
 %  convertido a \emph{número romano en versalitas} y es verbalizado por
@@ -2494,8 +2456,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % si se establece en |none|, |\spsiglo[print-era=none]{XXI}| imprimirá `\textsc{xxi}'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintiuno»}.
 %
-% \bigskip
-%
 % \subsection*{El comando \cs[no-index]{sptime}}\label{subsec:sptime}
 %
 % \vspace*{-\baselineskip}
@@ -2513,8 +2473,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % salida \texttt{PDF} `23:45' y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«veintitrés cuarenta y cinco minutos»}.
 %
-% \bigskip
-%
 % \subsection*{El comando \cs[no-index]{spdate}}\label{subsec:spdate}
 %
 % \vspace*{-\baselineskip}
@@ -2527,8 +2485,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spdate|\mymarg{\textnormal{DD\textcolor{red}{-}MM\textcolor{red}{-}YYYY}}
 %   \end{minipage}
 %
-% \medskip
-%
 %   El comando \ics*{spdate} trabaja en \emph{modo matemático}
 %   y recibe el \emph{argumento} obligatorio
 %   \mymarg{\textnormal{DD\textcolor{red}{/}MM\textcolor{red}{/}YYYY}},
@@ -2540,8 +2496,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % imprimirán en \emph{«modo texto»} la salida \texttt{PDF} `1981-01-02'
 % y `02/01/1981' respectivamente y en ambos casos, \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«dos de enero de mil novecientos ochenta y uno»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   Si se pasa el argumento
@@ -2564,8 +2518,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % paréntesis, corchetes y llaves sueltos, y |\spdsym| y |\spmsym| establecen
 % cómo se imprime y se verbaliza el símbolo de división y el de multiplicación.
 % Estos cuatro trabajan en \emph{modo matemático}.
-%
-% \smallskip
 %
 % \begin{important}*
 %  A diferencia de las otras utilidades implementadas por
@@ -2597,8 +2549,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % `$\cong$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«es congruente con»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %   El \mymarg{símbolo} debe ser un único comando, puede ser uno
 %   definido por el usuario. Por ejemplo: |\newcommand{\xcuad}{x^2}|,
@@ -2607,8 +2557,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 %   \emph{«x al cuadrado»}.
 % \end{important}
-%
-% \smallskip
 %
 % \begin{important}*
 %   Los espacios y los guiones bajos de \mymarg{verbalización
@@ -2664,8 +2612,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % salida del comando; si se establece en |false|, \mynvmath{NVDA/MathCAT}
 % sí verbalizará la salida del comando.
 %
-% \smallskip
-%
 % \begin{important}*
 %  Al utilizar \mykey{silent} no es necesario que el argumento
 %  \mymarg{símbolo} esté registrado o usar la llave \mykey{read-arg} con
@@ -2693,8 +2639,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val}, \myhlc|$\spusep{(}$|
 % imprimirá `$($' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«abrir paréntesis»} acorde a su propia heurística.
-%
-% \smallskip
 %
 % \begin{important}*
 %   El motivo de existencia de |\spusep| es que los comandos |\left|,
@@ -2963,8 +2907,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % `$\mathrm{D}(m)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«divisores de eme»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %   El número |0| no es válido: |$\spnD(0)$| devuelve un
 %   \enquote{error} y se detiene la compilación del documento.
@@ -3041,8 +2983,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Si se usa el argumento \myparg{letra}, |$\spnM(m)$| imprimirá
 % `$\mathrm{M}(m)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«múltiplos de eme»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   El número |0| no es válido: |$\spnM(0)$| devuelve un
@@ -3124,8 +3064,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % |$\spmcd(m, n)$| imprimirá `$\mathrm{mcd}(m, n)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«máximo común
 % divisor entre eme y ene»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %  Los argumentos \myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}
@@ -3218,8 +3156,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % |$\spmcm(m, n)$| imprimirá `$\mathrm{mcm}(m, n)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«mínimo común
 % múltiplo entre eme y ene»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %  Los argumentos \myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}
@@ -3353,8 +3289,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«dos y cinco séptimos»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %   En el caso de las fracciones, y en especial con los \emph{«números
 %   mixtos»}, no se pueden manejar muchas cosas desde el lado de
@@ -3459,8 +3393,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«tres es a cuatro»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %   El \mymarg{antecedente} y el \mymarg{consecuente} se tipografían
 %   directamente, sin procesamiento semántico adicional.
@@ -3497,8 +3429,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{«tres es a cuatro»}; si se establece en |false|, la razón se
 % imprime como una fracción.
 %
-% \smallskip
-%
 % \begin{important}*
 %   La llave \mykey[sprazon]{use-dfrac} no tiene efecto cuando la llave
 %   \mykey[sprazon]{inline} se establece en |true|, porque en ese caso no se
@@ -3526,8 +3456,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % `$\frac{3}{4}=\frac{6}{8}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«tres es a cuatro como seis es a ocho»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   Los cuatro argumentos se tipografían directamente, sin procesamiento
@@ -3565,8 +3493,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{«tres es a cuatro como seis es a ocho»}; si se establece en |false|,
 % las razones se imprimen como fracciones.
 %
-% \smallskip
-%
 % \begin{important}*
 %   La llave \mykey[spProp]{use-dfrac} no tiene efecto cuando la llave
 %   \mykey[spProp]{inline} se establece en |true|, porque en ese caso no se
@@ -3584,8 +3510,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Algunos comandos reciben \mymarg{argumento} único, como una \enquote{\emph{letra}},
 % o más de uno dentro del mismo, donde opcionalmente se pueden separar
 % por comas `|,|'.
-%
-% \smallskip
 %
 % \begin{important}*
 %   Las primas se deben pasar de forma directa `|'|' y los subíndices siempre
@@ -3607,8 +3531,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spcoord|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{abscisa\textnormal{\textcolor{red}{;}} ordenada}
 %   \end{minipage}
 %
-%   \medskip
-%
 %   El comando \ics*{spcoord} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento obligatorio} \mymarg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
 %   o \mymarg{abscisa\textnormal{\textcolor{red}{;}} ordenada}, el cual
@@ -3623,8 +3545,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{«x subíndice uno coma y subíndice uno»}.
 % La lectura del subíndice la decide \mynvmath{NVDA/MathCAT}, porque
 % \ics*{spcoord} no tiene la llave \mykey{read-cmd}.
-%
-% \smallskip
 %
 % \begin{important}*
 % El comando |\spcoord| solo acepta \emph{un separador} `\textcolor{red}{,}'
@@ -3661,8 +3581,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spPoint|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{;}} ordenada}\par
 %   \end{minipage}
 %
-%   \medskip
-%
 %   El comando \ics*{spPoint} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento obligatorio} \mymarg{punto}, el cual es una
 %   \emph{única letra mayúscula} con prima `|'|' o subíndice
@@ -3683,8 +3601,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«punto A menos tres coma cuatro»};
 % |$\spPoint{A_{1}}(-3,4)$| imprimirá `$A_{1}(-3,4)$' y verbalizará
 % \emph{«punto A sub uno menos tres coma cuatro»}.
-%
-% \smallskip
 %
 % \subsubsection*{Llaves para \cs[no-index]{spPoint}}
 %
@@ -3740,10 +3656,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spvec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
 %   \end{minipage}
 %
-%   \medskip
-%
 %   El comando \ics*{spvec} trabaja en \emph{modo matemático} y recibe un
-%   \emph{argumento obligatorio} de la forma \mymarg{letra} (minúscula)
+%   \emph{argumento obligatorio} de la forma \mymarg{letra} minúscula
 %   o \mymarg{punto\textnormal{\textcolor{gray}{,}} punto} junto al
 %   \emph{argumento opcional delimitado por paréntesis} \myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}, el cual se
 %   procesa internamente bajo el comando |\spcoord|.
@@ -3752,7 +3666,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Si el \emph{argumento} es de la forma \mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
 % con prima(s) `|'|' o subíndice(s) `|_{...}|' opcionales se aplica
 % |\overrightarrow| en la impresión; si el \emph{argumento} es de
-% la forma \mymarg{letra} (minúscula) con subíndice `|_{...}|' opcional
+% la forma \mymarg{letra} minúscula con subíndice `|_{...}|' opcional
 % se aplica |\vec| en la impresión.
 %
 % Si no se proporciona el \emph{argumento opcional}
@@ -3827,8 +3741,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\sprecta|\mymarg{letra}\par
 %     |\sprecta|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{letra}
 %   \end{minipage}
-%
-% \medskip
 %
 %   El comando \ics*{sprecta} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{letra} o
@@ -3954,8 +3866,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Si se establece en |true|, \mynvmath{NVDA/MathCAT} NO verbalizará la salida
 % del comando; si se establece en |false|, \mynvmath{NVDA/MathCAT} sí
 % verbalizará la salida del comando.
-%
-% \smallskip
 %
 % \begin{important}*
 %   La impresión `$\overrightarrow{AB}$' en la salida \texttt{PDF}
@@ -4164,8 +4074,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{minipage}
 %
-%   \medskip
-%
 %   El comando \ics*{spangle} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}
 %   o \mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
@@ -4184,8 +4092,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % verbalizará \emph{«ángulo uno»} y |$\spangle{AOB}$| imprimirá
 % `$\angle AOB$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«ángulo A O B»}.
-%
-% \smallskip
 %
 % \begin{important}*
 % Si no se tiene instalada la fuente matemática \texttt{NewCMMath-Regular.otf},
@@ -4258,8 +4164,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spmangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{minipage}
 %
-%   \medskip
-%
 %   El comando \ics*{spmangle} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}
 %   o \mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
@@ -4278,8 +4182,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % verbalizará \emph{«medida del ángulo uno»} y |$\spmangle{AOB}$| imprimirá
 % `$\measuredangle AOB$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«medida del ángulo A O B»}.
-%
-% \smallskip
 %
 % \begin{important}*
 % La distinción entre |\spangle| y |\spmangle| es semántica: |\spangle|
@@ -4384,8 +4286,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\sparc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{minipage}
 %
-%   \medskip
-%
 %   El comando \ics*{sparc} trabaja en \emph{modo matemático} y recibe un
 %   \emph{argumento obligatorio} de la forma \mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
 %   o \mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
@@ -4396,8 +4296,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
 % |$\sparc{AB}$| imprimirá `$\widearc{AB}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«arco A B»}.
-%
-% \smallskip
 %
 % \begin{important}*
 % El acento |\widearc| es proporcionado por algunos paquetes como
@@ -4458,8 +4356,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spmarc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{minipage}
 %
-%   \medskip
-%
 %   El comando \ics*{spmarc} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
 %   o \mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
@@ -4470,8 +4366,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
 % |$\spmarc{AB}$| imprimirá `$\operatorname{m}\widearc{AB}$' en la
 % salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«medida del arco A B»}.
-%
-% \smallskip
 %
 % \begin{important}*
 % La distinción entre |\sparc| y |\spmarc| es semántica:
@@ -4600,8 +4494,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % si se establece en |false|, solo se imprimirá el \mymarg{argumento} en
 % la salida \texttt{PDF} y la verbalización será la misma.
 %
-% \smallskip
-%
 % \begin{important}*
 %   Esta llave no tiene efecto con cinco o más puntos, porque no hay un
 %   símbolo definido para ellos.
@@ -4633,8 +4525,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spAfig|\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}\par
 %     |\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
 %   \end{minipage}
-%
-%   \medskip
 %
 %   El comando \ics*{spAfig} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -4673,8 +4563,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % ni el \emph{argumento opcional delimitado por paréntesis}, |$\spAfig$| imprimirá
 % `$\mathcal{A}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«área»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   El \emph{argumento} \myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
@@ -4734,8 +4622,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mykey{concept}. Por ejemplo: |$\spAfig[read-arg={trapecio}](ABCD)$| imprimirá
 % `$\mathcal{A}_{\mdlgwhtsquare ABCD}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«área del trapecio A B C D»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   Esta llave no tiene efecto y emite un aviso con los argumentos
@@ -4802,8 +4688,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % imprimirá `$\mathcal{A}_{\mdlgwhtsquare_{1}}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área del cuadrado uno»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %   Esta llave no se puede utilizar con el argumento
 %   \myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}}
@@ -4840,8 +4724,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spPfig|\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}\par
 %     |\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
 %   \end{minipage}
-%
-%   \medskip
 %
 %   El comando \ics*{spPfig} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -4880,8 +4762,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % ni el \emph{argumento opcional delimitado por paréntesis}, |$\spPfig$| imprimirá
 % `$\mathcal{P}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«perímetro»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   El \emph{argumento} \myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
@@ -4941,8 +4821,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mykey{concept}. Por ejemplo: |$\spPfig[read-arg={trapecio}](ABCD)$| imprimirá
 % `$\mathcal{P}_{\mdlgwhtsquare ABCD}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro del trapecio A B C D»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   Esta llave no tiene efecto y emite un aviso con los argumentos
@@ -5009,8 +4887,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % imprimirá `$\mathcal{P}_{\mdlgwhtsquare_{1}}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro del cuadrado uno»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %   Esta llave no se puede utilizar con el argumento
 %   \myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}}
@@ -5043,8 +4919,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\sprad|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
 %     |\spdiam|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   \end{minipage}
-%
-%   \medskip
 %
 %   Los comandos \ics*{sprad} y \ics*{spdiam} trabajan en \emph{modo
 %   matemático} y reciben el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
@@ -5088,8 +4962,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % en la salida \texttt{PDF}; si se establece en |false| se imprimirá usando
 % minúsculas.
 %
-% \smallskip
-%
 % \begin{important}*
 %   La verbalización al establecer esta llave es controlada por la llave \mykey{read-cmd}.
 % \end{important}
@@ -5101,8 +4973,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % en la impresión del comando |\spdiam|. Si se establece en |true|,
 % |$\spdiam[print-sym=true]$| imprimirá `$\diameter d$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«diámetro»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   La llave \mykey{print-sym} no tiene ningún efecto en |\sprad|.
@@ -5139,8 +5009,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % imprimirá `$r$' y \mynvmath{NVDA/MathCAT} verbalizará \emph{«medida
 % exacta»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %  Las llaves \mykey{sub-index} y \mykey{read-sub} no tienen efecto al usar \mykey{read-arg}.
 % \end{important}
@@ -5170,8 +5038,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}\par
 %     |\spcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro\textnormal{\textcolor{red}{,}} radio}
 %   \end{minipage}
-%
-%   \medskip
 %
 %   El comando \ics*{spcirc} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -5203,8 +5069,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«circunferencia de centro
 % en O y radio tres»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %   El argumento \myparg{centro} y el argumento \mymeta{radio} cuando tiene
 %   la forma \mymeta{punto punto} aceptan prima `|'|' o subíndice `|_{...}|'.
@@ -5225,8 +5089,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % si se establece en |mathcat|, \mynvmath{NVDA/MathCAT} aplica sus propias
 % reglas, que pueden incluir el prefijo «mayúscula» dependiendo de la
 % configuración del usuario.
-%
-% \smallskip
 %
 % \begin{important}*
 %   Esta llave tiene efecto sobre el argumento \mymeta{radio} cuando tiene
@@ -5282,8 +5144,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % |$\spcirc[radio-sty=mside](O, AB)$| imprimirá `$\bigodot(O, AB)$' en la
 % salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«circunferencia
 % de centro en O y radio medida del lado A B»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   Las \mymeta{meta-keys} \mykey[spcirc]{spside} y \mykey[spcirc]{spmside}
@@ -5360,8 +5220,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spAcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
 %   \end{minipage}
 %
-%   \medskip
-%
 %   El comando \ics*{spAcirc} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento opcional delimitado por paréntesis} de la
 %   forma \myparg{centro} o \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
@@ -5381,8 +5239,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   Si se proporciona el \emph{argumento} \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
 %   |$\spAcirc(1)$| imprimirá `$\mathcal{A}_{\bigodot_{1}}$' en la salida
 %   \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área de la circunferencia uno»}.
-%
-%   \smallskip
 %
 % \begin{important}*
 %   El \emph{argumento} \myparg{centro} acepta prima `|'|' o
@@ -5431,8 +5287,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % si se establece en |false|, \mynvmath{NVDA/MathCAT} solo verbalizará el
 % argumento \myparg{centro} acorde al valor establecido por la llave \mykey{read-cmd}.
 %
-% \smallskip
-%
 % \begin{important}*
 %   Utilizar \mykey{concept}|=false| sin el argumento \myparg{centro} o con el
 %   argumento \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
@@ -5449,8 +5303,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % se verbalizará \emph{«área de la esfera con centro en O»} en \mynvmath{NVDA/MathCAT};
 % |$\spAcirc[concept=false,read-arg={esfera}](O)$| se verbalizará
 % \emph{«esfera con centro en O»} en \mynvmath{NVDA/MathCAT}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   Utilizar esta llave con \mykey{concept}|=false| y el argumento
@@ -5514,8 +5366,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spPcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
 %   \end{minipage}
 %
-%   \medskip
-%
 %   El comando \ics*{spPcirc} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento opcional delimitado por paréntesis} de la
 %   forma \myparg{centro} o \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
@@ -5535,8 +5385,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   Si se proporciona el \emph{argumento} \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
 %   |$\spPcirc(1)$| imprimirá `$\mathcal{P}_{\bigodot_{1}}$' en la salida
 %   \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro de la circunferencia uno»}.
-%
-%   \smallskip
 %
 % \begin{important}*
 %   El \emph{argumento} \myparg{centro} acepta prima `|'|' o
@@ -5585,8 +5433,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % si se establece en |false|, \mynvmath{NVDA/MathCAT} solo verbalizará el
 % argumento \myparg{centro} acorde al valor establecido por la llave \mykey{read-cmd}.
 %
-% \smallskip
-%
 % \begin{important}*
 %   Utilizar \mykey{concept}|=false| sin el argumento \myparg{centro} o con el
 %   argumento \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
@@ -5605,8 +5451,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % se verbalizará \emph{«perímetro del disco con centro en O»} en \mynvmath{NVDA/MathCAT};
 % |$\spPcirc[concept=false,read-arg={disco}](O)$| se verbalizará
 % \emph{«disco con centro en O»} en \mynvmath{NVDA/MathCAT}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   Utilizar esta llave con \mykey{concept}|=false| y el argumento
@@ -5723,8 +5567,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % |$\spVol[concept=false,read-arg={medida exacta}]$| imprimirá `$\mathcal{V}$'
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«medida exacta»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %  Las llaves \mykey{sub-index} y \mykey{read-sub} no tienen efecto al usar \mykey{read-arg}.
 % \end{important}
@@ -5810,16 +5652,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % punto y coma, cuando las llaves no están balanceadas o cuando el infinito
 % está mal ubicado o se incluye en el intervalo.
 %
-% \smallskip
-%
 % \begin{important}*
 %   El argumento \mymarg{intervalo} siempre debe pasarse entre llaves
 %   `|{ }|', incluso cuando comienza con un corchete: sin ellas,
 %   |\spinterval[1,5]| interpreta los corchetes como el argumento opcional
 %   \myoarg{key \textnormal{\textcolor{gray}{=}} val}.
 % \end{important}
-%
-% \smallskip
 %
 % \begin{important}*
 %   El infinito `$\infty$' nunca se incluye en el intervalo: `$-\infty$' solo
@@ -6001,8 +5839,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\sprec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}\par
 %     |\spcod|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
 %   \end{minipage}
-%
-%   \medskip
 %
 %   Los comandos \ics*{spdom}, \ics*{sprec} y \ics*{spcod} trabajan en
 %   \emph{modo matemático} y reciben el \emph{argumento} obligatorio
@@ -6272,8 +6108,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spvarz|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   \end{minipage}
 %
-%   \medskip
-%
 %   Los comandos \ics*{spmedia}, \ics*{spmediana}, \ics*{spmoda},
 %   \ics*{spdesv} y \ics*{spvarz} trabajan en \emph{modo matemático} y
 %   reciben el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
@@ -6342,8 +6176,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % imprimirá `$s$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«desviación estándar poblacional»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %  Las llaves \mykey{sub-index} y \mykey{read-sub} no tienen efecto al usar \mykey{read-arg}.
 % \end{important}
@@ -6374,8 +6206,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spmin|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
 %     |\spmax|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   \end{minipage}
-%
-%   \medskip
 %
 %   Los comandos \ics*{sprango}, \ics*{spriq}, \ics*{spmin} y \ics*{spmax}
 %   trabajan en \emph{modo matemático} y reciben el \emph{argumento opcional}
@@ -6414,8 +6244,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     |\spdecil|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}\par
 %     |\spPerc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}
 %   \end{minipage}
-%
-%   \medskip
 %
 %   Los comandos \ics*{spcuartil}, \ics*{spdecil} y \ics*{spPerc} trabajan
 %   en \emph{modo matemático} y reciben el \emph{argumento obligatorio}
@@ -6620,8 +6448,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % |$\spOmega[read-arg={universo}]$| imprimirá `$\Omega$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«universo»}.
 %
-% \smallskip
-%
 % \begin{important}*
 %  La llave \mykey{sub-index} no tiene efecto al usar \mykey{read-arg}.
 % \end{important}
@@ -6654,8 +6480,6 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % |$\spPval{1}{5}$| imprimirá `$\frac{1}{5}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«1 de 5»}.
-%
-% \smallskip
 %
 % \begin{important}*
 %   Los argumentos \mymarg{casos} y \mymarg{total} se tipografían
@@ -7121,8 +6945,6 @@ spitool -o -p build/ ejemplo.tex
 % (\S\ref{sec:af}), y los \texttt{PDF} resultantes se validan con
 % \texttt{rnv-wrapp} y \texttt{veraPDF} (\S\ref{subsec:comprobar}).
 %
-% \smallskip
-%
 % \begin{important}*
 %  This section is just to show the compatibility of \mypkg*[no-index]{spintent}
 %  with tagged \texttt{PDF} using \hologo{LuaLaTeX}. The attached files are
@@ -7466,7 +7288,7 @@ spitool -o -p build/ ejemplo.tex
 % keys: \mykey[usepackage]{mathcal} and \mykey[usepackage]{AFghost}, which can be passed as package
 % options.
 %    \begin{macrocode}
-\ProvidesExplPackage {spintent} {2026-10-16} {1.0} {Spanish parse intents}
+\ProvidesExplPackage {spintent} {2026-10-18} {1.0} {Spanish parse intents}
 \keys_define:nn { spintent }
   {
     mathcal .usage:n = load,
@@ -15191,10 +15013,24 @@ spitool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spabs_exec:nn}
-%   The function \myhlc|\@@_spabs_exec:nn| sets the \mymeta{keys} in `|#1|'
-%   and prints the absolute value of `|#2|' inside one native |\MathMLintent|,
-%   preceded by the outer ghost \myhlc|\@@_invisible_sep:| and followed by
-%   the inner ghost \myhlc|\@@_inner_sep:|. With \mykey{silent}|=true| the
+%   The function \myhlc|\@@_spabs_exec:nn| sets the \mymeta{keys} in `|#1|',
+%   sets the delimiters with \myhlc|\@@_spabs_set_delims:| and calls
+%   \myhlc|\@@_spabs_mathml:n| with the argument in `|#2|'.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spabs_exec:nn
+  {
+    \keys_set:nn { spintent / spabs } {#1}
+    \@@_spabs_set_delims:
+    \@@_spabs_mathml:n {#2}
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_spabs_mathml:n}
+%   The function \myhlc|\@@_spabs_mathml:n| prints the absolute value of `|#1|'
+%   inside one native |\MathMLintent|, preceded by the outer ghost
+%   \myhlc|\@@_invisible_sep:| and followed by the inner ghost
+%   \myhlc|\@@_inner_sep:|. With \mykey{silent}|=true| the
 %   intent is `|_-|'; with \mykey{read-arg} given it is
 %   |_|\mymeta{read-arg}|:nofix|; otherwise it is |_valor-absoluto($x)|. In this
 %   last case, when \myhlc|\@@_spabs_set_close:n| sets the closing, a native
@@ -15203,28 +15039,26 @@ spitool -o -p build/ ejemplo.tex
 %   the outer ghost is omitted because the formula already has two top-level
 %   nodes.
 %    \begin{macrocode}
-\cs_new_protected:Nn \@@_spabs_exec:nn
+\cs_new_protected:Nn \@@_spabs_mathml:n
   {
-    \keys_set:nn { spintent / spabs } {#1}
-    \@@_spabs_set_delims:
     \bool_if:NTF \l_@@_spabs_silent_bool
       {
         \@@_invisible_sep:
         \MathMLintent { _- }
           {
-            \l_@@_spabs_delim_l_tl \@@_inner_sep: #2
+            \l_@@_spabs_delim_l_tl \@@_inner_sep: #1
               \l_@@_spabs_delim_r_tl
           }
       }
       {
         \tl_if_empty:NTF \l_@@_spabs_read_arg_tl
           {
-            \@@_spabs_set_close:n {#2}
+            \@@_spabs_set_close:n {#1}
             \bool_if:NF \l_@@_spabs_close_bool { \@@_invisible_sep: }
             \MathMLintent { _valor-absoluto($x) }
               {
                 \l_@@_spabs_delim_l_tl
-                \MathMLarg { x } { \@@_inner_sep: #2 }
+                \MathMLarg { x } { \@@_inner_sep: #1 }
                 \l_@@_spabs_delim_r_tl
               }
             \bool_if:NT \l_@@_spabs_close_bool
@@ -15237,7 +15071,7 @@ spitool -o -p build/ ejemplo.tex
             \@@_invisible_sep:
             \MathMLintent { _ \tl_use:N \l_@@_spabs_read_arg_tl :nofix }
               {
-                \l_@@_spabs_delim_l_tl \@@_inner_sep: #2
+                \l_@@_spabs_delim_l_tl \@@_inner_sep: #1
                   \l_@@_spabs_delim_r_tl
               }
           }
@@ -18697,9 +18531,9 @@ spitool -o -p build/ ejemplo.tex
 %   recursive lookup of the shared |mathml_filter| callback reaches through the
 %   |sub| field of the noad.
 %
-%   The function \myhlc|\@@_invisible_sep:| precedes both branches (a
-%   second
-%   sibling so the sole |<mrow>| does not collapse into |<math>|.
+%   The function \myhlc|\@@_invisible_sep:| precedes both branches.
+%   It adds a second sibling so that the sole |<mrow>| does not collapse into
+%   |<math>|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spfig_mathml:n
   {
@@ -23128,7 +22962,7 @@ spitool -o -p build/ ejemplo.tex
 %<*spintentlua>
 % \fi
 --[[
-     Lua module spintent.lua for spintent package - v1.0 [2026-10-16]
+     Lua module spintent.lua for spintent package - v1.0 [2026-10-18]
 --]]
 
 -- CACHÉ, LPEG Y HERRAMIENTAS GLOBALES
