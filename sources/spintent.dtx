@@ -1,6 +1,7 @@
 % \iffalse meta-comment
 % arara: lualatex: { branch: developer, draft: true }
 % arara: lualatex: { branch: developer, interaction: batchmode, shell: false }
+% arara: lualatex: { branch: developer, interaction: batchmode, shell: false }
 % arara: clean: { extensions: [ aux, log, out, glo, gls, hd, ind, ilg, idx, toc, atfi ] }
 % arara: clean: { files: [ userdoc.idx, userdoc.ilg, userdoc.ind ] }
 % arara: halt
@@ -6817,7 +6818,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{longtable}
 % \endgroup
 %
-% Si algún paso falla, el código de salida de \myspitool{} es distinto de
+% Si algún paso falla, el código de salida de \myspitool[no-index]{} es distinto de
 % cero. Pueden indicarse varios archivos a la vez y la extensión puede
 % omitirse. Algunos ejemplos:
 %
@@ -6857,7 +6858,7 @@ spitool -o -p build/ ejemplo.tex
 % paquetes \mypkg{babel} con la opción \texttt{spanish}, \mypkg{spintent}
 % y \mypkg{hyperref}, junto con la línea de |\DocumentMetadata| (\S\ref{subsec:carga}).
 % Las versiones \texttt{mathml-AF} se obtienen cambiando \texttt{mathml-SE}
-% por \texttt{mathml-AF} después de ejecutar \myspitool{}.
+% por \texttt{mathml-AF} después de ejecutar \myspitool[no-index]{}.
 %
 % Los archivos \texttt{.tex} van adjuntos a este \texttt{PDF}, junto con
 % los \texttt{PDF} ya compilados en cada modo: al final de cada descripción
