@@ -2021,12 +2021,12 @@
       {
         \bool_if:NTF \l__spintent_spdiv_read_parens_bool
           {
-            ( \__spintent_spdiv_render_op:nn {#1} {#2} )
+            \lparen \__spintent_spdiv_render_op:nn {#1} {#2} \rparen
           }
           {
-            \MathMLintent { :silent } { ( }
+            \MathMLintent { :silent } { \lparen }
             \__spintent_spdiv_render_op:nn {#1} {#2}
-            \MathMLintent { :silent } { ) }
+            \MathMLintent { :silent } { \rparen }
           }
       }
       { \__spintent_spdiv_render_op:nn {#1} {#2} }
@@ -2096,12 +2096,12 @@
       {
         \bool_if:NTF \l__spintent_spmul_read_parens_bool
           {
-            ( \__spintent_spmul_render_op:nn {#1} {#2} )
+            \lparen \__spintent_spmul_render_op:nn {#1} {#2} \rparen
           }
           {
-            \MathMLintent { :silent } { ( }
+            \MathMLintent { :silent } { \lparen }
             \__spintent_spmul_render_op:nn {#1} {#2}
-            \MathMLintent { :silent } { ) }
+            \MathMLintent { :silent } { \rparen }
           }
       }
       { \__spintent_spmul_render_op:nn {#1} {#2} }
@@ -2211,7 +2211,7 @@
             \MathMLintent { _- } { \__spintent_inner_sep: ##1 }
           }
         \MathMLintent { :silent } { \c__spintent_invisible_sep_int } % prevent "por"
-        \MathMLintent { :silent } { ( }
+        \MathMLintent { :silent } { \lparen }
         % prevent "intervalo"
         \MathMLintent { :silent } { \c__spintent_invisible_sep_int }
         \seq_use:Nnnn \l__spintent_mc_args_seq
@@ -2223,10 +2223,10 @@
         \MathMLintent { :silent } { \c__spintent_invisible_sep_int } % prevent doble "de"
         \bool_if:cTF { l__spintent_sp #1 _concept_bool }
           {
-            \MathMLintent { _entre } { ( }
+            \MathMLintent { _entre } { \lparen }
           }
           {
-            \MathMLintent { :silent } { ( }
+            \MathMLintent { :silent } { \lparen }
           }
         % prevent "intervalo"
         \MathMLintent { :silent } { \c__spintent_invisible_sep_int }
@@ -2243,7 +2243,7 @@
             \MathMLintent { _y- } { \c__spintent_invisible_sep_int } % "y" final
           }
       }
-    \MathMLintent { :silent } { ) }
+    \MathMLintent { :silent } { \rparen }
   }
 \cs_new_protected:Nn \__spintent_spmc_exec:nnnn
   {
@@ -2417,10 +2417,10 @@
 \cs_new_protected:Nn \__spintent_spnM_spnD_silent:nn
   {
     \MathMLintent { :silent } { \operatorname {#1} }
-    \MathMLintent { :silent } { ( }
+    \MathMLintent { :silent } { \lparen }
     \MathMLintent { :silent } { \c__spintent_invisible_sep_int } % prevent doble "de"
     \MathMLintent { _- } { \__spintent_inner_sep: #2 }
-    \MathMLintent { :silent } { ) }
+    \MathMLintent { :silent } { \rparen }
   }
 \cs_new_protected:Nn \__spintent_spnM_spnD_result:nn
   {
@@ -2485,11 +2485,11 @@
                   { \operatorname {#2} }
               }
               { \MathMLintent { :silent } { \operatorname {#2} } }
-            \MathMLintent { :silent } { ( }
+            \MathMLintent { :silent } { \lparen }
             % prevent doble "de"
             \MathMLintent { :silent } { \c__spintent_invisible_sep_int }
             n
-            \MathMLintent { :silent } { ) }
+            \MathMLintent { :silent } { \rparen }
           }
       }
       {
@@ -2507,13 +2507,13 @@
                   { \operatorname {#2} }
               }
               { \MathMLintent { :silent } { \operatorname {#2} } }
-            \MathMLintent { :silent } { ( }
+            \MathMLintent { :silent } { \lparen }
             % prevent doble "de"
             \MathMLintent { :silent } { \c__spintent_invisible_sep_int }
             \str_if_eq:VnTF \l__spintent_spnmd_luaset_is_number_str { true }
               { \spnum {#4} }
               {#4}
-            \MathMLintent { :silent } { ) }
+            \MathMLintent { :silent } { \rparen }
           }
         \str_if_eq:VnT \l__spintent_spnmd_luaset_is_number_str { true }
           {
@@ -2735,12 +2735,12 @@
       {
         \bool_if:NTF \l__spintent_spnz_read_parens_bool
           {
-            ( \__spintent_spnum_print_num_start: )
+            \lparen \__spintent_spnum_print_num_start: \rparen
           }
           {
-            \MathMLintent { :silent } { ( }
+            \MathMLintent { :silent } { \lparen }
             \__spintent_spnum_print_num_start:
-            \MathMLintent { :silent } { ) }
+            \MathMLintent { :silent } { \rparen }
           }
       }
       { \__spintent_spnum_print_num_start: }
@@ -3169,9 +3169,9 @@
           { \__spintent_spcoord_inner_sep:n { y } \__spintent_spcoord_print:n { y } }
       }
   }
-\cs_new_protected:Nn \__spintent_spcoord_mathml:
+\cs_new_protected:Nn \__spintent_spcoord_mathml:N
   {
-    \bool_if:NTF \l__spintent_spcoord_silent_bool
+    \bool_if:NTF #1
       {
         \MathMLintent { _- }
           {
@@ -3200,7 +3200,7 @@
           {
             % previene lectura de intervalo
             \MathMLintent { :silent } { \c__spintent_invisible_sep_int }
-            \__spintent_spcoord_mathml:
+            \__spintent_spcoord_mathml:N \l__spintent_spcoord_silent_bool
           }
       }
   }
@@ -3826,9 +3826,9 @@
             \__spintent_spfun_name_plain:
             \int_compare:nNnF { \l__spintent_spfun_nargs_int } = { 0 }
               {
-                (
+                \lparen
                 \__spintent_spfun_args_plain:
-                )
+                \rparen
               }
           }
       }
@@ -3843,9 +3843,9 @@
               { \__spintent_spfun_name_mathcat: }
             \int_compare:nNnF { \l__spintent_spfun_nargs_int } = { 0 }
               {
-                \MathMLintent { :silent } { ( }
+                \MathMLintent { :silent } { \lparen }
                 \__spintent_spfun_args:
-                \MathMLintent { :silent } { ) }
+                \MathMLintent { :silent } { \rparen }
               }
           }
       }
@@ -3961,7 +3961,7 @@
     \MathMLintent { \l__spintent_spfuncomp_intent_tl }
       {
         \str_if_eq:VnT \l__spintent_spfuncomp_luaset_paren_str { true }
-          { \MathMLintent { :silent } { ( } }
+          { \MathMLintent { :silent } { \lparen } }
         \int_step_inline:nn { \l__spintent_spfuncomp_n_int }
           {
             \int_compare:nNnF { ##1 } = { 1 }
@@ -3969,21 +3969,21 @@
             \__spintent_spfuncomp_fun:n {##1}
           }
         \str_if_eq:VnT \l__spintent_spfuncomp_luaset_paren_str { true }
-          { \MathMLintent { :silent } { ) } }
+          { \MathMLintent { :silent } { \rparen } }
       }
   }
 \cs_new_protected:Nn \__spintent_spfuncomp_plain:
   {
-    \str_if_eq:VnT \l__spintent_spfuncomp_luaset_paren_str { true } { ( }
+    \str_if_eq:VnT \l__spintent_spfuncomp_luaset_paren_str { true } { \lparen }
     \int_step_inline:nn { \l__spintent_spfuncomp_n_int }
       {
         \int_compare:nNnF { ##1 } = { 1 } { \circ }
         \tl_use:c { l__spintent_spfuncomp_luaset_print_ ##1 _tl }
       }
-    \str_if_eq:VnT \l__spintent_spfuncomp_luaset_paren_str { true } { ) }
+    \str_if_eq:VnT \l__spintent_spfuncomp_luaset_paren_str { true } { \rparen }
     \str_if_eq:VnT \l__spintent_spfuncomp_luaset_apply_str { true }
       {
-        ( \__spintent_spfun_args_plain: )
+        \lparen \__spintent_spfun_args_plain: \rparen
       }
   }
 \cs_new_protected:Nn \__spintent_spfuncomp_mathml:
@@ -4021,7 +4021,7 @@
                   {
                     \MathMLarg { c }
                       { \__spintent_inner_sep: \__spintent_spfuncomp_group: }
-                    \MathMLintent { :silent } { ( }
+                    \MathMLintent { :silent } { \lparen }
                     \MathMLarg { l }
                       {
                         \__spintent_inner_sep:
@@ -4029,7 +4029,7 @@
                           { _coma:infix ( \l__spintent_spfun_refs_tl ) }
                           { \__spintent_spfun_args: }
                       }
-                    \MathMLintent { :silent } { ) }
+                    \MathMLintent { :silent } { \rparen }
                   }
               }
               {
@@ -4039,9 +4039,9 @@
                   {
                     \MathMLarg { c }
                       { \__spintent_inner_sep: \__spintent_spfuncomp_group: }
-                    \MathMLintent { :silent } { ( }
+                    \MathMLintent { :silent } { \lparen }
                     \__spintent_spfun_args:
-                    \MathMLintent { :silent } { ) }
+                    \MathMLintent { :silent } { \rparen }
                   }
               }
           }
@@ -4119,7 +4119,7 @@
           {
             \__spintent_inner_sep:
             \operatorname { \l__spintent_spdom_op_tl }
-            ( \__spintent_spfun_name_plain: )
+            \lparen \__spintent_spfun_name_plain: \rparen
           }
       }
       {
@@ -4133,9 +4133,9 @@
         \MathMLintent { \l__spintent_spdom_intent_arg_tl }
           {
             \MathMLintent { :silent } { \operatorname { \l__spintent_spdom_op_tl } }
-            \MathMLintent { :silent } { ( }
+            \MathMLintent { :silent } { \lparen }
             \__spintent_spdom_name:
-            \MathMLintent { :silent } { ) }
+            \MathMLintent { :silent } { \rparen }
           }
       }
   }
@@ -4537,15 +4537,13 @@
     \tl_if_novalue:nF {#3}
       {
         \MathMLintent { :silent } { \c__spintent_invisible_sep_int } % silencia el "por"
-        \bool_set_eq:NN \l__spintent_spcoord_silent_bool
-          \l__spintent_spPoint_silent_bool
         \tl_set:Nn \l__spintent_spcoord_raw_arg_tl {#3}
         \__spintent_luafun_spcoord_parse_and_set:n { \exp_not:n {#3} }
         \str_if_eq:VnT \l__spintent_spcoord_luaset_error_str { true }
           { \msg_error:nne { spintent } { spcoord-invalid-arg } { \exp_not:n {#3} } }
         \__spintent_spcoord_set_wrap_parens_size:
         \str_if_eq:VnF \l__spintent_spcoord_luaset_error_str { true }
-          { \__spintent_spcoord_mathml: }
+          { \__spintent_spcoord_mathml:N \l__spintent_spPoint_silent_bool }
       }
   }
 \cs_new_protected:Nn \__spintent_spPoint_mathml:n
@@ -4640,14 +4638,13 @@
       { \equal } % notación de vector =( , )
         % previene lectura de intervalo
         \MathMLintent { :silent } { \c__spintent_invisible_sep_int }
-        \bool_set_eq:NN \l__spintent_spcoord_silent_bool \l__spintent_spvec_silent_bool
         \tl_set:Nn \l__spintent_spcoord_raw_arg_tl {#3}
         \__spintent_luafun_spcoord_parse_and_set:n { \exp_not:n {#3} }
         \str_if_eq:VnT \l__spintent_spcoord_luaset_error_str { true }
           { \msg_error:nne { spintent } { spcoord-invalid-arg } { \exp_not:n {#3} } }
         \__spintent_spcoord_set_wrap_parens_size:
         \str_if_eq:VnF \l__spintent_spcoord_luaset_error_str { true }
-          { \__spintent_spcoord_mathml: }
+          { \__spintent_spcoord_mathml:N \l__spintent_spvec_silent_bool }
       }
   }
 \cs_new_protected:Nn \__spintent_spvec_mathml:n
@@ -7020,17 +7017,17 @@
             \MathMLintent { \l__spintent_spcirc_connector_arg_tl }
               {
                 \__spintent_inner_sep:
-                \__spintent_luafun_mrow_intent_arg:nn { } { intent = ":silent" } (
+                \__spintent_luafun_mrow_intent_arg:nn { } { intent = ":silent" } \lparen
                 \__spintent_mathmlarg_point:nnV { pt } { spcirc }
                   \l__spintent_geo_luaset_points_clist
-                \__spintent_luafun_mrow_intent_arg:nn { } { intent = ":silent" } )
+                \__spintent_luafun_mrow_intent_arg:nn { } { intent = ":silent" } \rparen
               }
           }
           {
             \MathMLintent { \l__spintent_spcirc_connector_arg_tl }
               {
                 \__spintent_inner_sep:
-                \__spintent_luafun_mrow_intent_arg:nn { } { intent = ":silent" } (
+                \__spintent_luafun_mrow_intent_arg:nn { } { intent = ":silent" } \lparen
                 \__spintent_mathmlarg_point:nnV { pt } { spcirc }
                   \l__spintent_geo_luaset_points_clist
               }
@@ -8343,7 +8340,7 @@
         \MathMLintent { _- }
           {
             \__spintent_inner_sep:
-            P ( \__spintent_spProb_content: )
+            P \lparen \__spintent_spProb_content: \rparen
           }
       }
       {
@@ -8355,13 +8352,13 @@
                   {
                     \__spintent_inner_sep:
                     P
-                    (
+                    \lparen
                       \MathMLarg { a }
                         {
                           \__spintent_inner_sep: \__spintent_spProb_event:N
                             \l__spintent_spProb_luaset_a_str
                         }
-                    )
+                    \rparen
                   }
               }
               {
@@ -8369,7 +8366,7 @@
                   {
                     \__spintent_inner_sep:
                     P
-                    (
+                    \lparen
                       \MathMLarg { p }
                         {
                           \MathMLintent
@@ -8395,7 +8392,7 @@
                                 }
                             }
                         }
-                    )
+                    \rparen
                   }
               }
           }
@@ -8403,7 +8400,7 @@
             \MathMLintent { _ \tl_use:N \l__spintent_spProb_read_arg_tl :nofix }
               {
                 \__spintent_inner_sep:
-                P ( \__spintent_spProb_content: )
+                P \lparen \__spintent_spProb_content: \rparen
               }
           }
       }
@@ -8489,7 +8486,7 @@
     \group_begin:
       \__spintent_spProb_nested_ops:
       \bool_if:NTF \l__spintent_spcomp_do_paren_bool
-        { ( #1 ) }
+        { \lparen #1 \rparen }
         {#1}
     \group_end:
   }
