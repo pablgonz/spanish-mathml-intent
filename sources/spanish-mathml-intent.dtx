@@ -40,7 +40,7 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{\smallskipamount}
 % Estiramiento extra antes de desbordar la línea
-\setlength{\emergencystretch}{10em}
+\setlength{\emergencystretch}{2em}
 \newlength{\mydpstrut}
 \setlength{\mydpstrut}{\dp\strutbox}
 % Only for arara... I like arara :)
@@ -246,7 +246,7 @@ end, "shekel_fallback_patch")
 \NewDocumentCommand \pkglogo {}
   {
     \group_begin:
-      \LibertinusSansOsF{\textcolor{module_name}{spanish-mathml-}\textcolor{OrangeRed}{intent}}
+      \LibertinusSansOsF{\textcolor{module_name}{spanish}\textcolor{gray}{-}\textcolor{module_name}{mathml}\textcolor{gray}{-}\textcolor{OrangeRed}{intent}}
     \group_end:
   }
 % Custom \meta[...]{...}, \marg[...]{...} and \oarg[...]{...} with color
@@ -701,6 +701,7 @@ end, "shekel_fallback_patch")
 % Important \NeedsTeXFormat \ProvidesExplPackage \documentclass \DocumentMetadata
     keywordstyle  = [1]{\bfseries\color{structure}},%
     keywords      = [1]{documentclass, newcommand, makeatletter, makeatother, %
+                    begin, end, document, %
                     },%
 % Other words \usepackage,
     keywordstyle  = [2]{\color{pkgstruct}},%
@@ -922,12 +923,12 @@ end, "shekel_fallback_patch")
 % \setlocalecaption{spanish}{table}{Tabla}
 %
 % \title{
-%    \scalebox{2.67}{\pkglogo}\\[0pt]
+%    \scalebox{1.25}{\pkglogo}\\[-5pt]
 %    {\Large\textcolor{guard_angle}{\fetamontotf{spanish parse intents}}}\\[-5pt]
 %    \fileversion{} \quad \filedate\thanks{
 %     Este archivo describe la documentación para la versión \fileversion{}
 %     revisada por última vez el
-%    \filedate.}\\[30pt]
+%    \filedate.}\\[25pt]
 %    \author{
 %    \large
 %    \raisebox{-1pt}{\textcolor{guard_angle}{\textcopyright{}2026 by Pablo González L}}\thanks{
@@ -944,10 +945,15 @@ end, "shekel_fallback_patch")
 % \maketitle
 %
 % \begin{abstract}
-%  El paquete \mypkg*[no-index]{spintent} proporciona una serie de utilidades para
-%  docentes de educación primaria y secundaria que necesiten crean documentos
-%  \texttt{PDF} \emph{accesibles}, o \emph{tagged} \texttt{PDF}, en español
-%  usando \hologo{LuaLaTeX}.
+%  El paquete \mypkg*[no-index]{spanish-mathml-intent} agrega el atributo
+%  \emph{intent} de \mynvmath{MathML} a las matemáticas escritas en español
+%  con \hologo{LuaLaTeX}. El atributo le indica a un lector de pantalla qué
+%  concepto es una expresión y cómo se debe leer, de modo que
+%  \mynvmath{NVDA} con \mynvmath{MathCAT} lea correctamente las fórmulas en
+%  documentos \texttt{PDF} accesibles (\emph{tagged} \texttt{PDF}). Sus
+%  comandos escriben y etiquetan números, unidades, dinero, fechas y horas,
+%  geometría, álgebra y estadística, cada uno con la lectura en español que le
+%  corresponde. Está pensado para docentes de educación primaria y secundaria.
 % \end{abstract}
 %
 % \tableofcontents
@@ -1584,15 +1590,15 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     \enquote{error}, el mensaje indica el comando y el argumento que no
 %     cumple la forma documentada (\S\ref{sec:setspintent}).
 %   \item \emph{La llave} \mykey{read-cmd}. Varios comandos ofrecen más de una
-%     lectura;\newline |$\spPoint[read-cmd=school]{A_{1}}$| verbaliza
+%     lectura; |$\spPoint[read-cmd=school]{A_{1}}$| verbaliza
 %     «sub uno». Los valores posibles se describen en la sección de cada comando.
-%   \item \emph{La llave} \mykey{read-arg}. Reemplaza la lectura del argumento,\newline
+%   \item \emph{La llave} \mykey{read-arg}. Reemplaza la lectura del argumento,
 %     |$\spread[read-arg={es-paralela-a}]{\parallel}$|; su valor siempre
 %     va entre llaves.
 %   \item \emph{La llave} \mykey{silent}. Con \mykey{silent}|=true| se silencia la lectura
 %     sin cambiar lo que se imprime; la validación del argumento se mantiene.
-%   \item \emph{La configuración global.} Una llave se puede fijar para todo
-%     el documento,\newline |\setspintent{spPoint}{read-cmd=school}|; la llave dada
+%   \item \emph{La configuración global.} Se puede fijar para todo
+%     el documento, |\setspintent{spPoint}{read-cmd=school}|; la llave dada
 %     en el argumento opcional de un comando tiene prioridad sobre
 %     ella (\S\ref{sec:setspintent}).
 % \end{enumerate}
@@ -7001,6 +7007,8 @@ spitool -o -p build/ ejemplo.tex
 % \end{description}
 %
 % \newpage
+%
+% \newgeometry{top=0.5in,bottom=0.3in,left=1.0in,right=0.5in,footskip=0.2in,headheight=1cm,headsep=0.27cm}
 %
 % \indexprologue{
 % Los números en cursiva indican las páginas donde se describe la entrada
