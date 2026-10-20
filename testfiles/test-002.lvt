@@ -22,7 +22,7 @@
 \ExplSyntaxOn
 \debug_on:n { check-declarations }
 \ExplSyntaxOff
-\usepackage{spintent}
+\usepackage{spanish-mathml-intent}
 \usepackage{hyperref}
 \hypersetup
   {

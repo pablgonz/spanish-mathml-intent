@@ -1,6 +1,6 @@
-.\" spitool.1 -- manual page for spitool (part of the spintent package)
+.\" spitool.1 -- manual page for spitool (part of the spanish-mathml-intent package)
 .\" Copyright (C) 2026 Pablo Gonzalez L <pablgonz@educarchile.cl>
-.TH SPITOOL 1 "2026-10-18" "spitool 1.0" "spintent"
+.TH SPITOOL 1 "2026-10-20" "spitool 1.0" "spanish-mathml-intent"
 .SH NAME
 spitool \- clean luamml ghost characters and validate tagged PDF files
 .SH SYNOPSIS
@@ -22,7 +22,7 @@ spitool \- clean luamml ghost characters and validate tagged PDF files
 is a
 .BR texlua (1)
 script distributed with the
-.B spintent
+.B spanish\-mathml\-intent
 LaTeX package.
 It prepares the MathML produced by
 .B luamml
@@ -33,7 +33,7 @@ that the tag structure and the PDF/UA-2 conformance of a document are
 correct.
 .PP
 The package
-.B spintent
+.B spanish\-mathml\-intent
 can write invisible marker characters in the MathML that
 .B luamml
 produces.
@@ -90,7 +90,7 @@ The document is compiled once with the TeX engine, in a private temporary
 directory, with the option
 .B AFghost=true
 passed to the package
-.BR spintent ,
+.BR spanish\-mathml\-intent ,
 so that
 .B luamml
 writes the ghost characters in the HTML file.
@@ -192,7 +192,7 @@ It is written next to the input file, or in the directory given with
 .BR \-\-path .
 If no ghost character is found a warning is printed and the file is not
 kept; it usually means that
-.B spintent
+.B spanish\-mathml\-intent
 was not loaded or that the HTML file was not produced with
 .BR AFghost=true .
 .TP
@@ -277,13 +277,13 @@ $ spitool sample\-luamml\-mathml.html
 .BR verapdf (1)
 .PP
 The documentation of the
-.B spintent
+.B spanish\-mathml\-intent
 package, which can be read with
-.B texdoc spintent
+.B texdoc spanish\-mathml\-intent
 .SH REPORTING BUGS
-Repository: https://github.com/pablgonz/spintent
+Repository: https://github.com/pablgonz/spanish\-mathml\-intent
 .br
-Bug tracker: https://github.com/pablgonz/spintent/issues
+Bug tracker: https://github.com/pablgonz/spanish\-mathml\-intent/issues
 .SH AUTHOR
 Pablo Gonzalez L <pablgonz@educarchile.cl>
 .SH COPYRIGHT

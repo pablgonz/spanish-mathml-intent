@@ -1,11 +1,11 @@
-## spintent — Spanish parse intent
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/pablgonz/spintent?label=version)
-![GitHub Release Date](https://img.shields.io/github/release-date/pablgonz/spintent)
-![GitHub last commit](https://img.shields.io/github/last-commit/pablgonz/spintent)
+## spanish-mathml-intent — Spanish parse intent
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/pablgonz/spanish-mathml-intent?label=version)
+![GitHub Release Date](https://img.shields.io/github/release-date/pablgonz/spanish-mathml-intent)
+![GitHub last commit](https://img.shields.io/github/last-commit/pablgonz/spanish-mathml-intent)
 
 ## Descripción
 
-El paquete <code>&langle;spintent&rangle;</code> proporciona una serie de
+El paquete <code>&langle;spanish-mathml-intent&rangle;</code> proporciona una serie de
 utilidades para docentes de educación primaria y secundaria que necesiten
 crear documentos `PDF` _accesibles_ \(_tagged_ PDF\) en español utilizando
 `LuaLaTeX`.
@@ -22,16 +22,16 @@ del ángulo recto. Si no la encuentra, avisa y usa la fuente matemática cargada
 
 ## Instalación
 
-El paquete <code>&langle;spintent&rangle;</code> está disponible en
+El paquete <code>&langle;spanish-mathml-intent&rangle;</code> está disponible en
 [TeX Live](https://www.tug.org/texlive/); utilice el gestor de paquetes
-para instalarlo (`tlmgr install spintent`).
+para instalarlo (`tlmgr install spanish-mathml-intent`).
 
 Para probar la versión de desarrollo, que puede contener cambios aún no
 publicados, clone el repositorio y ejecute `l3build install`:
 
 ```
-$ git clone https://github.com/pablgonz/spintent.git
-$ cd spintent
+$ git clone https://github.com/pablgonz/spanish-mathml-intent.git
+$ cd spanish-mathml-intent
 $ l3build install
 ```
 
@@ -39,12 +39,12 @@ Para generar la documentación con el código fuente, ejecute `l3build doc`.
 
 ## Ejemplos
 
-El archivo <code>&langle;spintent.pdf&rangle;</code> contiene ejemplos
+El archivo <code>&langle;spanish-mathml-intent.pdf&rangle;</code> contiene ejemplos
 adjuntos, los cuales se pueden extraer desde el visor de PDF o desde la línea
 de comandos ejecutando:
 
 ```
-$ pdfdetach -saveall spintent.pdf
+$ pdfdetach -saveall spanish-mathml-intent.pdf
 ```
 
 y luego compilarlos con `lualatex-dev`.
@@ -77,9 +77,9 @@ un enlace para verlo; GitHub también permite descargarlo desde esa página.
 | 08 | Ejemplo real: guía de estadística y probabilidad | [tex](sources/test-pkg/spintent-08.tex) | [pdf](sources/test-pkg/spintent-08.pdf) | [pdf](sources/test-pkg/spintent-08-AF.pdf) |
 
 > Estos archivos muestran la compatibilidad de
-> <code>&langle;spintent&rangle;</code> con `PDF` etiquetado usando `LuaLaTeX`.
+> <code>&langle;spanish-mathml-intent&rangle;</code> con `PDF` etiquetado usando `LuaLaTeX`.
 > Para compilarlos se requieren `babel` (opción `spanish`),
-> <code>&langle;spintent&rangle;</code> y `hyperref`, junto con la línea de
+> <code>&langle;spanish-mathml-intent&rangle;</code> y `hyperref`, junto con la línea de
 > `\DocumentMetadata`. Las versiones `mathml-AF` se obtienen cambiando
 > `mathml-SE` por `mathml-AF` después de ejecutar `spitool`.
 
@@ -108,7 +108,7 @@ Puede ejecutar:
 
 ## Licencia
 
-El paquete <code>&langle;spintent&rangle;</code> se puede modificar y distribuir
+El paquete <code>&langle;spanish-mathml-intent&rangle;</code> se puede modificar y distribuir
 bajo los términos y condiciones de la
 [LaTeX Project Public License](https://www.latex-project.org/lppl/),
 versión 1.3c o superior.
@@ -125,10 +125,10 @@ versión 1.3c o superior.
 ├── testfiles
 └── sources
     ├── CTANREADME.md
-    ├── spintent.dtx
-    ├── spintent.ins
+    ├── spanish-mathml-intent.dtx
+    ├── spanish-mathml-intent.ins
     ├── spintent.lua
-    ├── spintent.sty
+    ├── spanish-mathml-intent.sty
     ├── spitool.lua
     └── test-pkg
         ├── spintent-01.tex

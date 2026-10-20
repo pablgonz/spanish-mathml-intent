@@ -6,7 +6,7 @@
 % arara: clean: { files: [ userdoc.idx, userdoc.ilg, userdoc.ind ] }
 % arara: halt
 %
-% File: spintent.dtx
+% File: spanish-mathml-intent.dtx
 %
 % Copyright (C) 2026 by Pablo González L <pablgonz@educarchile.cl>
 %
@@ -22,8 +22,8 @@
 % This work is "maintained" (as per the LPPL maintenance status)
 % by Pablo González L.
 %
-% This work consists of the files spintent.dtx, spintent.lua, spitool.lua
-% and spintent.sty.
+% This work consists of the files spanish-mathml-intent.dtx, spintent.lua, spitool.lua
+% and spanish-mathml-intent.sty.
 %
 % \fi
 %
@@ -223,7 +223,7 @@ end, "shekel_fallback_patch")
 \definecolor{mathmlblue}{HTML}{1F5FBF}               % Azul para "Math" de MathML
 % File info
 \def\fileversion{v1.0}
-\def\filedate{2026-10-18}
+\def\filedate{2026-10-20}
 \def\fileinfo{Spanish parse intents}
 
 % Config hyperref
@@ -234,7 +234,7 @@ end, "shekel_fallback_patch")
     allcolors          = newlinkcolor, %%%araracolor,%%%;linkcolor,
     colorlinks         = true,
     linktoc            = all,
-    pdftitle           = {.:: The spintent package --- \fileinfo{} ::.},
+    pdftitle           = {.:: The spanish-mathml-intent package --- \fileinfo{} ::.},
     pdfauthor          = {Pablo González L},
     pdfsubject         = {Documentation for \fileversion{} [\filedate] },
     pdfkeywords        = {MathCAT, NVDA, tagged PDF, spanish, accesibilidad},
@@ -246,7 +246,7 @@ end, "shekel_fallback_patch")
 \NewDocumentCommand \pkglogo {}
   {
     \group_begin:
-      \LibertinusSansOsF{\textcolor{module_name}{sp}\textcolor{OrangeRed}{intent}}
+      \LibertinusSansOsF{\textcolor{module_name}{spanish-mathml-}\textcolor{OrangeRed}{intent}}
     \group_end:
   }
 % Custom \meta[...]{...}, \marg[...]{...} and \oarg[...]{...} with color
@@ -722,7 +722,7 @@ end, "shekel_fallback_patch")
                     chardef, mathchardef, ell, lparen, rparen, textsc, },%
 % Other words 5
     keywordstyle  = [5]{\bfseries\color{pkgname}},%
-    keywords      = [5]{babel,spintent,libertinus-otf,sourcecodepro,fourier-otf,Erewhon-Math,hyperref,},%,
+    keywords      = [5]{babel,spanish-mathml-intent,libertinus-otf,sourcecodepro,fourier-otf,Erewhon-Math,hyperref,},%,
 % Reserved words 6 (document class)
     keywordstyle  = [6]{\bfseries\color{clsname}},%
     keywords      = [6]{article, l3doc,},%
@@ -936,8 +936,8 @@ end, "shekel_fallback_patch")
 %    }
 % \small
 % \vspace*{-5pt}
-% \textsc{ctan}: \url{https://www.ctan.org/pkg/spintent}\\
-% \textcolor{gray}{\scriptsize\faIcon[regular]{github}}\,\,\,\url{https://github.com/pablgonz/spintent}
+% \textsc{ctan}: \url{https://www.ctan.org/pkg/spanish-mathml-intent}\\
+% \textcolor{gray}{\scriptsize\faIcon[regular]{github}}\,\,\,\url{https://github.com/pablgonz/spanish-mathml-intent}
 % \vspace*{-2cm}
 % }
 % \date{}
@@ -1046,7 +1046,7 @@ end, "shekel_fallback_patch")
 %
 % Este paquete solo se puede utilizar con \hologo{LuaLaTeX} y
 % \emph{tagged} \texttt{PDF} activo. Está presente en \hologo{TeX} Live, para
-% instalarlo utilice el gestor de paquetes con |tlmgr install| \texttt{spintent}.
+% instalarlo utilice el gestor de paquetes con |tlmgr install| \texttt{spanish-mathml-intent}.
 % Si desea probar la versión de desarrollo, que puede contener cambios aún no
 % publicados, clone el repositorio y ejecute |l3build install|:
 %
@@ -1054,8 +1054,8 @@ end, "shekel_fallback_patch")
 %<*example>
 % \fi
 \begin{examplecode}[frame=single,language={}]
-  git clone https://github.com/pablgonz/spintent.git
-  cd spintent
+  git clone https://github.com/pablgonz/spanish-mathml-intent.git
+  cd spanish-mathml-intent
   l3build install
 \end{examplecode}
 % \iffalse
@@ -1066,10 +1066,13 @@ end, "shekel_fallback_patch")
 %
 % \section{Descripción}
 %
-% El nombre \mypkg*[no-index]{spintent} puede entenderse como \emph{«Spanish Parse
-% Intent»} o también como \emph{«School Parse Intent»}. Ambas
-% interpretaciones reflejan el objetivo del paquete y el público para el
-% que fue diseñado: docentes de educación primaria y secundaria.
+% El nombre \mypkg*[no-index]{spanish-mathml-intent} resume lo que hace el
+% paquete: \emph{«Spanish»} por el idioma, \emph{«MathML»} por el lenguaje en
+% que se escriben las fórmulas accesibles e \emph{«intent»} por el atributo
+% del mismo nombre que indica cómo se lee cada fórmula. El nombre corto
+% original, \emph{«Spanish Parse Intent»}, sobrevive en el prefijo \texttt{sp}
+% de los comandos y en el módulo interno \texttt{spintent}. El paquete está
+% pensado para docentes de educación primaria y secundaria.
 %
 % Un documento \emph{tagged} \texttt{PDF}, en español \emph{«PDF etiquetado»},
 % es un \texttt{PDF} que, además de componer la página, guarda su estructura:
@@ -1116,7 +1119,7 @@ end, "shekel_fallback_patch")
   }
 \documentclass{article}
 \usepackage[spanish]{babel}
-\usepackage{spintent}
+\usepackage{spanish-mathml-intent}
 \end{examplecode}
 % \iffalse
 %</example>
@@ -1182,7 +1185,7 @@ end, "shekel_fallback_patch")
 \usepackage[osf,nomath,mono=false]{libertinus-otf}
 \usepackage[osf,semibold]{sourcecodepro}
 \usepackage[no-text]{fourier-otf}
-\usepackage{spintent}
+\usepackage{spanish-mathml-intent}
 \end{examplecode}
 % \iffalse
 %</example>
@@ -1207,7 +1210,7 @@ end, "shekel_fallback_patch")
 %<*example>
 % \fi
 \begin{examplecode}[frame=single]
-\usepackage[mathcal=false]{spintent}
+\usepackage[mathcal=false]{spanish-mathml-intent}
 \end{examplecode}
 % \iffalse
 %</example>
@@ -1239,7 +1242,7 @@ end, "shekel_fallback_patch")
 \usepackage[osf,semibold]{sourcecodepro}
 \usepackage[no-text]{fourier-otf}
 \setmathfont{Erewhon-Math}[range={cal,bfcal},StylisticSet=1]
-\usepackage{spintent, hyperref}
+\usepackage{spanish-mathml-intent, hyperref}
 \hypersetup
   {
     colorlinks         = true,
@@ -1437,7 +1440,7 @@ end, "shekel_fallback_patch")
   }
 \documentclass{article}
 \usepackage[spanish]{babel}
-\usepackage{spintent, hyperref}
+\usepackage{spanish-mathml-intent, hyperref}
 \hypersetup
   {
     pdfdisplaydoctitle = true,
@@ -7031,10 +7034,10 @@ spitool -o -p build/ ejemplo.tex
 % \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
 %
 % The most recent publicly released version of \mypkg*[no-index]{spintent} is
-% available at \textsc{ctan}: \url{https://www.ctan.org/pkg/spintent}.
+% available at \textsc{ctan}: \url{https://www.ctan.org/pkg/spanish-mathml-intent}.
 % While general feedback via email is welcomed, specific bugs or
 % feature requests should be reported through the issue
-% tracker: \textcolor{gray}{\scriptsize\faIcon[regular]{github}} \url{https://github.com/pablgonz/spintent/issues}.
+% tracker: \textcolor{gray}{\scriptsize\faIcon[regular]{github}} \url{https://github.com/pablgonz/spanish-mathml-intent/issues}.
 %
 % \begin{important}*
 % The documentation presented here is far from professional, it contains
@@ -7079,10 +7082,10 @@ spitool -o -p build/ ejemplo.tex
 \NeedsTeXFormat{LaTeX2e}[2026-11-01]
 \IfFormatAtLeastF { 2026-11-01 }
   {
-    \PackageError { spintent }
+    \PackageError { spanish-mathml-intent }
       { LaTeX~kernel~too~old~need~2026-11-01~or~later }
       {
-        spintent~requires~a~LaTeX2e~release~2026-11-01~or~
+        spanish-mathml-intent~requires~a~LaTeX2e~release~2026-11-01~or~
         later.~Update~your~TeX~distribution.
       }
   }
@@ -7091,7 +7094,7 @@ spitool -o -p build/ ejemplo.tex
 % keys: \mykey[usepackage]{mathcal} and \mykey[usepackage]{AFghost}, which can be passed as package
 % options.
 %    \begin{macrocode}
-\ProvidesExplPackage {spintent} {2026-10-18} {1.0} {Spanish parse intents}
+\ProvidesExplPackage {spanish-mathml-intent} {2026-10-20} {1.0} {Spanish parse intents}
 \keys_define:nn { spintent }
   {
     mathcal .usage:n = load,
@@ -7129,14 +7132,14 @@ spitool -o -p build/ ejemplo.tex
           }
         \msg_new:nnn { spintent } { env-success }
           {
-            Everything~looks~correct,~spintent~will~make~the~intent!
+            Everything~looks~correct,~spanish-mathml-intent~will~make~the~intent!
           }
         \msg_info:nn { spintent } { env-success }
       }
       {
         \msg_new:nnnn { spintent } { fatal-engine-requires-luatex }
           {
-            The~spintent~package~requires~LuaLaTeX.
+            The~spanish-mathml-intent~package~requires~LuaLaTeX.
           }
           {
             This~package~relies~on~Lua~module.~Compile~with~lualatex.
@@ -7150,7 +7153,7 @@ spitool -o -p build/ ejemplo.tex
         '\token_to_str:N \DocumentMetadata'~is~missing.
       }
       {
-        The~spintent~package~requires~tagged~PDF~active.\\
+        The~spanish-mathml-intent~package~requires~tagged~PDF~active.\\
         You~must~declare~'\token_to_str:N \DocumentMetadata { tagging=on }'.
       }
     \msg_fatal:nn { spintent } { fatal-metadata-missing }
@@ -22734,7 +22737,7 @@ spitool -o -p build/ ejemplo.tex
 %<*spintentlua>
 % \fi
 --[[
-     Lua module spintent.lua for spintent package - v1.0 [2026-10-18]
+     Lua module spintent.lua for spintent package - v1.0 [2026-10-20]
 --]]
 
 -- CACHÉ, LPEG Y HERRAMIENTAS GLOBALES
@@ -26373,8 +26376,8 @@ Examples:
   $ spitool -o -p build/ sample.tex
 
 Issues and reports:
-  Repository : https://github.com/pablgonz/spintent
-  Bug tracker: https://github.com/pablgonz/spintent/issues
+  Repository : https://github.com/pablgonz/spanish-mathml-intent
+  Bug tracker: https://github.com/pablgonz/spanish-mathml-intent/issues
   Copyright(C) 2026 by Pablo González L <pablgonz<at>educarchile.cl>
 ]])
     os.exit(0)
@@ -26717,7 +26720,7 @@ local function run_generate_mode(tex_filename)
         '%s --interaction=nonstopmode --output-directory=%s %s',
         engine,
         quote_arg(tmpdir),
-        quote_arg("\\PassOptionsToPackage{AFghost=true}{spintent}\\input{" .. tex_filename .. "}")
+        quote_arg("\\PassOptionsToPackage{AFghost=true}{spanish-mathml-intent}\\input{" .. tex_filename .. "}")
     )
 
     print("==================================================")
@@ -26739,7 +26742,7 @@ local function run_generate_mode(tex_filename)
     local check = io.open(generated_html, "r")
     if not check then
         keep_tmp = true
-        io.stderr:write("Error: " .. generated_html .. " was not generated. Verify spintent package loading in " .. tex_filename .. "\n")
+        io.stderr:write("Error: " .. generated_html .. " was not generated. Verify spanish-mathml-intent package loading in " .. tex_filename .. "\n")
         had_failure = true
         cleanup_and_exit(1)
     end
@@ -26756,7 +26759,7 @@ local function run_generate_mode(tex_filename)
     end
     local found_something = report_stats(stats, output_name,
         "Forced AFghost=true during compilation -- if no ghosts were found, "
-        .. "verify that spintent is loaded in " .. tex_filename .. ".")
+        .. "verify that spanish-mathml-intent is loaded in " .. tex_filename .. ".")
     if not found_something then
         os.remove(output_name)
     end

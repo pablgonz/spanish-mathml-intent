@@ -48,13 +48,13 @@ _minted*
 
 ## For testing
 **/sources/test-pkg/CTANREADME.md
-**/sources/test-pkg/spintent.ins
-**/sources/test-pkg/spintent.dtx
-**/sources/test-pkg/spintent.sty
+**/sources/test-pkg/spanish-mathml-intent.ins
+**/sources/test-pkg/spanish-mathml-intent.dtx
+**/sources/test-pkg/spanish-mathml-intent.sty
 **/sources/test-pkg/spintent.lua
 
 ## Excepciones: estos si se versionan
-!/spintent.pdf
+!/spanish-mathml-intent.pdf
 !/spitool.man1.pdf
 !/spintent.zip
 !/sources/test-pkg/spintent-*.pdf

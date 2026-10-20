@@ -17,29 +17,29 @@ and version 1.3c or later is part of all distributions of LaTeX version
 This work is "maintained" (as per the LPPL maintenance status)
 by Pablo González L.
 
-This work consists of the files spintent.dtx and spintent.ins and the files
-generated from them (spintent.sty, spintent.lua and spitool.lua).
+This work consists of the files spanish-mathml-intent.dtx and spanish-mathml-intent.ins and the files
+generated from them (spanish-mathml-intent.sty, spintent.lua and spitool.lua).
 
 The released version of this package is available from CTAN.
 
 The development version of the package can be found at:
-  https://github.com/pablgonz/spintent/
+  https://github.com/pablgonz/spanish-mathml-intent/
 for those people who are interested.
 
 \endpreamble
 % Stop docstrip adding \endinput (from l3doc.dtx)
 \postamble
 \endpostamble
-\usedir{tex/lualatex/spintent}
-% Extraemos el paquete spintent.sty
-\generate{\file{spintent.sty}{\from{spintent.dtx}{package}}}
+\usedir{tex/lualatex/spanish-mathml-intent}
+% Extraemos el paquete spanish-mathml-intent.sty
+\generate{\file{spanish-mathml-intent.sty}{\from{spanish-mathml-intent.dtx}{package}}}
 % Apagamos el preámbulo y postámbulo
 \nopreamble
 \nopostamble
 % Extraemos spintent.lua y spitool.lua
 \generate{
-  \file{spintent.lua}{\from{spintent.dtx}{spintentlua}}
-  \file{spitool.lua}{\from{spintent.dtx}{spitool}}
+  \file{spintent.lua}{\from{spanish-mathml-intent.dtx}{spintentlua}}
+  \file{spitool.lua}{\from{spanish-mathml-intent.dtx}{spitool}}
 }
 \Msg{*****************************************************************}
 \Msg{*}
@@ -47,7 +47,7 @@ for those people who are interested.
 \Msg{* TDS directory searched by your TeX distribution.}
 \Msg{*}
 \Msg{* To produce the documentation with source code run arara }
-\Msg{* on file spintent.dtx }
+\Msg{* on file spanish-mathml-intent.dtx }
 \Msg{*}
 \Msg{* Happy TeXing!}
 \Msg{*}

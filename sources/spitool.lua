@@ -224,8 +224,8 @@ Examples:
   $ spitool -o -p build/ sample.tex
 
 Issues and reports:
-  Repository : https://github.com/pablgonz/spintent
-  Bug tracker: https://github.com/pablgonz/spintent/issues
+  Repository : https://github.com/pablgonz/spanish-mathml-intent
+  Bug tracker: https://github.com/pablgonz/spanish-mathml-intent/issues
   Copyright(C) 2026 by Pablo González L <pablgonz<at>educarchile.cl>
 ]])
     os.exit(0)
@@ -568,7 +568,7 @@ local function run_generate_mode(tex_filename)
         '%s --interaction=nonstopmode --output-directory=%s %s',
         engine,
         quote_arg(tmpdir),
-        quote_arg("\\PassOptionsToPackage{AFghost=true}{spintent}\\input{" .. tex_filename .. "}")
+        quote_arg("\\PassOptionsToPackage{AFghost=true}{spanish-mathml-intent}\\input{" .. tex_filename .. "}")
     )
 
     print("==================================================")
@@ -590,7 +590,7 @@ local function run_generate_mode(tex_filename)
     local check = io.open(generated_html, "r")
     if not check then
         keep_tmp = true
-        io.stderr:write("Error: " .. generated_html .. " was not generated. Verify spintent package loading in " .. tex_filename .. "\n")
+        io.stderr:write("Error: " .. generated_html .. " was not generated. Verify spanish-mathml-intent package loading in " .. tex_filename .. "\n")
         had_failure = true
         cleanup_and_exit(1)
     end
@@ -607,7 +607,7 @@ local function run_generate_mode(tex_filename)
     end
     local found_something = report_stats(stats, output_name,
         "Forced AFghost=true during compilation -- if no ghosts were found, "
-        .. "verify that spintent is loaded in " .. tex_filename .. ".")
+        .. "verify that spanish-mathml-intent is loaded in " .. tex_filename .. ".")
     if not found_something then
         os.remove(output_name)
     end

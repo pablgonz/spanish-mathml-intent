@@ -1,10 +1,10 @@
-## spintent — Spanish MathML intent for accessible (tagged) PDF with LuaLaTeX
+## spanish-mathml-intent — Spanish MathML intent for accessible (tagged) PDF with LuaLaTeX
 
-Release v1.0 \[2026-10-18\]
+Release v1.0 \[2026-10-20\]
 
 ## Description
 
-The <code>&langle;spintent&rangle;</code> package adds MathML _intent_ to
+The <code>&langle;spanish-mathml-intent&rangle;</code> package adds MathML _intent_ to
 mathematics written in Spanish with LuaLaTeX. The _intent_ attribute tells a
 screen reader which concept an expression is and how to speak it, so that
 NVDA with MathCAT reads the formulas correctly in accessible \(_tagged_\)
@@ -33,26 +33,26 @@ short lessons with examples you can try online.
 
 ## Installation
 
-The <code>&langle;spintent&rangle;</code> package is present in TeX Live, use
-the package manager to install it (`tlmgr install spintent`).
+The <code>&langle;spanish-mathml-intent&rangle;</code> package is present in TeX Live, use
+the package manager to install it (`tlmgr install spanish-mathml-intent`).
 
 To try the development version, which may contain changes not yet released,
 clone the repository and run `l3build install`:
 
 ```
-$ git clone https://github.com/pablgonz/spintent.git
-$ cd spintent
+$ git clone https://github.com/pablgonz/spanish-mathml-intent.git
+$ cd spanish-mathml-intent
 $ l3build install
 ```
 
 ## Examples
 
-The file <code>&langle;spintent.pdf&rangle;</code> contains attached examples,
+The file <code>&langle;spanish-mathml-intent.pdf&rangle;</code> contains attached examples,
 which can be extracted from the PDF viewer or from the command line by
 running:
 
 ```
-$ pdfdetach -saveall spintent.pdf
+$ pdfdetach -saveall spanish-mathml-intent.pdf
 ```
 
 and then compile them with `lualatex-dev`.
@@ -69,16 +69,16 @@ third-party material was copied; the package is distributed under the LPPL.
 
 ## License
 
-The <code>&langle;spintent&rangle;</code> package may be modified and
+The <code>&langle;spanish-mathml-intent&rangle;</code> package may be modified and
 distributed under the terms and conditions of the [LaTeX Project Public
 License](https://www.latex-project.org/lppl/), version 1.3c or greater.
 
 ## Contents
 
 - README.md \(this file\)
-- spintent.pdf \(documentation\)
-- spintent.dtx \(master file that produced all files\)
-- spintent.ins \(installer to extract all files\)
+- spanish-mathml-intent.pdf \(documentation\)
+- spanish-mathml-intent.dtx \(master file that produced all files\)
+- spanish-mathml-intent.ins \(installer to extract all files\)
 
 ## Author and copyright
 

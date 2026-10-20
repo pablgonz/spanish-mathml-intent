@@ -1,5 +1,5 @@
 --[[
-   Configuration script for l3build from the spintent package.
+   Configuration script for l3build from the spanish-mathml-intent package.
    At the moment the possible targets that can be passed are:
    * tag        : Update the version and date (package, spitool and its
                   man page); regenerates spitool.man1.pdf if groff is found
@@ -27,9 +27,9 @@
 --]]
 
 -- General package identification
-module     = "spintent"
+module     = "spanish-mathml-intent"
 pkgversion = "1.0"
-pkgdate    = "2026-10-18"
+pkgdate    = "2026-10-20"
 ltxrelease = "2026-11-01"
 
 -- Configuration of files for build and installation
@@ -41,19 +41,19 @@ installfiles   = {"**/*.sty", "**/*.lua"}
 scriptmanfiles = {"spitool.1"}
 docfiles       = {"spitool.man1.pdf"}
 tdslocations   = {
-  "tex/lualatex/spintent/spintent.sty",
-  "tex/lualatex/spintent/spintent.lua",
-  "doc/lualatex/spintent/spintent.pdf",
-  "doc/lualatex/spintent/README.md",
+  "tex/lualatex/spanish-mathml-intent/spanish-mathml-intent.sty",
+  "tex/lualatex/spanish-mathml-intent/spintent.lua",
+  "doc/lualatex/spanish-mathml-intent/spanish-mathml-intent.pdf",
+  "doc/lualatex/spanish-mathml-intent/README.md",
   "doc/man/man1/spitool.1",
   "doc/man/man1/spitool.man1.pdf",
-  "scripts/spintent/spitool.lua",
-  "source/lualatex/spintent/spintent.dtx",
-  "source/lualatex/spintent/spintent.ins",
+  "scripts/spanish-mathml-intent/spitool.lua",
+  "source/lualatex/spanish-mathml-intent/spanish-mathml-intent.dtx",
+  "source/lualatex/spanish-mathml-intent/spanish-mathml-intent.ins",
 }
 
--- Unpacking files from spintent.ins
-unpackfiles = { "spintent.ins" }
+-- Unpacking files from spanish-mathml-intent.ins
+unpackfiles = { "spanish-mathml-intent.ins" }
 unpackopts  = "--interaction=batchmode"
 unpackexe   = "luatex"
 
@@ -79,7 +79,7 @@ function docinit_hook()
     error("** Error!!: Can't copy mylhmc.lua and mylhmc.lua files from "..sourcefiledir.." to "..typesetdir)
     return errorlevel
   end
-  -- Examples attached to the manual (last section of spintent.dtx): what is
+  -- Examples attached to the manual (last section of spanish-mathml-intent.dtx): what is
   -- in sources/test-pkg is copied as it is. Nothing is checked here; the
   -- ctan target does it (see check_example_pdfs)
   local exdir = sourcefiledir.."/test-pkg"
@@ -91,7 +91,7 @@ function docinit_hook()
 end
 
 function typeset(file)
-  local file = jobname(sourcefiledir.."/spintent.dtx")
+  local file = jobname(sourcefiledir.."/spanish-mathml-intent.dtx")
   print("** Running: arara "..file..".dtx")
   local errorlevel = runcmd("arara "..file..".dtx", typesetdir, {"TEXINPUTS","LUAINPUTS"})
   if errorlevel ~= 0 then
@@ -103,7 +103,7 @@ end
 
 -- Configuration for ctan
 ctanreadme = "CTANREADME.md"
-ctanpkg    = "spintent"
+ctanpkg    = "spanish-mathml-intent"
 ctanzip    = ctanpkg.."-"..pkgversion
 packtdszip = false
 
@@ -116,7 +116,7 @@ uploadconfig = {
   version      = pkgversion,
   license      = "lppl1.3c",
   summary      = "Spanish parse intents",
-  description  =[[The ⟨spintent⟩ package provides a series of utilities for primary and secondary
+  description  =[[The ⟨spanish-mathml-intent⟩ package provides a series of utilities for primary and secondary
   school teachers who need to create accessible PDF documents (tagged PDF) in Spanish using LuaLaTeX.]],
   topic        = { "spanish", "macros", "tagged-pdf" },
   ctanPath     = "/macros/latex/contrib/" .. ctanpkg,
@@ -128,13 +128,13 @@ uploadconfig = {
   update       = true
 }
 
--- Clean files (spintent.pdf is versioned in git, so clean must not remove it)
+-- Clean files (spanish-mathml-intent.pdf is versioned in git, so clean must not remove it)
 cleanfiles = {ctanzip..".curlopt", ctanzip..".zip"}
 
 -- Update package date and version
 tagfiles = {
-  "sources/spintent.dtx",
-  "sources/spintent.sty",
+  "sources/spanish-mathml-intent.dtx",
+  "sources/spanish-mathml-intent.sty",
   "sources/spintent.lua",
   "sources/spitool.lua",
   "spitool.1",
@@ -182,10 +182,10 @@ function update_tag(file, content, tagname, tagdate)
   -- ¿Este archivo ya esta al dia?
   local already_ok = nil
 
-  if string.match(file, "spintent%.dtx$") then
+  if string.match(file, "spanish%-mathml%-intent%.dtx$") then
     local fver = string.match(content, "\\def\\fileversion{%s*v?(.-)%s*}")
     local fdate = string.match(content, "\\def\\filedate{%s*(.-)%s*}")
-    local pkgd, pkgv = string.match(content, "\\ProvidesExplPackage%s*{spintent}%s*{(.-)}%s*{(.-)}")
+    local pkgd, pkgv = string.match(content, "\\ProvidesExplPackage%s*{spanish%-mathml%-intent}%s*{(.-)}%s*{(.-)}")
     local ltxr = string.match(content, "\\NeedsTeXFormat%s*{LaTeX2e}%s*%[(%d%d%d%d%-%d%d%-%d%d)%]")
     local luav, luad = string.match(content, "%-%s*v(%d+%.%d+%a*)%s*%[(%d%d%d%d%-%d%d%-%d%d)%]")
     local spv = string.match(content, 'local%s+SPITOOL_VERSION%s*=%s*"(.-)"')
@@ -193,8 +193,8 @@ function update_tag(file, content, tagname, tagdate)
       and pkgd == tagdate and ltxr == ltxrelease and luav == tagname and luad == tagdate
       and spv == tagname)
 
-  elseif string.match(file, "spintent%.sty$") then
-    local pkgd, pkgv = string.match(content, "\\ProvidesExplPackage%s*{spintent}%s*{(.-)}%s*{(.-)}")
+  elseif string.match(file, "spanish%-mathml%-intent%.sty$") then
+    local pkgd, pkgv = string.match(content, "\\ProvidesExplPackage%s*{spanish%-mathml%-intent}%s*{(.-)}%s*{(.-)}")
     local ltxr = string.match(content, "\\NeedsTeXFormat%s*{LaTeX2e}%s*%[(%d%d%d%d%-%d%d%-%d%d)%]")
     already_ok = (pkgv == tagname and pkgd == tagdate and ltxr == ltxrelease)
 
@@ -226,19 +226,19 @@ function update_tag(file, content, tagname, tagdate)
 
   local original_content = content
 
-  -- Substitutions in spintent.dtx
-  if string.match(file, "spintent%.dtx$") then
+  -- Substitutions in spanish-mathml-intent.dtx
+  if string.match(file, "spanish%-mathml%-intent%.dtx$") then
     content = string.gsub(content, "\\def\\fileversion{%s*v?.-%s*}", "\\def\\fileversion{v" .. tagname .. "}")
     content = string.gsub(content, "\\def\\filedate{%s*.-%s*}", "\\def\\filedate{" .. tagdate .. "}")
-    content = string.gsub(content, "(\\ProvidesExplPackage%s*{spintent}%s*){[^}]+}%s*{[^}]+}", "%1{" .. tagdate .. "} {" .. tagname .. "}")
+    content = string.gsub(content, "(\\ProvidesExplPackage%s*{spanish%-mathml%-intent}%s*){[^}]+}%s*{[^}]+}", "%1{" .. tagdate .. "} {" .. tagname .. "}")
     content = string.gsub(content, "(\\NeedsTeXFormat{LaTeX2e})%[%d%d%d%d%-%d%d%-%d%d%]", "%1[" .. ltxrelease .. "]")
     content = string.gsub(content, "(%-%s*v)%d+%.%d+%a*%s*%[%d%d%d%d%-%d%d%-%d%d%]", "%1" .. tagname .. " [" .. tagdate .. "]")
     content = string.gsub(content, '(local%s+SPITOOL_VERSION%s*=%s*)"[^"]*"', '%1"' .. tagname .. '"')
   end
 
-  -- Substitutions in spintent.sty
-  if string.match(file, "spintent%.sty$") then
-    content = string.gsub(content, "(\\ProvidesExplPackage%s*{spintent}%s*){[^}]+}%s*{[^}]+}", "%1{" .. tagdate .. "} {" .. tagname .. "}")
+  -- Substitutions in spanish-mathml-intent.sty
+  if string.match(file, "spanish%-mathml%-intent%.sty$") then
+    content = string.gsub(content, "(\\ProvidesExplPackage%s*{spanish%-mathml%-intent}%s*){[^}]+}%s*{[^}]+}", "%1{" .. tagdate .. "} {" .. tagname .. "}")
     content = string.gsub(content, "(\\NeedsTeXFormat{LaTeX2e})%[%d%d%d%d%-%d%d%-%d%d%]", "%1[" .. ltxrelease .. "]")
   end
 
@@ -276,36 +276,36 @@ end
 
 -- Individual verification functions
 local function check_dtx_tags()
-  local content = read_file("sources/spintent.dtx")
+  local content = read_file("sources/spanish-mathml-intent.dtx")
   if not content then return false end
 
   local fver = string.match(content, "\\def\\fileversion{%s*v?(.-)%s*}")
   local fdate = string.match(content, "\\def\\filedate{%s*(.-)%s*}")
-  local pkgd, pkgv = string.match(content, "\\ProvidesExplPackage%s*{spintent}%s*{(.-)}%s*{(.-)}")
+  local pkgd, pkgv = string.match(content, "\\ProvidesExplPackage%s*{spanish%-mathml%-intent}%s*{(.-)}%s*{(.-)}")
   local ltxr = string.match(content, "\\NeedsTeXFormat%s*{LaTeX2e}%s*%[(%d%d%d%d%-%d%d%-%d%d)%]")
   local luav, luad = string.match(content, "%-%s*v(%d+%.%d+%a*)%s*%[(%d%d%d%d%-%d%d%-%d%d)%]")
   local spv = string.match(content, 'local%s+SPITOOL_VERSION%s*=%s*"(.-)"')
 
   if fver ~= pkgversion or fdate ~= pkgdate or pkgv ~= pkgversion or pkgd ~= pkgdate or ltxr ~= ltxrelease or luav ~= pkgversion or luad ~= pkgdate or spv ~= pkgversion then
-    print("** Warning: Mismatches found in sources/spintent.dtx")
+    print("** Warning: Mismatches found in sources/spanish-mathml-intent.dtx")
     return false
   end
-  os_message("Checking version, date, and LaTeX release in spintent.dtx (and spitool)")
+  os_message("Checking version, date, and LaTeX release in spanish-mathml-intent.dtx (and spitool)")
   return true
 end
 
 local function check_sty_tags()
-  local content = read_file("sources/spintent.sty")
+  local content = read_file("sources/spanish-mathml-intent.sty")
   if not content then return true end
 
-  local pkgd, pkgv = string.match(content, "\\ProvidesExplPackage%s*{spintent}%s*{(.-)}%s*{(.-)}")
+  local pkgd, pkgv = string.match(content, "\\ProvidesExplPackage%s*{spanish%-mathml%-intent}%s*{(.-)}%s*{(.-)}")
   local ltxr = string.match(content, "\\NeedsTeXFormat%s*{LaTeX2e}%s*%[(%d%d%d%d%-%d%d%-%d%d)%]")
 
   if pkgv ~= pkgversion or pkgd ~= pkgdate or ltxr ~= ltxrelease then
-    print("** Warning: Mismatches found in sources/spintent.sty")
+    print("** Warning: Mismatches found in sources/spanish-mathml-intent.sty")
     return false
   end
-  os_message("Checking version, date, and LaTeX release in spintent.sty")
+  os_message("Checking version, date, and LaTeX release in spanish-mathml-intent.sty")
   return true
 end
 
@@ -447,12 +447,12 @@ local function make_tmp_dir()
   if errorlevel ~= 0 then
     error("** Error!!: Failed to copy source files to " .. tmpdir)
   else
-    os_message("Copying spintent.dtx and spintent.ins to " .. tmpdir)
+    os_message("Copying spanish-mathml-intent.dtx and spanish-mathml-intent.ins to " .. tmpdir)
   end
 
   -- Unpack source files
   os_message("Unpacking source files in " .. tmpdir)
-  local file = jobname("spintent.ins")
+  local file = jobname("spanish-mathml-intent.ins")
   errorlevel = run(tmpdir, "luatex -interaction=batchmode " .. file .. ".ins > " .. os_null)
   if errorlevel ~= 0 then
     local f = io.open(tmpdir .. "/" .. file .. ".log", "r")
@@ -587,7 +587,7 @@ local function compile_sample(dir, sample, label, ghost)
   os_message("Compiling " .. sample .. ".tex " .. label)
   local cmd
   if ghost then
-    cmd = 'lualatex-dev -interaction=nonstopmode "\\PassOptionsToPackage{AFghost=true}{spintent}\\input{'
+    cmd = 'lualatex-dev -interaction=nonstopmode "\\PassOptionsToPackage{AFghost=true}{spanish-mathml-intent}\\input{'
       .. sample .. '}" > ' .. os_null
   else
     cmd = "lualatex-dev -interaction=nonstopmode " .. sample .. ".tex > " .. os_null
@@ -865,7 +865,7 @@ if options["target"] == "release" then
   end
 
   -- 5. Test source extraction via luatex
-  local file = jobname(sourcefiledir .. "/spintent.ins")
+  local file = jobname(sourcefiledir .. "/spanish-mathml-intent.ins")
   local errorlevel = run(sourcefiledir, "luatex --interaction=batchmode " .. file .. ".ins > " .. os_null)
   if errorlevel ~= 0 then
     error("** Error!!: Failed to process " .. file .. ".ins with luatex")
@@ -896,7 +896,7 @@ if options["target"] == "release" then
   -- echoed form (package and version) instead of the exit status.
   os_message("Running dry-run upload check")
   local dryrun = os_capture("l3build upload -F ctan.ann --debug 2>&1", true)
-  local okpkg = string.find(dryrun, '"pkg": "spintent"', 1, true)
+  local okpkg = string.find(dryrun, '"pkg": "spanish-mathml-intent"', 1, true)
   local okver = string.find(dryrun, '"version": "' .. pkgversion .. '"', 1, true)
   if not (okpkg and okver) then
     error("** Error!!: dry-run upload check failed; nothing was tagged or pushed")

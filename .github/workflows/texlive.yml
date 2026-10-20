@@ -1,4 +1,4 @@
-name: Automated testing for spintent package (TL2026)
+name: Automated testing for spanish-mathml-intent package (TL2026)
 
 on:
   push:
@@ -64,7 +64,7 @@ jobs:
       - name: Add ~/.local/bin to PATH
         run: echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Install spintent package
+      - name: Install spanish-mathml-intent package
         run: l3build install
 
       - name: Run "l3build ${{ matrix.command }}"
