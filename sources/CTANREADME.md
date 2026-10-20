@@ -1,12 +1,16 @@
-## spintent — Spanish parse intent
+## spintent — Spanish MathML intent for accessible (tagged) PDF with LuaLaTeX
 
 Release v1.0 \[2026-10-18\]
 
 ## Description
 
-The <code>&langle;spintent&rangle;</code> package provides a series of
-utilities for primary and secondary school teachers who need to create
-_accessible_ PDF documents \(_tagged_ PDF\) in Spanish using LuaLaTeX.
+The <code>&langle;spintent&rangle;</code> package adds MathML _intent_ to
+mathematics written in Spanish with LuaLaTeX. The _intent_ attribute tells a
+screen reader which concept an expression is and how to speak it, so that
+NVDA with MathCAT reads the formulas correctly in accessible \(_tagged_\)
+PDF documents. Its commands typeset and tag numbers, units, money, dates and
+times, geometry, algebra and statistics, each with the Spanish reading it
+should have. It is aimed at primary and secondary school teachers.
 
 ## Requirements
 

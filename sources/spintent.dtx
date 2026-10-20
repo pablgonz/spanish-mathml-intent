@@ -266,6 +266,20 @@ end, "shekel_fallback_patch")
   {
     \__mydoc_meta_generic:Nnn \__mydoc_parg:n { #1 } { #2 }
   }
+% Rows with two columns inside the syntax environment
+\dim_new:N \l_userdoc_col_dim
+\NewDocumentCommand \mycolrow { m }
+  {
+    \mode_leave_vertical:
+    \dim_set:Nn \l_userdoc_col_dim { #1 }
+    \tex_hangindent:D \l_userdoc_col_dim
+    \tex_hbox:D to \l_userdoc_col_dim \c_group_begin_token
+  }
+\NewDocumentCommand \mycolsep { }
+  {
+    \tex_hfil:D
+    \c_group_end_token
+  }
 % Variables and keys
 \tl_new:N \l_userdoc_meta_font_tl
 \keys_define:nn { userdoc / mymeta }
@@ -751,28 +765,33 @@ end, "shekel_fallback_patch")
     keywords      = [12]{sptmp, inner, outer, },%
 % Reserved words 13 (message names)
     keywordstyle  = [13]{\color{red}},%
-    keywords      = [13]{cmd-key-unknown, cmd-key-value-unknown, env-success, fatal-engine-requires-luatex,%
-                    fatal-metadata-missing, mathcal-fallback, mc-too-few-args,%
-                    md-invalid-arg, need-math-mode, need-text-mode, package-not-load, pos-invalid-index,%
-                    right-angle-sqr-fallback, spAcirc-invalid-arg, spAfig-invalid-arg, spAfig-invalid-points,%
-                    spAfig-sym-cardinality-conflict, spAfig-sym-letter-conflict, spFrec-invalid-sub-index,%
-                    spFrec-invalid-symbol, spPcirc-invalid-arg, spPfig-invalid-arg, spPfig-invalid-points,%
-                    spPfig-sym-cardinality-conflict, spPfig-sym-letter-conflict, spPoint-invalid-point,%
-                    spPoly-invalid-points, spProb-invalid-arg, spabs-empty-arg, spang-invalid-arg,%
-                    spangle-invalid-arg, sparc-invalid-points, spcase-invalid-letter, spcirc-invalid-arg,%
+    keywords      = [13]{cmd-key-unknown, cmd-key-value-unknown, env-success,%
+                    fatal-engine-requires-luatex, fatal-metadata-missing, mathcal-fallback,%
+                    mc-too-few-args, md-invalid-arg, need-math-mode, need-text-mode,%
+                    package-not-load, right-angle-sqr-fallback,%
+                    spAcirc-invalid-arg, spAfig-invalid-arg, spAfig-invalid-points,%
+                    spAfig-read-arg-key, spAfig-sym-cardinality-conflict,%
+                    spAfig-sym-letter-conflict, spFrec-invalid-sub-index, spFrec-invalid-symbol,%
+                    spPcirc-invalid-arg, spPfig-invalid-arg, spPfig-invalid-points,%
+                    spPfig-read-arg-key, spPfig-sym-cardinality-conflict,%
+                    spPfig-sym-letter-conflict, spPoint-invalid-point, spPoly-invalid-points,%
+                    spProb-invalid-arg, spabs-empty-arg, spang-invalid-arg, spangle-invalid-arg,%
+                    sparc-invalid-points, spcase-invalid-letter, spcirc-invalid-arg,%
                     spcomb-extra-arg, spcomb-invalid-arg, spcomb-invalid-keys, spcomb-missing-arg,%
                     spcomp-empty-arg, spcoord-invalid-arg, spdate-invalid-arg, spdiv-empty-arg,%
                     spdom-invalid-arg, spfact-empty-arg, spfun-invalid-arg, spfuncomp-invalid-arg,%
-                    spinterval-invalid-arg, spmQ-not-integer, spmQ-signed-part, spmQ-zero-denominator,%
-                    spmangle-invalid-arg, spmarc-invalid-points, spmoney-invalid-currency,%
-                    spmoney-no-subunits, spmside-invalid-points, spmul-empty-arg,%
-                    spnZ-not-integer, spnewread-duplicate, spnewread-empty-args, spnewunit-duplicate,%
-                    spnum-has-units, spnum-no-digits, sprayo-invalid-points, spread-empty-sym,%
-                    spread-unknown-sym, sprecta-invalid-points, spshort-unknown-abbreviation,%
-                    spside-invalid-points, spsiglo-invalid-arg, sptime-invalid-arg,%
-                    spunit-inline-numeric-denominator, spunit-invalid-unit, spunit-no-units,%
-                    spunitalias-duplicate, spunitalias-invalid-expr, spusep-empty-arg, spusep-invalid-arg,%
-                    spvec-invalid-arg, unknown-choice, unknown-command-setup,%
+                    spinterval-invalid-arg, spmQ-not-integer, spmQ-signed-part,%
+                    spmQ-zero-denominator, spmangle-invalid-arg, spmarc-invalid-points,%
+                    spmoney-invalid-currency, spmoney-no-subunits, spmside-invalid-points,%
+                    spmul-empty-arg, spnZ-not-integer, spnewread-duplicate, spnewread-empty-args,%
+                    spnewunit-duplicate, spnum-has-units, spnum-no-digits, sprayo-invalid-points,%
+                    spread-empty-sym, spread-unknown-sym, sprecta-invalid-points,%
+                    spshort-unknown-abbreviation, spside-invalid-points, spsiglo-invalid-arg,%
+                    sptime-invalid-arg, spunit-inline-numeric-denominator, spunit-invalid-unit,%
+                    spunit-no-units, spunitalias-duplicate, spunitalias-invalid-expr,%
+                    spusep-empty-arg, spusep-invalid-arg, spvec-invalid-arg, stat-pos-invalid-index,%
+                    unknown-choice,%
+                    unknown-command-setup,%
                     },%
 % literate                     {`}{{\textcolor{quote}{\textasciigrave}}}{1}
     literate      =*{\{}{{{\color{brace}{\char`\{}}}}{1}
@@ -900,6 +919,7 @@ end, "shekel_fallback_patch")
 % \fi
 %
 % \selectlanguage{spanish}
+% \setlocalecaption{spanish}{table}{Tabla}
 %
 % \title{
 %    \scalebox{2.67}{\pkglogo}\\[0pt]
@@ -1321,12 +1341,13 @@ end, "shekel_fallback_patch")
 %
 % \subsubsection{Consulta rápida}\label{subsubsec:consulta-rapida}
 %
-% El cuadro~\ref{tab:consulta-rapida} reúne, para lo que un docente escribe con más
+% La tabla~\ref{tab:consulta-rapida} reúne, para lo que un docente escribe con más
 % frecuencia, el comando que corresponde y la página donde se describe, con
 % su sintaxis completa y sus llaves.
 %
 % \begingroup\small
-% \begin{longtable}{@{\extracolsep{\fill}}p{5cm} l r@{}}
+% \setlength{\LTleft}{\fill}\setlength{\LTright}{\fill}
+% \begin{longtable}{@{}p{5cm} l r@{}}
 % \caption{Consulta rápida: qué quiero escribir y qué comando usar} \label{tab:consulta-rapida} \\
 % \toprule
 % \textbf{Quiero escribir} & \textbf{Uso} & \multicolumn{1}{c}{\textbf{Página}} \\
@@ -1442,12 +1463,13 @@ Material preparado por la \spshort{prof.a} Pérez.
 %</ignore>
 % \fi
 %
-% El cuadro~\ref{tab:primer-documento} muestra qué se imprime en el \texttt{PDF}
+% La tabla~\ref{tab:primer-documento} muestra qué se imprime en el \texttt{PDF}
 % y qué lee \mynvmath{NVDA/MathCAT} en cada caso; los valores salen de los
 % ejemplos documentados en las secciones de cada comando.
 %
 % \begingroup\small
-% \begin{longtable}{@{\extracolsep{\fill}}l l p{5cm}@{}}
+% \setlength{\LTleft}{\fill}\setlength{\LTright}{\fill}
+% \begin{longtable}{@{}l l p{5cm}@{}}
 % \caption{Lo que escribe el docente y lo que escucha el estudiante} \label{tab:primer-documento} \\
 % \toprule
 % \textbf{Entrada} & \textbf{Salida PDF} & \multicolumn{1}{c}{\textbf{Lectura NVDA}} \\
@@ -1483,8 +1505,8 @@ Material preparado por la \spshort{prof.a} Pérez.
 %
 % Abra el \texttt{PDF} con \mynvmath{NVDA}\cite{nvda} y
 % \mynvmath{MathCAT}\cite{mathcat} instalados, recorra el texto hasta la
-% fórmula y compare lo que escucha con la columna «Lectura NVDA» del
-% cuadro~\ref{tab:primer-documento} y de las secciones de cada comando. Si una
+% fórmula y compare lo que escucha con la columna «Lectura NVDA» de la
+% tabla~\ref{tab:primer-documento} y de las secciones de cada comando. Si una
 % lectura no es la esperada, vea la~\S\ref{subsec:si-algo-falla}.
 %
 % \subsubsection{Validar la estructura}
@@ -1827,7 +1849,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \subsubsection{Argumentos para \cs[no-index]{spunit}}\label{subsubsec:arg-spunit}
 %
-% El cuadro~\ref{tab:spunit-unidades} resume las \mymarg{unidades} y los \mymarg{alias}
+% La tabla~\ref{tab:spunit-unidades} resume las \mymarg{unidades} y los \mymarg{alias}
 % soportados por |\spunit|.
 %
 % \begingroup\small
@@ -1982,17 +2004,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection{El comando \cs[no-index]{spmoney}}\label{subsec:spmoney}
 %
 % \begin{function}{\spmoney}
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spmoney|\mymarg{cifra}\par
-%     |\spmoney|\mymarg{cifra símbolo moneda}\par
-%     |\spmoney|\mymarg{cifra alias moneda}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spmoney|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra}\par
-%     |\spmoney|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra símbolo moneda}\par
-%     |\spmoney|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra alias moneda}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{19.7em}|\spmoney|\mymarg{cifra}\mycolsep |\spmoney|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra}
+%     \mycolrow{19.7em}|\spmoney|\mymarg{cifra símbolo moneda}\mycolsep |\spmoney|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra símbolo moneda}
+%     \mycolrow{19.7em}|\spmoney|\mymarg{cifra alias moneda}\mycolsep |\spmoney|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra alias moneda}
+%   \end{syntax}
 %   El comando \ics*{spmoney} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento obligatorio} \mymarg{cifra} que contiene la
 %   \emph{«cifra numérica»} positiva o negativa la cual se procesa internamente
@@ -2097,7 +2113,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \subsubsection{Monedas y alias para \cs[no-index]{spmoney}}\label{subsubsec:arg-spmoney}
 %
-% El cuadro~\ref{tab:spmoney-divisas} resume los \emph{«símbolos moneda»} y los
+% La tabla~\ref{tab:spmoney-divisas} resume los \emph{«símbolos moneda»} y los
 % \emph{«alias moneda»} soportados en el \mymarg{argumento} de |\spmoney|.
 %
 % \begingroup\small
@@ -2242,7 +2258,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \subsubsection{Argumentos para \cs[no-index]{spshort}}\label{subsubsec:arg-spshort}
 %
-% El cuadro~\ref{tab:spshort-abreviaturas} resume las abreviaturas,
+% La tabla~\ref{tab:spshort-abreviaturas} resume las abreviaturas,
 % expresiones latinas y títulos registrados en el módulo Lua \myluamod{}.
 %
 % \begin{longtable}{@{\extracolsep{\fill}}l p{3.5cm} c p{5cm}@{}}
@@ -2320,7 +2336,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \texttt{r. u. n.} & \texttt{r.u.n.} & R.~U.~N. & \emph{«rol único nacional»} \\
 % \end{longtable}
 %
-% El cuadro~\ref{tab:spshort-siglas} resume las siglas y acrónimos registrados en el módulo Lua \myluamod{}.
+% La tabla~\ref{tab:spshort-siglas} resume las siglas y acrónimos registrados en el módulo Lua \myluamod{}.
 %
 % \begin{longtable}{@{\extracolsep{\fill}}l p{3.5cm} c p{5cm}@{}}
 % \caption{Siglas y acrónimos soportados} \label{tab:spshort-siglas} \\
@@ -2366,7 +2382,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \texttt{conicet} & --- & Conicet & \emph{«consejo nacional de investigaciones»} \\
 % \end{longtable}
 %
-% El cuadro~\ref{tab:spshort-ordinales} resume ejemplos de números ordinales
+% La tabla~\ref{tab:spshort-ordinales} resume ejemplos de números ordinales
 % registrados en el módulo Lua \myluamod{}.
 %
 % \begin{longtable}{@{\extracolsep{\fill}}l p{3.5cm} c p{5cm}@{}}
@@ -2470,13 +2486,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spdate}}\label{subsec:spdate}
 %
 % \begin{function}{\spdate}
-%   \begin{minipage}[t]{\linewidth}\vspace*{-0.25\mydpstrut}\small
-%     |\spdate|\mymarg{\textnormal{DD\textcolor{red}{/}MM\textcolor{red}{/}YYYY}}\hfill
-%     |\spdate|\mymarg{\textnormal{YYYY\textcolor{red}{/}MM\textcolor{red}{/}DD}}\hfill
-%     |\spdate|\mymarg{\textnormal{YYYY\textcolor{red}{-}MM\textcolor{red}{-}DD}}\hfill
-%     |\spdate|\mymarg{\textnormal{DD\textcolor{red}{-}MM\textcolor{red}{-}YYYY}}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     |\spdate|\mymarg{\textnormal{DD\textcolor{red}{/}MM\textcolor{red}{/}YYYY}} \hfill |\spdate|\mymarg{\textnormal{YYYY\textcolor{red}{/}MM\textcolor{red}{/}DD}} \hfill |\spdate|\mymarg{\textnormal{YYYY\textcolor{red}{-}MM\textcolor{red}{-}DD}} \hfill |\spdate|\mymarg{\textnormal{DD\textcolor{red}{-}MM\textcolor{red}{-}YYYY}}
+%   \end{syntax}
 %   El comando \ics*{spdate} trabaja en \emph{modo matemático}
 %   y recibe el \emph{argumento} obligatorio
 %   \mymarg{\textnormal{DD\textcolor{red}{/}MM\textcolor{red}{/}YYYY}},
@@ -2561,7 +2573,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spread}
 %   \begin{syntax}
-%     |\spread|\mymarg{símbolo} \qquad\qquad  |\spread|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{símbolo} \par
+%     |\spread|\mymarg{símbolo} \qquad\qquad |\spread|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{símbolo}
 %     |\spread|\myoarg{read-arg\textnormal{\textcolor{gray}{=}}\mymarg{verbalización \textnormal{NVDA}}}\mymarg{comandos \textnormal{\hologo{LaTeX}}}
 %   \end{syntax}
 %   El comando \ics*{spread} trabaja en \emph{modo matemático} y
@@ -2875,7 +2887,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spnD}
 %   \begin{syntax}
-%     |\spnD| \hfill |\spnD|\myparg{número} \hfill |\spnD|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número}  \hfill |\spnD|\myparg{letra} \hfill |\spnD|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{letra}
+%     |\spnD| \hfill |\spnD|\myparg{número} \hfill |\spnD|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número} \hfill |\spnD|\myparg{letra} \hfill |\spnD|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{letra}
 %   \end{syntax}
 %   El comando \ics*{spnD} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -2950,7 +2962,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spnM}
 %   \begin{syntax}
-%     |\spnM| \hfill |\spnM|\myparg{número} \hfill |\spnM|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número}  \hfill |\spnM|\myparg{letra} \hfill |\spnM|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{letra}
+%     |\spnM| \hfill |\spnM|\myparg{número} \hfill |\spnM|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número} \hfill |\spnM|\myparg{letra} \hfill |\spnM|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{letra}
 %   \end{syntax}
 %   El comando \ics*{spnM} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -3026,7 +3038,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmcd}
 %   \begin{syntax}
-%     |\spmcd| \hfill |\spmcd|\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots} \hfill |\spmcd|\myparg{letra\textnormal{\textcolor{gray}{,}} letra\textnormal{\textcolor{gray}{,}} \dots}     \hfill |\spmcd|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}
+%     |\spmcd| \hfill |\spmcd|\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots} \hfill |\spmcd|\myparg{letra\textnormal{\textcolor{gray}{,}} letra\textnormal{\textcolor{gray}{,}} \dots} \hfill |\spmcd|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}
 %   \end{syntax}
 %   El comando \ics*{spmcd} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -3116,7 +3128,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmcm}
 %   \begin{syntax}
-%     |\spmcm| \hfill |\spmcm|\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots} \hfill |\spmcm|\myparg{letra\textnormal{\textcolor{gray}{,}} letra\textnormal{\textcolor{gray}{,}} \dots}     \hfill |\spmcm|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}
+%     |\spmcm| \hfill |\spmcm|\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots} \hfill |\spmcm|\myparg{letra\textnormal{\textcolor{gray}{,}} letra\textnormal{\textcolor{gray}{,}} \dots} \hfill |\spmcm|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}
 %   \end{syntax}
 %   El comando \ics*{spmcm} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -3356,7 +3368,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\sprazon}
 %   \begin{syntax}
-%     |\sprazon|\mymarg{antecedente}\mymarg{consecuente} \hfill |\sprazon|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{antecedente}\mymarg{consecuente}
+%     |\sprazon|\mymarg{antecedente}\mymarg{consecuente} \quad\quad |\sprazon|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{antecedente}\mymarg{consecuente}
 %   \end{syntax}
 %   El comando \ics*{sprazon} trabaja en \emph{modo matemático} y recibe
 %   \emph{dos argumentos obligatorios}: \mymarg{antecedente} y
@@ -3416,7 +3428,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spProp}
 %   \begin{syntax}
-%     |\spProp|\mymarg{a}\mymarg{b}\mymarg{c}\mymarg{d} \hfill |\spProp|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{a}\mymarg{b}\mymarg{c}\mymarg{d}
+%     |\spProp|\mymarg{a}\mymarg{b}\mymarg{c}\mymarg{d} \quad\quad |\spProp|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{a}\mymarg{b}\mymarg{c}\mymarg{d}
 %   \end{syntax}
 %   El comando \ics*{spProp} trabaja en \emph{modo matemático} y recibe
 %   \emph{cuatro argumentos obligatorios}: \mymarg{a} y \mymarg{b} forman
@@ -3495,15 +3507,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spcoord}}\label{subsec:spcoord}
 %
 % \begin{function}{\spcoord}
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spcoord|\mymarg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\par
-%     |\spcoord|\mymarg{abscisa\textnormal{\textcolor{red}{;}} ordenada}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spcoord|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\par
-%     |\spcoord|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{abscisa\textnormal{\textcolor{red}{;}} ordenada}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{17.9em}|\spcoord|\mymarg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep |\spcoord|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
+%     \mycolrow{17.9em}|\spcoord|\mymarg{abscisa\textnormal{\textcolor{red}{;}} ordenada}\mycolsep |\spcoord|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{abscisa\textnormal{\textcolor{red}{;}} ordenada}
+%   \end{syntax}
 %   El comando \ics*{spcoord} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento obligatorio} \mymarg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
 %   o \mymarg{abscisa\textnormal{\textcolor{red}{;}} ordenada}, el cual
@@ -3541,17 +3548,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spPoint}}\label{subsec:spPoint}
 %
 % \begin{function}{\spPoint}
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spPoint|\mymarg{punto}\par
-%     |\spPoint|\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\par
-%     |\spPoint|\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{;}} ordenada}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spPoint|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}\par
-%     |\spPoint|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\par
-%     |\spPoint|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{;}} ordenada}\par
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{22.9em}|\spPoint|\mymarg{punto}\mycolsep |\spPoint|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}
+%     \mycolrow{22.9em}|\spPoint|\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep |\spPoint|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
+%     \mycolrow{22.9em}|\spPoint|\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{;}} ordenada}\mycolsep |\spPoint|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{;}} ordenada}
+%   \end{syntax}
 %   El comando \ics*{spPoint} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento obligatorio} \mymarg{punto}, el cual es una
 %   \emph{única letra mayúscula} con prima `|'|' o subíndice
@@ -3614,17 +3615,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spvec}}\label{subsec:spvec}
 %
 % \begin{function}{\spvec}
-%   \begin{minipage}[t]{0.45\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spvec|\mymarg{letra}\par
-%     |\spvec|\mymarg{letra}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\par
-%     |\spvec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{letra}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.55\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spvec|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\par
-%     |\spvec|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\par
-%     |\spvec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{27.3em}|\spvec|\mymarg{letra}\mycolsep |\spvec|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{27.3em}|\spvec|\mymarg{letra}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep |\spvec|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
+%     \mycolrow{27.3em}|\spvec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{letra}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep |\spvec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
+%   \end{syntax}
 %   El comando \ics*{spvec} trabaja en \emph{modo matemático} y recibe un
 %   \emph{argumento obligatorio} de la forma \mymarg{letra} minúscula
 %   o \mymarg{punto\textnormal{\textcolor{gray}{,}} punto} junto al
@@ -3700,15 +3695,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{sprecta}}\label{subsec:sprecta}
 %
 % \begin{function}{\sprecta}
-%   \begin{minipage}[t]{0.4\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\sprecta|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\par
-%     |\sprecta|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\par
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.55\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\sprecta|\mymarg{letra}\par
-%     |\sprecta|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{letra}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{14.9em}|\sprecta|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep |\sprecta|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{14.9em}|\sprecta|\mymarg{letra}\mycolsep |\sprecta|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{letra}
+%   \end{syntax}
 %   El comando \ics*{sprecta} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{letra} o
 %   \mymarg{punto\textnormal{\textcolor{gray}{,}} punto} con prima(s) `|'|'
@@ -3768,8 +3758,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\sprayo}
 %   \begin{syntax}
-%     |\sprayo|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
-%     |\sprayo|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
+%     |\sprayo|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto} \quad\quad |\sprayo|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{syntax}
 %   El comando \ics*{sprayo} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento obligatorio} \mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
@@ -3844,8 +3833,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spside}
 %   \begin{syntax}
-%     |\spside|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
-%     |\spside|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
+%     |\spside|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto} \quad\quad |\spside|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{syntax}
 %
 %   El comando \ics*{spside} trabaja en \emph{modo matemático} y
@@ -3926,8 +3914,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmside}
 %   \begin{syntax}
-%     |\spmside|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
-%     |\spmside|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
+%     |\spmside|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto} \quad\quad |\spmside|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{syntax}
 %
 %   El comando \ics*{spmside} trabaja en \emph{modo matemático} y
@@ -4024,15 +4011,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spangle}}\label{subsec:spangle}
 %
 % \begin{function}{\spangle}
-%   \begin{minipage}[t]{0.50\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spangle|\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}\par
-%     |\spangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.45\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spangle|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}\par
-%     |\spangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{32.5em}|\spangle|\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}\mycolsep |\spangle|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{32.5em}|\spangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}\mycolsep |\spangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%   \end{syntax}
 %   El comando \ics*{spangle} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}
 %   o \mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
@@ -4112,15 +4094,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spmangle}}\label{subsec:spmangle}
 %
 % \begin{function}{\spmangle}
-%   \begin{minipage}[t]{0.55\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spmangle|\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}\par
+%   \begin{syntax}
+%     \mycolrow{26.4em}|\spmangle|\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}\mycolsep |\spmangle|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
 %     |\spmangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.45\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spmangle|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}\par
 %     |\spmangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
-%   \end{minipage}
-%
+%   \end{syntax}
 %   El comando \ics*{spmangle} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}
 %   o \mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
@@ -4212,9 +4190,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spang}
 %   \begin{syntax}
-%     |\spang|\mymarg{grados}
-%     |\spang|\mymarg{grados \textnormal{\textcolor{red}{:}} minutos}
-%     |\spang|\mymarg{grados \textnormal{\textcolor{red}{:}} minutos \textnormal{\textcolor{red}{:}} segundos}
+%     |\spang|\mymarg{grados} \hfill |\spang|\mymarg{grados \textnormal{\textcolor{red}{:}} minutos} \hfill |\spang|\mymarg{grados \textnormal{\textcolor{red}{:}} minutos \textnormal{\textcolor{red}{:}} segundos}
 %   \end{syntax}
 %   El comando \ics*{spang} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{grados}, \mymarg{grados \textnormal{\textcolor{red}{:}} minutos}
@@ -4230,15 +4206,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{sparc}}\label{subsec:sparc}
 %
 % \begin{function}{\sparc}
-%   \begin{minipage}[t]{0.45\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\sparc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\par
-%     |\sparc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.55\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\sparc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}\par
-%     |\sparc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{21.1em}|\sparc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep |\sparc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{21.1em}|\sparc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep |\sparc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%   \end{syntax}
 %   El comando \ics*{sparc} trabaja en \emph{modo matemático} y recibe un
 %   \emph{argumento obligatorio} de la forma \mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
 %   o \mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
@@ -4298,15 +4269,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spmarc}}\label{subsec:spmarc}
 %
 % \begin{function}{\spmarc}
-%   \begin{minipage}[t]{0.45\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spmarc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\par
-%     |\spmarc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.55\linewidth}\vspace*{-0.5\mydpstrut}\small
-%     |\spmarc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}\par
-%     |\spmarc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{21.7em}|\spmarc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep |\spmarc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{21.7em}|\spmarc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep |\spmarc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%   \end{syntax}
 %   El comando \ics*{spmarc} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
 %   o \mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
@@ -4368,8 +4334,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spPoly}
 %   \begin{syntax}
-%     |\spPoly|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
-%     |\spPoly|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
+%     |\spPoly|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots} \quad\quad |\spPoly|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
 %   \end{syntax}
 %   El comando \ics*{spPoly} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento obligatorio} \mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots},
@@ -4460,19 +4425,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spAfig}}\label{subsec:spAfig}
 %
 % \begin{function}{\spAfig}
-%   \begin{minipage}[t]{0.45\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spAfig|\par
-%     |\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spAfig|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\par
-%     |\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\par
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.55\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spAfig|\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}\par
-%     |\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}\par
-%     |\spAfig|\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}\par
-%     |\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{24.9em}|\spAfig|\mycolsep |\spAfig|\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
+%     \mycolrow{24.9em}|\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mycolsep |\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
+%     \mycolrow{24.9em}|\spAfig|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spAfig|\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
+%     \mycolrow{24.9em}|\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
+%   \end{syntax}
 %   El comando \ics*{spAfig} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
 %   \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
@@ -4657,19 +4615,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spPfig}}\label{subsec:spPfig}
 %
 % \begin{function}{\spPfig}
-%   \begin{minipage}[t]{0.45\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spPfig|\par
-%     |\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spPfig|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\par
-%     |\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\par
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.55\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spPfig|\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}\par
-%     |\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}\par
-%     |\spPfig|\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}\par
-%     |\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{24.9em}|\spPfig|\mycolsep |\spPfig|\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
+%     \mycolrow{24.9em}|\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mycolsep |\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
+%     \mycolrow{24.9em}|\spPfig|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spPfig|\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
+%     \mycolrow{24.9em}|\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
+%   \end{syntax}
 %   El comando \ics*{spPfig} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
 %   \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
@@ -4854,15 +4805,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{Los comandos \cs[no-index]{sprad} y \cs[no-index]{spdiam}}\label{subsec:sprad}
 %
 % \begin{function}{\sprad, \spdiam}
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\sprad|\par
-%     |\spdiam|
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\sprad|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spdiam|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     |\sprad|  \quad\quad |\sprad|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     |\spdiam| \quad\quad |\spdiam|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%   \end{syntax}
 %   Los comandos \ics*{sprad} y \ics*{spdiam} trabajan en \emph{modo
 %   matemático} y reciben el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   mediante el cual se establece la \emph{«forma»} en la que se imprimirán
@@ -4969,17 +4915,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spcirc}}\label{subsec:spcirc}
 %
 % \begin{function}{\spcirc}
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spcirc|\par
-%     |\spcirc|\myparg{centro}\par
-%     |\spcirc|\myparg{centro\textnormal{\textcolor{red}{,}} radio}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}\par
-%     |\spcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro\textnormal{\textcolor{red}{,}} radio}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{14.9em}|\spcirc|\mycolsep |\spcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \mycolrow{14.9em}|\spcirc|\myparg{centro}\mycolsep |\spcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}
+%     \mycolrow{14.9em}|\spcirc|\myparg{centro\textnormal{\textcolor{red}{,}} radio}\mycolsep |\spcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro\textnormal{\textcolor{red}{,}} radio}
+%   \end{syntax}
 %   El comando \ics*{spcirc} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
 %   \myparg{centro} o \myparg{centro\textnormal{\textcolor{red}{,}} radio},
@@ -5148,17 +5088,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spAcirc}}\label{subsec:spAcirc}
 %
 % \begin{function}{\spAcirc}
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spAcirc|\par
-%     |\spAcirc|\myparg{centro}\par
-%     |\spAcirc|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spAcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spAcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}\par
-%     |\spAcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{18.2em}|\spAcirc|\mycolsep |\spAcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \mycolrow{18.2em}|\spAcirc|\myparg{centro}\mycolsep |\spAcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}
+%     \mycolrow{18.2em}|\spAcirc|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spAcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
+%   \end{syntax}
 %   El comando \ics*{spAcirc} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento opcional delimitado por paréntesis} de la
 %   forma \myparg{centro} o \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
@@ -5292,17 +5226,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{El comando \cs[no-index]{spPcirc}}\label{subsec:spPcirc}
 %
 % \begin{function}{\spPcirc}
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spPcirc|\par
-%     |\spPcirc|\myparg{centro}\par
-%     |\spPcirc|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spPcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spPcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}\par
-%     |\spPcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     \mycolrow{18.2em}|\spPcirc|\mycolsep |\spPcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \mycolrow{18.2em}|\spPcirc|\myparg{centro}\mycolsep |\spPcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}
+%     \mycolrow{18.2em}|\spPcirc|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spPcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
+%   \end{syntax}
 %   El comando \ics*{spPcirc} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento opcional delimitado por paréntesis} de la
 %   forma \myparg{centro} o \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
@@ -5439,7 +5367,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spVol}
 %   \begin{syntax}
-%     |\spVol| \quad\quad |\spVol|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     |\spVol| \qquad\qquad |\spVol|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   \end{syntax}
 %   El comando \ics*{spVol} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
@@ -5758,17 +5686,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{Los comandos \cs[no-index]{spdom}, \cs[no-index]{sprec} y \cs[no-index]{spcod}}\label{subsec:spdom}
 %
 % \begin{function}{\spdom, \sprec, \spcod}
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spdom|\mymarg{función}\par
-%     |\sprec|\mymarg{función}\par
-%     |\spcod|\mymarg{función}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spdom|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}\par
-%     |\sprec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}\par
-%     |\spcod|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     |\spdom|\mymarg{función} \quad\quad |\spdom|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
+%     |\sprec|\mymarg{función} \quad\quad |\sprec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
+%     |\spcod|\mymarg{función} \quad\quad |\spcod|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
+%   \end{syntax}
 %   Los comandos \ics*{spdom}, \ics*{sprec} y \ics*{spcod} trabajan en
 %   \emph{modo matemático} y reciben el \emph{argumento} obligatorio
 %   \mymarg{función}: el nombre de una función como en |\spfun|, esto es, una letra
@@ -5881,7 +5803,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spabs}
 %   \begin{syntax}
-%     |\spabs|\mymarg{x} \hfill |\spabs|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{x}
+%     |\spabs|\mymarg{x} \qquad\qquad |\spabs|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{x}
 %   \end{syntax}
 %   El comando \ics*{spabs} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{x}: cualquier expresión matemática.
@@ -6014,21 +5936,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{Los comandos \cs[no-index]{spmedia}, \cs[no-index]{spmediana}, \cs[no-index]{spmoda}, \cs[no-index]{spdesv} y \cs[no-index]{spvarz}}\label{subsec:spmedia}
 %
 % \begin{function}{\spmedia, \spmediana, \spmoda, \spdesv, \spvarz}
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spmedia|\par
-%     |\spmediana|\par
-%     |\spmoda|\par
-%     |\spdesv|\par
-%     |\spvarz|
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spmedia|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spmediana|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spmoda|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spdesv|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spvarz|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     |\spmedia|   \quad\quad |\spmedia|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     |\spmediana| \quad\quad |\spmediana|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     |\spmoda|    \quad\quad |\spmoda|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     |\spdesv|    \quad\quad |\spdesv|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     |\spvarz|    \quad\quad |\spvarz|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%   \end{syntax}
 %   Los comandos \ics*{spmedia}, \ics*{spmediana}, \ics*{spmoda},
 %   \ics*{spdesv} y \ics*{spvarz} trabajan en \emph{modo matemático} y
 %   reciben el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
@@ -6113,19 +6027,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{Los comandos \cs[no-index]{sprango}, \cs[no-index]{spriq}, \cs[no-index]{spmin} y \cs[no-index]{spmax}}\label{subsec:sprango}
 %
 % \begin{function}{\sprango, \spriq, \spmin, \spmax}
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\sprango|\par
-%     |\spriq|\par
-%     |\spmin|\par
-%     |\spmax|
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\sprango|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spriq|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spmin|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\par
-%     |\spmax|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     |\sprango| \quad\quad |\sprango|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     |\spriq|   \quad\quad |\spriq|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     |\spmin|   \quad\quad |\spmin|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     |\spmax|   \quad\quad |\spmax|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%   \end{syntax}
 %   Los comandos \ics*{sprango}, \ics*{spriq}, \ics*{spmin} y \ics*{spmax}
 %   trabajan en \emph{modo matemático} y reciben el \emph{argumento opcional}
 %   \myoarg{key \textnormal{\textcolor{gray}{=}} val} mediante el cual se
@@ -6151,17 +6058,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \subsection*{Los comandos \cs[no-index]{spcuartil}, \cs[no-index]{spdecil} y \cs[no-index]{spPerc}}\label{subsec:spcuartil}
 %
 % \begin{function}{\spcuartil, \spdecil, \spPerc}
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spcuartil|\mymarg{k}\par
-%     |\spdecil|\mymarg{k}\par
-%     |\spPerc|\mymarg{k}
-%   \end{minipage}\hfill
-%   \begin{minipage}[t]{0.5\linewidth}\vspace*{-0.15\mydpstrut}\small
-%     |\spcuartil|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}\par
-%     |\spdecil|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}\par
-%     |\spPerc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}
-%   \end{minipage}
-%
+%   \begin{syntax}
+%     |\spcuartil|\mymarg{k} \quad\quad |\spcuartil|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}
+%     |\spdecil|\mymarg{k}   \quad\quad |\spdecil|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}
+%     |\spPerc|\mymarg{k}    \quad\quad |\spPerc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}
+%   \end{syntax}
 %   Los comandos \ics*{spcuartil}, \ics*{spdecil} y \ics*{spPerc} trabajan
 %   en \emph{modo matemático} y reciben el \emph{argumento obligatorio}
 %   \mymarg{k}: un número entero sin signo, de 1 a 3 en \ics*{spcuartil},
@@ -6376,7 +6277,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spPval}
 %   \begin{syntax}
-%     |\spPval|\mymarg{casos}\mymarg{total} \hfill |\spPval|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{casos}\mymarg{total}
+%     |\spPval|\mymarg{casos}\mymarg{total} \qquad\qquad |\spPval|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{casos}\mymarg{total}
 %   \end{syntax}
 %   El comando \ics*{spPval} trabaja en \emph{modo matemático} y recibe
 %   \emph{dos argumentos obligatorios}: \mymarg{casos} y \mymarg{total}, los
@@ -6420,7 +6321,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spProb}
 %   \begin{syntax}
-%     |\spProb|\mymarg{evento} \hfill |\spProb|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{evento}
+%     |\spProb|\mymarg{evento} \qquad\qquad |\spProb|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{evento}
 %   \end{syntax}
 %   El comando \ics*{spProb} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{evento}: un evento, o dos eventos
@@ -6479,7 +6380,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spcomp}
 %   \begin{syntax}
-%     |\spcomp|\mymarg{evento} \hfill |\spcomp|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{evento}
+%     |\spcomp|\mymarg{evento} \qquad\qquad |\spcomp|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{evento}
 %   \end{syntax}
 %   El comando \ics*{spcomp} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{evento}: el evento del que se
@@ -6546,7 +6447,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spcomb}
 %   \begin{syntax}
-%     |\spcomb|\mymarg{n,k} \hfill |\spcomb|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{n,k}
+%     |\spcomb|\mymarg{n\textnormal{\textcolor{gray}{,}} k} \qquad\qquad |\spcomb|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{n\textnormal{\textcolor{gray}{,}} k}
 %   \end{syntax}
 %   El comando \ics*{spcomb} trabaja en \emph{modo matemático} y escribe los
 %   símbolos de conteo: combinaciones, variaciones, arreglos y permutaciones,
@@ -6655,7 +6556,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spfact}
 %   \begin{syntax}
-%     |\spfact|\mymarg{n} \hfill |\spfact|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{n}
+%     |\spfact|\mymarg{n} \qquad\qquad |\spfact|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{n}
 %   \end{syntax}
 %   El comando \ics*{spfact} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{n}. Imprime
@@ -7148,9 +7049,9 @@ spitool -o -p build/ ejemplo.tex
 % are created in the Lua module \myluamod{} and only their variants
 % are declared in \mypkg[no-index]{expl3}.
 %
-% In the same way, variables of the form \myhlc|\l_@@_luaset_some_tl|, \newline
+% In the same way, variables of the form \myhlc|\l_@@_luaset_some_tl|,
 % \myhlc|\l_@@_luaset_some_str| or \myhlc|\l_@@_luaset_some_clist|, also
-% with the \newline prefix of a command, such as \myhlc|\l_@@_spcomb_luaset_n_str|, are only
+% with the prefix of a command, such as \myhlc|\l_@@_spcomb_luaset_n_str|, are only
 % declared in \mypkg[no-index]{expl3}; their values are set from Lua.
 %
 % \begin{important}*
@@ -7261,9 +7162,9 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\str_lowercase:V, \seq_set_from_clist:Ne, \int_set:NV}
 %    Non-standard kernel variants.
 %    \begin{macrocode}
-\cs_generate_variant:Nn \str_lowercase:n { V }
+\cs_generate_variant:Nn \str_lowercase:n       { V }
 \cs_generate_variant:Nn \seq_set_from_clist:Nn { Ne }
-\cs_generate_variant:Nn \int_set:Nn { NV }
+\cs_generate_variant:Nn \int_set:Nn            { NV }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -7275,12 +7176,12 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_luaset_sym_fam_ok_str,
 %     \l_@@_luaset_scope_attr_str,
 %   }
-%   First, we declare the string variable \newline \myhlc|\l_@@_luaset_cal_fam_ok_str|
-%   used by the \newline function \myhlc|\@@_luafun_classic_mathcal:nn|, controlled
-%   by the key \mykey{mathcal}, \newline the string variable \myhlc|\l_@@_luaset_sym_fam_ok_str|
-%   used by the function \newline \myhlc|\@@_luafun_right_angle_sqr:| to copy |\rightanglesqr|
-%   alongside the string variable \newline \myhlc|\l_@@_luaset_scope_attr_str|
-%   used by |\attribute| before loading the Lua module \newline \myluamod{}.
+%   First, we declare the string variable \myhlc|\l_@@_luaset_cal_fam_ok_str|
+%   used by the function \myhlc|\@@_luafun_classic_mathcal:nn|, controlled
+%   by the key \mykey{mathcal}, the string variable \myhlc|\l_@@_luaset_sym_fam_ok_str|
+%   used by the function \myhlc|\@@_luafun_right_angle_sqr:| to copy |\rightanglesqr|
+%   alongside the string variable \myhlc|\l_@@_luaset_scope_attr_str|
+%   used by |\attribute| before loading the Lua module \myluamod{}.
 %   This is necessary due to the implementation of the functions within
 %   the Lua module; otherwise, \mypkg[no-index]{expl3} would issue a warning
 %   regarding duplicate variable declarations.
@@ -7333,16 +7234,16 @@ spitool -o -p build/ ejemplo.tex
 %     \@@_luafun_spmQ_scale_int:Vn,
 %     \@@_luafun_spfun_parse_and_set:v,
 %   }
-%   Variants generated for \myhlc|\@@_luafun_spunit_parse_product:nn|, \newline
-%   used by |\spunit|; \myhlc|\@@_luafun_spmoney_lookup_data:n|, used \newline
+%   Variants generated for \myhlc|\@@_luafun_spunit_parse_product:nn|,
+%   used by |\spunit|; \myhlc|\@@_luafun_spmoney_lookup_data:n|, used
 %   by |\spmoney|; \myhlc|\@@_luafun_spmQ_scale_int:nn|, used by
-%   |\spmQ|; and \newline \myhlc|\@@_luafun_spfun_parse_and_set:n|, used by
+%   |\spmQ|; and \myhlc|\@@_luafun_spfun_parse_and_set:n|, used by
 %   |\spfun|.
 %    \begin{macrocode}
 \cs_generate_variant:Nn \@@_luafun_spunit_parse_product:nn { nV }
-\cs_generate_variant:Nn \@@_luafun_spmoney_lookup_data:n { V }
-\cs_generate_variant:Nn \@@_luafun_spmQ_scale_int:nn { Vn }
-\cs_generate_variant:Nn \@@_luafun_spfun_parse_and_set:n { v }
+\cs_generate_variant:Nn \@@_luafun_spmoney_lookup_data:n   { V }
+\cs_generate_variant:Nn \@@_luafun_spmQ_scale_int:nn       { Vn }
+\cs_generate_variant:Nn \@@_luafun_spfun_parse_and_set:n   { v }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -7768,7 +7669,7 @@ spitool -o -p build/ ejemplo.tex
 %   is the name of the key and the second one its value. If the value is blank
 %   it issues the message |cmd-key-unknown|; otherwise it issues
 %   |cmd-key-value-unknown|. The variant \myhlc|\@@_unknown_keys_cmd:Vn| takes
-%   the name of the key from a variable. The function \newline
+%   the name of the key from a variable. The function
 %   \myhlc|\@@_unknown_keys_cmd:n| is the one used by the \mymeta{key}
 %   |unknown| of each command: it receives the value and takes the name of the
 %   key from \myhlc|\l_keys_key_str|. The name of the command shown in the
@@ -7848,10 +7749,10 @@ spitool -o -p build/ ejemplo.tex
 %   \l_@@_luaset_format_part_dec_str,
 % }
 %   The literal entries of the numbers that we will pass to |\MathMLintent|
-%   with the \emph{intent \newline property} |:number| are \emph{stored}
-%   in \myhlc|\l_@@_luaset_only_part_int_str| for the \emph{\enquote{integer \newline
-%   part}}, in \myhlc|\l_@@_luaset_only_part_dec_str| for the
-%   \emph{\enquote{finite decimal part}}, and in \newline \myhlc|\l_@@_luaset_only_part_period_str|
+%   with the \emph{intent} \emph{property} |:number| are \emph{stored}
+%   in \myhlc|\l_@@_luaset_only_part_int_str| for the
+%   \emph{\enquote{integer part}}, in \myhlc|\l_@@_luaset_only_part_dec_str| for the
+%   \emph{\enquote{finite decimal part}}, and in \myhlc|\l_@@_luaset_only_part_period_str|
 %   for the \emph{\enquote{infinite periodic decimal part}}.
 %
 %   Formatted versions, \mykey[spnum]{cifras-sep}|=true|, are \emph{stored}
@@ -7878,11 +7779,11 @@ spitool -o -p build/ ejemplo.tex
 % }
 %
 %   The flag variable \myhlc|\l_@@_luaset_millons_str| indicates whether the
-%   integer \newline part translates exactly to a multiple of one million when
-%   passed to |\MathMLintent|. To \newline properly structure the reading and writing of numbers in
-%   \mynvmath{MathML}, we use the flag variables \newline \myhlc|\l_@@_luaset_decimal_period_str|, \newline
-%   \myhlc|\l_@@_luaset_not_decimal_period_str|, and \newline \myhlc|\l_@@_luaset_not_decimal_not_period_str|.
-%   The flag variable \newline \myhlc|\l_@@_luaset_dec_is_all_zeros_str| monitors whether the \emph{\enquote{finite
+%   integer part translates exactly to a multiple of one million when
+%   passed to |\MathMLintent|. To properly structure the reading and writing of numbers in
+%   \mynvmath{MathML}, we use the flag variables \myhlc|\l_@@_luaset_decimal_period_str|,
+%   \myhlc|\l_@@_luaset_not_decimal_period_str|, and \myhlc|\l_@@_luaset_not_decimal_not_period_str|.
+%   The flag variable \myhlc|\l_@@_luaset_dec_is_all_zeros_str| monitors whether the \emph{\enquote{finite
 %   decimal part}} is completely zero, useful for \emph{\enquote{pure periodic decimals}}.
 %
 %   The flag variable \myhlc|\l_@@_luaset_has_exponent_str| indicates
@@ -8064,7 +7965,7 @@ spitool -o -p build/ ejemplo.tex
       },
     read-sign       .initial:n = terse,
     read-sign       .value_required:n = true,
-    read-sign / unknown       .code:n =
+    read-sign / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { read-sign } { terse , ~clear } { \exp_not:n {#1} },
     read-period-sep .choices:nn =
@@ -8092,7 +7993,7 @@ spitool -o -p build/ ejemplo.tex
       },
     notation-sym    .initial:n = cdot,
     notation-sym    .value_required:n = true,
-    notation-sym / unknown    .code:n =
+    notation-sym / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { notation-sym } { times , ~ cdot } { \exp_not:n {#1} },
     unknown         .code:n =
@@ -8148,9 +8049,9 @@ spitool -o -p build/ ejemplo.tex
       }
   }
 %    \end{macrocode}
-%   The function \myhlc|\@@_spnum_print_period_bar:| inserts the function \newline
+%   The function \myhlc|\@@_spnum_print_period_bar:| inserts the function
 %   \myhlc|\@@_spnum_render_only_period:| as an argument within the
-%   \emph{intent} \newline |_periódico:postfix($dp)| passed to |\MathMLintent|, generating
+%   \emph{intent} |_periódico:postfix($dp)| passed to |\MathMLintent|, generating
 %   the correct spoken for the \emph{\enquote{infinite periodic decimal
 %   part}}.
 %    \begin{macrocode}
@@ -8193,11 +8094,11 @@ spitool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spnum_render_decimal_sep:}
-%  The function \myhlc|\@@_spnum_render_decimal_sep:| parses the value \newline of
-%  the variable \myhlc|\l_@@_luaset_dec_sep_tl| and sets the variable \newline
+%  The function \myhlc|\@@_spnum_render_decimal_sep:| sets the variable
 %  \myhlc|\l_@@_spnum_intent_read_dec_sep_str| with the function
 %  |_coma:prefix($dp)| for reading a \emph{\enquote{coma}} or |_punto:prefix($dp)| for
-%  reading a \emph{\enquote{punto}} to |\MathMLintent|. We print the decimal separator
+%  reading a \emph{\enquote{punto}} to |\MathMLintent|, after parsing the value of
+%  \myhlc|\l_@@_luaset_dec_sep_tl|. We print the decimal separator
 %  stored in \myhlc|\l_@@_luaset_dec_sep_tl| using |\mathord| to remove
 %  spaces around it and then use the command |\MathMLarg| where we insert
 %  \myhlc|\@@_invisible_sep:| for compatibility with \mynvmath{MathML} and
@@ -8424,11 +8325,11 @@ spitool -o -p build/ ejemplo.tex
 % before the slash, |above|, and the one after it, |below|: the number of
 % \emph{\enquote{units}} in the product, whether all of them exist in the dictionary
 % and, for |above|, whether it is a single sexagesimal symbol. For each unit
-% number |<i>| of a product |<p>|, Lua also leaves the canonical symbol, the speech
-% text and the exponent, empty when \newline there is none, in the variables
-% \myhlc|\l_@@_spunit_luaset_<p>_<i>_canonical_str|, \newline
-% \myhlc|\l_@@_spunit_luaset_<p>_<i>_read_str| and \newline
-% \myhlc|\l_@@_spunit_luaset_<p>_<i>_exp_tl|.
+% number |<i>| of a product |<p>|, Lua also leaves the canonical symbol, the
+% speech text and the exponent. The canonical symbol is stored in
+% \myhlc|\l_@@_spunit_luaset_<p>_<i>_canonical_str|, the speech text in
+% \myhlc|\l_@@_spunit_luaset_<p>_<i>_read_str| and the exponent, which is
+% empty when there is none, in \myhlc|\l_@@_spunit_luaset_<p>_<i>_exp_tl|.
 %    \begin{macrocode}
 \str_new:N  \l_@@_spunit_luaset_above_n_str
 \str_new:N  \l_@@_spunit_luaset_above_found_str
@@ -8507,7 +8408,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{print-cdot, read-cdot, read-slash, cifras-sep, read-period-sep, notation-sym, unknown}
 %   We define the \mymeta{keys} \mykey[spunit]{print-cdot}, \mykey[spunit]{read-cdot}, \mykey[spunit]{read-slash},
-%   \mykey[spunit]{cifras-sep}, \mykey[spunit]{read-period-sep} and \newline \mykey[spunit]{notation-sym}.
+%   \mykey[spunit]{cifras-sep}, \mykey[spunit]{read-period-sep} and \mykey[spunit]{notation-sym}.
 %    \begin{macrocode}
 \keys_define:nn { spintent / spunit }
   {
@@ -8812,11 +8713,11 @@ spitool -o -p build/ ejemplo.tex
 % new custom \emph{\enquote{units}} or \emph{\enquote{aliases}} to the
 % package's dictionary. Similar to |\spunit|, these commands delegate
 % the processing and validation to the \myluamod{} via
-% \myhlc|\@@_luafun_define_custom_unit:nn| and \newline \myhlc|\@@_luafun_define_spunit_alias:nn|.
+% \myhlc|\@@_luafun_define_custom_unit:nn| and \myhlc|\@@_luafun_define_spunit_alias:nn|.
 %
 % During the definition, the Lua module checks if the new \emph{\enquote{unit}}
 % or \emph{\enquote{alias}} is valid and does not conflict with existing \emph{\enquote{units}}.
-% It returns the result of this operation to \TeX{} using the \newline \myhlc|\l_@@_spunit_luaset_status_str| variable.
+% It returns the result of this operation to \TeX{} using the \myhlc|\l_@@_spunit_luaset_status_str| variable.
 % If a collision is detected or the \mymarg{argument} is invalid, the package throws the
 % corresponding \enquote{error} message.
 %
@@ -8826,7 +8727,7 @@ spitool -o -p build/ ejemplo.tex
 %   The \enquote{error}s |spnewunit-duplicate| and |spunitalias-duplicate| are
 %   raised when the user attempts to define a \emph{\enquote{new unit}} or
 %   alias passed in `|#1|' that already exists in the dictionary. The
-%   \enquote{error} \newline |spunitalias-invalid-expr| is raised by |\spunitalias| when
+%   \enquote{error} |spunitalias-invalid-expr| is raised by |\spunitalias| when
 %   the target expression provided in `|#2|' is invalid, for example, because it
 %   contains unknown \emph{\enquote{units}} or incorrect syntax.
 %    \begin{macrocode}
@@ -8985,7 +8886,7 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{spmoney-no-subunits, spmoney-invalid-currency}
 %   The \enquote{warning} |spmoney-no-subunits| is raised when subunit rendering
 %   is requested for a currency that does not support fractional divisions,
-%   such as JPY or CLP, ignoring the flag. The \enquote{error} \newline
+%   such as JPY or CLP, ignoring the flag. The \enquote{error}
 %   |spmoney-invalid-currency| is raised when the provided currency identifier
 %   is not registered in the Lua database or is not written validly: an alias
 %   or symbol with any uppercase letter, or an \texttt{ISO} code that is
@@ -9080,9 +8981,9 @@ spitool -o -p build/ ejemplo.tex
 %   The function \myhlc|\@@_spmoney_validate_money:| verifies if the parsed
 %   input contains an embedded currency identifier by checking
 %   \myhlc|\l_@@_luaset_has_units_str|. If a currency is detected, it extracts
-%   and normalizes the key from \myhlc|\l_@@_luaset_arg_above_tl|. \newline It throws
+%   and normalizes the key from \myhlc|\l_@@_luaset_arg_above_tl|. It throws
 %   an \enquote{error} if the currency is not found in the database. If valid, it
-%   updates \newline \myhlc|\l_@@_spmoney_luaset_currency_arg_str| and retrieves the
+%   updates \myhlc|\l_@@_spmoney_luaset_currency_arg_str| and retrieves the
 %   full currency metadata from the \myluamod{} via \myhlc|\@@_luafun_spmoney_lookup_data:V|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spmoney_validate_money:
@@ -9108,10 +9009,10 @@ spitool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spmoney_print_symbol:}
-%   The function \myhlc|\@@_spmoney_print_symbol:| renders the \emph{\enquote{currency symbol}}. \newline
+%   The function \myhlc|\@@_spmoney_print_symbol:| renders the \emph{\enquote{currency symbol}}.
 %   If \myhlc|\l_@@_spmoney_luaset_print_iso_str| is |true|, it outputs the ISO
-%   code \newline using |\mathrm|. Otherwise, it prints the \emph{\enquote{standard symbol}},
-%   directly in math mode when \newline \myhlc|\l_@@_spmoney_money_math_bool| is |true|,
+%   code using |\mathrm|. Otherwise, it prints the \emph{\enquote{standard symbol}},
+%   directly in math mode when \myhlc|\l_@@_spmoney_money_math_bool| is |true|,
 %   or wrapped inside |\text| when it is |false|. For dollar signs `\$', the
 %   symbol is typeset through the control sequence |\$| in both cases.
 %    \begin{macrocode}
@@ -9160,8 +9061,8 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spmoney_render_number_node:, \@@_spmoney_render_only_integer_node:}
 %   The function \myhlc|\@@_spmoney_render_number_node:| renders the full
-%   numeric \newline value, encompassing both the integer and decimal components.
-%   Conversely, the function \newline \myhlc|\@@_spmoney_render_only_integer_node:|
+%   numeric value, encompassing both the integer and decimal components.
+%   Conversely, the function \myhlc|\@@_spmoney_render_only_integer_node:|
 %   outputs exclusively the integer portion, omitting any decimal data.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spmoney_render_number_node:
@@ -9178,7 +9079,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spmoney_mathml:}
 %   The function \myhlc|\@@_spmoney_mathml:| evaluates the presence of an
-%   explicit sign in \newline \myhlc|\l_@@_luaset_sign_tl|. If a sign is detected, it
+%   explicit sign in \myhlc|\l_@@_luaset_sign_tl|. If a sign is detected, it
 %   assigns a prefix speech intent `|más|' or `|menos|' and embeds the sign
 %   and subsequent layout inside a |\MathMLintent|. If no sign is present,
 %   it routes execution based on whether subunits are enabled.
@@ -9583,8 +9484,8 @@ spitool -o -p build/ ejemplo.tex
 %   to resolve the abbreviation or ordinal \mymarg{argument} passed in `|#1|'.
 %
 %   It subsequently evaluates the execution state stored within the string
-%   variable \newline \myhlc|\l_@@_spshort_luaset_status_str| and dynamically routes
-%   execution to the \newline corresponding rendering function |success|,
+%   variable \myhlc|\l_@@_spshort_luaset_status_str| and dynamically routes
+%   execution to the corresponding rendering function |success|,
 %   |fallback| or |error|. Any unrecognized status defaults
 %   to the \enquote{error} case.
 %    \begin{macrocode}
@@ -9611,8 +9512,8 @@ spitool -o -p build/ ejemplo.tex
 %   or partially resolved terms.
 %
 %   Conversely, the function \myhlc|\@@_spshort_render_bypass:n| maps
-%   the user-defined \newline \emph{\enquote{speech}} to the \mymarg{argument},
-%   bypassing the automated lookup Lua module. Finally, the function \newline
+%   the user-defined \emph{\enquote{speech}} to the \mymarg{argument},
+%   bypassing the automated lookup Lua module. Finally, the function
 %   \myhlc|\@@_spshort_render_error:n| triggers a structural exception while
 %   yielding the unformatted \mymarg{argument} to prevent fatal compilation.
 %    \begin{macrocode}
@@ -9702,10 +9603,10 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}{\spshort}
 %   The public document command \ics*{spshort} manages the accessible
-%   formatting of \emph{text mode} \newline abbreviations, acronyms, and ordinals.
-%   It first triggers an error if invoked within a \emph{math mode}, \newline
+%   formatting of \emph{text mode} abbreviations, acronyms, and ordinals.
+%   It first triggers an error if invoked within a \emph{math mode},
 %   upon validation, puts \myhlc|\mode_leave_vertical:| and establishes a local
-%   group to call the function \newline \myhlc|\@@_spshort_print:nn| for processing
+%   group to call the function \myhlc|\@@_spshort_print:nn| for processing
 %   and printing.
 %    \begin{macrocode}
 \NewDocumentCommand \spshort { O{} m }
@@ -9778,9 +9679,7 @@ spitool -o -p build/ ejemplo.tex
 % \subsubsection{Definition of keys for \cs[no-index]{spsiglo}}
 %
 % \begin{macro}[int]{print-era, unknown}
-% We define the \mymeta{key} \mykey[spsiglo]{print-era}. User configuration
-% determining if an era designation is appended, available values are |none|,
-% |ac| for \enquote{antes de cristo} and |dc| for \enquote{después de cristo}.
+%   We define the \mymeta{key} \mykey[spsiglo]{print-era}.
 %    \begin{macrocode}
 \keys_define:nn { spintent / spsiglo }
   {
@@ -9812,9 +9711,9 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spsiglo_render_simple:nn, \@@_spsiglo_render_simple:VV,
 %                    \@@_spsiglo_render_with_era:nnn, \@@_spsiglo_render_with_era:VVV}
-%   The functions \myhlc|\@@_spsiglo_render_simple:nn| and \newline
+%   The functions \myhlc|\@@_spsiglo_render_simple:nn| and
 %   \myhlc|\@@_spsiglo_render_with_era:nnn| generate \mynvmath{MathML} structures
-%   when century \newline designations are evaluated within \emph{math mode}. They
+%   when century designations are evaluated within \emph{math mode}. They
 %   construct \mynvmath{MathML} \texttt{intent} structures, mapping the Arabic
 %   numerals to their phonetic equivalents.
 %   \myhlc|\@@_spsiglo_render_with_era:nnn| also integrates the era modifiers
@@ -9977,8 +9876,8 @@ spitool -o -p build/ ejemplo.tex
 % \subsection{The command \cs{sptime}}\label{cmd:sptime}
 %
 % The command |\sptime| is the main public interface for typesetting and
-% tagging time \newline expressions. It parses time string formats, such as |HH:MM|
-% or |HH:MM:SS|, using the Lua function \newline \myhlc|\@@_luafun_sptime_parse:n|.
+% tagging time expressions. It parses time string formats, such as |HH:MM|
+% or |HH:MM:SS|, using the Lua function \myhlc|\@@_luafun_sptime_parse:n|.
 % This separates the hours, minutes, seconds, and fractions to construct
 % a \mynvmath{MathML} |intent| tree for \mynvmath{NVDA/MathCAT}.
 %
@@ -10054,7 +9953,7 @@ spitool -o -p build/ ejemplo.tex
 %   The internal function \myhlc|\@@_sptime_mathml:| builds the complete
 %   \mynvmath{MathML} structure for the time expression. It checks the string variables
 %   \myhlc|\l_@@_sptime_luaset_has_seconds_str| and
-%   \myhlc|\l_@@_sptime_luaset_is_fraction_str| to determine if the time includes \newline
+%   \myhlc|\l_@@_sptime_luaset_is_fraction_str| to determine if the time includes
 %   seconds or decimal fractions. Based on these values, it inserts the base
 %   time string and either calls \myhlc|\@@_sptime_build_seconds:nn| with the
 %   appropriate prefix, 'con' or 'minutos-con', or appends the 'minutos'
@@ -10099,9 +9998,9 @@ spitool -o -p build/ ejemplo.tex
 %   The command \ics*{sptime} is the public interface for formatting time
 %   expressions. It first checks if it is being used in math mode, issuing
 %   an error if not. Inside a local group, it parses the input using
-%   \myhlc|\@@_luafun_sptime_parse:n| and checks the error status in \newline
+%   \myhlc|\@@_luafun_sptime_parse:n| and checks the error status in
 %   \myhlc|\l_@@_sptime_luaset_error_str|. If an invalid format is detected,
-%   it issues the \newline |sptime-invalid-arg| error; otherwise, it calls
+%   it issues the |sptime-invalid-arg| error; otherwise, it calls
 %   \myhlc|\@@_sptime_mathml:| to assemble the \mynvmath{MathML} output.
 %    \begin{macrocode}
 \NewDocumentCommand \sptime { m }
@@ -10129,7 +10028,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % The command |\spdate| is the main public command for typesetting and
 % tagging date expressions. It parses date string formats, such as |DD/MM/YYYY|
-% or |YYYY-MM-DD|, using the Lua function \newline \myhlc|\@@_luafun_spdate_parse:n|.
+% or |YYYY-MM-DD|, using the Lua function \myhlc|\@@_luafun_spdate_parse:n|.
 % This verifies the input and constructs a \mynvmath{MathML} |intent| tree for
 % \mynvmath{NVDA/MathCAT}.
 %
@@ -10167,10 +10066,10 @@ spitool -o -p build/ ejemplo.tex
 % \subsubsection{Internal functions for \cs[no-index]{spdate}}
 %
 % \begin{macro}[int]{\@@_spdate_exec:n}
-%   The internal function \myhlc|\@@_spdate_exec:n| parses the input using \newline
-%   \myhlc|\@@_luafun_spdate_parse:n| and checks the error status in \newline
+%   The internal function \myhlc|\@@_spdate_exec:n| parses the input using
+%   \myhlc|\@@_luafun_spdate_parse:n| and checks the error status in
 %   \myhlc|\l_@@_spdate_luaset_error_str|. If an invalid format is detected,
-%   it issues the \newline |spdate-invalid-arg| error. Otherwise, it calls
+%   it issues the |spdate-invalid-arg| error. Otherwise, it calls
 %   \myhlc|\@@_spdate_mathml:|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spdate_exec:n
@@ -10263,7 +10162,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{variable}[int]{\l_@@_spusep_arg_tl, \l_@@_spusep_left_tl, \l_@@_spusep_right_tl}
 %   The variable \myhlc|\l_@@_spusep_arg_tl| stores the \mymarg{argument},
-%   the variable \newline \myhlc|\l_@@_spusep_left_tl| and \myhlc|\l_@@_spusep_right_tl|
+%   the variable \myhlc|\l_@@_spusep_left_tl| and \myhlc|\l_@@_spusep_right_tl|
 %   stores the parentheses.
 %    \begin{macrocode}
 \tl_new:N \l_@@_spusep_arg_tl
@@ -10473,10 +10372,10 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spread_read_arg_tl,
 %     \l_@@_spread_read_tmp_tl,
 %   }
-%   The variables \myhlc|\l_@@_spread_luaset_status_str| \newline and
-%   \myhlc|\l_@@_spread_luaset_reading_str| are set by \newline
+%   The variables \myhlc|\l_@@_spread_luaset_status_str| and
+%   \myhlc|\l_@@_spread_luaset_reading_str| are set by
 %   \myhlc|\@@_luafun_spread_new:nn|/\myhlc|\@@_luafun_spread_lookup:n|.
-%   The \newline variable \myhlc|\l_@@_spread_read_arg_tl| stores \mykey{read-arg}.
+%   The variable \myhlc|\l_@@_spread_read_arg_tl| stores \mykey{read-arg}.
 %    \begin{macrocode}
 \str_new:N \l_@@_spread_luaset_status_str
 \str_new:N \l_@@_spread_luaset_reading_str
@@ -10581,9 +10480,9 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}{\spnewread}
 %   The public command \ics*{spnewread} registers a new symbol/reading
-%   pair. It first normalizes the \newline reading `|#2|' with
+%   pair. It first normalizes the reading `|#2|' with
 %   \myhlc|\@@_sanitize_affix:Nn|, storing the result in the scratch
-%   variable \newline \myhlc|\l_@@_spread_read_tmp_tl|, and reports |spnewread-empty-args|
+%   variable \myhlc|\l_@@_spread_read_tmp_tl|, and reports |spnewread-empty-args|
 %   when the symbol `|#1|' is blank or the normalized reading is empty.
 %   Otherwise it passes the symbol and the normalized reading to Lua via
 %   \myhlc|\@@_luafun_spread_new:nn|, reporting
@@ -10655,7 +10554,7 @@ spitool -o -p build/ ejemplo.tex
       },
     set-sym  .initial:n = two-dots,
     set-sym  .value_required:n = true,
-    set-sym / unknown  .code:n =
+    set-sym / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { set-sym } { old-style, ~two-dots, ~slash } { \exp_not:n {#1} },
     read-sym .choices:nn =
@@ -10764,7 +10663,7 @@ spitool -o -p build/ ejemplo.tex
       },
     set-sym   .initial:n = dot,
     set-sym   .value_required:n = true,
-    set-sym / unknown  .code:n =
+    set-sym / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { set-sym } { cross, ~dot, ~asterisk } { \exp_not:n {#1} },
     read-sym  .choices:nn =
@@ -10870,13 +10769,11 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{cifras-sep, read-sign, read-period-sep, notation-sym,
 %                    set-sym, read-sym, wrap-parens, read-parens, unknown}
-%   We define the \mymeta{keys} \mykey[spdiv]{wrap-parens} and
-%   \mykey[spdiv]{read-parens} for |\spdiv| command. Number-related
-%   \mymeta{keys} \mykey[spdiv]{cifras-sep}, \mykey[spdiv]{read-sign},
-%   \mykey[spdiv]{read-period-sep} and \mykey[spdiv]{notation-sym}
-%   are forwarded to |\spnum| command using \myhlc|.meta:nn|, while semantic
-%   operator \mymeta{keys} \mykey[spdiv]{set-sym} and \mykey[spdiv]{read-sym}
-%   are forwarded to the |\spdsym| command using \myhlc|.meta:nn|.
+%   We define the \mymeta{keys} \mykey[spdiv]{cifras-sep},
+%   \mykey[spdiv]{read-sign}, \mykey[spdiv]{read-period-sep},
+%   \mykey[spdiv]{notation-sym}, \mykey[spdiv]{set-sym},
+%   \mykey[spdiv]{read-sym}, \mykey[spdiv]{wrap-parens} and
+%   \mykey[spdiv]{read-parens}.
 %    \begin{macrocode}
 \keys_define:nn { spintent / spdiv }
   {
@@ -10947,7 +10844,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spdiv_exec:nnn}
 %   The function \myhlc|\@@_spdiv_exec:nnn| sets \mymeta{keys}, validates
-%   \mymarg{arguments}, and calls \newline \myhlc|\@@_spdiv_mathml:nn|.
+%   \mymarg{arguments}, and calls \myhlc|\@@_spdiv_mathml:nn|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spdiv_exec:nnn
   {
@@ -11011,13 +10908,11 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{cifras-sep, read-sign, read-period-sep, notation-sym,
 %                    set-sym, read-sym, wrap-parens, read-parens, unknown}
-%   We define the \mymeta{keys} \mykey[spmul]{wrap-parens} and
-%   \mykey[spmul]{read-parens} for |\spmul| command. Number-related
-%   \mymeta{keys} \mykey[spmul]{cifras-sep}, \mykey[spmul]{read-sign},
-%   \mykey[spmul]{read-period-sep} and \mykey[spmul]{notation-sym}
-%   are forwarded to |\spnum| command using \myhlc|.meta:nn|, while semantic
-%   operator \mymeta{keys} \mykey[spmul]{set-sym} and \mykey[spmul]{read-sym}
-%   are forwarded to the |\spmsym| command using \myhlc|.meta:nn|.
+%   We define the \mymeta{keys} \mykey[spmul]{cifras-sep},
+%   \mykey[spmul]{read-sign}, \mykey[spmul]{read-period-sep},
+%   \mykey[spmul]{notation-sym}, \mykey[spmul]{set-sym},
+%   \mykey[spmul]{read-sym}, \mykey[spmul]{wrap-parens} and
+%   \mykey[spmul]{read-parens}.
 %    \begin{macrocode}
 \keys_define:nn { spintent / spmul }
   {
@@ -11088,7 +10983,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spmul_exec:nnn}
 %   The function \myhlc|\@@_spmul_exec:nnn| sets \mymeta{keys}, validates
-%   \mymarg{arguments}, and calls \newline \myhlc|\@@_spmul_mathml:nn|.
+%   \mymarg{arguments}, and calls \myhlc|\@@_spmul_mathml:nn|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spmul_exec:nnn
   {
@@ -11152,8 +11047,8 @@ spitool -o -p build/ ejemplo.tex
 \clist_map_inline:nn { mcd , mcm }
   {
     \tl_new:c   { l_@@_sp #1 _luaset_ #1 _value_tl }
-    \bool_new:c { l_@@_sp #1 _read_terse_bool }
-    \tl_new:c   { l_@@_sp #1 _prefix_tl }
+    \bool_new:c { l_@@_sp #1 _read_terse_bool      }
+    \tl_new:c   { l_@@_sp #1 _prefix_tl            }
   }
 %    \end{macrocode}
 % \end{variable}
@@ -11225,7 +11120,7 @@ spitool -o -p build/ ejemplo.tex
 %   The function \myhlc|\@@_mc_process_args:nn| parses the operation `|#1|'
 %   and its raw argument list `|#2|'. Calls \myhlc|\@@_luafun_mc_classify_args:n|,
 %   splits `|#2|' into \myhlc|\l_@@_mc_raw_args_seq| and \myhlc|\l_@@_mc_luaset_types_clist| into
-%   \myhlc|\l_@@_mc_types_seq|, then walks \newline the former by position,
+%   \myhlc|\l_@@_mc_types_seq|, then walks the former by position,
 %   fetching the matching type from the latter through
 %   \myhlc|\seq_item:Nn|, to build \myhlc|\l_@@_mc_args_seq|: each
 %   argument wrapped through |\spnum| when its type is |number|,
@@ -11324,7 +11219,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{important}*
 %   We should use |\mathrm| instead of |\operatorname|, which generates
-%   unwanted spacing when \newline \myhlc|\c__spintent_invisible_sep_int| is
+%   unwanted spacing when \myhlc|\c__spintent_invisible_sep_int| is
 %   applied.
 % \end{important}
 %    \begin{macrocode}
@@ -11337,7 +11232,7 @@ spitool -o -p build/ ejemplo.tex
 %   \myhlc|\@@_luafun_mc_classify_args:n|. If every argument is a number, the
 %   Lua calculation |calculate_|\myhlc|#1| is called, and the computed value is
 %   printed when \mykey{result} is |true|. If any argument is not a number, no calculation is
-%   attempted. In both cases \newline \myhlc|\@@_mc_process_args:n| prints the argument
+%   attempted. In both cases \myhlc|\@@_mc_process_args:n| prints the argument
 %   list.
 %    \begin{macrocode}
     \tl_if_novalue:nF {#4}
@@ -11800,10 +11695,10 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}{\spnM, \spnD}
 %   The commands \ics*{spnM} and \ics*{spnD} are the public commands
-%   for typesetting multiples and divisors, \newline respectively. They
+%   for typesetting multiples and divisors, respectively. They
 %   enforce math mode, open a local group, and defer execution to the
-%   function \newline \myhlc|\@@_spnM_spnD_exec:nnnnn|, passing along
-%   the optional \mymeta{keys} `|#1|' and the numeric \newline \mymarg{argument} `|#2|'.
+%   function \myhlc|\@@_spnM_spnD_exec:nnnnn|, passing along
+%   the optional \mymeta{keys} `|#1|' and the numeric \mymarg{argument} `|#2|'.
 %    \begin{macrocode}
 \NewDocumentCommand \spnM { O{} d() }
   {
@@ -11944,7 +11839,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}{\sprazon}
 %   The public command \ics*{sprazon} enforces \emph{math mode} and
-%   delegates execution to \newline \myhlc|\@@_sprazon_exec:nnn|.
+%   delegates execution to \myhlc|\@@_sprazon_exec:nnn|.
 %    \begin{macrocode}
 \NewDocumentCommand \sprazon { O{} m m }
   {
@@ -12038,10 +11933,10 @@ spitool -o -p build/ ejemplo.tex
 % \subsubsection{Internal functions for \cs[no-index]{spang}}
 %
 % \begin{macro}[int]{\@@_spang_exec:n}
-%   The internal function \myhlc|\@@_spang_exec:n| parses the angle input using \newline
-%   \myhlc|\@@_luafun_spang_parse:n| after resetting the error flag in \newline
+%   The internal function \myhlc|\@@_spang_exec:n| parses the angle input using
+%   \myhlc|\@@_luafun_spang_parse:n| after resetting the error flag in
 %   \myhlc|\l_@@_spang_luaset_error_str|. If an invalid format is detected, it
-%   issues the \newline |spang-invalid-arg| error. Otherwise, it calls
+%   issues the |spang-invalid-arg| error. Otherwise, it calls
 %   \myhlc|\@@_spang_mathml:|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spang_exec:n
@@ -12059,11 +11954,11 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spang_mathml:}
 %   The internal function \myhlc|\@@_spang_mathml:| checks the extracted
-%   string variables \newline \myhlc|\l_@@_spang_luaset_grado_str|,
-%   \myhlc|\l_@@_spang_luaset_minuto_str|, and \newline
+%   string variables \myhlc|\l_@@_spang_luaset_grado_str|,
+%   \myhlc|\l_@@_spang_luaset_minuto_str|, and
 %   \myhlc|\l_@@_spang_luaset_segundo_str|. For each non-empty variable, it
-%   constructs the \newline corresponding \mynvmath{MathML} |intent| structure with the
-%   correct measurement symbols and postfixes for \newline \mynvmath{NVDA/MathCAT}.
+%   constructs the corresponding \mynvmath{MathML} |intent| structure with the
+%   correct measurement symbols and postfixes for \mynvmath{NVDA/MathCAT}.
 %   Each value is expanded with \myhlc|\exp_args:Ne| before it reaches |\spunit|,
 %   which protects its \mymarg{argument} from expansion.
 %    \begin{macrocode}
@@ -12148,12 +12043,9 @@ spitool -o -p build/ ejemplo.tex
 % \subsubsection{Definition of keys for \cs[no-index]{spnZ}}
 %
 % \begin{macro}[int]{cifras-sep, read-sign, wrap-parens, read-parens, unknown}
-%   We define the \mymeta{keys} \mykey[spnZ]{cifras-sep} and
-%   \mykey[spnZ]{read-sign}. These are \myhlc|.meta:nn| \mymeta{keys} passed to
-%   the |\spnum| command. We also introduce \mykey[spnZ]{wrap-parens},
-%   which determines whether the number is enclosed in parentheses, and
-%   \mykey[spnZ]{read-parens}, which controls if these parentheses are
-%   read by \mynvmath{MathCAT}.
+%   We define the \mymeta{keys} \mykey[spnZ]{cifras-sep},
+%   \mykey[spnZ]{read-sign}, \mykey[spnZ]{wrap-parens} and
+%   \mykey[spnZ]{read-parens}.
 %    \begin{macrocode}
 \keys_define:nn { spintent / spnZ }
   {
@@ -12178,8 +12070,8 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spnz_mathml:}
 %   The function \myhlc|\@@_spnz_mathml:| builds the \mynvmath{MathML}
-%   structure of the integer. If \newline \mykey[spnZ]{wrap-parens} is true, it prints
-%   the number surrounded by parentheses, checking the state of \newline
+%   structure of the integer. If \mykey[spnZ]{wrap-parens} is true, it prints
+%   the number surrounded by parentheses, checking the state of
 %   \myhlc|\l_@@_spnz_read_parens_bool|, which the
 %   \mykey[spnZ]{read-parens} key controls: if it is |true|, the parentheses are read;
 %   otherwise it applies the |:silent| \emph{intent property} to them. If
@@ -12207,7 +12099,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spnz_exec:nn}
 %   The function \myhlc|\@@_spnz_exec:nn| first processes the
-%   \mymeta{keys} passed in `|#1|' and then calls \newline
+%   \mymeta{keys} passed in `|#1|' and then calls
 %   \myhlc|\@@_luafun_clean_split_and_set:n| on `|#2|'. It verifies
 %   that the input is a valid integer by checking if the variable
 %   \myhlc|\l_@@_luaset_has_integer_str| is |true|. If not |true|,
@@ -12246,8 +12138,8 @@ spitool -o -p build/ ejemplo.tex
 % \subsection{The command \cs{spmQ}}\label{cmd:spmQ}
 %
 % The command |\spmQ| typesets \emph{\enquote{mixed numbers}} within Spanish
-% mathematical contexts such \newline as $3\frac{1}{2}$. It delegates the scaling
-% of the integer part to the Lua module \myluamod{} via \newline
+% mathematical contexts such as $3\frac{1}{2}$. It delegates the scaling
+% of the integer part to the Lua module \myluamod{} via
 % \myhlc|\@@_luafun_spmQ_scale_int:Vn|, which measures both the integer
 % glyph and the fraction box at the node level and computes a scaling factor
 % to align their heights visually. Finally, it constructs the correct
@@ -12268,9 +12160,9 @@ spitool -o -p build/ ejemplo.tex
 %   fractional parts.
 %
 %   The variable \myhlc|\l_@@_spmQ_intent_read_sign_str| stores the
-%   |:intent| passed to \newline |\MathMLintent| when the signs
+%   |:intent| passed to |\MathMLintent| when the signs
 %   `$\mathcolor{red}{+}$' or `$\mathcolor{red}{-}$' are present in the
-%   integer part, used by the function \newline \myhlc|\@@_spmQ_print_scale_int:n|.
+%   integer part, used by the function \myhlc|\@@_spmQ_print_scale_int:n|.
 %
 %   The variables \myhlc|\l_@@_spmQ_wrap_parens_l_tl| and
 %   \myhlc|\l_@@_spmQ_wrap_parens_r_tl| store the sized parentheses set
@@ -12278,8 +12170,8 @@ spitool -o -p build/ ejemplo.tex
 %   key \mykey[spmQ]{wrap-parens}.
 %
 %   The boolean variable \myhlc|\l_@@_spmQ_error_bool| is set to |true|
-%   by \newline \myhlc|\@@_spmQ_check_part:nn| when any of the three arguments is
-%   rejected, so that \newline nothing is typeset.
+%   by \myhlc|\@@_spmQ_check_part:nn| when any of the three arguments is
+%   rejected, so that nothing is typeset.
 %
 %   The integer variable \myhlc|\l_@@_saved_luamml_flag_int| temporarily
 %   stores the current value of \myhlc|\l__luamml_flag_int| before disabling it
@@ -12503,7 +12395,7 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spmQ_print_scale_int:}
 %   The function \myhlc|\@@_spmQ_print_scale_int:| prints the integer part
 %   of the \emph{\enquote{mixed number}} scaled to match the visual height
-%   of the accompanying fraction. Before calling the Lua function \newline
+%   of the accompanying fraction. Before calling the Lua function
 %   \myhlc|\@@_luafun_spmQ_scale_int:Vn|, it temporarily disables
 %   \mypkg{luamml} by saving the current value of \myhlc|\l__luamml_flag_int|
 %   into \myhlc|\l_@@_saved_luamml_flag_int| and setting it to |0|, which skips it
@@ -12588,11 +12480,11 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spmQ_print_spnZ_dfrac:nn}
 %   The function \myhlc|\@@_spmQ_print_spnZ_dfrac:nn| typesets the
-%   fractional part of the \newline \emph{\enquote{mixed number}}. It takes the
+%   fractional part of the \emph{\enquote{mixed number}}. It takes the
 %   numerator in `|#1|' and the denominator in `|#2|', both already
 %   validated by \myhlc|\@@_spmQ_check_part:nn|. The function branches
-%   on the two boolean variables \newline \myhlc|\l_@@_spmQ_use_spnZ_bool| and
-%   \myhlc|\l_@@_spmQ_use_dfrac_bool|, controlled \newline respectively by the keys
+%   on the two boolean variables \myhlc|\l_@@_spmQ_use_spnZ_bool| and
+%   \myhlc|\l_@@_spmQ_use_dfrac_bool|, controlled respectively by the keys
 %   \mykey[spmQ]{use-spnZ} and \mykey[spmQ]{use-dfrac}. When
 %   \mykey[spmQ]{use-spnZ} is |true|, both the numerator and denominator
 %   are passed through |\spnZ| to gain \mynvmath{MathML} integer semantics;
@@ -12652,15 +12544,15 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spmQ_check_part:nn}
 %   The function \myhlc|\@@_spmQ_check_part:nn| validates one argument of
-%   |\spmQ|. It receives \newline the role of the argument in `|#1|', which is |int|,
+%   |\spmQ|. It receives the role of the argument in `|#1|', which is |int|,
 %   |num| or |den|, and the argument itself in `|#2|', and calls
 %   \myhlc|\@@_luafun_clean_split_and_set:n| on it. If
 %   \myhlc|\l_@@_luaset_has_integer_str| is |false|, the |spmQ-not-integer|
-%   \enquote{error} is raised. If the argument is an integer but carries \newline a
+%   \enquote{error} is raised. If the argument is an integer but carries a
 %   sign and its role is not |int|, the |spmQ-signed-part| \enquote{error}
 %   is raised. If the role is |den| and the value is zero, the
 %   |spmQ-zero-denominator| \enquote{error} is raised. Every rejected
-%   argument sets \newline \myhlc|\l_@@_spmQ_error_bool| to |true|; the arguments are
+%   argument sets \myhlc|\l_@@_spmQ_error_bool| to |true|; the arguments are
 %   rejected whatever the value of the key \mykey[spmQ]{silent}.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spmQ_check_part:nn
@@ -12765,11 +12657,11 @@ spitool -o -p build/ ejemplo.tex
 % \subsection{The commands of the \texttt{geo} family}\label{cmd:geo}
 %
 % The commands described in this section provide a semantic interface for
-% geometric objects in \newline Spanish mathematical contexts. They delegate the parsing
+% geometric objects in Spanish mathematical contexts. They delegate the parsing
 % to \myluamod{} and share the variables \myhlc{\l_@@_geo_luaset_error_str},
-% \myhlc{\l_@@_geo_luaset_intent_str}, \newline \myhlc{\l_@@_geo_luaset_print_tl},
-% \myhlc{\l_@@_geo_luaset_letra_str}, \newline \myhlc{\l_@@_geo_luaset_sub_str} and
-% \myhlc{\l_@@_geo_luaset_tipo_str}, with which the \newline intent is
+% \myhlc{\l_@@_geo_luaset_intent_str}, \myhlc{\l_@@_geo_luaset_print_tl},
+% \myhlc{\l_@@_geo_luaset_letra_str}, \myhlc{\l_@@_geo_luaset_sub_str} and
+% \myhlc{\l_@@_geo_luaset_tipo_str}, with which the intent is
 % built. A single point is always annotated with
 % \myhlc|\@@_mathmlarg_point:nnn|. Every command activates
 % \myhlc|\l_@@_scope_attr_int| inside its own group, so that the shared queue
@@ -12852,10 +12744,10 @@ spitool -o -p build/ ejemplo.tex
 \str_new:N \l_@@_spcoord_luaset_sep_str
 \clist_map_inline:nn { x , y }
   {
-    \str_new:c { l_@@_spcoord_luaset_ #1 _sign_str }
-    \str_new:c { l_@@_spcoord_luaset_ #1 _type_str }
-    \str_new:c { l_@@_spcoord_luaset_ #1 _value_str }
-    \str_new:c { l_@@_spcoord_luaset_ #1 _has_frac_str }
+    \str_new:c { l_@@_spcoord_luaset_ #1 _sign_str      }
+    \str_new:c { l_@@_spcoord_luaset_ #1 _type_str      }
+    \str_new:c { l_@@_spcoord_luaset_ #1 _value_str     }
+    \str_new:c { l_@@_spcoord_luaset_ #1 _has_frac_str  }
     \str_new:c { l_@@_spcoord_luaset_ #1 _composite_str }
   }
 %    \end{macrocode}
@@ -12868,11 +12760,11 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spcoord_wrap_parens_l_tl,
 %     \l_@@_spcoord_wrap_parens_r_tl,
 %   }
-%   The variable \myhlc|\l_@@_spcoord_raw_arg_tl| holds the \mymarg{argument} exactly \newline as
-%   given. The variable \myhlc|\l_@@_spcoord_intent_str| holds the \newline |:infix|
-%   word for the separator |_coma:infix| or |_punto-y-coma:infix|. The variables \newline
+%   The variable \myhlc|\l_@@_spcoord_raw_arg_tl| holds the \mymarg{argument} exactly as
+%   given. The variable \myhlc|\l_@@_spcoord_intent_str| holds the |:infix|
+%   word for the separator |_coma:infix| or |_punto-y-coma:infix|. The variables
 %   \myhlc|\l_@@_spcoord_wrap_parens_l_tl|/\myhlc|\l_@@_spcoord_wrap_parens_r_tl|
-%   hold the \newline opening/closing delimiter, sized by the function \myhlc|\@@_spcoord_set_wrap_parens_size:|.
+%   hold the opening/closing delimiter, sized by the function \myhlc|\@@_spcoord_set_wrap_parens_size:|.
 %    \begin{macrocode}
 \tl_new:N  \l_@@_spcoord_raw_arg_tl
 \str_new:N \l_@@_spcoord_intent_str
@@ -13006,7 +12898,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spcoord_print:n}
 %   With the variable \myhlc|_sign_str| of the endpoint in `|#1|' equal to |+|
-%   or |-|, it wraps the sign and \newline \myhlc|\@@_spcoord_value:n| with
+%   or |-|, it wraps the sign and \myhlc|\@@_spcoord_value:n| with
 %   |_más:prefix($vp)| or |_menos:prefix($vn)|, referencing the value with
 %   \MathMLarg. With no sign, it calls \myhlc|\@@_spcoord_value:n| directly.
 %   Receives |x| or |y| in `|#1|'.
@@ -13078,7 +12970,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spcoord_mathml:N}
 %   The argument is the boolean variable that holds the value of \mykey{silent}
-%   of the command that calls \newline it. With \mykey{silent}|=true|, the parentheses
+%   of the command that calls it. With \mykey{silent}|=true|, the parentheses
 %   and the argument are wrapped in a single `|_-|' intent, and
 %   \myhlc|\l_@@_spcoord_raw_arg_tl| is typeset as given. Otherwise, the
 %   parentheses are silenced individually and
@@ -13106,9 +12998,9 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spcoord_exec:nn}
 %   Sets the \mymeta{keys} in `|#1|' and \myhlc|\l_@@_spcoord_raw_arg_tl| to
-%   `|#2|'. Calls \newline \myhlc|\@@_luafun_spcoord_parse_and_set:n| and reports
-%   |spcoord-invalid-arg| on error, \newline whatever the value of \mykey{silent}. Then
-%   it sizes the parentheses and, if there was no error, calls \newline
+%   `|#2|'. Calls \myhlc|\@@_luafun_spcoord_parse_and_set:n| and reports
+%   |spcoord-invalid-arg| on error, whatever the value of \mykey{silent}. Then
+%   it sizes the parentheses and, if there was no error, calls
 %   \myhlc|\@@_spcoord_mathml:N| preceded by an invisible separator placed
 %   \emph{before} the opening parenthesis. The whole pair is wrapped in
 %   |\mathord|, which prevents \mynvmath{MathCAT} from reading |(1,2)| as an
@@ -13138,7 +13030,7 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}{\spcoord}
 %   The public command \ics*{spcoord}
 %   enforces \emph{math mode}, opens a local group,
-%   and delegates to \newline \myhlc|\@@_spcoord_exec:nn|.
+%   and delegates to \myhlc|\@@_spcoord_exec:nn|.
 %    \begin{macrocode}
 \NewDocumentCommand \spcoord { O{} m }
   {
@@ -13215,15 +13107,15 @@ spitool -o -p build/ ejemplo.tex
 %    \begin{macrocode}
 \clist_map_inline:nn { a , b }
   {
-    \str_new:c { l_@@_spinterval_luaset_ #1 _sign_str }
-    \str_new:c { l_@@_spinterval_luaset_ #1 _type_str }
-    \str_new:c { l_@@_spinterval_luaset_ #1 _value_str }
-    \str_new:c { l_@@_spinterval_luaset_ #1 _inf_str }
-    \str_new:c { l_@@_spinterval_luaset_ #1 _tall_str }
+    \str_new:c { l_@@_spinterval_luaset_ #1 _sign_str      }
+    \str_new:c { l_@@_spinterval_luaset_ #1 _type_str      }
+    \str_new:c { l_@@_spinterval_luaset_ #1 _value_str     }
+    \str_new:c { l_@@_spinterval_luaset_ #1 _inf_str       }
+    \str_new:c { l_@@_spinterval_luaset_ #1 _tall_str      }
     \str_new:c { l_@@_spinterval_luaset_ #1 _composite_str }
-    \str_new:c { l_@@_spinterval_luaset_ #1 _integer_str }
-    \str_new:c { l_@@_spinterval_luaset_ #1 _short_str }
-    \str_new:c { l_@@_spinterval_luaset_ #1 _braced_str }
+    \str_new:c { l_@@_spinterval_luaset_ #1 _integer_str   }
+    \str_new:c { l_@@_spinterval_luaset_ #1 _short_str     }
+    \str_new:c { l_@@_spinterval_luaset_ #1 _braced_str    }
   }
 %    \end{macrocode}
 % \end{variable}
@@ -13248,20 +13140,20 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spinterval_tmp_tl,
 %   }
 %   The variables \myhlc|\l_@@_spinterval_mode_str|,
-%   \myhlc|\l_@@_spinterval_prefix_tl|, \newline \myhlc|\l_@@_spinterval_read_arg_tl| and
+%   \myhlc|\l_@@_spinterval_prefix_tl|, \myhlc|\l_@@_spinterval_read_arg_tl| and
 %   \myhlc|\l_@@_spinterval_size_str| store the values set by the keys
 %   \mykey[spinterval]{read-cmd}, \mykey[spinterval]{prefix},
 %   \mykey[spinterval]{read-arg} and \mykey[spinterval]{size}, and
 %   \myhlc|\l_@@_spinterval_reason_str| the text of the error reason. The variables
-%   \myhlc|\l_@@_spinterval_word_w_tl| and \newline \myhlc|\l_@@_spinterval_word_g_tl| store
-%   the word that names the interval and the \newline word that joins its endpoints, and
-%   \myhlc|\l_@@_spinterval_intent_arg_tl| and \newline \myhlc|\l_@@_spinterval_intent_group_tl|
+%   \myhlc|\l_@@_spinterval_word_w_tl| and \myhlc|\l_@@_spinterval_word_g_tl| store
+%   the word that names the interval and the word that joins its endpoints, and
+%   \myhlc|\l_@@_spinterval_intent_arg_tl| and \myhlc|\l_@@_spinterval_intent_group_tl|
 %   the intents of the whole interval and of the group of endpoints. The variables
 %   \myhlc|\l_@@_spinterval_sym_l_tl|, \myhlc|\l_@@_spinterval_sym_r_tl|,
-%   \myhlc|\l_@@_spinterval_size_l_tl|, \myhlc|\l_@@_spinterval_size_r_tl|, \newline
-%   \myhlc|\l_@@_spinterval_delim_l_tl| and \myhlc|\l_@@_spinterval_delim_r_tl| \newline store
+%   \myhlc|\l_@@_spinterval_size_l_tl|, \myhlc|\l_@@_spinterval_size_r_tl|,
+%   \myhlc|\l_@@_spinterval_delim_l_tl| and \myhlc|\l_@@_spinterval_delim_r_tl| store
 %   the delimiter symbols, their size commands and the delimiters ready to be
-%   typeset; \newline \myhlc|\l_@@_spinterval_tmp_tl| is a scratch variable.
+%   typeset; \myhlc|\l_@@_spinterval_tmp_tl| is a scratch variable.
 %    \begin{macrocode}
 \tl_new:N  \l_@@_spinterval_prefix_tl
 \tl_new:N  \l_@@_spinterval_read_arg_tl
@@ -13320,7 +13212,7 @@ spitool -o -p build/ ejemplo.tex
       },
     read-cmd .initial:n = school,
     read-cmd .value_required:n = true,
-    read-cmd / unknown  .code:n =
+    read-cmd / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { read-cmd } { school,~mathcat } { \exp_not:n {#1} },
     prefix   .code:n =
@@ -13345,7 +13237,7 @@ spitool -o -p build/ ejemplo.tex
       },
     size     .initial:n = auto,
     size     .value_required:n = true,
-    size / unknown      .code:n =
+    size / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { size } { auto,~none,~big,~Big,~bigg,~Bigg } { \exp_not:n {#1} },
     silent   .bool_set:N = \l_@@_spinterval_silent_bool,
@@ -13366,9 +13258,9 @@ spitool -o -p build/ ejemplo.tex
 % \subsubsection{Internal functions for \cs[no-index]{spinterval}}
 %
 % \begin{macro}[int]{\@@_spinterval_set_reason:}
-%   The internal function \myhlc|\@@_spinterval_set_reason:| stores in \newline
+%   The internal function \myhlc|\@@_spinterval_set_reason:| stores in
 %   \myhlc|\l_@@_spinterval_reason_str| the text that describes the error code
-%   returned \newline by the Lua module, or |invalid argument| when the code is not known.
+%   returned by the Lua module, or |invalid argument| when the code is not known.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spinterval_set_reason:
   {
@@ -13777,7 +13669,7 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}{\spinterval}
 %   The public command \ics*{spinterval}
 %   enforces \emph{math mode}, opens a local group,
-%   and delegates to \newline \myhlc|\@@_spinterval_exec:nn|.
+%   and delegates to \myhlc|\@@_spinterval_exec:nn|.
 %    \begin{macrocode}
 \NewDocumentCommand \spinterval { O{} m }
   {
@@ -13798,10 +13690,10 @@ spitool -o -p build/ ejemplo.tex
 % The user command |\spfun| typesets a function call such as |f(x)|,
 % |f_{1}(x)|, |f''(x,y)|. The Lua function
 % \myhlc|\@@_luafun_spfun_parse_and_set:n| splits the \mymarg{argument}
-% into \newline the function name, which is a letter with an optional subscript or primes
-% left in the shared \newline \myhlc|\l_@@_geo_luaset_*| variables, and the list of
-% arguments, cut at the top-level \newline commas, each one stored in
-% \myhlc|\l_@@_spfun_luaset_arg_<i>_tl| together with a flag \newline
+% into the function name, which is a letter with an optional subscript or primes
+% left in the shared \myhlc|\l_@@_geo_luaset_*| variables, and the list of
+% arguments, cut at the top-level commas, each one stored in
+% \myhlc|\l_@@_spfun_luaset_arg_<i>_tl| together with a flag
 % \myhlc|\l_@@_spfun_luaset_simple_<i>_str| telling whether it is a single
 % node. The whole call is tagged with a native |\MathMLintent| whose
 % |intent| is |$f($a1,$a2,...)|; the name is tagged |arg="f"| and each
@@ -13835,8 +13727,8 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spfun_luaset_inv_str,
 %   }
 %   The variable \myhlc|\l_@@_spfun_mode_str| stores the value set by the
-%   key \mykey[spfun]{read-cmd} and \newline \myhlc|\l_@@_spfun_prefix_tl| the one
-%   set by \mykey[spfun]{prefix}. The boolean variables \newline
+%   key \mykey[spfun]{read-cmd} and \myhlc|\l_@@_spfun_prefix_tl| the one
+%   set by \mykey[spfun]{prefix}. The boolean variables
 %   \myhlc|\l_@@_spfun_silent_bool| and \myhlc|\l_@@_spfun_concept_bool|
 %   store the keys \mykey[spfun]{silent} and \mykey[spfun]{concept}. The
 %   variable \myhlc|\l_@@_spfun_call_tl| stores the |$f($a1,...)| text of the
@@ -13885,8 +13777,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{read-cmd, prefix, concept, silent, unknown}
 %   We define the \mymeta{keys} \mykey[spfun]{read-cmd}, \mykey[spfun]{prefix},
-%   \mykey[spfun]{concept} and \mykey[spfun]{silent}. The key \mykey{concept} is
-%   |false| by default: \emph{f de x} is already how the function is read.
+%   \mykey[spfun]{concept} and \mykey[spfun]{silent}.
 %    \begin{macrocode}
 \keys_define:nn { spintent / spfun }
   {
@@ -13900,7 +13791,7 @@ spitool -o -p build/ ejemplo.tex
       },
     read-cmd .initial:n = school,
     read-cmd .value_required:n = true,
-    read-cmd / unknown  .code:n =
+    read-cmd / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { read-cmd } { school,~mathcat } { \exp_not:n {#1} },
     prefix   .code:n =
@@ -14219,7 +14110,7 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}{\spfun}
 %   The public command \ics*{spfun}
 %   enforces \emph{math mode}, opens a local group,
-%   and delegates to \newline \myhlc|\@@_spfun_exec:nn|.
+%   and delegates to \myhlc|\@@_spfun_exec:nn|.
 %    \begin{macrocode}
 \NewDocumentCommand \spfun { O{} m }
   {
@@ -14239,7 +14130,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % The user command |\spfuncomp| typesets the linear composition of
 % functions: |f\circ g|, |f\circ g\circ h|, |(f\circ g)| and the
-% composition applied to arguments, |(f\circ g)(x)|. The Lua function \newline
+% composition applied to arguments, |(f\circ g)(x)|. The Lua function
 % \myhlc|\@@_luafun_spfuncomp_parse_and_set:n| splits the \mymarg{argument}
 % at the top-level |\circ|, or the Unicode character U+2218; every function is a name as in
 % |\spfun| and gets its literal |intent|, so
@@ -14307,9 +14198,7 @@ spitool -o -p build/ ejemplo.tex
 % \subsubsection{Definition of keys for \cs[no-index]{spfuncomp}}
 %
 % \begin{macro}[int]{silent, unknown}
-%   We define the \mymeta{key} \mykey[spfuncomp]{silent}. It is the only one:
-%   the composition has no concept word and its reading is fixed, so
-%   \mykey{prefix} and \mykey{read-cmd} would have nothing to act on.
+%   We define the \mymeta{key} \mykey[spfuncomp]{silent}.
 %    \begin{macrocode}
 \keys_define:nn { spintent / spfuncomp }
   {
@@ -14496,7 +14385,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spfuncomp_exec:nn}
 %   Receives the optional \mymeta{keys} in `|#1|' and the \mymarg{argument}
-%   in `|#2|'. Parses first, reporting \newline |spfuncomp-invalid-arg| on error
+%   in `|#2|'. Parses first, reporting |spfuncomp-invalid-arg| on error
 %   whatever \mykey{silent} is.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spfuncomp_exec:nn
@@ -14774,7 +14663,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\l_@@_spabs_luaset_close_str, \l_@@_spabs_close_bool}
 %   The string variable \myhlc|\l_@@_spabs_luaset_close_str| is set by the
-%   function \newline \myhlc|\@@_luafun_spabs_close:n| and is |true| when the
+%   function \myhlc|\@@_luafun_spabs_close:n| and is |true| when the
 %   argument, without spaces and without a leading sign, has more than one
 %   token; the boolean variable
 %   \myhlc|\l_@@_spabs_close_bool| tells whether the closing is read.
@@ -14922,7 +14811,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spabs_exec:nn}
 %   The function \myhlc|\@@_spabs_exec:nn| sets the \mymeta{keys} in `|#1|',
-%   sets the delimiters with \newline \myhlc|\@@_spabs_set_delims:| and calls
+%   sets the delimiters with \myhlc|\@@_spabs_set_delims:| and calls
 %   \myhlc|\@@_spabs_mathml:n| with the argument in `|#2|'.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spabs_exec:nn
@@ -14936,12 +14825,12 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spabs_mathml:n}
 %   The function \myhlc|\@@_spabs_mathml:n| prints the absolute value of `|#1|'
-%   inside one native \newline |\MathMLintent|, preceded by the outer ghost
-%   \myhlc|\@@_invisible_sep:| and followed by \newline the inner ghost
+%   inside one native |\MathMLintent|, preceded by the outer ghost
+%   \myhlc|\@@_invisible_sep:| and followed by the inner ghost
 %   \myhlc|\@@_inner_sep:|. With \mykey{silent}|=true| the
 %   intent is `|_-|'; with \mykey{read-arg} given it is
 %   |_|\mymeta{read-arg}|:nofix|; otherwise it is |_valor-absoluto($x)|. In this
-%   last case, when \newline \myhlc|\@@_spabs_set_close:n| sets the closing, a native
+%   last case, when \myhlc|\@@_spabs_set_close:n| sets the closing, a native
 %   |\MathMLintent| with the literal intent |_fin-valor-absoluto| follows the bars
 %   as a sibling, holding \myhlc|\@@_inner_sep:| and an invisible character, and
 %   the outer ghost is omitted because the formula already has two top-level
@@ -15101,7 +14990,7 @@ spitool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 %
 %   With \myhlc|\l_@@_geo_luaset_tipo_str| equal to |prima|, the same
-%   distinction applies: \newline \mykey{read-cmd}|=school| tags the letter with a
+%   distinction applies: \mykey{read-cmd}|=school| tags the letter with a
 %   literal |intent| and appends the mark unsilenced, since a prime is not
 %   spoken on the base and there is nothing to repeat; \mykey{read-cmd}|=mathcat| tags
 %   letter and mark together through a native |\MathMLarg|.
@@ -15235,7 +15124,7 @@ spitool -o -p build/ ejemplo.tex
       },
     read-cmd .initial:n = school,
     read-cmd .value_required:n = true,
-    read-cmd / unknown  .code:n =
+    read-cmd / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { read-cmd } { school,~mathcat } { \exp_not:n {#1} },
     prefix   .code:n =
@@ -15624,11 +15513,11 @@ spitool -o -p build/ ejemplo.tex
       }
 %    \end{macrocode}
 %   For a pair of points, \myhlc|\l_@@_geo_luaset_points_clist| is
-%   split into \newline \myhlc|\l_@@_spvec_pt_seq| and walked to build
-%   \myhlc|\l_@@_spvec_refs_tl|, the \newline |$pts1,$pts2| reference list.
+%   split into \myhlc|\l_@@_spvec_pt_seq| and walked to build
+%   \myhlc|\l_@@_spvec_refs_tl|, the |$pts1,$pts2| reference list.
 %   The concept |intent| is `|_-|' when \mykey{silent} is |true|,
 %   |_(refs)| when \mykey{concept} is |false| or
-%   |_vector:prefix(refs)| otherwise, applied with a native |\MathMLintent| wrapping \newline
+%   |_vector:prefix(refs)| otherwise, applied with a native |\MathMLintent| wrapping
 %   |\overrightarrow|. The sequence is walked again, calling
 %   \myhlc|\@@_mathmlarg_point:nnn| once per point.
 %    \begin{macrocode}
@@ -15776,7 +15665,7 @@ spitool -o -p build/ ejemplo.tex
       },
     read-cmd .initial:n = school,
     read-cmd .value_required:n = true,
-    read-cmd / unknown  .code:n =
+    read-cmd / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { read-cmd } { school,~mathcat } { \exp_not:n {#1} },
     prefix   .code:n =
@@ -15804,7 +15693,7 @@ spitool -o -p build/ ejemplo.tex
 %   The internal function \myhlc|\@@_sprecta_exec:nn| processes the
 %   \mymarg{argument} passed in `|#2|'. Calls
 %   \myhlc|\@@_luafun_geo_parse_and_set:n|, reporting
-%   |sprecta-invalid-points| on error, then \newline
+%   |sprecta-invalid-points| on error, then
 %   \myhlc|\@@_sprecta_mathml:n|.
 %
 %   Before processing the \mymarg{argument}, it sets the optional \mymeta{keys} passed in `|#1|'.
@@ -15922,7 +15811,7 @@ spitool -o -p build/ ejemplo.tex
               }
 %    \end{macrocode}
 %   With \myhlc|\l_@@_geo_luaset_tipo_str| equal to |prima|, the same
-%   distinction applies: \newline \mykey{read-cmd}|=school| tags the base with the
+%   distinction applies: \mykey{read-cmd}|=school| tags the base with the
 %   literal |kv| and appends the mark, unsilenced, since a prime is not
 %   spelled out on the base and there is nothing to repeat; \mykey{read-cmd}|=mathcat|
 %   tags base and mark together through a native |\MathMLarg|.
@@ -15998,8 +15887,8 @@ spitool -o -p build/ ejemplo.tex
       }
 %    \end{macrocode}
 %   For a list of points, \myhlc|\l_@@_geo_luaset_points_clist| is
-%   split into \newline \myhlc|\l_@@_sprecta_pt_seq| and walked to build
-%   \myhlc|\l_@@_sprecta_refs_tl|, \newline the |$pt1,$pt2,...| reference list.
+%   split into \myhlc|\l_@@_sprecta_pt_seq| and walked to build
+%   \myhlc|\l_@@_sprecta_refs_tl|, the |$pt1,$pt2,...| reference list.
 %   The concept |intent| is `|_-|' when \mykey{silent} is |true|,
 %   |_(refs)| when \mykey{concept} is |false| or |_recta:prefix(refs)|
 %   otherwise, applied with a native |\MathMLintent|
@@ -16095,7 +15984,7 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_sprayo_read_sty_str,
 %   }
 %   The variable \myhlc|\l_@@_sprayo_mode_str| store the values set by
-%   the key \mykey[sprayo]{read-cmd}; the \newline variable \myhlc|\l_@@_sprayo_prefix_tl|
+%   the key \mykey[sprayo]{read-cmd}; the variable \myhlc|\l_@@_sprayo_prefix_tl|
 %   store the value set by the key \mykey[sprayo]{prefix} and the variable
 %   \myhlc|\l_@@_sprayo_read_sty_str| stores the value set by the key
 %   \mykey[sprayo]{read-sty}.
@@ -16146,7 +16035,7 @@ spitool -o -p build/ ejemplo.tex
       },
     read-cmd .initial:n = school,
     read-cmd .value_required:n = true,
-    read-cmd / unknown  .code:n =
+    read-cmd / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { read-cmd } { school,~mathcat } { \exp_not:n {#1} },
     prefix   .code:n =
@@ -16169,7 +16058,7 @@ spitool -o -p build/ ejemplo.tex
       },
     read-sty .initial:n = rayo,
     read-sty .value_required:n = true,
-    read-sty / unknown  .code:n =
+    read-sty / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { read-sty } { rayo,~semirrecta } { \exp_not:n {#1} },
     unknown  .code:n =
@@ -16190,9 +16079,9 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_sprayo_intent_arg_tl,
 %     \l_@@_sprayo_pt_idx_int,
 %   }
-%   Auxiliary variables used by \myhlc|\@@_sprayo_mathml:| to split \newline
+%   Auxiliary variables used by \myhlc|\@@_sprayo_mathml:| to split
 %   \myhlc|\l_@@_geo_luaset_points_clist| and build the |$pts1,$pts2,...|
-%   reference \newline list.
+%   reference list.
 %    \begin{macrocode}
 \seq_new:N \l_@@_sprayo_pt_seq
 \tl_new:N  \l_@@_sprayo_refs_tl
@@ -16347,8 +16236,8 @@ spitool -o -p build/ ejemplo.tex
 %   }
 %   Each pair of variables is declared once for both |\spside| and
 %   |\spmside| via \myhlc|\clist_map_inline:nn|. The variables \myhlc|\l_@@_spside_mode_str|
-%   and \myhlc|\l_@@_spmside_mode_str| store \newline the values set by the key \mykey[spside,spmside]{read-cmd};
-%   the variables \myhlc|\l_@@_spside_prefix_tl| and \newline \myhlc|\l_@@_spmside_prefix_tl|
+%   and \myhlc|\l_@@_spmside_mode_str| store the values set by the key \mykey[spside,spmside]{read-cmd};
+%   the variables \myhlc|\l_@@_spside_prefix_tl| and \myhlc|\l_@@_spmside_prefix_tl|
 %   store the values set by the key \mykey[spside,spmside]{prefix}.
 %
 %   The variables \myhlc|\l_@@_spside_read_sty_str| and \myhlc|\l_@@_spmside_read_sty_str|
@@ -16426,7 +16315,7 @@ spitool -o -p build/ ejemplo.tex
           },
         read-cmd  .initial:n = school,
         read-cmd  .value_required:n = true,
-        read-cmd / unknown  .code:n =
+        read-cmd / unknown .code:n =
           \msg_error:nneee { spintent } { unknown-choice }
             { read-cmd } { school,~mathcat } { \exp_not:n {##1} },
         prefix    .code:n =
@@ -16450,7 +16339,7 @@ spitool -o -p build/ ejemplo.tex
           },
         read-sty  .initial:n = lado,
         read-sty  .value_required:n = true,
-        read-sty / unknown  .code:n =
+        read-sty / unknown .code:n =
           \msg_error:nneee { spintent } { unknown-choice }
             { read-sty } { lado,~segmento,~trazo } { \exp_not:n {##1} },
         read-arg  .code:n =
@@ -16485,9 +16374,9 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spside_pt_idx_int,
 %   }
 %   The variable \myhlc|\l_@@_spside_intent_tl| holds the concept word,
-%   taken from \newline \mykey{read-arg} or \mykey{read-sty}. The rest are scratch
+%   taken from \mykey{read-arg} or \mykey{read-sty}. The rest are scratch
 %   variables shared by both commands
-%   to split \newline \myhlc|\l_@@_geo_luaset_points_clist| and build the
+%   to split \myhlc|\l_@@_geo_luaset_points_clist| and build the
 %   |$pts1,$pts2,...| reference list.
 %    \begin{macrocode}
 \tl_new:N  \l_@@_spside_intent_tl
@@ -16506,7 +16395,7 @@ spitool -o -p build/ ejemplo.tex
 %   an \enquote{error} if invalid, then builds \myhlc|\l_@@_spside_intent_tl|.
 %
 %   When \mykey{read-arg} is empty, it is set from \mykey{read-sty},
-%   prefixed with `|medida-del-|' for \newline |\spmside|. When \mykey{read-arg}
+%   prefixed with `|medida-del-|' for |\spmside|. When \mykey{read-arg}
 %   is given, it is used as is, and `|medida-del-|' is prepended only
 %   if \mykey{concept} is |true|: with \mykey{concept}|=false|, \mykey{read-arg} is
 %   the verbatim escape hatch for a full user-written phrase such as
@@ -16727,9 +16616,9 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spmangle_prefix_tl,
 %   }
 %   Each pair of variables is declared once for both |\spangle| and
-%   |\spmangle| via \myhlc|\clist_map_inline:nn|. The variables \myhlc|\l_@@_spangle_mode_str| \newline
+%   |\spmangle| via \myhlc|\clist_map_inline:nn|. The variables \myhlc|\l_@@_spangle_mode_str|
 %   and \myhlc|\l_@@_spmangle_mode_str| store the values set by the key
-%   \mykey[spangle,spmangle]{read-cmd}; the variables \newline \myhlc|\l_@@_spangle_prefix_tl|
+%   \mykey[spangle,spmangle]{read-cmd}; the variables \myhlc|\l_@@_spangle_prefix_tl|
 %   and \myhlc|\l_@@_spmangle_prefix_tl| store the values set by the key
 %   \mykey[spangle,spmangle]{prefix}.
 %
@@ -16800,7 +16689,7 @@ spitool -o -p build/ ejemplo.tex
           },
         read-cmd  .initial:n = school,
         read-cmd  .value_required:n = true,
-        read-cmd / unknown  .code:n =
+        read-cmd / unknown .code:n =
           \msg_error:nneee { spintent } { unknown-choice }
             { read-cmd } { school,~mathcat } { \exp_not:n {##1} },
         prefix    .code:n =
@@ -16837,8 +16726,8 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spangle_sym:n}
 %   The internal function \myhlc|\@@_spangle_sym:n| branches on
-%   |#1|, \mykey{print-sym} and \newline \mykey{recto} to select one of four
-%   symbols: |\angle|/|\rightanglesqr| when \mykey{print-sym} is \newline
+%   |#1|, \mykey{print-sym} and \mykey{recto} to select one of four
+%   symbols: |\angle|/|\rightanglesqr| when \mykey{print-sym} is
 %   |true|; |\measuredangle|/|\measuredrightangle| otherwise. When
 %   |#1| is |angle|, only \mykey{recto} applies, choosing between
 %   |\angle| and |\rightangle|.
@@ -16876,7 +16765,7 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spangle_print_sym_now_bool,
 %   }
 %   The variable \myhlc|\l_@@_spangle_intent_tl| holds the concept word,
-%   |ángulo| or \newline |medida-del-ángulo|, with the suffix |-recto| when
+%   |ángulo| or |medida-del-ángulo|, with the suffix |-recto| when
 %   \mykey{recto} is |true|. The other variables are used by both commands to
 %   split \myhlc|\l_@@_geo_luaset_points_clist| and build the reference list, in
 %   the |tres-puntos| and |un-punto| cases of \myhlc|\@@_spangle_mathml:n|.
@@ -16894,10 +16783,10 @@ spitool -o -p build/ ejemplo.tex
 % \end{variable}
 %
 % \begin{macro}[int]{\@@_spangle_exec:nnn}
-%   The internal function \myhlc|\@@_spangle_exec:nnn| receives the short name \newline
+%   The internal function \myhlc|\@@_spangle_exec:nnn| receives the short name
 %   of the command, |angle| or |mangle|, in `|#1|' and the \mymarg{argument} in
-%   `|#3|'. It calls \newline \myhlc|\@@_luafun_geo_angulo_parse_and_set:n|, reporting
-%   |spangle-invalid-arg| or \newline |spmangle-invalid-arg| on error. For a proper name
+%   `|#3|'. It calls \myhlc|\@@_luafun_geo_angulo_parse_and_set:n|, reporting
+%   |spangle-invalid-arg| or |spmangle-invalid-arg| on error. For a proper name
 %   that is a single letter, not numeric, it reports the same error if the
 %   letter is lowercase, since an angle name takes an uppercase letter, a number
 %   or a Greek letter; the length check excludes a Greek letter command such as
@@ -16948,10 +16837,10 @@ spitool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spangle_mathml:n}
-%   The function \myhlc|\@@_spangle_mathml:n| branches on \newline
+%   The function \myhlc|\@@_spangle_mathml:n| branches on
 %   \myhlc|\l_@@_geo_luaset_angulo_case_str|.
 %
-%   For |nombre|, the symbol \myhlc|\@@_spangle_sym:n| is tagged with \newline
+%   For |nombre|, the symbol \myhlc|\@@_spangle_sym:n| is tagged with
 %   \myhlc|\@@_luafun_mrow_intent_arg:nn| on its own, with
 %   \myhlc|_\l_@@_spangle_intent_tl| alone, without a |$|-reference, or with
 %   `|_-|' when \mykey{silent} is |true| \emph{or} \mykey{concept} is |false|.
@@ -17070,13 +16959,13 @@ spitool -o -p build/ ejemplo.tex
       }
 %    \end{macrocode}
 %   For |tres-puntos| and |un-punto|, with the suffix |-en| added to the
-%   concept word in the latter, \newline where a single point reads \emph{\enquote{ángulo en A}},
+%   concept word in the latter, where a single point reads \emph{\enquote{ángulo en A}},
 %   \myhlc|\l_@@_geo_luaset_points_clist| is
-%   split into \newline \myhlc|\l_@@_spangle_pt_seq| and walked to build
+%   split into \myhlc|\l_@@_spangle_pt_seq| and walked to build
 %   \myhlc|\l_@@_spangle_refs_tl|, the reference list |$pt1,$pt2,...|. A single
 %   native |\MathMLintent| wraps the symbol and the points together, with
 %   \myhlc|_\l_@@_spangle_intent_tl|\myhlc|:prefix(refs)|, or `|_-|' when
-%   \mykey{silent} is |true| and \newline |_(refs)| when \mykey{concept} is |false|. For
+%   \mykey{silent} is |true| and |_(refs)| when \mykey{concept} is |false|. For
 %   |\spmangle| with \mykey{print-sym}|=true|, a silent |\operatorname{m}|
 %   precedes \myhlc|\@@_spangle_sym:n| inside the same |\MathMLintent|. The
 %   sequence is walked again, calling \myhlc|\@@_mathmlarg_point:nnn| once per
@@ -17255,7 +17144,7 @@ spitool -o -p build/ ejemplo.tex
           },
         read-cmd .initial:n = school,
         read-cmd .value_required:n = true,
-        read-cmd / unknown  .code:n =
+        read-cmd / unknown .code:n =
           \msg_error:nneee { spintent } { unknown-choice }
             { read-cmd } { school,~mathcat } { \exp_not:n {##1} },
         prefix   .code:n =
@@ -17367,7 +17256,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_sparc_mathml:n}
 %   The function \myhlc|\@@_sparc_mathml:n| receives the short command
-%   name in `|#1|'. It splits \newline \myhlc|\l_@@_geo_luaset_points_clist| into
+%   name in `|#1|'. It splits \myhlc|\l_@@_geo_luaset_points_clist| into
 %   \myhlc|\l_@@_sparc_pt_seq| and walks it once to build
 %   \myhlc|\l_@@_sparc_refs_tl|, the comma-separated |$pt1,$pt2,...|
 %   reference list, naming each point by position.
@@ -17390,7 +17279,7 @@ spitool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 %
 %   The concept |intent| is `|_-|' when \mykey{silent} is |true|,
-%   |_(refs)| when \mykey{concept} is |false|; otherwise \newline
+%   |_(refs)| when \mykey{concept} is |false|; otherwise
 %   \myhlc|_\l_@@_sparc_intent_tl|\myhlc|:prefix(refs)|, with
 %   \mykey{prefix} placed after the leading |_| when given.
 %    \begin{macrocode}
@@ -17550,7 +17439,7 @@ spitool -o -p build/ ejemplo.tex
       },
     read-cmd  .initial:n = school,
     read-cmd  .value_required:n = true,
-    read-cmd / unknown  .code:n =
+    read-cmd / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { read-cmd } { school,~mathcat } { \exp_not:n {#1} },
     prefix    .code:n =
@@ -17637,7 +17526,7 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spPoly_build_concept:}
 %   Builds \myhlc|\l_@@_spPoly_intent_arg_tl|, independently of
 %   \mykey{print-sym}: `|_-|' when \mykey{silent} is |true|,
-%   |_(refs)| when \mykey{concept} is |false|; otherwise \newline
+%   |_(refs)| when \mykey{concept} is |false|; otherwise
 %   \myhlc|_\l_@@_geo_luaset_concept_str|\myhlc|:prefix(refs)|, with
 %   \mykey{prefix} placed after the leading |_| when given. Must be
 %   called after \myhlc|\@@_spPoly_build_refs:|.
@@ -17715,7 +17604,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spPoly_mathml:}
 %   Builds the reference list with \myhlc|\@@_spPoly_build_refs:| and the
-%   concept |intent| with \newline \myhlc|\@@_spPoly_build_concept:|, then wraps
+%   concept |intent| with \myhlc|\@@_spPoly_build_concept:|, then wraps
 %   everything in a single native |\MathMLintent|, preceded by
 %   \myhlc|\@@_inner_sep:|, a second sibling so the sole
 %   |<mrow>| does not collapse into |<math>|, \mypkg{luamml} issue
@@ -17838,12 +17727,12 @@ spitool -o -p build/ ejemplo.tex
 %   }
 %   The ten \enquote{error}s are generated by the same map, using the same
 %   |##1|/|##2| doubling convention as |\spside|/|\spmside|.
-%   |spAfig-invalid-points| and |spPfig-invalid-points| are \newline currently unused by
-%   \myhlc|\@@_spfig_exec:nnn|, which raises only \newline
+%   |spAfig-invalid-points| and |spPfig-invalid-points| are currently unused by
+%   \myhlc|\@@_spfig_exec:nnn|, which raises only
 %   |spAfig-invalid-arg| or |spPfig-invalid-arg| for any parse failure,
-%   regardless of whether a comma \newline was present. \newline |spAfig-sym-letter-conflict|,
-%   |spPfig-sym-letter-conflict|, \newline |spAfig-sym-cardinality-conflict| and
-%   |spPfig-sym-cardinality-conflict| are \newline raised when
+%   regardless of whether a comma was present. |spAfig-sym-letter-conflict|,
+%   |spPfig-sym-letter-conflict|, |spAfig-sym-cardinality-conflict| and
+%   |spPfig-sym-cardinality-conflict| are raised when
 %   \mykey[spAfig,spPfig]{print-sym} is forced to a value incompatible
 %   with the actual argument.
 %    \begin{macrocode}
@@ -17908,20 +17797,6 @@ spitool -o -p build/ ejemplo.tex
 %   \mykey[spAfig,spPfig]{prefix}, \mykey[spAfig,spPfig]{print-sym},
 %   \mykey[spAfig,spPfig]{read-arg}, \mykey[spAfig,spPfig]{read-sub},
 %   \mykey[spAfig,spPfig]{silent} and \mykey[spAfig,spPfig]{concept}.
-%   The key \mykey[spAfig,spPfig]{print-sym} chooses the visual
-%   symbol: |auto|, the default, infers it from the vertex count:
-%   three points give |\triangle|, four give |\mdlgwhtsquare|, and five or more
-%   give none; |triangle|/|square| force one, requiring the vertex
-%   count to match; |none| omits it, even with vertices. With a bare
-%   number/letter argument, |auto| and |none| behave the same and
-%   print no symbol; |triangle|/|square| nest the argument under the forced
-%   symbol instead, and cannot be combined with a table letter,
-%   |F|, |P|, |B| or |L|. The key \mykey[spAfig,spPfig]{read-arg}
-%   overrides the spoken figure name for real vertices, independently
-%   of \mykey[spAfig,spPfig]{print-sym}. The key
-%   \mykey[spAfig,spPfig]{read-sub} controls whether the bare
-%   number/letter argument is read with the word «sub» or as a plain
-%   number.
 %    \begin{macrocode}
 \clist_map_inline:nn { Afig , Pfig }
   {
@@ -17937,7 +17812,7 @@ spitool -o -p build/ ejemplo.tex
           },
         read-cmd  .initial:n = school,
         read-cmd  .value_required:n = true,
-        read-cmd / unknown  .code:n =
+        read-cmd / unknown .code:n =
           \msg_error:nneee { spintent } { unknown-choice }
             { read-cmd } { school,~mathcat } { \exp_not:n {##1} },
         prefix    .code:n =
@@ -18021,10 +17896,10 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_geo_print_sym_str,
 %     \l_@@_geo_temp_tl,
 %   }
-%   The variable \myhlc|\l_@@_spfig_op_tl| holds |área| or |perímetro|.
-%   The variable \newline \myhlc|\l_@@_spfig_intent_tl| holds the concept word for the
-%   vertices case, taken \newline from \mykey{read-arg} or the auto-detected figure name.
-%   The rest are scratch variables to split \newline
+%   The variable \myhlc|\l_@@_spfig_op_tl| holds \emph{«área»} or \emph{«perímetro»}.
+%   The variable \myhlc|\l_@@_spfig_intent_tl| holds the concept word for the
+%   vertices case, taken from \mykey{read-arg} or the auto-detected figure name.
+%   The rest are scratch variables to split
 %   \myhlc|\l_@@_geo_luaset_points_clist| and build the
 %   |$pt1,$pt2,...| reference list.
 %    \begin{macrocode}
@@ -18043,14 +17918,14 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spfig_exec:nnn}
 %   Receives the short command name, |Afig| or |Pfig|, in `|#1|' and
-%   the \mymarg{argument} in `|#3|'. Calls \newline
-%   \myhlc|\@@_luafun_geo_afig_parse_and_set:n| or \newline
+%   the \mymarg{argument} in `|#3|'. Calls
+%   \myhlc|\@@_luafun_geo_afig_parse_and_set:n| or
 %   \myhlc|\@@_luafun_geo_pfig_parse_and_set:n|, reports
-%   |spAfig-invalid-arg| or \newline |spPfig-invalid-arg| on failure, and warns with
+%   |spAfig-invalid-arg| or |spPfig-invalid-arg| on failure, and warns with
 %   |spAfig-read-arg-key| or |spPfig-read-arg-key| when
 %   \mykey[spAfig,spPfig]{read-arg} is given for a bare number/letter
 %   argument that has no vertices, where it has no effect and is ignored. Sets
-%   \myhlc|\l_@@_spfig_op_tl| to |área|/|perímetro|, then delegates to \newline
+%   \myhlc|\l_@@_spfig_op_tl| to \emph{«área»}/\emph{«perímetro»}, then delegates to
 %   \myhlc|\@@_spfig_mathml:n|.
 %
 %   Before processing the \mymarg{argument}, it sets the optional \mymeta{keys} passed in `|#2|'.
@@ -18087,9 +17962,9 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spfig_build_simple:n}
 %   Handles the argument-less, table-letter and bare number/letter
 %   cases, none of which has vertices. Builds \myhlc|\l_@@_geo_final_print_tl|, the
-%   visual placed under |\mathcal|'s subscript, and \newline
+%   visual placed under |\mathcal|'s subscript, and
 %   \myhlc|\l_@@_spfig_desc_tl|, the descriptive part without
-%   |área|/|perímetro|. Receives the short command name in `|#1|'.
+%   \emph{«área»}/\emph{«perímetro»}. Receives the short command name in `|#1|'.
 %
 %   With an empty argument, both are cleared for \mykey{print-sym}|=auto|/
 %   |none|; a forced \mykey{print-sym} instead places the symbol alone,
@@ -18186,13 +18061,12 @@ spitool -o -p build/ ejemplo.tex
               }
           }
 %    \end{macrocode}
-%   With a table letter, which is |F|, |P|, |B|, |L| or |T| and leaves
-%   \myhlc|\l_@@_geo_luaset_letra_word_str| non-empty, a forced
-%   \mykey{print-sym} raises |spAfig-sym-letter-conflict| or
-%   |spPfig-sym-letter-conflict|. The visual is the value as given; the
-%   description is its own word, connected as \newline
-%   \myhlc|\l_@@_geo_luaset_letra_conector_str| requires, with the same spoken
-%   subscript as above when present.
+%   A forced \mykey{print-sym} raises |spAfig-sym-letter-conflict| or
+%   |spPfig-sym-letter-conflict| when \myhlc|\l_@@_geo_luaset_letra_word_str|
+%   is non-empty, which happens with a table letter, that is |F|, |P|, |B|, |L|
+%   or |T|. The visual is the value as given. The description is its own word,
+%   connected as \myhlc|\l_@@_geo_luaset_letra_conector_str| requires, with the
+%   same spoken subscript as above when present.
 %    \begin{macrocode}
           {
             \str_case:VnF \l_@@_geo_print_sym_str
@@ -18221,13 +18095,13 @@ spitool -o -p build/ ejemplo.tex
       }
 %    \end{macrocode}
 %   The variable \myhlc|\l_@@_spfig_intent_tl| is always the |word-| shape,
-%   without the leading \newline |_|:
+%   without the leading |_|:
 %   \myhlc|\l_@@_spfig_op_tl| alone when \myhlc|\l_@@_spfig_desc_tl| is
 %   empty, both joined by a dash otherwise. \mykey{silent}
 %   overrides \myhlc|\l_@@_spfig_intent_arg_tl| with `|_-|'; with
 %   \mykey{silent}|=false| and \mykey{concept}|=false|, it becomes
 %   |_|\myhlc|\l_@@_spfig_desc_tl|\myhlc|-|, where the descriptive part
-%   is alone, without |área|/|perímetro| nor, for a table letter, its
+%   is alone, without \emph{«área»}/\emph{«perímetro»} nor, for a table letter, its
 %   connector |de-la|/|del|; with \mykey{concept}|=true| it
 %   is |_|, then \mykey{prefix} when given, and then
 %   \myhlc|\l_@@_spfig_intent_tl|.
@@ -18290,13 +18164,13 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spfig_build_concept_vertices:n}
 %   Handles the vertices case. Receives the short command name in
-%   `|#1|'. Must be called after \newline \myhlc|\@@_spfig_build_refs:|.
+%   `|#1|'. Must be called after \myhlc|\@@_spfig_build_refs:|.
 %
 %   The key \mykey{read-arg}, when given, overrides the auto-detected figure
-%   name in \newline \myhlc|\l_@@_spfig_intent_tl|: with \mykey{concept}|=true|
-%   it is still prefixed with \newline |área-del-|/|perímetro-del-|, with
+%   name in \myhlc|\l_@@_spfig_intent_tl|: with \mykey{concept}|=true|
+%   it is still prefixed with |área-del-|/|perímetro-del-|, with
 %   \mykey{concept}|=false| it is used verbatim. With \mykey{read-arg}
-%   empty, \newline \myhlc|\l_@@_spfig_intent_tl| is
+%   empty, \myhlc|\l_@@_spfig_intent_tl| is
 %   \myhlc|\l_@@_geo_luaset_concept_str|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spfig_build_concept_vertices:n
@@ -18360,7 +18234,7 @@ spitool -o -p build/ ejemplo.tex
 %   Otherwise, with \mykey{read-arg} empty, \mykey{concept} chooses between
 %   \myhlc|_\l_@@_spfig_intent_tl|\myhlc|:prefix(refs)|, with \mykey{prefix}
 %   placed after the leading |_| when given, and |_(refs)| alone; with
-%   \mykey{read-arg} given, it is always \newline
+%   \mykey{read-arg} given, it is always
 %   \myhlc|_\l_@@_spfig_intent_tl|\myhlc|:prefix(refs)|.
 %    \begin{macrocode}
     \bool_if:cTF { l_@@_sp #1 _silent_bool }
@@ -18421,19 +18295,19 @@ spitool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spfig_mathml:n}
-%   Receives the short command name in `|#1|'. Branches on whether \newline
+%   Receives the short command name in `|#1|'. Branches on whether
 %   \myhlc|\l_@@_geo_luaset_points_clist| is empty.
 %
 %   Without vertices, \myhlc|\@@_spfig_build_simple:n| builds the content. A
 %   |\MathMLintent| wraps it only when \mykey{concept} is |true|; with
 %   \mykey{concept}|=false| the content is typeset with no |intent|.
 %
-%   With vertices, \myhlc|\@@_spfig_build_refs:| then \newline
-%   \myhlc|\@@_spfig_build_concept_vertices:n| build the reference list and the
-%   concept |intent|, applied with a single native |\MathMLintent|. Inside,
+%   With vertices, \myhlc|\@@_spfig_build_refs:| builds the reference list and
+%   \myhlc|\@@_spfig_build_concept_vertices:n| builds the concept |intent|,
+%   applied with a single native |\MathMLintent|. Inside,
 %   \myhlc|\@@_mathcal:n|\mymarg{A \textnormal{\textcolor{lightgray}{\textbar}} P}
-%   is silenced with \myhlc|\@@_luafun_mrow_intent_arg:nn|;
-%   \myhlc|\l_@@_spfig_symbol_tl| is silenced the same way when non-empty; the
+%   is silenced with \myhlc|\@@_luafun_mrow_intent_arg:nn|; the same is done
+%   with \myhlc|\l_@@_spfig_symbol_tl| when it is non-empty; the
 %   sequence is then walked by \myhlc|\@@_spfig_points_loop:n|. All of this is
 %   nested inside a subscript, \myhlc|\c_math_subscript_token|, which the
 %   recursive lookup of the shared |mathml_filter| callback reaches through the
@@ -18539,9 +18413,9 @@ spitool -o -p build/ ejemplo.tex
 %   }
 %   The variables \myhlc|\l_@@_sp_rad_diam_letra_tl| and
 %   \myhlc|\l_@@_sp_rad_diam_word_tl| are scratch variables used by
-%   \myhlc|\@@_sp_rad_diam_mathml:n|. \newline \myhlc|\l_@@_sp_rad_diam_read_arg_full_tl|
-%   is used by \newline \myhlc|\@@_sp_rad_diam_read_arg_print:n| to hold the
-%   text to voice when \mykey{read-arg} \newline is given.
+%   \myhlc|\@@_sp_rad_diam_mathml:n|. \myhlc|\l_@@_sp_rad_diam_read_arg_full_tl|
+%   is used by \myhlc|\@@_sp_rad_diam_read_arg_print:n| to hold the
+%   text to voice when \mykey{read-arg} is given.
 %    \begin{macrocode}
 \tl_new:N \l_@@_sp_rad_diam_letra_tl
 \tl_new:N \l_@@_sp_rad_diam_word_tl
@@ -18566,9 +18440,9 @@ spitool -o -p build/ ejemplo.tex
 %    \begin{macrocode}
 \clist_map_inline:nn { rad , diam }
   {
-    \str_new:c { l_@@_sp #1 _mode_str }
+    \str_new:c { l_@@_sp #1 _mode_str      }
     \str_new:c { l_@@_sp #1 _sub_index_str }
-    \tl_new:c  { l_@@_sp #1 _read_arg_tl }
+    \tl_new:c  { l_@@_sp #1 _read_arg_tl   }
   }
 %    \end{macrocode}
 % \end{variable}
@@ -18867,8 +18741,8 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_sp_rad_diam_exec:nn}
 %   The function \myhlc|\@@_sp_rad_diam_exec:nn| receives the \emph{short name}
-%   of the command \newline passed in `|#1|' and the optional \mymeta{keys} passed in `|#2|'
-%   then delegating the rendering to \newline \myhlc|\@@_sp_rad_diam_mathml:n|.
+%   of the command passed in `|#1|' and the optional \mymeta{keys} passed in `|#2|'
+%   then delegating the rendering to \myhlc|\@@_sp_rad_diam_mathml:n|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_sp_rad_diam_exec:nn
   {
@@ -18922,7 +18796,7 @@ spitool -o -p build/ ejemplo.tex
 %   \l_@@_geo_luaset_circ_radio_type_str,
 %   \l_@@_geo_luaset_circ_radio_raw_str}
 %   Shared outputs of \myhlc|\@@_luafun_geo_circ_parse_and_set:n|.
-%   The variable \newline \myhlc|\l_@@_geo_luaset_circ_radio_type_str| holds one of
+%   The variable \myhlc|\l_@@_geo_luaset_circ_radio_type_str| holds one of
 %   |number|, |measure|, |label|, |segment|, or an empty string when
 %   no radius was given. \myhlc|\l_@@_geo_luaset_circ_radio_raw_str|
 %   holds the corresponding raw text, ready to be forwarded to the
@@ -18939,18 +18813,18 @@ spitool -o -p build/ ejemplo.tex
 %   \l_@@_spcirc_radio_sty_str, \l_@@_spcirc_sub_index_str,
 %   \l_@@_spcirc_articulo_str, \l_@@_spcirc_read_arg_tl}
 %   The variable \myhlc|\l_@@_spcirc_mode_str| stores the value set by
-%   the key \mykey[spcirc]{read-cmd}; the \newline variable
+%   the key \mykey[spcirc]{read-cmd}; the variable
 %   \myhlc|\l_@@_spcirc_prefix_tl| stores the value set by the key
 %   \mykey[spcirc]{prefix}. The variable
 %   \myhlc|\l_@@_spcirc_print_sym_str| stores the value set by the key
 %   \mykey[spcirc]{print-sym}, either |usual| or |odot|. The variable
 %   \myhlc|\l_@@_spcirc_read_sty_str| stores the value set by the key
 %   \mykey[spcirc]{read-sty}, either |circun| or |circulo|. The variable
-%   \myhlc|\l_@@_spcirc_radio_sty_str| \newline stores the value set by the key
+%   \myhlc|\l_@@_spcirc_radio_sty_str| stores the value set by the key
 %   \mykey[spcirc]{radio-sty}, only meaningful when the radius is a
 %   segment. The variable \myhlc|\l_@@_spcirc_sub_index_str| stores
-%   the value set by the key \newline \mykey[spcirc]{sub-index}. The variable
-%   \myhlc|\l_@@_spcirc_articulo_str| is set internally by \newline
+%   the value set by the key \mykey[spcirc]{sub-index}. The variable
+%   \myhlc|\l_@@_spcirc_articulo_str| is set internally by
 %   \myhlc|\@@_spcirc_word_and_article:| to |la| or |el|, matching the
 %   grammatical gender of the chosen word. The variable
 %   \myhlc|\l_@@_spcirc_read_arg_tl| stores the value set by the key
@@ -18972,7 +18846,7 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spcirc_word_tl,
 %   }
 %   Scratch variables used by \myhlc|\@@_spcirc_exec:nn| to assemble
-%   the chosen word, which is \newline |circunferencia|/|círculo| or the
+%   the chosen word, which is |circunferencia|/|círculo| or the
 %   \mykey[spcirc]{read-arg} override, and the final literal |intent|
 %   string.
 %    \begin{macrocode}
@@ -19022,17 +18896,6 @@ spitool -o -p build/ ejemplo.tex
 %   \mykey[spcirc]{radio-sty}, \mykey[spcirc]{sub-index},
 %   \mykey[spcirc]{read-sub}, \mykey[spcirc]{read-arg},
 %   \mykey[spcirc]{silent} and \mykey[spcirc]{concept}.
-%   The key \mykey[spcirc]{print-sym} chooses the visual symbol:
-%   |usual| for a plain |C|, and |odot|, the default, for |\odot|. The key
-%   \mykey[spcirc]{read-sty} chooses the verbalized word and its
-%   article: |circun|, the default, for \emph{«la circunferencia»},
-%   |circulo| for \emph{«el círculo»}. The key \mykey[spcirc]{radio-sty}
-%   chooses, only when the radius is a two-letter segment, whether it
-%   is rendered as the \emph{object}, |side|, via |\spside|, or as its
-%   \emph{measure}, |mside|, the default, via |\spmside|. The key
-%   \mykey[spcirc]{sub-index} sets a subscript on the symbol; the key
-%   \mykey[spcirc]{read-sub} controls whether it is read with the word
-%   «sub» or as a plain number.
 %    \begin{macrocode}
 \keys_define:nn { spintent / spcirc }
   {
@@ -19215,7 +19078,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spcirc_radio_print:}
 %   Branches on \myhlc|\l_@@_geo_luaset_circ_radio_type_str|,
-%   reusing \newline |\spnum|/|\spunit|/|\spside|/|\spmside| directly rather
+%   reusing |\spnum|/|\spunit|/|\spside|/|\spmside| directly rather
 %   than reimplementing any parsing.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcirc_radio_print:
@@ -19241,8 +19104,8 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spcirc_build_concept:}
 %   Builds the words \myhlc|\l_@@_spcirc_intent_tl|, with
 %   \myhlc|\@@_spcirc_word_and_article:| and an optional \mykey{sub-index}
-%   suffix, and \myhlc|\l_@@_spcirc_connector_tl|, \newline |de-centro-en|. Both are
-%   built even when \myhlc|\l_@@_spcirc_has_arg_bool| is |false|, although \newline
+%   suffix, and \myhlc|\l_@@_spcirc_connector_tl|, |de-centro-en|. Both are
+%   built even when \myhlc|\l_@@_spcirc_has_arg_bool| is |false|, although
 %   \myhlc|\@@_spcirc_mathml:| does not use them in that case. The center is not
 %   concatenated into them: it is read by reference with
 %   \myhlc|\@@_mathmlarg_point:nnn|.
@@ -19264,8 +19127,8 @@ spitool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 %
 %   The key \mykey{silent}, when |true|, overrides
-%   \myhlc|\l_@@_spcirc_intent_arg_tl|, \newline \myhlc|\l_@@_spcirc_connector_arg_tl|
-%   and \myhlc|\l_@@_spcirc_radio_arg_tl| with \newline `|_-|', regardless of
+%   \myhlc|\l_@@_spcirc_intent_arg_tl|, \myhlc|\l_@@_spcirc_connector_arg_tl|
+%   and \myhlc|\l_@@_spcirc_radio_arg_tl| with `|_-|', regardless of
 %   \mykey{read-arg}.
 %    \begin{macrocode}
     \bool_if:NTF \l_@@_spcirc_silent_bool
@@ -19331,11 +19194,12 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spcirc_exec:nn}
 %   Receives the |d()| argument in `|#2|', which is an explicit empty group when omitted
 %   because |\spcirc| converts |-NoValue-| to |{ }| before calling
-%   \myhlc|\@@_spcirc_exec:nn|. In \newline that case it sets
-%   \myhlc|\l_@@_spcirc_has_arg_bool| to |false| and does not call \newline
-%   \myhlc|\@@_luafun_geo_circ_parse_and_set:n|. Otherwise it calls it, reports \newline
-%   |spcirc-invalid-arg| on failure and delegates to \myhlc|\@@_spcirc_mathml:|,
-%   which calls \newline \myhlc|\@@_spcirc_build_concept:|.
+%   \myhlc|\@@_spcirc_exec:nn|. When the group is empty, the function sets
+%   \myhlc|\l_@@_spcirc_has_arg_bool| to |false| and does not call
+%   \myhlc|\@@_luafun_geo_circ_parse_and_set:n|. Otherwise it calls that
+%   function, reports |spcirc-invalid-arg| on failure and delegates to
+%   \myhlc|\@@_spcirc_mathml:|, which calls
+%   \myhlc|\@@_spcirc_build_concept:|.
 %
 %   Before processing the \mymarg{argument}, it sets the optional \mymeta{keys} passed in `|#1|'.
 %    \begin{macrocode}
@@ -19360,9 +19224,9 @@ spitool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spcirc_mathml:}
-%   Calls \myhlc|\@@_spcirc_build_concept:| and wraps the symbol \newline
+%   Calls \myhlc|\@@_spcirc_build_concept:| and wraps the symbol
 %   \myhlc|\l_@@_spcirc_intent_arg_tl| in its own native |\MathMLintent|. This
-%   is the \newline whole result when \myhlc|\l_@@_spcirc_has_arg_bool| is |false|,
+%   is the whole result when \myhlc|\l_@@_spcirc_has_arg_bool| is |false|,
 %   that is, for |\spcirc| with no |(...)|.
 %
 %   Otherwise, the group |(|center|)|, held in
@@ -19373,7 +19237,7 @@ spitool -o -p build/ ejemplo.tex
 %   `|_-|' |\MathMLintent| instead.
 %
 %   The symbol and, when \mykey{sub-index} is given, its subscript number are
-%   silenced separately with \newline \myhlc|\@@_luafun_mrow_intent_arg:nn|, one queue
+%   silenced separately with \myhlc|\@@_luafun_mrow_intent_arg:nn|, one queue
 %   entry per leaf. The delimiter |(| is silenced in the same way but without
 %   the usual |{...}| around the character, so that \mypkg{luamml} keeps its
 %   math class and produces |<mo>| instead of |<mi>|.
@@ -19557,7 +19421,7 @@ spitool -o -p build/ ejemplo.tex
           },
         read-cmd  .initial:n = school,
         read-cmd  .value_required:n = true,
-        read-cmd / unknown  .code:n =
+        read-cmd / unknown .code:n =
           \msg_error:nneee { spintent } { unknown-choice }
             { read-cmd } { school,~mathcat } { \exp_not:n {##1} },
         prefix    .code:n =
@@ -19587,7 +19451,7 @@ spitool -o -p build/ ejemplo.tex
           },
         read-sty  .initial:n = circun,
         read-sty  .value_required:n = true,
-        read-sty / unknown  .code:n =
+        read-sty / unknown .code:n =
           \msg_error:nneee { spintent } { unknown-choice }
             { read-sty } { circun,~circulo } { \exp_not:n {##1} },
         concept   .bool_set:c = { l_@@_sp #1 _concept_bool },
@@ -19627,13 +19491,13 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spcircfig_intent_arg_tl,
 %   }
 %   The variable \myhlc|\l_@@_spcircfig_short_bool| stores whether the argument
-%   resolved as \newline the short number or letter form, with
-%   \myhlc|\@@_luafun_geo_afig_parse_and_set:n| or \newline
+%   resolved as the short number or letter form, with
+%   \myhlc|\@@_luafun_geo_afig_parse_and_set:n| or
 %   \myhlc|\@@_luafun_geo_pfig_parse_and_set:n|, and not as a circle. The string
-%   variable \newline \myhlc|\l_@@_spcircfig_luaset_comma_str|, set by
-%   \myhlc|\@@_luafun_spcircfig_comma:n|, \newline is |true| when the argument has a
-%   comma. The variable \myhlc|\l_@@_spcircfig_op_tl| holds \newline |área| or
-%   |perímetro|. The variable \myhlc|\l_@@_spcircfig_intent_tl| holds the spoken
+%   variable \myhlc|\l_@@_spcircfig_luaset_comma_str|, set by
+%   \myhlc|\@@_luafun_spcircfig_comma:n|, is |true| when the argument has a
+%   comma. The variable \myhlc|\l_@@_spcircfig_op_tl| holds \emph{«área»} or
+%   \emph{«perímetro»}. The variable \myhlc|\l_@@_spcircfig_intent_tl| holds the spoken
 %   phrase: \myhlc|\l_@@_spcircfig_del_word_tl|, set by
 %   \myhlc|\@@_spcircfig_del_word:n|, an optional \mykey{sub-index} suffix and,
 %   when a center is given, |-con-centro-en|. The center is read by reference
@@ -19691,9 +19555,9 @@ spitool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spcircfig_del_word:n}
-%   Sets \myhlc|\l_@@_spcircfig_del_word_tl| to the word of \newline
+%   Sets \myhlc|\l_@@_spcircfig_del_word_tl| to the word of
 %   \myhlc|\@@_spcircfig_word_and_article:n|, prefixed with |del-| or |de-la-|.
-%   Receives \newline the short command name in `|#1|'.
+%   Receives the short command name in `|#1|'.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcircfig_del_word:n
   {
@@ -19713,7 +19577,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spcircfig_build_short:n}
 %   Handles the short number or letter case: builds
-%   \myhlc|\l_@@_spcircfig_intent_arg_tl| as \newline
+%   \myhlc|\l_@@_spcircfig_intent_arg_tl| as
 %   \myhlc|_\l_@@_spcircfig_op_tl|\myhlc|-|\mymeta{number word}, with
 %   \mykey{prefix} placed after the leading |_| when given and without
 %   |:prefix|, or as `|_-|' when \mykey{silent} is |true| or \mykey{concept} is
@@ -19749,7 +19613,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spcircfig_finish_intent:nn}
 %   Appends an optional \mykey{sub-index} suffix and, when |#2| is non-empty,
-%   |-con-centro-en| to \newline \myhlc|\l_@@_spcircfig_intent_tl|. Receives the short
+%   |-con-centro-en| to \myhlc|\l_@@_spcircfig_intent_tl|. Receives the short
 %   command name in `|#1|' and the argument in `|#2|'.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcircfig_finish_intent:nn
@@ -19773,14 +19637,14 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spcircfig_build_concept:nn}
 %   Builds \myhlc|\l_@@_spcircfig_intent_arg_tl|. It is `|_-|' when \mykey{silent}
-%   is \newline |true|, whatever |#2| is. With \mykey{concept}|=false| and
-%   \mykey{read-arg} empty, it is `|_-|', or \newline |_($pt)| when |#2| is non-empty.
-%   Otherwise it is \myhlc|_\l_@@_spcircfig_intent_tl|, with \newline |:prefix($pt)|
+%   is |true|, whatever |#2| is. With \mykey{concept}|=false| and
+%   \mykey{read-arg} empty, it is `|_-|', or |_($pt)| when |#2| is non-empty.
+%   Otherwise it is \myhlc|_\l_@@_spcircfig_intent_tl|, with |:prefix($pt)|
 %   appended only when |#2| is non-empty and with \mykey{prefix} placed after
-%   the \newline leading |_| when given. With \mykey{concept}|=true|,
-%   \myhlc|\l_@@_spcircfig_intent_tl| is \newline
+%   the leading |_| when given. With \mykey{concept}|=true|,
+%   \myhlc|\l_@@_spcircfig_intent_tl| is
 %   \myhlc|\l_@@_spcircfig_op_tl|\myhlc|-|\myhlc|\l_@@_spcircfig_del_word_tl|,
-%   set by \newline \myhlc|\@@_spcircfig_del_word:n|; with \mykey{concept}|=false| and
+%   set by \myhlc|\@@_spcircfig_del_word:n|; with \mykey{concept}|=false| and
 %   \mykey{read-arg} given, it is \mykey{read-arg} as given, without
 %   \myhlc|\l_@@_spcircfig_op_tl|, and the user writes the article if needed. In
 %   both cases an optional \mykey{sub-index} suffix and, when |#2| is non-empty,
@@ -19839,16 +19703,16 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spcircfig_exec:nnn}
 %   Receives the short command name in `|#1|' and the argument in `|#3|'. Sets
-%   \myhlc|\l_@@_spcircfig_op_tl| to |área| or |perímetro|. With |#3| empty, it
+%   \myhlc|\l_@@_spcircfig_op_tl| to \emph{«área»} or \emph{«perímetro»}. With |#3| empty, it
 %   sets \myhlc|\l_@@_spcircfig_short_bool| to |false| and parses nothing else.
 %   With a comma in |#3|, it reports |spAcirc-invalid-arg| or
 %   |spPcirc-invalid-arg|. Without a comma, it calls
-%   \myhlc|\@@_luafun_geo_circ_parse_and_set:n|; \newline on error, it tries
-%   \myhlc|\@@_luafun_geo_afig_parse_and_set:n| or \newline
+%   \myhlc|\@@_luafun_geo_circ_parse_and_set:n|; on error, it tries
+%   \myhlc|\@@_luafun_geo_afig_parse_and_set:n| or
 %   \myhlc|\@@_luafun_geo_pfig_parse_and_set:n| for the short number or letter
-%   form, \newline and a table-letter match is an error. It reports |spAcirc-invalid-arg|
+%   form, and a table-letter match is an error. It reports |spAcirc-invalid-arg|
 %   or |spPcirc-invalid-arg| on failure, and then delegates to
-%   \myhlc|\@@_spcircfig_build_short:n| or \newline
+%   \myhlc|\@@_spcircfig_build_short:n| or
 %   \myhlc|\@@_spcircfig_build_concept:nn| and to
 %   \myhlc|\@@_spcircfig_mathml:nn|.
 %
@@ -19911,9 +19775,9 @@ spitool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spcircfig_mathml:nn}
-%   Renders \myhlc|\l_@@_spcircfig_intent_arg_tl|, already built by \newline
+%   Renders \myhlc|\l_@@_spcircfig_intent_arg_tl|, already built by
 %   \myhlc|\@@_spcircfig_exec:nnn|. There are three cases: the short case
-%   prints the \newline symbol with the short value as its subscript; an empty |#2|
+%   prints the symbol with the short value as its subscript; an empty |#2|
 %   prints the symbol alone; a center prints the symbol, plus the optional
 %   \mykey{sub-index} subscript, and the center between parentheses. In every
 %   case a single native |\MathMLintent| wraps
@@ -20021,15 +19885,15 @@ spitool -o -p build/ ejemplo.tex
 %   }
 %   The variable \myhlc|\l_@@_spVol_mode_str| holds the \mykey{read-cmd}
 %   choice,
-%   |school| or \newline |mathcat|; \myhlc|\l_@@_spVol_sub_index_str| the raw
-%   \mykey{sub-index} text; \newline \myhlc|\l_@@_spVol_read_arg_tl| the
+%   |school| or |mathcat|; \myhlc|\l_@@_spVol_sub_index_str| the raw
+%   \mykey{sub-index} text; \myhlc|\l_@@_spVol_read_arg_tl| the
 %   sanitized \mykey{read-arg} text. \myhlc|\l_@@_spVol_word_tl| and
 %   \myhlc|\l_@@_spVol_suffix_tl| are scratch variables holding the
-%   word to voice, which is |volumen|, and the text to
-%   attach \newline after it; \myhlc|\l_@@_spVol_native_bool| records whether
-%   that text should be combined \newline natively with the subscript,
+%   word to voice, which is \emph{«volumen»}, and the text to
+%   attach after it; \myhlc|\l_@@_spVol_native_bool| records whether
+%   that text should be combined natively with the subscript,
 %   silenced, or left for \mynvmath{MathCAT} to read on its own.
-%   The variable \newline \myhlc|\l_@@_spVol_read_arg_full_tl| holds the text to voice when
+%   The variable \myhlc|\l_@@_spVol_read_arg_full_tl| holds the text to voice when
 %   \mykey{read-arg} is given.
 %    \begin{macrocode}
 \str_new:N  \l_@@_spVol_mode_str
@@ -20151,9 +20015,9 @@ spitool -o -p build/ ejemplo.tex
 %   The function \myhlc|\@@_spVol_verbal:| delegates to
 %   \myhlc|\@@_spVol_read_arg_print:| when \mykey{read-arg} is given and,
 %   otherwise, with \mykey{concept}|=false|, to \myhlc|\@@_spVol_symbol_print:|.
-%   With \mykey{concept}|=true| it sets \myhlc|\l_@@_spVol_word_tl| to |volumen|
-%   and \newline \myhlc|\l_@@_spVol_suffix_tl| to |sub-|\mymeta{value} or \mymeta{value},
-%   according to \mykey{read-sub}; the \newline suffix is combined natively only with
+%   With \mykey{concept}|=true| it sets \myhlc|\l_@@_spVol_word_tl| to \emph{«volumen»}
+%   and \myhlc|\l_@@_spVol_suffix_tl| to |sub-|\mymeta{value} or \mymeta{value},
+%   according to \mykey{read-sub}; the suffix is combined natively only with
 %   \mykey{read-cmd}|=school|, and with \mykey{read-cmd}|=mathcat| it is left to
 %   \mynvmath{MathCAT}. It delegates the typesetting to
 %   \myhlc|\@@_spVol_attach_subscript:|.
@@ -20234,12 +20098,12 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spVol_attach_subscript:}
 %   The function \myhlc|\@@_spVol_attach_subscript:| typesets
-%   |\mathcal{V}|. An empty \newline \mykey{sub-index} tags the symbol alone
+%   |\mathcal{V}|. An empty \mykey{sub-index} tags the symbol alone
 %   through the shared queue, and \myhlc|\l_@@_spVol_suffix_tl| is
 %   discarded since there is no subscript to attach it to. A given
 %   one combines symbol, subscript, and
 %   \myhlc|\l_@@_spVol_suffix_tl| in one native |\MathMLintent|,
-%   subscript silenced, when \newline \myhlc|\l_@@_spVol_native_bool| is
+%   subscript silenced, when \myhlc|\l_@@_spVol_native_bool| is
 %   |true|, or tags the symbol alone through the shared queue with the
 %   subscript left bare when |false|.
 %    \begin{macrocode}
@@ -20282,7 +20146,7 @@ spitool -o -p build/ ejemplo.tex
 %   With \mykey{read-arg} given, \mykey{sub-index}/\mykey{read-sub}
 %   are ignored for the \emph{spoken} content; the subscript, if any,
 %   still displays, silenced. With \mykey{concept}|=true|,
-%   \myhlc|\l_@@_spVol_read_arg_full_tl| becomes |volumen| followed by
+%   \myhlc|\l_@@_spVol_read_arg_full_tl| becomes \emph{«volumen»} followed by
 %   \mykey{read-arg}'s text; with |false|, \mykey{read-arg}'s text
 %   alone. Combined natively regardless of \mykey{read-cmd}: with no
 %   \mykey{sub-index}, the shared queue tags the symbol alone; with
@@ -20504,7 +20368,7 @@ spitool -o -p build/ ejemplo.tex
 %   configured separately with |\setspintent|. Since the symbol of |\spmin|
 %   and |\spmax| already carries a subscript, they have no \mykey{sub-index}
 %   nor \mykey{read-sub} keys; their variable \myhlc|_sub_index_str| exists
-%   only because \newline \myhlc|\@@_stat_mathml:nnnnnn| reads it, and always keeps its
+%   only because \myhlc|\@@_stat_mathml:nnnnnn| reads it, and always keeps its
 %   initial value.
 %    \begin{macrocode}
 \clist_map_inline:nn
@@ -20514,7 +20378,7 @@ spitool -o -p build/ ejemplo.tex
   }
   {
     \str_new:c  { l_@@_ #1 _sub_index_str }
-    \tl_new:c   { l_@@_ #1 _read_arg_tl }
+    \tl_new:c   { l_@@_ #1 _read_arg_tl   }
   }
 %    \end{macrocode}
 % \end{variable}
@@ -20748,8 +20612,8 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}{\spmedia, \spmediana, \spmoda}
 %   The public commands \ics*{spmedia}, \ics*{spmediana} and \ics*{spmoda} delegate
-%   execution to \newline \myhlc|\@@_stat_exec:nnn|, which prints the symbols |MA|,
-%   |MD| and |MO| through \newline \myhlc|\@@_stat_simple:nnn| with the concepts
+%   execution to \myhlc|\@@_stat_exec:nnn|, which prints the symbols |MA|,
+%   |MD| and |MO| through \myhlc|\@@_stat_simple:nnn| with the concepts
 %   |media-aritmética|, |mediana| and |moda|.
 %    \begin{macrocode}
 \NewDocumentCommand \spmedia { O{} }
@@ -20771,9 +20635,9 @@ spitool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}{\spdesv, \spvarz}
-%   The public commands \ics*{spdesv} and \ics*{spvarz} work the same way, but call \newline
+%   The public commands \ics*{spdesv} and \ics*{spvarz} work the same way, but call
 %   \myhlc|\@@_stat_mathml:nnnnnn| directly. The symbol is |s|, or |\sigma|
-%   when \mykey{sigma} is \newline |true|, and its name is part of the spoken
+%   when \mykey{sigma} is |true|, and its name is part of the spoken
 %   content; |\spvarz| adds the exponent |2|, spoken |al-cuadrado|. The
 %   concepts are |desviación-estándar| and |varianza|.
 %    \begin{macrocode}
@@ -20845,7 +20709,7 @@ spitool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 % \end{macro}
 %
-% \subsection{The commands of the \texttt{pos} family}\label{cmd:pos}
+% \subsection{The commands of the \texttt{stat\_pos} family}\label{cmd:stat-pos}
 %
 % The user commands |\spcuartil|, |\spdecil| and |\spPerc| typeset the
 % measures of position: |Q_{k}| for quartiles, |D_{k}| for deciles, and |P_{k}|
@@ -20854,40 +20718,40 @@ spitool -o -p build/ ejemplo.tex
 % with the name of the measure and the index, for example,
 % \emph{«cuartil 1»}.
 %
-% \subsubsection{Definition of variables for the \texttt{pos} family}
+% \subsubsection{Definition of variables for the \texttt{stat\_pos} family}
 %
 % \begin{variable}[int]
 %   {
 %     \l_@@_spcuartil_read_arg_tl,
 %     \l_@@_spdecil_read_arg_tl,
 %     \l_@@_spPerc_read_arg_tl,
-%     \l_@@_pos_error_bool,
-%     \l_@@_pos_value_int,
+%     \l_@@_stat_pos_error_bool,
+%     \l_@@_stat_pos_value_int,
 %   }
 %   Each command of the family has its own copy of the variable
 %   \myhlc|_read_arg_tl|, so each command can be configured separately with
 %   |\setspintent|. The boolean variable
-%   \myhlc|\l_@@_pos_error_bool| is
-%   set to |true| by \myhlc|\@@_pos_check:nnn| when the index is rejected,
+%   \myhlc|\l_@@_stat_pos_error_bool| is
+%   set to |true| by \myhlc|\@@_stat_pos_check:nnn| when the index is rejected,
 %   so that nothing is typeset. The integer variable
-%   \myhlc|\l_@@_pos_value_int| holds the accepted index without leading
+%   \myhlc|\l_@@_stat_pos_value_int| holds the accepted index without leading
 %   zeros.
 %    \begin{macrocode}
 \clist_map_inline:nn { spcuartil , spdecil , spPerc }
   { \tl_new:c { l_@@_ #1 _read_arg_tl } }
-\bool_new:N \l_@@_pos_error_bool
-\int_new:N  \l_@@_pos_value_int
+\bool_new:N \l_@@_stat_pos_error_bool
+\int_new:N  \l_@@_stat_pos_value_int
 %    \end{macrocode}
 % \end{variable}
 %
-% \subsubsection{Definition of error messages for the \texttt{pos} family}
+% \subsubsection{Definition of error messages for the \texttt{stat\_pos} family}
 %
-% \begin{macro}[int]{pos-invalid-index}
-%   The \enquote{error} |pos-invalid-index| is raised when the index passed
+% \begin{macro}[int]{stat-pos-invalid-index}
+%   The \enquote{error} |stat-pos-invalid-index| is raised when the index passed
 %   to |\spcuartil|, |\spdecil| or |\spPerc| is not an integer without sign
 %   between |1| and the maximum of the measure.
 %    \begin{macrocode}
-\msg_new:nnnn { spintent } { pos-invalid-index }
+\msg_new:nnnn { spintent } { stat-pos-invalid-index }
   {
     Invalid~index~'#2'~for~'\tl_trim_spaces:n {#1}'~\msg_line_context:.
   }
@@ -20897,7 +20761,7 @@ spitool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 % \end{macro}
 %
-% \subsubsection{Definition of keys for the \texttt{pos} family}
+% \subsubsection{Definition of keys for the \texttt{stat\_pos} family}
 %
 % \begin{macro}[int]{silent, read-arg, unknown}
 %   We define the \mymeta{keys} \mykey[spcuartil,spdecil,spPerc]{silent}
@@ -20924,20 +20788,20 @@ spitool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 % \end{macro}
 %
-% \subsubsection{Internal functions for the \texttt{pos} family}
+% \subsubsection{Internal functions for the \texttt{stat\_pos} family}
 %
-% \begin{macro}[int]{\@@_pos_check:nnn}
-%   The function \myhlc|\@@_pos_check:nnn| receives the short name of the
+% \begin{macro}[int]{\@@_stat_pos_check:nnn}
+%   The function \myhlc|\@@_stat_pos_check:nnn| receives the short name of the
 %   command in `|#1|', the maximum of the index in `|#2|' and the index
 %   in `|#3|'. It calls \myhlc|\@@_luafun_clean_split_and_set:n| on the
 %   index and accepts it only if it is an integer without sign between
-%   |1| and `|#2|'. Otherwise it raises |pos-invalid-index|, whatever the
-%   value of \mykey{silent}, and sets \myhlc|\l_@@_pos_error_bool| to |true|.
+%   |1| and `|#2|'. Otherwise it raises |stat-pos-invalid-index|, whatever the
+%   value of \mykey{silent}, and sets \myhlc|\l_@@_stat_pos_error_bool| to |true|.
 %    \begin{macrocode}
-\cs_new_protected:Nn \@@_pos_check:nnn
+\cs_new_protected:Nn \@@_stat_pos_check:nnn
   {
     \@@_luafun_clean_split_and_set:n { \exp_not:n {#3} }
-    \bool_set_true:N \l_@@_pos_error_bool
+    \bool_set_true:N \l_@@_stat_pos_error_bool
     \bool_lazy_and:nnT
       { \str_if_eq_p:Vn \l_@@_luaset_has_integer_str { true } }
       { \tl_if_empty_p:N \l_@@_luaset_sign_tl }
@@ -20945,23 +20809,23 @@ spitool -o -p build/ ejemplo.tex
         \bool_lazy_and:nnT
           { \int_compare_p:nNn { \l_@@_luaset_only_part_int_str } > { 0 } }
           { \int_compare_p:nNn { \l_@@_luaset_only_part_int_str } < { #2 + 1 } }
-          { \bool_set_false:N \l_@@_pos_error_bool }
+          { \bool_set_false:N \l_@@_stat_pos_error_bool }
       }
-    \bool_if:NT \l_@@_pos_error_bool
+    \bool_if:NT \l_@@_stat_pos_error_bool
       {
-        \msg_error:nneee { spintent } { pos-invalid-index }
+        \msg_error:nneee { spintent } { stat-pos-invalid-index }
           { \token_to_str:c {#1} } { \exp_not:n {#3} } {#2}
       }
   }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}[int]{\@@_pos_typeset:nn}
-%   The function \myhlc|\@@_pos_typeset:nn| typesets the symbol in `|#1|'
+% \begin{macro}[int]{\@@_stat_pos_typeset:nn}
+%   The function \myhlc|\@@_stat_pos_typeset:nn| typesets the symbol in `|#1|'
 %   with the index in `|#2|' as a subscript, with its own |\MathMLintent|
 %   set to |:silent|.
 %    \begin{macrocode}
-\cs_new_protected:Nn \@@_pos_typeset:nn
+\cs_new_protected:Nn \@@_stat_pos_typeset:nn
   {
     #1
     \c_math_subscript_token { \MathMLintent { :silent } {#2} }
@@ -20969,11 +20833,11 @@ spitool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}[int]{\@@_pos_mathml:nnnn, \@@_pos_mathml:nnnV}
-%   The function \myhlc|\@@_pos_mathml:nnnn| receives the short name of the
+% \begin{macro}[int]{\@@_stat_pos_mathml:nnnn, \@@_stat_pos_mathml:nnnV}
+%   The function \myhlc|\@@_stat_pos_mathml:nnnn| receives the short name of the
 %   command in `|#1|', the symbol in `|#2|', the name of the measure in
 %   `|#3|' and the index in `|#4|'. The symbol with its index is always
-%   typeset by \myhlc|\@@_pos_typeset:nn| inside one native
+%   typeset by \myhlc|\@@_stat_pos_typeset:nn| inside one native
 %   |\MathMLintent|, preceded by the inner ghost \myhlc|\@@_inner_sep:|.
 %
 %   With \mykey{silent}|=true|, the intent is `|_-|'. With \mykey{read-arg}
@@ -20981,7 +20845,7 @@ spitool -o -p build/ ejemplo.tex
 %   spoken content is the name of the measure followed by the index, as in
 %   |_cuartil-1:nofix|.
 %    \begin{macrocode}
-\cs_new_protected:Nn \@@_pos_mathml:nnnn
+\cs_new_protected:Nn \@@_stat_pos_mathml:nnnn
   {
     \@@_invisible_sep:
     \bool_if:cTF { l_@@_ #1 _silent_bool }
@@ -20989,7 +20853,7 @@ spitool -o -p build/ ejemplo.tex
         \MathMLintent { _- }
           {
             \@@_inner_sep:
-            \@@_pos_typeset:nn {#2} {#4}
+            \@@_stat_pos_typeset:nn {#2} {#4}
           }
       }
       {
@@ -20998,38 +20862,38 @@ spitool -o -p build/ ejemplo.tex
             \MathMLintent { _ #3 - #4 :nofix }
               {
                 \@@_inner_sep:
-                \@@_pos_typeset:nn {#2} {#4}
+                \@@_stat_pos_typeset:nn {#2} {#4}
               }
           }
           {
             \MathMLintent { _ \tl_use:c { l_@@_ #1 _read_arg_tl } :nofix }
               {
                 \@@_inner_sep:
-                \@@_pos_typeset:nn {#2} {#4}
+                \@@_stat_pos_typeset:nn {#2} {#4}
               }
           }
       }
   }
-\cs_generate_variant:Nn \@@_pos_mathml:nnnn { nnnV }
+\cs_generate_variant:Nn \@@_stat_pos_mathml:nnnn { nnnV }
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}[int]{\@@_pos_exec:nnnnn}
-%   The function \myhlc|\@@_pos_exec:nnnnn| receives the short name of the
+% \begin{macro}[int]{\@@_stat_pos_exec:nnnnn}
+%   The function \myhlc|\@@_stat_pos_exec:nnnnn| receives the short name of the
 %   command in `|#1|', the symbol in `|#2|', the name of the measure in
 %   `|#3|', the maximum of the index in `|#4|' and the index itself in
-%   `|#5|'. It validates the index with \myhlc|\@@_pos_check:nnn| and, if
-%   it is accepted, stores its value in \myhlc|\l_@@_pos_value_int|, so
+%   `|#5|'. It validates the index with \myhlc|\@@_stat_pos_check:nnn| and, if
+%   it is accepted, stores its value in \myhlc|\l_@@_stat_pos_value_int|, so
 %   |025| is printed and read as |25|, and prints it through
-%   \myhlc|\@@_pos_mathml:nnnn|.
+%   \myhlc|\@@_stat_pos_mathml:nnnn|.
 %    \begin{macrocode}
-\cs_new_protected:Nn \@@_pos_exec:nnnnn
+\cs_new_protected:Nn \@@_stat_pos_exec:nnnnn
   {
-    \@@_pos_check:nnn {#1} {#4} {#5}
-    \bool_if:NF \l_@@_pos_error_bool
+    \@@_stat_pos_check:nnn {#1} {#4} {#5}
+    \bool_if:NF \l_@@_stat_pos_error_bool
       {
-        \int_set:NV \l_@@_pos_value_int \l_@@_luaset_only_part_int_str
-        \@@_pos_mathml:nnnV {#1} {#2} {#3} \l_@@_pos_value_int
+        \int_set:NV \l_@@_stat_pos_value_int \l_@@_luaset_only_part_int_str
+        \@@_stat_pos_mathml:nnnV {#1} {#2} {#3} \l_@@_stat_pos_value_int
       }
   }
 %    \end{macrocode}
@@ -21038,7 +20902,7 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}{\spcuartil, \spdecil, \spPerc}
 %   The public commands \ics*{spcuartil}, \ics*{spdecil} and \ics*{spPerc} enforce
 %   \emph{math mode}, open a local group, set the \mymeta{keys} and
-%   delegate execution to \myhlc|\@@_pos_exec:nnnnn| with the symbols
+%   delegate execution to \myhlc|\@@_stat_pos_exec:nnnnn| with the symbols
 %   |Q|, |D| and |P|, the measures |cuartil|, |decil| and |percentil| and
 %   the maxima |3|, |9| and |99|.
 %    \begin{macrocode}
@@ -21049,7 +20913,7 @@ spitool -o -p build/ ejemplo.tex
         \group_begin:
           \attribute \l_@@_scope_attr_int = 1
           \keys_set:nn { spintent / spcuartil } {#1}
-          \@@_pos_exec:nnnnn { spcuartil } { Q } { cuartil } { 3 } {#2}
+          \@@_stat_pos_exec:nnnnn { spcuartil } { Q } { cuartil } { 3 } {#2}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spcuartil } }
@@ -21061,7 +20925,7 @@ spitool -o -p build/ ejemplo.tex
         \group_begin:
           \attribute \l_@@_scope_attr_int = 1
           \keys_set:nn { spintent / spdecil } {#1}
-          \@@_pos_exec:nnnnn { spdecil } { D } { decil } { 9 } {#2}
+          \@@_stat_pos_exec:nnnnn { spdecil } { D } { decil } { 9 } {#2}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spdecil } }
@@ -21073,7 +20937,7 @@ spitool -o -p build/ ejemplo.tex
         \group_begin:
           \attribute \l_@@_scope_attr_int = 1
           \keys_set:nn { spintent / spPerc } {#1}
-          \@@_pos_exec:nnnnn { spPerc } { P } { percentil } { 99 } {#2}
+          \@@_stat_pos_exec:nnnnn { spPerc } { P } { percentil } { 99 } {#2}
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spPerc } }
@@ -21099,7 +20963,7 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spFrec_read_arg_tl,
 %   }
 %   The string variable \myhlc|\l_@@_spFrec_sub_index_str| and the token
-%   list variable \newline \myhlc|\l_@@_spFrec_read_arg_tl| hold the values of the
+%   list variable \myhlc|\l_@@_spFrec_read_arg_tl| hold the values of the
 %   keys \mykey[spFrec]{sub-index} and \mykey[spFrec]{read-arg}.
 %    \begin{macrocode}
 \str_new:N \l_@@_spFrec_sub_index_str
@@ -21182,8 +21046,8 @@ spitool -o -p build/ ejemplo.tex
 %   The function \myhlc|\@@_spFrec_exec:n| receives the symbol in `|#1|'.
 %   It removes the spaces and looks the result up in the table, setting
 %   \myhlc|\l_@@_spFrec_concept_tl| to |frecuencia-absoluta|,
-%   |frecuencia-absoluta-acumulada|, |frecuencia-relativa|, \newline
-%   |frecuencia-relativa-acumulada|, |frecuencia-porcentual| or \newline
+%   |frecuencia-absoluta-acumulada|, |frecuencia-relativa|,
+%   |frecuencia-relativa-acumulada|, |frecuencia-porcentual| or
 %   |frecuencia-porcentual-acumulada|.
 %
 %   If the symbol is not in the table, it is rejected with
@@ -21414,7 +21278,7 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spOmega_read_sub_bool,
 %   }
 %   The string variable \myhlc|\l_@@_spOmega_sub_index_str| and the token
-%   list variable \newline \myhlc|\l_@@_spOmega_read_arg_tl| hold the values of the
+%   list variable \myhlc|\l_@@_spOmega_read_arg_tl| hold the values of the
 %   keys \mykey[spOmega]{sub-index} and \mykey[spOmega]{read-arg}. This
 %   command has no \mykey{read-sub} key, so the boolean variable
 %   \myhlc|\l_@@_spOmega_read_sub_bool| starts as |true| and the subscript
@@ -21606,9 +21470,9 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spProb_luaset_b_str,
 %   }
 %   Variables set by the function \myhlc|\@@_luafun_spProb_parse_and_set:n|.
-%   The string \newline variable \myhlc|\l_@@_spProb_luaset_error_str| is |true| when
-%   the \mymarg{argument} is invalid. \newline The string variable
-%   \myhlc|\l_@@_spProb_luaset_op_str| is |none|, |cap|, |cup| or |mid|, and \newline
+%   The string variable \myhlc|\l_@@_spProb_luaset_error_str| is |true| when
+%   the \mymarg{argument} is invalid. The string variable
+%   \myhlc|\l_@@_spProb_luaset_op_str| is |none|, |cap|, |cup| or |mid|, and
 %   \myhlc|\l_@@_spProb_luaset_a_str| and \myhlc|\l_@@_spProb_luaset_b_str|
 %   hold the event before and after the operator; the second one is empty
 %   when there is no operator.
@@ -21684,9 +21548,9 @@ spitool -o -p build/ ejemplo.tex
 % \end{variable}
 %
 % \begin{macro}[int]{\@@_spProb_cap:, \@@_spProb_cup:, \@@_spProb_mid:, \@@_spProb_nested_ops:, \@@_spProb_event:N}
-%   The functions \myhlc|\@@_spProb_cap:|, \myhlc|\@@_spProb_cup:| and \newline
+%   The functions \myhlc|\@@_spProb_cap:|, \myhlc|\@@_spProb_cup:| and
 %   \myhlc|\@@_spProb_mid:| wrap the saved meaning of |\cap|, |\cup| and
-%   |\mid|, each in its \newline own |\MathMLintent|, which is |_y-|, |_o| and |_dado| respectively, while keeping
+%   |\mid|, each in its own |\MathMLintent|, which is |_y-|, |_o| and |_dado| respectively, while keeping
 %   its math class and therefore its spacing.
 %   The function \myhlc|\@@_spProb_nested_ops:| saves the three meanings and
 %   redefines, locally, |\cap|, |\cup| and |\mid| as these functions. The function
@@ -21750,7 +21614,7 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spProb_mathml:}
 %   The function \myhlc|\@@_spProb_mathml:| prints |P(|\mymeta{content}|)|
 %   inside one native |\MathMLintent|, preceded by the outer ghost
-%   \myhlc|\@@_invisible_sep:| and by the inner ghost \newline
+%   \myhlc|\@@_invisible_sep:| and by the inner ghost
 %   \myhlc|\@@_inner_sep:|.
 %
 %   With \mykey{silent}|=true|, the intent is `|_-|'. With \mykey{read-arg}
@@ -21839,8 +21703,8 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spProb_exec:nn}
 %   The function \myhlc|\@@_spProb_exec:nn| sets the \mymeta{keys} in
-%   `|#1|' and calls \newline \myhlc|\@@_luafun_spProb_parse_and_set:n| with the
-%   \mymarg{argument} in `|#2|'. If the \newline Lua module reports an error, it is
+%   `|#1|' and calls \myhlc|\@@_luafun_spProb_parse_and_set:n| with the
+%   \mymarg{argument} in `|#2|'. If the Lua module reports an error, it is
 %   rejected with |spProb-invalid-arg| whatever the value of the key
 %   \mykey{silent}, and nothing is printed; otherwise it delegates the
 %   printing to \myhlc|\@@_spProb_mathml:|.
@@ -21894,7 +21758,7 @@ spitool -o -p build/ ejemplo.tex
 %   The token list variable \myhlc|\l_@@_spcomp_read_arg_tl| stores the key
 %   \mykey[spcomp]{read-arg}, and the string variable
 %   \myhlc|\l_@@_spcomp_wrap_parens_str| the key
-%   \mykey[spcomp]{wrap-parens}. The boolean variable \newline
+%   \mykey[spcomp]{wrap-parens}. The boolean variable
 %   \myhlc|\l_@@_spcomp_do_paren_bool| tells whether the event is printed
 %   in parentheses once the key and the event have been examined. The
 %   boolean variable \myhlc|\l_@@_spcomp_compound_bool| is true when the
@@ -22017,7 +21881,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spcomp_exec:nn}
 %   The function \myhlc|\@@_spcomp_exec:nn| sets the \mymeta{keys} in
-%   `|#1|', calls \newline \myhlc|\@@_spcomp_set_paren:n| with the event in `|#2|'
+%   `|#1|', calls \myhlc|\@@_spcomp_set_paren:n| with the event in `|#2|'
 %   and then \myhlc|\@@_spcomp_mathml:n|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcomp_exec:nn
@@ -22140,11 +22004,11 @@ spitool -o -p build/ ejemplo.tex
 %     \l_@@_spcomb_luaset_list_tl,
 %   }
 %   The function \myhlc|\@@_luafun_spcomb_split:n| splits the argument of the
-%   command \newline at its first comma of top level, ignoring the commas inside braces,
-%   parentheses or brackets, \newline and sets the string variables
-%   \myhlc|\l_@@_spcomb_luaset_raw_n_str|, what precedes the \newline comma, and
+%   command at its first comma of top level, ignoring the commas inside braces,
+%   parentheses or brackets, and sets the string variables
+%   \myhlc|\l_@@_spcomb_luaset_raw_n_str|, what precedes the comma, and
 %   \myhlc|\l_@@_spcomb_luaset_raw_k_str|, what follows it; the string
-%   variable \newline \myhlc|\l_@@_spcomb_luaset_single_str| is |true| when the
+%   variable \myhlc|\l_@@_spcomb_luaset_single_str| is |true| when the
 %   argument has no such comma. The other variables are set by the function
 %   \myhlc|\@@_luafun_spcomb_prepare:nnnn|.
 %   The string variable \myhlc|\l_@@_spcomb_luaset_error_str| is |true| when
@@ -22201,7 +22065,7 @@ spitool -o -p build/ ejemplo.tex
 %   none. The boolean variable \myhlc|\l_@@_spcomb_use_binom_bool| is true
 %   when the symbol is printed with |\binom|. The sequence
 %   \myhlc|\l_@@_spcomb_list_seq| holds the multiplicities to print, and the
-%   token list \newline \myhlc|\l_@@_spcomb_last_tl| the last one.
+%   token list \myhlc|\l_@@_spcomb_last_tl| the last one.
 %    \begin{macrocode}
 \tl_new:N   \l_@@_spcomb_letter_tl
 \tl_new:N   \l_@@_spcomb_concept_tl
@@ -22416,7 +22280,7 @@ spitool -o -p build/ ejemplo.tex
 %     \@@_spcomb_last_ann:n,
 %     \@@_spcomb_last_plain:n,
 %   }
-%   The functions \myhlc|\@@_spcomb_arg:nn|, \myhlc|\@@_spcomb_sep:| and \newline
+%   The functions \myhlc|\@@_spcomb_arg:nn|, \myhlc|\@@_spcomb_sep:| and
 %   \myhlc|\@@_spcomb_last:n| are the places where the symbol is annotated.
 %   They are set locally to the annotated versions, which use an |\MathMLarg| with the
 %   inner ghost, a silent comma, and a last multiplicity that carries the
@@ -22546,11 +22410,11 @@ spitool -o -p build/ ejemplo.tex
 %
 %   With \mykey{silent}|=true| the intent is `|_-|'. With \mykey{read-arg}
 %   given it is |_|\mymeta{read-arg}|:nofix|. Otherwise the intent of the
-%   whole symbol is the concept followed by |-de|: with |one| argument it is \newline
+%   whole symbol is the concept followed by |-de|: with |one| argument it is
 %   |_|\mymeta{concept}|-de:prefix($c)|, where |c| wraps the symbol with the
 %   intent |_elementos:postfix($n)|; with |pair| it is
 %   |_|\mymeta{concept}|-de:prefix($c)|, where |c| is the symbol, which
-%   carries its own intent \newline |_elementos-tomados-de-a:infix($n,$k)|, except for the binomial
+%   carries its own intent |_elementos-tomados-de-a:infix($n,$k)|, except for the binomial
 %   coefficient, whose single intent is |_sobre:infix($n,$k)|; with |list| it is
 %   |_|\mymeta{concept}|-de:prefix($c)|, where |c| is the symbol, which
 %   carries the intent |_elementos-con-repeticiones:infix($n,$m)|, and |m| is the
@@ -22727,7 +22591,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}{\spcomb}
 %   The public command \ics*{spcomb} enforces \emph{math mode} and delegates
-%   execution to \newline \myhlc|\@@_spcomb_begin:nn|, which opens a local group. The
+%   execution to \myhlc|\@@_spcomb_begin:nn|, which opens a local group. The
 %   mandatory argument `|#2|' is |n| or |n,k|, and Lua splits it.
 %    \begin{macrocode}
 \NewDocumentCommand \spcomb { O{} m }
@@ -22798,7 +22662,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spfact_exec:nn}
 %   The function \myhlc|\@@_spfact_exec:nn| sets the \mymeta{keys} in `|#1|'
-%   and calls \newline \myhlc|\@@_spfact_mathml:n| with the argument in `|#2|'.
+%   and calls \myhlc|\@@_spfact_mathml:n| with the argument in `|#2|'.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spfact_exec:nn
   {
@@ -22810,7 +22674,7 @@ spitool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spfact_mathml:n}
 %   The function \myhlc|\@@_spfact_mathml:n| prints the factorial of `|#1|'
-%   inside one native \newline |\MathMLintent|, preceded by the outer ghost
+%   inside one native |\MathMLintent|, preceded by the outer ghost
 %   \myhlc|\@@_invisible_sep:| and followed by the inner ghost
 %   \myhlc|\@@_inner_sep:|. With \mykey{silent}|=true| the intent is `|_-|';
 %   with \mykey{read-arg} given it is |_|\mymeta{read-arg}|:nofix|;
