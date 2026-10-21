@@ -536,7 +536,9 @@ end, "shekel_fallback_patch")
       \texttt
         {
           \textcolor { module_name } { sp }
-          \textcolor { OrangeRed } { mmli-tool }
+          \textcolor { OrangeRed } { mmli }
+          \textcolor { gray }      { - }
+          \textcolor { OrangeRed } { tool }
         }
       \str_if_eq:nnF {#1} { no-index }
         {
@@ -6841,16 +6843,31 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % Esta sección es para mí, el de hoy y el de mañana. Hoy el proyecto está
 % terminado, pero esto no termina aquí: debo seguirle el paso al proyecto de
-% etiquetado de \hologo{LaTeX}\cite{tagged-project} y a
-% \mypkg{luamml}\cite{luamml}, y pensar en las utilidades que hoy quedaron
-% fuera. Por eso esta sección se llama \emph{A Work in Progress}: porque un
-% trabajo en progreso es el corazón de \mypkg*[no-index]{spintent}.
+% etiquetado de \hologo{LaTeX}\cite{tagged-project} y a \mypkg{luamml}\cite{luamml},
+% y pensar en las utilidades que hoy quedaron fuera. Por eso esta sección se
+% llama \emph{A Work in Progress}: porque un trabajo en progreso es el corazón de \mypkg*[no-index]{spintent}.
+%
+% Queda además una idea abierta. El atributo \emph{intent} no nació en este
+% paquete: viene de una discusión más amplia sobre cómo eliminar la
+% ambigüedad de \mynvmath{MathML} dejando que sea quien escribe el documento
+% quien diga lo que quiso expresar\cite{authorintent}. Lo que hace
+% \mypkg*[no-index]{spanish-mathml-intent} es poner esa idea al servicio de
+% la matemática y demás en el ámbito escolar en español, pero nada impide
+% que otros idiomas tengan su propio paquete. Me gustaría ver algún día algo
+% como un hipotético \mypkg*[no-index]{ukenglish-mathml-intent}, con una
+% interfaz pensada para su lengua y su escuela. Si alguien se anima,
+% esta sección es una invitación.
 %
 % \let\stdsection\section
 % \def\section*#1{\stdsection{#1}}
 % \expandafter\let\expandafter\thebibliography\csname HDorg@thebibliography\endcsname
 %
 % \begin{thebibliography}{10}
+%
+% \bibitem{authorintent} \textsc{Carlisle, David and Libbrecht, Paul and
+% Schubotz, Moritz and Soiffer, Neil}. \enquote{Author Intent: Eliminating
+% Ambiguity in MathML}. Available from \textsc{arXiv},
+% \url{https://arxiv.org/abs/2407.06720}, 2025.
 %
 % \bibitem{unicode-math} \textsc{Robertson, Will}. \enquote{unicode-math
 % - Unicode mathematics support for \hologo{XeTeX} and \hologo{LuaTeX}}. Available from
@@ -10051,13 +10068,14 @@ spmmli-tool -o -p build/ ejemplo.tex
 % This verifies the input and constructs a \mynvmath{MathML} |intent| tree for
 % \mynvmath{NVDA/MathCAT}.
 %
-% \begin{variable}[int]{
-%   \l_@@_spdate_luaset_output_str,
-%   \l_@@_spdate_luaset_error_str
-% }
-% These internal string variables store the values returned from the Lua
-% module \myluamod{}. They hold the formatted date string and the error
-% status used during formatting.
+% \begin{variable}[int]
+%   {
+%     \l_@@_spdate_luaset_output_str,
+%     \l_@@_spdate_luaset_error_str,
+%   }
+%   These internal string variables store the values returned from the Lua
+%   module \myluamod{}. They hold the formatted date string and the error
+%   status used during formatting.
 %    \begin{macrocode}
 \str_new:N \l_@@_spdate_luaset_output_str
 \str_new:N \l_@@_spdate_luaset_error_str

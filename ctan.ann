@@ -1,4 +1,4 @@
 Release v1.1:
-– The command-line tool spitool is renamed spmmli-tool (script and man page).
-– The message pos-invalid-index is renamed stat-pos-invalid-index.
+– The command-line tool `spitool` is renamed `spmmli-tool` (script and man page).
+– The message `pos-invalid-index` is renamed `stat-pos-invalid-index`.
 – New abstract of the manual, in line with the description of the README.
