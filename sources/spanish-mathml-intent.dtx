@@ -22,7 +22,7 @@
 % This work is "maintained" (as per the LPPL maintenance status)
 % by Pablo González L.
 %
-% This work consists of the files spanish-mathml-intent.dtx, spintent.lua, spitool.lua
+% This work consists of the files spanish-mathml-intent.dtx, spintent.lua, spmmli-tool.lua
 % and spanish-mathml-intent.sty.
 %
 % \fi
@@ -222,8 +222,8 @@ end, "shekel_fallback_patch")
 \definecolor{catgray}{rgb}{0.4, 0.4, 0.4}            % Gris para "CAT" o "ML"
 \definecolor{mathmlblue}{HTML}{1F5FBF}               % Azul para "Math" de MathML
 % File info
-\def\fileversion{v1.0}
-\def\filedate{2026-10-20}
+\def\fileversion{v1.1}
+\def\filedate{2026-10-22}
 \def\fileinfo{Spanish parse intents}
 
 % Config hyperref
@@ -536,13 +536,13 @@ end, "shekel_fallback_patch")
       \texttt
         {
           \textcolor { module_name } { sp }
-          \textcolor { OrangeRed } { itool }
+          \textcolor { OrangeRed } { mmli-tool }
         }
       \str_if_eq:nnF {#1} { no-index }
         {
           \__mydoc_sort_index:nnn { Tool }
-            { Herramienta~provista~por~\pkglogo :>\texttt{spitool} }
-            { Tool~provided~by~\pkglogo :>\texttt{spitool} }
+            { Herramienta~provista~por~\pkglogo :>\texttt{spmmli-tool} }
+            { Tool~provided~by~\pkglogo :>\texttt{spmmli-tool} }
         }
     \group_end:
   }
@@ -1539,7 +1539,7 @@ verapdf --flavour ua2 --format text archivo.pdf
 % \texttt{show-pdf-tags} está en \href{https://ctan.org/pkg/show-pdf-tags}{\texttt{CTAN}}; si su
 % distribución no lo incluye, instálelo con el gestor de paquetes.
 %
-% Si tiene instaladas estas herramientas, la orden |spitool -c archivo.pdf|
+% Si tiene instaladas estas herramientas, la orden |spmmli-tool -c archivo.pdf|
 % ejecuta ambas comprobaciones de una vez (\S\ref{sec:af}).
 %
 % \subsubsection{Instalar \texttt{rnv-wrapp} y \texttt{veraPDF}}
@@ -6599,7 +6599,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % verbalizará la salida del comando; si se establece en |false|, sí
 % verbalizará la salida del comando.
 %
-% \section{Modo \texttt{mathml-AF} y \texttt{spitool}}\label{sec:af}
+% \section{Modo \texttt{mathml-AF} y \texttt{spmmli-tool}}\label{sec:af}
 %
 % Las matemáticas de un documento \emph{tagged} \texttt{PDF} se configuran con
 % la llave |math/setup| de |\DocumentMetadata|. Todos los ejemplos de este
@@ -6635,7 +6635,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{enumerate}[nosep,itemsep=\parskip]
 %   \item Escriba y revise el documento con \texttt{mathml-SE}.
-%   \item Cuando esté terminado, ejecute en una terminal |spitool archivo.tex|.
+%   \item Cuando esté terminado, ejecute en una terminal |spmmli-tool archivo.tex|.
 %     Se genera el archivo \myfile{archivo-mathml.html}.
 %   \item En |\DocumentMetadata|, cambie \texttt{mathml-SE} por \texttt{mathml-AF} y compile
 %     de nuevo.
@@ -6662,7 +6662,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %</ignore>
 % \fi
 %
-% \subsection{La herramienta \texttt{spitool}}
+% \subsection{La herramienta \texttt{spmmli-tool}}
 %
 % El script \myspitool{} se instala junto con el paquete. Prepara los
 % archivos de \mynvmath{MathML} que genera \mypkg{luamml}\cite{luamml} para el
@@ -6674,12 +6674,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begingroup\small
 % \begin{longtable}{@{\extracolsep{\fill}}l p{8.5cm}@{}}
-% \caption{Modos de \texttt{spitool}} \label{tab:spitool-modos} \\
+% \caption{Modos de \texttt{spmmli-tool}} \label{tab:spmmli-tool-modos} \\
 % \toprule
 % \textbf{Archivo} & \textbf{Qué hace} \\
 % \midrule
 % \endfirsthead
-% \caption[]{\emph{(Continuación - Modos de \texttt{spitool})}} \\
+% \caption[]{\emph{(Continuación - Modos de \texttt{spmmli-tool})}} \\
 % \toprule
 % \textbf{Archivo} & \textbf{Qué hace} \\
 % \midrule
@@ -6703,12 +6703,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begingroup\small
 % \begin{longtable}{@{\extracolsep{\fill}}l p{8.5cm}@{}}
-% \caption{Opciones de \texttt{spitool}} \label{tab:spitool-opciones} \\
+% \caption{Opciones de \texttt{spmmli-tool}} \label{tab:spmmli-tool-opciones} \\
 % \toprule
 % \textbf{Opción} & \textbf{Efecto} \\
 % \midrule
 % \endfirsthead
-% \caption[]{\emph{(Continuación - Opciones de \texttt{spitool})}} \\
+% \caption[]{\emph{(Continuación - Opciones de \texttt{spmmli-tool})}} \\
 % \toprule
 % \textbf{Opción} & \textbf{Efecto} \\
 % \midrule
@@ -6736,10 +6736,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %<*ignore>
 % \fi
 \begin{examplecode}[frame=single,language={}]
-spitool -c ejemplo.pdf
-spitool -c -s ejemplo
-spitool ejemplo-luamml-mathml.html
-spitool -o -p build/ ejemplo.tex
+spmmli-tool -c ejemplo.pdf
+spmmli-tool -c -s ejemplo
+spmmli-tool ejemplo-luamml-mathml.html
+spmmli-tool -o -p build/ ejemplo.tex
 \end{examplecode}
 % \iffalse
 %</ignore>
@@ -7002,6 +7002,14 @@ spitool -o -p build/ ejemplo.tex
 % \begin{description}[font=\small\sffamily,wide=0pt,style=multiline,leftmargin=1.1\descrwidth,nosep,noitemsep]
 %  \item [\fileversion{} (ctan), \filedate]
 %    \begin{itemize}
+%      \item The command-line tool |spitool| is renamed \myspitool[no-index]{}
+%        (script and man page).
+%      \item The message |pos-invalid-index| is renamed |stat-pos-invalid-index|.
+%      \item New abstract of the manual, in line with the description of the
+%        \texttt{README}.
+%    \end{itemize}
+%  \item [v1.0 (ctan), 2026-10-20]
+%    \begin{itemize}
 %      \item First public release.
 %    \end{itemize}
 % \end{description}
@@ -7102,7 +7110,7 @@ spitool -o -p build/ ejemplo.tex
 % keys: \mykey[usepackage]{mathcal} and \mykey[usepackage]{AFghost}, which can be passed as package
 % options.
 %    \begin{macrocode}
-\ProvidesExplPackage {spanish-mathml-intent} {2026-10-20} {1.0} {Spanish parse intents}
+\ProvidesExplPackage {spanish-mathml-intent} {2026-10-22} {1.1} {Spanish parse intents}
 \keys_define:nn { spintent }
   {
     mathcal .usage:n = load,
@@ -20589,7 +20597,7 @@ spitool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}[int]{\@@_stat_exec:nnn, \@@_stat_simple:nnn}
+% \begin{macro}[int]{\@@_stat_exec:nnn, \@@_stat_simple:nnn, \@@_stat_letter:nnnn}
 %   The function \myhlc|\@@_stat_exec:nnn| holds what all the commands of
 %   the family share. It receives the short name of the command in `|#1|',
 %   the optional \mymeta{keys} in `|#2|' and the code that prints the symbol
@@ -20601,6 +20609,10 @@ spitool -o -p build/ ejemplo.tex
 %   \myhlc|\@@_stat_mathml:nnnnnn| for the symbols with neither a letter nor
 %   an exponent. It receives the short name in `|#1|', the symbol in `|#2|'
 %   and the name of the concept in `|#3|'.
+%
+%   The function \myhlc|\@@_stat_letter:nnnn| is the short form for the
+%   symbols with a letter but no exponent. It receives the same three
+%   arguments and the name of the letter in `|#4|'.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_stat_exec:nnn
   {
@@ -20617,6 +20629,10 @@ spitool -o -p build/ ejemplo.tex
 \cs_new_protected:Nn \@@_stat_simple:nnn
   {
     \@@_stat_mathml:nnnnnn {#1} {#2} { } {#3} { } { }
+  }
+\cs_new_protected:Nn \@@_stat_letter:nnnn
+  {
+    \@@_stat_mathml:nnnnnn {#1} {#2} { } {#3} {#4} { }
   }
 %    \end{macrocode}
 % \end{macro}
@@ -20646,7 +20662,8 @@ spitool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}{\spdesv, \spvarz}
-%   The public commands \ics*{spdesv} and \ics*{spvarz} work the same way, but call
+%   The public commands \ics*{spdesv} and \ics*{spvarz} work the same way, but
+%   \ics*{spdesv} calls \myhlc|\@@_stat_letter:nnnn| and \ics*{spvarz} calls
 %   \myhlc|\@@_stat_mathml:nnnnnn| directly. The symbol is |s|, or |\sigma|
 %   when \mykey{sigma} is |true|, and its name is part of the spoken
 %   content; |\spvarz| adds the exponent |2|, spoken |al-cuadrado|. The
@@ -20658,12 +20675,12 @@ spitool -o -p build/ ejemplo.tex
       {
         \bool_if:NTF \l_@@_spdesv_sigma_bool
           {
-            \@@_stat_mathml:nnnnnn { spdesv } { \sigma } { }
-              { desviación-estándar } { sigma } { }
+            \@@_stat_letter:nnnn { spdesv } { \sigma }
+              { desviación-estándar } { sigma }
           }
           {
-            \@@_stat_mathml:nnnnnn { spdesv } { s } { }
-              { desviación-estándar } { s } { }
+            \@@_stat_letter:nnnn { spdesv } { s }
+              { desviación-estándar } { s }
           }
       }
   }
@@ -21069,7 +21086,7 @@ spitool -o -p build/ ejemplo.tex
 %   \mykey{read-arg}, it is rejected with |spFrec-invalid-sub-index|. The
 %   \mymarg{argument} is rejected whatever the value of the key
 %   \mykey{silent}. When it is accepted, the function delegates the
-%   printing to \myhlc|\@@_stat_mathml:nnnnnn|.
+%   printing to \myhlc|\@@_stat_simple:nnn|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spFrec_exec:n
   {
@@ -21114,8 +21131,8 @@ spitool -o -p build/ ejemplo.tex
             \msg_error:nnn { spintent } { spFrec-invalid-sub-index } {#1}
           }
           {
-            \@@_stat_mathml:nnnnnn { spFrec } {#1} { }
-              { \l_@@_spFrec_concept_tl } { } { }
+            \@@_stat_simple:nnn { spFrec } {#1}
+              { \l_@@_spFrec_concept_tl }
           }
       }
   }
@@ -21229,7 +21246,7 @@ spitool -o -p build/ ejemplo.tex
 %   |spcase-invalid-letter| whatever the value of the keys
 %   \mykey[spcase]{silent} and \mykey[spcase]{read-arg}. Otherwise the
 %   function delegates the printing of the symbol, with the letter as its
-%   subscript, to \myhlc|\@@_stat_mathml:nnnnnn|.
+%   subscript, to \myhlc|\@@_stat_simple:nnn|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcase_exec:n
   {
@@ -21245,9 +21262,9 @@ spitool -o -p build/ ejemplo.tex
     \tl_if_empty:NTF \l_@@_spcase_concept_tl
       { \msg_error:nnn { spintent } { spcase-invalid-letter } {#1} }
       {
-        \@@_stat_mathml:nnnnnn { spcase }
+        \@@_stat_simple:nnn { spcase }
           { C \c_math_subscript_token { \str_use:N \l_@@_spcase_letter_str } }
-          { } { \l_@@_spcase_concept_tl } { } { }
+          { \l_@@_spcase_concept_tl }
       }
   }
 %    \end{macrocode}
@@ -21339,7 +21356,7 @@ spitool -o -p build/ ejemplo.tex
 % \begin{macro}{\spOmega}
 %   The public command \ics*{spOmega} enforces \emph{math mode}, opens a local
 %   group, sets the \mymeta{keys} and delegates execution to
-%   \myhlc|\@@_stat_mathml:nnnnnn|, with the symbol |\Omega| and the concept
+%   \myhlc|\@@_stat_simple:nnn|, with the symbol |\Omega| and the concept
 %   |espacio-muestral|, or the symbol |\#\Omega| and the concept
 %   |cardinalidad-del-espacio-muestral| when \mykey[spOmega]{card} is |true|.
 %    \begin{macrocode}
@@ -21352,12 +21369,12 @@ spitool -o -p build/ ejemplo.tex
           \keys_set:nn { spintent / spOmega } {#1}
           \bool_if:NTF \l_@@_spOmega_card_bool
             {
-              \@@_stat_mathml:nnnnnn { spOmega } { \# \Omega } { }
-                { cardinalidad-del-espacio-muestral } { } { }
+              \@@_stat_simple:nnn { spOmega } { \# \Omega }
+                { cardinalidad-del-espacio-muestral }
             }
             {
-              \@@_stat_mathml:nnnnnn { spOmega } { \Omega } { }
-                { espacio-muestral } { } { }
+              \@@_stat_simple:nnn { spOmega } { \Omega }
+                { espacio-muestral }
             }
         \group_end:
       }
@@ -22745,7 +22762,7 @@ spitool -o -p build/ ejemplo.tex
 %<*spintentlua>
 % \fi
 --[[
-     Lua module spintent.lua for spintent package - v1.0 [2026-10-20]
+     Lua module spintent.lua for spintent package - v1.1 [2026-10-22]
 --]]
 
 -- CACHÉ, LPEG Y HERRAMIENTAS GLOBALES
@@ -26165,7 +26182,7 @@ end, { "string" })
 -- are half-broken without it too.
 kpse.set_program_name("luatex")
 
-local SPITOOL_VERSION = "1.0"
+local SPITOOL_VERSION = "1.1"
 local lfs = require("lfs")
 
 -- OS detection and Quoting helper (POSIX vs Windows)
@@ -26346,13 +26363,13 @@ end
 
 -- Docopt Help banner
 if config.help then
-    print("spitool v" .. SPITOOL_VERSION .. " - Tool for cleaning luamml ghosts and validating LaTeX tagged PDFs")
+    print("spmmli-tool v" .. SPITOOL_VERSION .. " - Tool for cleaning luamml ghosts and validating LaTeX tagged PDFs")
     print([[
 Usage:
-  spitool [options] <file.pdf | file-luamml-mathml.html | file.tex>
+  spmmli-tool [options] <file.pdf | file-luamml-mathml.html | file.tex>
 
 Description:
-  spitool prepares the MathML files generated by luamml for mathml-AF: it
+  spmmli-tool prepares the MathML files generated by luamml for mathml-AF: it
   removes the invisible ghost characters (U+2063 with sptmp attributes)
   and writes the result to <name>-mathml.html.
 
@@ -26375,13 +26392,13 @@ Options:
                       Without it, all files are processed; in both cases the
                       exit code is non-zero if anything failed.
   -h, --help          Show this usage summary and exit.
-  -v, --version       Show spitool version number and exit.
+  -v, --version       Show spmmli-tool version number and exit.
 
 Examples:
-  $ spitool -c sample.pdf
-  $ spitool -c -s sample
-  $ spitool sample-luamml-mathml.html
-  $ spitool -o -p build/ sample.tex
+  $ spmmli-tool -c sample.pdf
+  $ spmmli-tool -c -s sample
+  $ spmmli-tool sample-luamml-mathml.html
+  $ spmmli-tool -o -p build/ sample.tex
 
 Issues and reports:
   Repository : https://github.com/pablgonz/spanish-mathml-intent
@@ -26393,7 +26410,7 @@ end
 
 -- Version banner
 if config.version then
-    print("spitool v" .. SPITOOL_VERSION)
+    print("spmmli-tool v" .. SPITOOL_VERSION)
     os.exit(0)
 end
 
@@ -26444,7 +26461,7 @@ end
 local function secure_temp_subdir()
     -- POSIX: mktemp -d creates the directory atomically with mode 700
     if not is_windows and has_cmd("mktemp") then
-        local template = system_temp_dir():gsub("/$", "") .. "/spitool-XXXXXX"
+        local template = system_temp_dir():gsub("/$", "") .. "/spmmli-tool-XXXXXX"
         local p = io.popen("mktemp -d " .. quote_arg(template) .. " 2>/dev/null")
         if p then
             local dir = p:read("*l")
@@ -26460,7 +26477,7 @@ local function secure_temp_subdir()
     local sep = package.config:sub(1, 1)
     math.randomseed(os.time() + math.floor(os.clock() * 100000))
     local unique = string.format("%d_%d", os.time(), math.random(100000, 999999))
-    local tmpdir = base .. sep .. "spitool-" .. unique
+    local tmpdir = base .. sep .. "spmmli-tool-" .. unique
 
     local ok, err = lfs.mkdir(tmpdir)
     if not ok then
@@ -26656,7 +26673,7 @@ local function run_clean_mode(html_filename)
     end
 
     local found_something = report_stats(stats, output_name,
-        "If this .html was not generated via spitool from a .tex source, "
+        "If this .html was not generated via spmmli-tool from a .tex source, "
         .. "it might not contain ghosts -- try passing the .tex/.ltx file directly.")
     if not found_something then
         os.remove(output_name)

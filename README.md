@@ -5,10 +5,14 @@
 
 ## Descripción
 
-El paquete <code>&langle;spanish-mathml-intent&rangle;</code> proporciona una serie de
-utilidades para docentes de educación primaria y secundaria que necesiten
-crear documentos `PDF` _accesibles_ \(_tagged_ PDF\) en español utilizando
-`LuaLaTeX`.
+El paquete <code>&langle;spanish-mathml-intent&rangle;</code> agrega el atributo
+_intent_ de MathML a las matemáticas escritas en español con `LuaLaTeX`. El
+atributo le indica a un lector de pantalla qué concepto es una expresión y cómo
+se debe leer, de modo que NVDA con MathCAT lea correctamente las fórmulas en
+documentos `PDF` accesibles \(_tagged_ PDF\). Sus comandos escriben y etiquetan
+números, unidades, dinero, fechas y horas, geometría, álgebra y estadística,
+cada uno con la lectura en español que le corresponde. Está pensado para
+docentes de educación primaria y secundaria.
 
 ## Requerimientos
 
@@ -81,7 +85,7 @@ un enlace para verlo; GitHub también permite descargarlo desde esa página.
 > Para compilarlos se requieren `babel` (opción `spanish`),
 > <code>&langle;spanish-mathml-intent&rangle;</code> y `hyperref`, junto con la línea de
 > `\DocumentMetadata`. Las versiones `mathml-AF` se obtienen cambiando
-> `mathml-SE` por `mathml-AF` después de ejecutar `spitool`.
+> `mathml-SE` por `mathml-AF` después de ejecutar `spmmli-tool`.
 
 ## Desarrollo
 
@@ -119,8 +123,8 @@ versión 1.3c o superior.
 ├── README.md
 ├── build.lua
 ├── ctan.ann
-├── spitool.1
-├── spitool.man1.pdf
+├── spmmli-tool.1
+├── spmmli-tool.man1.pdf
 ├── tagged-test
 ├── testfiles
 └── sources
@@ -129,7 +133,7 @@ versión 1.3c o superior.
     ├── spanish-mathml-intent.ins
     ├── spintent.lua
     ├── spanish-mathml-intent.sty
-    ├── spitool.lua
+    ├── spmmli-tool.lua
     └── test-pkg
         ├── spintent-01.tex
         ├── spintent-02.tex

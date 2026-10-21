@@ -1,8 +1,9 @@
 --[[
    Configuration script for l3build from the spanish-mathml-intent package.
    At the moment the possible targets that can be passed are:
-   * tag        : Update the version and date (package, spitool and its
-                  man page); regenerates spitool.man1.pdf if groff is found
+   * tag        : Update the version and date (package, spmmli-tool and its
+                  man page), regenerate the .sty and .lua copies in sources/
+                  and spmmli-tool.man1.pdf if groff is found
    * doc        : Generate the documentation [-q]
    * unpack     : Unpacks the source files [-q]
    * install    : Install the package locally, you can use
@@ -15,12 +16,13 @@
                   -F ctan.ann in conjunction with [--debug]
    * tagcheck   : Check version and date in files
    * testSE     : Compile and validate (mathml-SE) the files in /tagged-test
-   * testAF     : Same files in mathml-SE and mathml-AF (ghosts removed by spitool)
+   * testAF     : Same files in mathml-SE and mathml-AF (ghosts removed by spmmli-tool)
    * example    : Same as testAF for sources/test-pkg, copying the PDFs
-   * testpdf    : TEMPORARY. Same as example for the files in /tagged-test,
+   * testpdf    : Same as example for the files in /tagged-test,
                   leaving the PDFs there (name.pdf and name-AF.pdf)
    * release    : It performs the checks before generating a public
-                  release (on git and ctan).
+                  release (on git and ctan), commits the PDFs that example
+                  and ctan regenerate and creates the git tag.
    The targets testSE, testAF and example accept file names (with or
    without .tex) to run only those files, as l3build check does with the
    names of the tests: l3build testAF spintent-04 spintent-05
@@ -28,8 +30,8 @@
 
 -- General package identification
 module     = "spanish-mathml-intent"
-pkgversion = "1.0"
-pkgdate    = "2026-10-20"
+pkgversion = "1.1"
+pkgdate    = "2026-10-22"
 ltxrelease = "2026-11-01"
 
 -- Configuration of files for build and installation
@@ -38,18 +40,18 @@ sourcefiledir  = "./sources"
 textfiledir    = "./sources"
 sourcefiles    = {"**/*.dtx", "**/*.ins"}
 installfiles   = {"**/*.sty", "**/*.lua"}
-scriptmanfiles = {"spitool.1"}
-docfiles       = {"spitool.man1.pdf"}
+scriptmanfiles = {"spmmli-tool.1"}
+docfiles       = {"spmmli-tool.man1.pdf"}
 tdslocations   = {
-  "tex/lualatex/spanish-mathml-intent/spanish-mathml-intent.sty",
-  "tex/lualatex/spanish-mathml-intent/spintent.lua",
-  "doc/lualatex/spanish-mathml-intent/spanish-mathml-intent.pdf",
-  "doc/lualatex/spanish-mathml-intent/README.md",
-  "doc/man/man1/spitool.1",
-  "doc/man/man1/spitool.man1.pdf",
-  "scripts/spanish-mathml-intent/spitool.lua",
-  "source/lualatex/spanish-mathml-intent/spanish-mathml-intent.dtx",
-  "source/lualatex/spanish-mathml-intent/spanish-mathml-intent.ins",
+  "tex/lualatex/spanishmathmlintent/spanish-mathml-intent.sty",
+  "tex/lualatex/spanishmathmlintent/spintent.lua",
+  "doc/lualatex/spanishmathmlintent/spanish-mathml-intent.pdf",
+  "doc/lualatex/spanishmathmlintent/README.md",
+  "doc/man/man1/spmmli-tool.1",
+  "doc/man/man1/spmmli-tool.man1.pdf",
+  "scripts/spanish-mathml-intent/spmmli-tool.lua",
+  "source/lualatex/spanishmathmlintent/spanish-mathml-intent.dtx",
+  "source/lualatex/spanishmathmlintent/spanish-mathml-intent.ins",
 }
 
 -- Unpacking files from spanish-mathml-intent.ins
@@ -115,10 +117,14 @@ uploadconfig = {
   pkg          = ctanpkg,
   version      = pkgversion,
   license      = "lppl1.3c",
-  summary      = "Spanish parse intents",
-  description  =[[The ⟨spanish-mathml-intent⟩ package provides a series of utilities for primary and secondary
-  school teachers who need to create accessible PDF documents (tagged PDF) in Spanish using LuaLaTeX.]],
-  topic        = { "spanish", "macros", "tagged-pdf" },
+  summary      = "Spanish MathML intent for accessible (tagged) PDF with LuaLaTeX",
+  description  = "This package adds MathML intent to mathematics written in Spanish with LuaLaTeX. "
+    .. "The intent attribute tells a screen reader which concept an expression is and how to speak it, "
+    .. "so that NVDA with MathCAT reads the formulas correctly in accessible (tagged) PDF documents. "
+    .. "Its commands typeset and tag numbers, units, money, dates and times, geometry, algebra and "
+    .. "statistics, each with the Spanish reading it should have. "
+    .. "It is aimed at primary and secondary school teachers.",
+  topic        = { "spanish", "luatex", "accessible", "teaching", "maths", "tagged-pdf" },
   ctanPath     = "/macros/latex/contrib/" .. ctanpkg,
   repository   = "https://github.com/pablgonz/" .. module,
   bugtracker   = "https://github.com/pablgonz/" .. module .. "/issues",
@@ -134,10 +140,7 @@ cleanfiles = {ctanzip..".curlopt", ctanzip..".zip"}
 -- Update package date and version
 tagfiles = {
   "sources/spanish-mathml-intent.dtx",
-  "sources/spanish-mathml-intent.sty",
-  "sources/spintent.lua",
-  "sources/spitool.lua",
-  "spitool.1",
+  "spmmli-tool.1",
   "sources/CTANREADME.md",
   "ctan.ann"
 }
@@ -168,7 +171,7 @@ local function read_file(filepath)
   return content
 end
 
--- Set by update_tag when spitool.1 is rewritten, so that the PDF version of
+-- Set by update_tag when spmmli-tool.1 is rewritten, so that the PDF version of
 -- the man page is regenerated (see tag_hook)
 local man_changed = false
 
@@ -202,12 +205,12 @@ function update_tag(file, content, tagname, tagdate)
     local luav, luad = string.match(content, "%-%s*v(%d+%.%d+%a*)%s*%[(%d%d%d%d%-%d%d%-%d%d)%]")
     already_ok = (luav == tagname and luad == tagdate)
 
-  elseif string.match(file, "spitool%.lua$") then
+  elseif string.match(file, "spmmli%-tool%.lua$") then
     local spv = string.match(content, 'local%s+SPITOOL_VERSION%s*=%s*"(.-)"')
     already_ok = (spv == tagname)
 
-  elseif string.match(file, "spitool%.1$") then
-    local mand, manv = string.match(content, '%.TH%s+SPITOOL%s+1%s+"(%d%d%d%d%-%d%d%-%d%d)"%s+"spitool%s+(.-)"')
+  elseif string.match(file, "spmmli%-tool%.1$") then
+    local mand, manv = string.match(content, '%.TH%s+SPMMLI%-TOOL%s+1%s+"(%d%d%d%d%-%d%d%-%d%d)"%s+"spmmli%-tool%s+(.-)"')
     already_ok = (manv == tagname and mand == tagdate)
 
   elseif string.match(file, "CTANREADME%.md$") then
@@ -247,15 +250,15 @@ function update_tag(file, content, tagname, tagdate)
     content = string.gsub(content, "(%-%s*v)%d+%.%d+%a*%s*%[%d%d%d%d%-%d%d%-%d%d%]", "%1" .. tagname .. " [" .. tagdate .. "]")
   end
 
-  -- Substitutions in spitool.lua
-  if string.match(file, "spitool%.lua$") then
+  -- Substitutions in spmmli-tool.lua
+  if string.match(file, "spmmli%-tool%.lua$") then
     content = string.gsub(content, '(local%s+SPITOOL_VERSION%s*=%s*)"[^"]*"', '%1"' .. tagname .. '"')
   end
 
-  -- Substitutions in spitool.1 (the man page): date and version of .TH
-  if string.match(file, "spitool%.1$") then
-    content = string.gsub(content, '(%.TH%s+SPITOOL%s+1%s+)"%d%d%d%d%-%d%d%-%d%d"(%s+)"spitool%s+[^"]*"',
-      '%1"' .. tagdate .. '"%2"spitool ' .. tagname .. '"')
+  -- Substitutions in spmmli-tool.1 (the man page): date and version of .TH
+  if string.match(file, "spmmli%-tool%.1$") then
+    content = string.gsub(content, '(%.TH%s+SPMMLI%-TOOL%s+1%s+)"%d%d%d%d%-%d%d%-%d%d"(%s+)"spmmli%-tool%s+[^"]*"',
+      '%1"' .. tagdate .. '"%2"spmmli-tool ' .. tagname .. '"')
     man_changed = true
   end
 
@@ -290,7 +293,7 @@ local function check_dtx_tags()
     print("** Warning: Mismatches found in sources/spanish-mathml-intent.dtx")
     return false
   end
-  os_message("Checking version, date, and LaTeX release in spanish-mathml-intent.dtx (and spitool)")
+  os_message("Checking version, date, and LaTeX release in spanish-mathml-intent.dtx (and spmmli-tool)")
   return true
 end
 
@@ -325,27 +328,27 @@ end
 
 local function check_spitool_tags()
   local ok = true
-  local lua = read_file("sources/spitool.lua")
+  local lua = read_file("sources/spmmli-tool.lua")
   if lua then
     local spv = string.match(lua, 'local%s+SPITOOL_VERSION%s*=%s*"(.-)"')
     if spv ~= pkgversion then
-      print("** Warning: Mismatches found in sources/spitool.lua")
+      print("** Warning: Mismatches found in sources/spmmli-tool.lua")
       ok = false
     else
-      os_message("Checking version in spitool.lua")
+      os_message("Checking version in spmmli-tool.lua")
     end
   end
-  local man = read_file("spitool.1")
+  local man = read_file("spmmli-tool.1")
   if not man then
-    print("** Warning: spitool.1 not found")
+    print("** Warning: spmmli-tool.1 not found")
     return false
   end
-  local mand, manv = string.match(man, '%.TH%s+SPITOOL%s+1%s+"(%d%d%d%d%-%d%d%-%d%d)"%s+"spitool%s+(.-)"')
+  local mand, manv = string.match(man, '%.TH%s+SPMMLI%-TOOL%s+1%s+"(%d%d%d%d%-%d%d%-%d%d)"%s+"spmmli%-tool%s+(.-)"')
   if manv ~= pkgversion or mand ~= pkgdate then
-    print("** Warning: Mismatches found in spitool.1")
+    print("** Warning: Mismatches found in spmmli-tool.1")
     ok = false
   else
-    os_message("Checking version and date in spitool.1")
+    os_message("Checking version and date in spmmli-tool.1")
   end
   return ok
 end
@@ -375,40 +378,56 @@ local function check_all_tags()
   return ok_dtx and ok_sty and ok_lua and ok_spitool and ok_readme
 end
 
--- 'l3build tag' does not run redundant checks after writing; it only
--- regenerates the PDF version of the man page when spitool.1 was just tagged
--- (or the PDF is missing). groff -Tpdf needs the full groff package (the pdf
--- device); without it the PDF is left as it is and a warning is printed.
+-- Regenerates the copies of the .sty and .lua files in sources/ from the .dtx
+-- and the .ins, so that they carry what 'l3build tag' just wrote in the .dtx.
+local function unpack_copies()
+  local file = jobname(sourcefiledir .. "/spanish-mathml-intent.ins")
+  local errorlevel = run(sourcefiledir, "luatex --interaction=batchmode " .. file .. ".ins > " .. os_null)
+  if errorlevel ~= 0 then
+    error("** Error!!: Failed to process " .. file .. ".ins with luatex")
+  end
+  rm(sourcefiledir, file .. ".log")
+  os_message("Regenerated the .sty and .lua copies from " .. file .. ".ins")
+end
+
+-- 'l3build tag' does not run redundant checks after writing; it regenerates
+-- the .sty and .lua copies in sources/ and, when spmmli-tool.1 was just tagged
+-- (or the PDF is missing), the PDF version of the man page. groff -Tpdf needs
+-- the full groff package (the pdf device); without it the PDF is left as it
+-- is and a warning is printed.
 function tag_hook(tagname)
-  local manpdf = maindir .. "/spitool.man1.pdf"
+  unpack_copies()
+  local manpdf = maindir .. "/spmmli-tool.man1.pdf"
   if not (man_changed or not fileexists(manpdf)) then
+    os_message("spmmli-tool.man1.pdf is up to date")
     return 0
   end
   if not has_cmd("groff") then
-    print("** Warning: groff not found: spitool.man1.pdf was not regenerated")
+    print("** Warning: groff not found: spmmli-tool.man1.pdf was not regenerated")
     return 0
   end
-  local tmpfile = "spitool.man1.pdf.tmp"
-  local errorlevel = run(maindir, "groff -man -Tpdf spitool.1 > " .. tmpfile .. " 2> " .. os_null)
+  local tmpfile = "spmmli-tool.man1.pdf.tmp"
+  local errorlevel = run(maindir, "groff -man -Tpdf spmmli-tool.1 > " .. tmpfile .. " 2> " .. os_null)
   if errorlevel ~= 0 then
     rm(maindir, tmpfile)
-    print("** Warning: 'groff -man -Tpdf' failed (is the groff pdf device installed?): spitool.man1.pdf was not regenerated")
+    print("** Warning: 'groff -man -Tpdf' failed (is the groff pdf device installed?): spmmli-tool.man1.pdf was not regenerated")
     return 0
   end
-  rm(maindir, "spitool.man1.pdf")
-  ren(maindir, tmpfile, "spitool.man1.pdf")
-  os_message("Generated spitool.man1.pdf from spitool.1")
+  rm(maindir, "spmmli-tool.man1.pdf")
+  ren(maindir, tmpfile, "spmmli-tool.man1.pdf")
+  os_message("Generated spmmli-tool.man1.pdf from spmmli-tool.1")
   return 0
 end
 
 -- Standalone audit target: l3build tagcheck
-if options["target"] == "tagcheck" then
-  if check_all_tags() then
-    os.exit(0)
-  else
-    os.exit(1)
-  end
-end
+target_list.tagcheck = {
+  desc = "Check version and date in files",
+  help = "Reports every file whose version or date differs from build.lua.",
+  func = function()
+    if check_all_tags() then return 0 end
+    return 1
+  end,
+}
 
 -- Helper function to generate an isolated build environment --
 local function system_temp_dir()
@@ -582,7 +601,7 @@ end
 
 -- Compile dir/sample.tex with lualatex-dev and validate the PDF. With
 -- 'ghost' the file is loaded with AFghost=true, so luamml also writes
--- sample-luamml-mathml.html with the ghost marks (sptmp) for spitool.
+-- sample-luamml-mathml.html with the ghost marks (sptmp) for spmmli-tool.
 local function compile_sample(dir, sample, label, ghost)
   os_message("Compiling " .. sample .. ".tex " .. label)
   local cmd
@@ -630,15 +649,15 @@ local function check_se(srcdir)
 end
 
 -- Check every .tex in srcdir in both forms: as written (mathml-SE, compiled
--- with AFghost=true) and, once spitool has removed the ghosts, in mathml-AF
+-- with AFghost=true) and, once spmmli-tool has removed the ghosts, in mathml-AF
 -- mode using the cleaned MathML file. With copy_pdf the results are copied
 -- to the main directory as sample.pdf (mathml-SE) and sample-AF.pdf (mathml-AF).
 local function check_se_af(srcdir, copy_pdf)
   local samples = list_samples(srcdir)
   make_tmp_dir()
 
-  if not fileexists(tmpdir .. "/spitool.lua") then
-    fail("** Error!!: spitool.lua was not unpacked in " .. tmpdir)
+  if not fileexists(tmpdir .. "/spmmli-tool.lua") then
+    fail("** Error!!: spmmli-tool.lua was not unpacked in " .. tmpdir)
   end
   announce_validators()
 
@@ -659,11 +678,11 @@ local function check_se_af(srcdir, copy_pdf)
     -- 1. mathml-SE run with AFghost=true: writes sample-luamml-mathml.html
     compile_sample(tmpdir, sample, "with mathml-SE and AFghost=true", true)
 
-    -- 2. spitool removes the ghosts: writes sample-mathml.html
+    -- 2. spmmli-tool removes the ghosts: writes sample-mathml.html
     --    (nothing is written when the file has no ghosts)
     os_message("Removing ghosts from " .. sample .. "-luamml-mathml.html")
-    if run(tmpdir, "texlua spitool.lua -o " .. sample .. "-luamml-mathml.html > " .. os_null) ~= 0 then
-      fail("** Error!!: spitool failed for " .. sample .. "-luamml-mathml.html")
+    if run(tmpdir, "texlua spmmli-tool.lua -o " .. sample .. "-luamml-mathml.html > " .. os_null) ~= 0 then
+      fail("** Error!!: spmmli-tool failed for " .. sample .. "-luamml-mathml.html")
     end
 
     local clean_html = tmpdir .. "/" .. sample .. "-mathml.html"
@@ -713,36 +732,52 @@ end
 
 -- Custom target: l3build testSE
 -- Every .tex in ./tagged-test is compiled as mathml-SE and its PDF validated.
-if options["target"] == "testSE" then
-  check_se("tagged-test")
-  os.exit(0)
-end
+target_list.testSE = {
+  desc = "Compile and validate (mathml-SE) the files in /tagged-test",
+  help = "Accepts file names, with or without .tex: l3build testSE spintent-04",
+  func = function()
+    check_se("tagged-test")
+    return 0
+  end,
+}
 
 -- Custom target: l3build testAF
 -- Every .tex in ./tagged-test is checked in both forms, mathml-SE and mathml-AF
 -- (see check_se_af). Both PDFs are validated; nothing is copied out.
-if options["target"] == "testAF" then
-  check_se_af("tagged-test", false)
-  os.exit(0)
-end
+target_list.testAF = {
+  desc = "Same files in mathml-SE and mathml-AF (ghosts removed by spmmli-tool)",
+  help = "Accepts file names, with or without .tex: l3build testAF spintent-04",
+  func = function()
+    check_se_af("tagged-test", false)
+    return 0
+  end,
+}
 
 -- Custom target: l3build example
 -- Same as testAF for the .tex files in sources/test-pkg, but the PDFs are
 -- copied to the main directory: sample.pdf (mathml-SE) and sample-AF.pdf
 -- (mathml-AF).
-if options["target"] == "example" then
-  check_se_af(sourcefiledir .. "/test-pkg", true)
-  os.exit(0)
-end
+target_list.example = {
+  desc = "Same as testAF for sources/test-pkg, copying the PDFs",
+  help = "Accepts file names, with or without .tex: l3build example spintent-04",
+  func = function()
+    check_se_af(sourcefiledir .. "/test-pkg", true)
+    return 0
+  end,
+}
 
--- TEMPORARY target: l3build testpdf
+-- Custom target: l3build testpdf
 -- Same as example, but for the .tex files in ./tagged-test: the PDFs are
 -- left in that directory as sample.pdf (mathml-SE) and sample-AF.pdf
--- (mathml-AF). Accepts file names like testAF. Remove when no longer needed.
-if options["target"] == "testpdf" then
-  check_se_af("tagged-test", true)
-  os.exit(0)
-end
+-- (mathml-AF). Accepts file names like testAF.
+target_list.testpdf = {
+  desc = "Same as example for the files in /tagged-test (PDFs left there)",
+  help = "Accepts file names, with or without .tex: l3build testpdf spintent-04",
+  func = function()
+    check_se_af("tagged-test", true)
+    return 0
+  end,
+}
 
 -- The PDFs attached to the manual are the ones that 'l3build example' leaves
 -- in sources/test-pkg. Before packaging, check that all of them exist and
@@ -834,7 +869,7 @@ local function os_capture(cmd, raw)
 end
 
 -- Target "release": performs pre-release checks for Git and CTAN
-if options["target"] == "release" then
+local function release_target()
   -- 1. Verify working branch is 'main'
   local gitbranch = os_capture("git symbolic-ref --short HEAD")
   if gitbranch == "main" then
@@ -902,7 +937,32 @@ if options["target"] == "release" then
     error("** Error!!: dry-run upload check failed; nothing was tagged or pushed")
   end
 
-  -- 8. Tag commit in Git (only after everything above succeeded)
+  -- 8. Commit what 'l3build example' and 'l3build ctan' regenerated (the PDFs
+  -- versioned in git), so that the tag points to the commit that matches the
+  -- zip. The working directory was clean in step 2: only regenerated files
+  -- can have changed.
+  local regenerated = os_capture("git status --porcelain --untracked-files=no")
+  if regenerated == "" then
+    os_message("No regenerated files to commit")
+  else
+    local commit_msg = "Release v" .. pkgversion .. " [" .. pkgdate .. "]"
+    local cres = os.execute("git add -u")
+    if cres ~= 0 and cres ~= true then
+      error("** Error!!: 'git add -u' failed; nothing was tagged or pushed")
+    end
+    cres = os.execute('git commit --quiet -m "' .. commit_msg .. '"')
+    if cres ~= 0 and cres ~= true then
+      error("** Error!!: 'git commit' failed; nothing was tagged or pushed")
+    end
+    os_message("Committing regenerated files: " .. commit_msg)
+    cres = os.execute("git push --quiet")
+    if cres ~= 0 and cres ~= true then
+      error("** Error!!: 'git push' failed. The commit exists locally; push it manually.")
+    end
+    os_message("Pushing the commit to remote")
+  end
+
+  -- 9. Tag commit in Git (only after everything above succeeded)
   local tag_version = "v" .. pkgversion
   local tagongit = os_capture('git for-each-ref refs/tags --sort=-taggerdate --format="%(refname:short)" --count=1')
   os_message("Checking latest Git tag (latest: " .. (tagongit ~= "" and tagongit or "none") .. ")")
@@ -926,5 +986,11 @@ if options["target"] == "release" then
   print("** Review '" .. ctanzip .. ".curlopt' and verify 'ctan.ann'")
   print("** To publish to CTAN, run manually: l3build upload")
   print("-----------------------------------------------------------------")
-  os.exit(0)
+  return 0
 end
+
+target_list.release = {
+  desc = "Checks before a public release (git and ctan), then tags and pushes",
+  help = "Runs the checks, creates the git tag and pushes it; then run l3build upload by hand.",
+  func = release_target,
+}

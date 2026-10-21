@@ -1,4 +1,4 @@
--- mylhmc.lua v0.99 2026-10-14 (node.direct + Loop/Memory Micro-Optimized)
+-- mylhmc.lua v0.99 2026-10-21 (node.direct + Loop/Memory Micro-Optimized)
 -- LuaLaTeX syntax highlighter for l3doc macrocode environments
 
 local require      = require
@@ -44,8 +44,28 @@ local t_scan_word    = token.scan_word
 local token_set_lua  = token.set_lua
 
 local kpse_find      = kpse.find_file
-local f_read         = fonts.constructors.readanddefine
-local f_hashes       = fonts.hashes.identifiers
+local f_read         = fonts and fonts.constructors and fonts.constructors.readanddefine
+local f_hashes       = fonts and fonts.hashes and fonts.hashes.identifiers
+
+local mod_warning    = luatexbase.module_warning
+local mod_error      = luatexbase.module_error
+
+if not (f_read and f_hashes) then
+  mod_error('mylhmc',
+    'luaotfload (fontloader) is not loaded; load fontspec or luaotfload first.')
+  -- Si el error se ignora, evitamos nil-index posteriores.
+  f_read   = function() return nil end
+  f_hashes = {}
+end
+
+-- Avisa una sola vez por clave (evita inundar el log).
+local warned = {}
+local function warn_once(key, msg)
+  if not warned[key] then
+    warned[key] = true
+    mod_warning('mylhmc', msg)
+  end
+end
 
 local luatexbase_new = luatexbase.new_luafunction
 local lua_get_funcs  = lua.get_functions_table
@@ -457,6 +477,11 @@ local function mylhmc_ensure_lm_paths()
     LM_REGULAR_PATH = kpse_find('lmroman10-regular.otf', 'opentype fonts')
     LM_ITALIC_PATH  = kpse_find('lmmono10-italic.otf',   'opentype fonts')
     LM_BOLD_PATH    = kpse_find('lmmonolt10-bold.otf',   'opentype fonts')
+    if not (LM_REGULAR_PATH and LM_ITALIC_PATH and LM_BOLD_PATH) then
+      warn_once('lm_paths',
+        'Latin Modern OpenType fonts not found (lmroman10-regular, '
+        .. 'lmmono10-italic, lmmonolt10-bold); using the current font instead.')
+    end
   end
 end
 
@@ -464,7 +489,10 @@ local function mylhmc_load_font_at_size(filepath, target_size)
   if not filepath then return nil end
   local font_spec = '[' .. filepath .. ']'
   local ok, data, new_id = pcall(f_read, font_spec, target_size)
-  if not ok or not data or not new_id or new_id <= 0 then return nil end
+  if not ok or not data or not new_id or new_id <= 0 then
+    warn_once('load:' .. filepath, 'could not load font ' .. filepath)
+    return nil
+  end
   f_hashes[new_id] = data
   return new_id
 end
@@ -602,6 +630,10 @@ register_tex_cmd('luafun_set_color', function(name, spec)
     local nr, ng, nb = tonumber(r), tonumber(g), tonumber(b)
     color_data[name] = s_format(
       '%.4f %.4f %.4f rg %.4f %.4f %.4f RG', nr, ng, nb, nr, ng, nb)
+  else
+    warn_once('color:' .. tostring(name),
+      'invalid color specification for "' .. tostring(name)
+      .. '": expected three numbers, got "' .. tostring(spec) .. '"')
   end
 end, {'string', 'string'})
 

@@ -21,7 +21,7 @@
 %% by Pablo González L.
 %% 
 %% This work consists of the files spanish-mathml-intent.dtx and spanish-mathml-intent.ins and the files
-%% generated from them (spanish-mathml-intent.sty, spintent.lua and spitool.lua).
+%% generated from them (spanish-mathml-intent.sty, spintent.lua and spmmli-tool.lua).
 %% 
 %% The released version of this package is available from CTAN.
 %% 
@@ -39,7 +39,7 @@
         later.~Update~your~TeX~distribution.
       }
   }
-\ProvidesExplPackage {spanish-mathml-intent} {2026-10-20} {1.0} {Spanish parse intents}
+\ProvidesExplPackage {spanish-mathml-intent} {2026-10-22} {1.1} {Spanish parse intents}
 \keys_define:nn { spintent }
   {
     mathcal .usage:n = load,
@@ -7807,6 +7807,10 @@
   {
     \__spintent_stat_mathml:nnnnnn {#1} {#2} { } {#3} { } { }
   }
+\cs_new_protected:Nn \__spintent_stat_letter:nnnn
+  {
+    \__spintent_stat_mathml:nnnnnn {#1} {#2} { } {#3} {#4} { }
+  }
 \NewDocumentCommand \spmedia { O{} }
   {
     \__spintent_stat_exec:nnn { spmedia } {#1}
@@ -7828,12 +7832,12 @@
       {
         \bool_if:NTF \l__spintent_spdesv_sigma_bool
           {
-            \__spintent_stat_mathml:nnnnnn { spdesv } { \sigma } { }
-              { desviación-estándar } { sigma } { }
+            \__spintent_stat_letter:nnnn { spdesv } { \sigma }
+              { desviación-estándar } { sigma }
           }
           {
-            \__spintent_stat_mathml:nnnnnn { spdesv } { s } { }
-              { desviación-estándar } { s } { }
+            \__spintent_stat_letter:nnnn { spdesv } { s }
+              { desviación-estándar } { s }
           }
       }
   }
@@ -8090,8 +8094,8 @@
             \msg_error:nnn { spintent } { spFrec-invalid-sub-index } {#1}
           }
           {
-            \__spintent_stat_mathml:nnnnnn { spFrec } {#1} { }
-              { \l__spintent_spFrec_concept_tl } { } { }
+            \__spintent_stat_simple:nnn { spFrec } {#1}
+              { \l__spintent_spFrec_concept_tl }
           }
       }
   }
@@ -8147,9 +8151,9 @@
     \tl_if_empty:NTF \l__spintent_spcase_concept_tl
       { \msg_error:nnn { spintent } { spcase-invalid-letter } {#1} }
       {
-        \__spintent_stat_mathml:nnnnnn { spcase }
+        \__spintent_stat_simple:nnn { spcase }
           { C \c_math_subscript_token { \str_use:N \l__spintent_spcase_letter_str } }
-          { } { \l__spintent_spcase_concept_tl } { } { }
+          { \l__spintent_spcase_concept_tl }
       }
   }
 \NewDocumentCommand \spcase { O{} m }
@@ -8199,12 +8203,12 @@
           \keys_set:nn { spintent / spOmega } {#1}
           \bool_if:NTF \l__spintent_spOmega_card_bool
             {
-              \__spintent_stat_mathml:nnnnnn { spOmega } { \# \Omega } { }
-                { cardinalidad-del-espacio-muestral } { } { }
+              \__spintent_stat_simple:nnn { spOmega } { \# \Omega }
+                { cardinalidad-del-espacio-muestral }
             }
             {
-              \__spintent_stat_mathml:nnnnnn { spOmega } { \Omega } { }
-                { espacio-muestral } { } { }
+              \__spintent_stat_simple:nnn { spOmega } { \Omega }
+                { espacio-muestral }
             }
         \group_end:
       }

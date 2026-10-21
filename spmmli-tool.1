@@ -1,24 +1,24 @@
-.\" spitool.1 -- manual page for spitool (part of the spanish-mathml-intent package)
+.\" spmmli-tool.1 -- manual page for spmmli-tool (part of the spanish-mathml-intent package)
 .\" Copyright (C) 2026 Pablo Gonzalez L <pablgonz@educarchile.cl>
-.TH SPITOOL 1 "2026-10-20" "spitool 1.0" "spanish-mathml-intent"
+.TH SPMMLI-TOOL 1 "2026-10-22" "spmmli-tool 1.1" "spanish-mathml-intent"
 .SH NAME
-spitool \- clean luamml ghost characters and validate tagged PDF files
+spmmli\-tool \- clean luamml ghost characters and validate tagged PDF files
 .SH SYNOPSIS
-.B spitool
+.B spmmli\-tool
 .RI [ options ]
 .IR file ...
 .br
-.B spitool
+.B spmmli\-tool
 .B \-h
 |
 .B \-\-help
 .br
-.B spitool
+.B spmmli\-tool
 .B \-v
 |
 .B \-\-version
 .SH DESCRIPTION
-.B spitool
+.B spmmli\-tool
 is a
 .BR texlua (1)
 script distributed with the
@@ -45,7 +45,7 @@ or
 .BR inner .
 They protect the structure of the formulas, but must not remain in the
 MathML file that is attached to the PDF.
-.B spitool
+.B spmmli\-tool
 removes them from the HTML file written by
 .BR luamml ,
 which is named
@@ -54,7 +54,7 @@ and leaves the result as
 .IB name \-mathml.html \fR.
 .PP
 What
-.B spitool
+.B spmmli\-tool
 does with each
 .I file
 depends on its extension; see
@@ -112,7 +112,7 @@ Replace the output file
 .IB name \-mathml.html
 if it already exists.
 Without this option
-.B spitool
+.B spmmli\-tool
 refuses to overwrite it and stops with an error.
 It has no effect together with
 .BR \-c ,
@@ -156,7 +156,7 @@ In both cases the exit status is not zero if anything failed.
 .BR \-h ", " \-\-help
 Show a summary of the usage and exit.
 This is also what happens when
-.B spitool
+.B spmmli\-tool
 is run without arguments from an interactive terminal.
 .TP
 .BR \-v ", " \-\-version
@@ -203,7 +203,7 @@ mode; it is written by
 .B luamml
 and is never modified.
 .TP
-.BI spitool\- XXXXXX
+.BI spmmli\-tool\- XXXXXX
 Temporary directory of the
 .B .tex
 and
@@ -240,7 +240,7 @@ Validate a PDF file, without compiling:
 .PP
 .RS
 .nf
-$ spitool \-c sample.pdf
+$ spmmli\-tool \-c sample.pdf
 .fi
 .RE
 .PP
@@ -248,7 +248,7 @@ The same, with the extension omitted and stopping at the first failure:
 .PP
 .RS
 .nf
-$ spitool \-c \-s sample
+$ spmmli\-tool \-c \-s sample
 .fi
 .RE
 .PP
@@ -259,7 +259,7 @@ replacing the output file if it exists:
 .PP
 .RS
 .nf
-$ spitool \-o \-p build/ sample.tex
+$ spmmli\-tool \-o \-p build/ sample.tex
 .fi
 .RE
 .PP
@@ -268,7 +268,7 @@ Clean an HTML file that was already written by
 .PP
 .RS
 .nf
-$ spitool sample\-luamml\-mathml.html
+$ spmmli\-tool sample\-luamml\-mathml.html
 .fi
 .RE
 .SH SEE ALSO

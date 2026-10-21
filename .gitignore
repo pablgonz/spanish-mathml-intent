@@ -55,6 +55,6 @@ _minted*
 
 ## Excepciones: estos si se versionan
 !/spanish-mathml-intent.pdf
-!/spitool.man1.pdf
+!/spmmli-tool.man1.pdf
 !/spintent.zip
 !/sources/test-pkg/spintent-*.pdf
