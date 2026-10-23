@@ -1,4 +1,4 @@
-## spanish-mathml-intent — Spanish parse intent
+## spanish-mathml-intent — Spanish MathML intent for accessible (tagged) PDF with LuaLaTeX
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/pablgonz/spanish-mathml-intent?label=version)
 ![GitHub Release Date](https://img.shields.io/github/release-date/pablgonz/spanish-mathml-intent)
 ![GitHub last commit](https://img.shields.io/github/last-commit/pablgonz/spanish-mathml-intent)
@@ -109,6 +109,12 @@ Puede ejecutar:
 - `l3build testAF` para lo mismo con `mathml-SE` y `mathml-AF`.
 - `l3build example` para compilar los archivos de `sources/test-pkg` y copiar
   los PDF.
+- `l3build testpdf` para lo mismo que `example` con los archivos de
+  `tagged-test/`, dejando allí los PDF.
+- `l3build tagcheck` para revisar la versión y la fecha en los archivos.
+- `l3build release` para ejecutar las comprobaciones previas a un lanzamiento
+  público (git y ctan), crear el tag de git y subirlo; luego se publica en
+  CTAN con `l3build upload`.
 
 ## Licencia
 

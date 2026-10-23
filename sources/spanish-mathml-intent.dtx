@@ -224,7 +224,7 @@ end, "shekel_fallback_patch")
 % File info
 \def\fileversion{v1.1}
 \def\filedate{2026-10-22}
-\def\fileinfo{Spanish parse intents}
+\def\fileinfo{Spanish MathML intent}
 
 % Config hyperref
 \definecolor{linkcolor}{rgb}{0.04,0.38,0.04}
@@ -926,7 +926,7 @@ end, "shekel_fallback_patch")
 %
 % \title{
 %    \scalebox{1.25}{\pkglogo}\\[-5pt]
-%    {\Large\textcolor{guard_angle}{\fetamontotf{spanish parse intents}}}\\[-5pt]
+%    {\Large\textcolor{guard_angle}{\fetamontotf{spanish mathml intent}}}\\[-5pt]
 %    \fileversion{} \quad \filedate\thanks{
 %     Este archivo describe la documentación para la versión \fileversion{}
 %     revisada por última vez el
@@ -1256,11 +1256,11 @@ end, "shekel_fallback_patch")
     colorlinks         = true,
     pdfstartview       = FitH,
     pdfdisplaydoctitle = true,
-    pdftitle           = {Test para el paquete spintent},
+    pdftitle           = {Test para el paquete spanish-mathml-intent},
     pdfinfo            =
       {
         Title   = {Test},
-        Subject = {spintent},
+        Subject = {spanish-mathml-intent},
       },
   }
 \end{examplecode}
@@ -7015,7 +7015,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \setlist[itemize,1]{label=\textendash,wide=0.5em,nosep,noitemsep,leftmargin=10pt}
 % \newlength\descrwidth
-% \settowidth{\descrwidth}{\textsf{v1.0, (ctan), 2026-06-20} }
+% \settowidth{\descrwidth}{\textsf{v1.0, (ctan), 2026-10-20} }
 % \begin{description}[font=\small\sffamily,wide=0pt,style=multiline,leftmargin=1.1\descrwidth,nosep,noitemsep]
 %  \item [\fileversion{} (ctan), \filedate]
 %    \begin{itemize}
@@ -7127,7 +7127,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % keys: \mykey[usepackage]{mathcal} and \mykey[usepackage]{AFghost}, which can be passed as package
 % options.
 %    \begin{macrocode}
-\ProvidesExplPackage {spanish-mathml-intent} {2026-10-22} {1.1} {Spanish parse intents}
+\ProvidesExplPackage {spanish-mathml-intent} {2026-10-22} {1.1} {Spanish MathML intent}
 \keys_define:nn { spintent }
   {
     mathcal .usage:n = load,
@@ -7231,7 +7231,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \subsection{Loading the Lua module and functions}
 %
 % \begin{macro}[int]{spintent.lua}
-%   Loads the Lua module \myluamod{}, where every |_luafun_| function
+%   Loads the Lua module \myluamod{}, where every \myhlc|_luafun_| function
 %   used throughout the package is registered.
 %    \begin{macrocode}
 \lua_load_module:n { spintent.lua }
@@ -7506,13 +7506,13 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   passed in `|#2|' is \emph{blank}. If so, it clears the target token list
 %   variable passed in `|#1|'. Otherwise, it converts the \mymarg{argument}
 %   into a string with every character in category code~12, so it no longer
-%   matters how an underscore `|_|' was typed, trims the bounds, converts
-%   spaces `\verb*+ +' and underscores `|_|' to hyphens `|-|', collapses
+%   matters how an underscore `\myhlc|_|' was typed, trims the bounds, converts
+%   spaces `\verb*+ +' and underscores `\myhlc|_|' to hyphens `|-|', collapses
 %   multiple hyphens, and strips leading/trailing hyphens. Because
 %   underscores are converted \emph{before} collapsing, any run mixing
 %   hyphens and underscores is reduced to a single hyphen, and the stored
-%   value never starts or ends with `|-|' or `|_|': the command that uses the
-%   value is the one that places the leading `|_|' of the concept name. For
+%   value never starts or ends with `|-|' or `\myhlc|_|': the command that uses the
+%   value is the one that places the leading `\myhlc|_|' of the concept name. For
 %   example, if you pass a target variable and raw text:
 %
 %   \begin{center}
@@ -7524,10 +7524,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   conditionally appended. In the same way, |{ __foo___bar__ }| is stored
 %   as |foo-bar|.
 %
-%   The only exception is the exact value `|_-|', once the bounds are
+%   The only exception is the exact value `\myhlc|_-|', once the bounds are
 %   trimmed, which is stored as a single hyphen `|-|'. After the command
-%   prepends its own leading `|_|', this yields the \emph{silent} literal
-%   `|_-|' documented for |\spread|. Any other value made only of hyphens,
+%   prepends its own leading `\myhlc|_|', this yields the \emph{silent} literal
+%   `\myhlc|_-|' documented for |\spread|. Any other value made only of hyphens,
 %   underscores and spaces is stored as \emph{empty}.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_sanitize_affix:Nn
@@ -7736,7 +7736,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   separators, decimal part, decimal periodic part, exponents and final physical
 %   \emph{\enquote{units}}, assigning them to \mypkg{expl3} variables.
 %
-%   This function assigns the states of the variables `|_str|' or `|_tl|'
+%   This function assigns the states of the variables `\myhlc|_str|' or `\myhlc|_tl|'
 %   described below to |true|, |false|, |error| or \emph{stores}
 %   information according to the role it fulfills within the
 %   implementation.
@@ -8087,7 +8087,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 %   The function \myhlc|\@@_spnum_print_period_bar:| inserts the function
 %   \myhlc|\@@_spnum_render_only_period:| as an argument within the
-%   \emph{intent} |_periódico:postfix($dp)| passed to |\MathMLintent|, generating
+%   \emph{intent} \myhlc|_periódico:postfix($dp)| passed to |\MathMLintent|, generating
 %   the correct spoken for the \emph{\enquote{infinite periodic decimal
 %   part}}.
 %    \begin{macrocode}
@@ -8132,7 +8132,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spnum_render_decimal_sep:}
 %  The function \myhlc|\@@_spnum_render_decimal_sep:| sets the variable
 %  \myhlc|\l_@@_spnum_intent_read_dec_sep_str| with the function
-%  |_coma:prefix($dp)| for reading a \emph{\enquote{coma}} or |_punto:prefix($dp)| for
+%  \myhlc|_coma:prefix($dp)| for reading a \emph{\enquote{coma}} or \myhlc|_punto:prefix($dp)| for
 %  reading a \emph{\enquote{punto}} to |\MathMLintent|, after parsing the value of
 %  \myhlc|\l_@@_luaset_dec_sep_tl|. We print the decimal separator
 %  stored in \myhlc|\l_@@_luaset_dec_sep_tl| using |\mathord| to remove
@@ -8664,8 +8664,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   degrees, minutes, or seconds, it prints the number and the symbol
 %   \emph{\enquote{without any space in between}}, applying a slight negative
 %   space `|\!|' for |arcseconds|. When the number is exactly |1|, with no
-%   decimal part, the reading becomes the singular literal |_grado:unit|,
-%   |_minuto:unit| or |_segundo:unit|, since neither the fixed plural names nor
+%   decimal part, the reading becomes the singular literal \myhlc|_grado:unit|,
+%   \myhlc|_minuto:unit| or \myhlc|_segundo:unit|, since neither the fixed plural names nor
 %   \mynvmath{MathCAT} can see the number. For standard units, it prints the
 %   number followed by a thin space `|\,|' and then processes the unit
 %   sequence.
@@ -9283,7 +9283,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   based on the layout position, |pre| or |post|, of the \emph{\enquote{currency symbol}}.
 %
 %   \myhlc|\@@_spmoney_print_sep_con:| also applies the specific
-%   speech intent `|_con|' to the decimal separator, while
+%   speech intent `\myhlc|_con|' to the decimal separator, while
 %   \myhlc|\@@_spmoney_print_dec_sub_unit:| binds the computed \emph{\enquote{subunit}}
 %   intent to the decimal digits.
 %    \begin{macrocode}
@@ -10487,7 +10487,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   The function \myhlc|\@@_spread_mathml:nn| receives the \mymarg{symbol}
 %   in `|#1|' and the reading in `|#2|'. It typesets the symbol, preceded by
 %   \myhlc|\@@_inner_sep:|, inside a |\MathMLintent| whose literal is the
-%   reading preceded by `|_|'.
+%   reading preceded by `\myhlc|_|'.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spread_mathml:nn
   {
@@ -11251,7 +11251,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   |calculate_|\myhlc|#1| and, when \mykey{result} is |true|, print the
 %   computed value with \myhlc|\@@_spmc_result_mathml:n|.
 %   \myhlc|\@@_mc_process_args:nn| prints the argument list itself either way.
-%   With \mykey{silent}|=true|, it wraps each argument in a literal `|_-|'
+%   With \mykey{silent}|=true|, it wraps each argument in a literal `\myhlc|_-|'
 %   intent and the printed result is silenced as well.
 %
 % \begin{important}*
@@ -11554,7 +11554,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   Every component is wrapped in a silent intent, and an invisible separator
 %   is injected between the parentheses to prevent \mynvmath{NVDA/MathCAT} from
 %   applying default contextual reading rules. The argument is wrapped in a
-%   literal `|_-|' intent, not in |:silent|, so that intents of its own, such as
+%   literal `\myhlc|_-|' intent, not in |:silent|, so that intents of its own, such as
 %   those of |\spnum|, are silenced too.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spnM_spnD_silent:nn
@@ -11653,7 +11653,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   with |\spnum|, and then \mykey{result} decides whether
 %   \myhlc|\@@_spnM_spnD_result:nn| prints the computed set; otherwise the
 %   argument is typeset verbatim and no result is attempted. With
-%   \mykey{silent}|=true| the printed result is wrapped in a literal `|_-|'
+%   \mykey{silent}|=true| the printed result is wrapped in a literal `\myhlc|_-|'
 %   intent.
 %
 %   Either way, \mykey{silent} silences the whole thing through
@@ -11902,7 +11902,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   The public command \ics*{spProp} enforces \emph{math mode}, and
 %   forwards the same \mymeta{keys} in `|#1|' to both ratios: |a/b|,
 %   built from `|#2|' and `|#3|', and |c/d|, built from `|#4|' and `|#5|', joined by a native
-%   |\MathMLintent| reading |_como| over the |=| sign.
+%   |\MathMLintent| reading \myhlc|_como| over the |=| sign.
 %    \begin{macrocode}
 \NewDocumentCommand \spProp { O{} m m m m }
   {
@@ -12471,7 +12471,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   the sign is \emph{empty}, it delegates to
 %   \myhlc|\@@_spmQ_print_scale_int:| to render the scaled integer. When
 %   a sign is present, it sets \myhlc|\l_@@_spmQ_intent_read_sign_str| to
-%   either |_más:prefix($e)| or |_menos:prefix($e)| and wraps the sign
+%   either \myhlc|_más:prefix($e)| or \myhlc|_menos:prefix($e)| and wraps the sign
 %   glyph together with a \mynvmath{MathML} argument |($e)| containing the
 %   scaled integer inside a |\MathMLintent|, so that
 %   \mynvmath{NVDA/MathCAT} verbalizes the sign as a prefix before the
@@ -12799,7 +12799,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   }
 %   The variable \myhlc|\l_@@_spcoord_raw_arg_tl| holds the \mymarg{argument} exactly as
 %   given. The variable \myhlc|\l_@@_spcoord_intent_str| holds the |:infix|
-%   word for the separator |_coma:infix| or |_punto-y-coma:infix|. The variables
+%   word for the separator \myhlc|_coma:infix| or \myhlc|_punto-y-coma:infix|. The variables
 %   \myhlc|\l_@@_spcoord_wrap_parens_l_tl|/\myhlc|\l_@@_spcoord_wrap_parens_r_tl|
 %   hold the opening/closing delimiter, sized by the function \myhlc|\@@_spcoord_set_wrap_parens_size:|.
 %    \begin{macrocode}
@@ -12936,7 +12936,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spcoord_print:n}
 %   With the variable \myhlc|_sign_str| of the endpoint in `|#1|' equal to |+|
 %   or |-|, it wraps the sign and \myhlc|\@@_spcoord_value:n| with
-%   |_más:prefix($vp)| or |_menos:prefix($vn)|, referencing the value with
+%   \myhlc|_más:prefix($vp)| or \myhlc|_menos:prefix($vn)|, referencing the value with
 %   \MathMLarg. With no sign, it calls \myhlc|\@@_spcoord_value:n| directly.
 %   Receives |x| or |y| in `|#1|'.
 %    \begin{macrocode}
@@ -12983,8 +12983,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spcoord_intent_infix:}
-%   Sets \myhlc|\l_@@_spcoord_intent_str| to |_coma:infix| or
-%   |_punto-y-coma:infix|, according to \myhlc|\l_@@_spcoord_luaset_sep_str|,
+%   Sets \myhlc|\l_@@_spcoord_intent_str| to \myhlc|_coma:infix| or
+%   \myhlc|_punto-y-coma:infix|, according to \myhlc|\l_@@_spcoord_luaset_sep_str|,
 %   and wraps both sides, each referenced with \MathMLarg, with it. The names
 %   |$x| and |$y| stand for the output of \myhlc|\@@_spcoord_print:n|.
 %    \begin{macrocode}
@@ -13008,7 +13008,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spcoord_mathml:N}
 %   The argument is the boolean variable that holds the value of \mykey{silent}
 %   of the command that calls it. With \mykey{silent}|=true|, the parentheses
-%   and the argument are wrapped in a single `|_-|' intent, and
+%   and the argument are wrapped in a single `\myhlc|_-|' intent, and
 %   \myhlc|\l_@@_spcoord_raw_arg_tl| is typeset as given. Otherwise, the
 %   parentheses are silenced individually and
 %   \myhlc|\@@_spcoord_intent_infix:| provides the reading between them.
@@ -13457,10 +13457,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   in the intents from the type returned by the Lua module: |abierto-de| and |a| for
 %   an open interval, |cerrado-de| and |a| for a closed one, |abierto-en| and
 %   |y-cerrado-en| for an open-closed one, and |cerrado-en| and |y-abierto-en| for a
-%   closed-open one. The intent of the group of endpoints is |_<word>:infix($a,$b)|
-%   with the second word. The intent of the whole interval is `|_-|' when
-%   \mykey[spinterval]{silent} is |true|, |_| followed by the value of
-%   \mykey[spinterval]{read-arg} when it is not empty, and otherwise |_<word>:prefix($ab)|
+%   closed-open one. The intent of the group of endpoints is \myhlc|_<word>:infix($a,$b)|
+%   with the second word. The intent of the whole interval is `\myhlc|_-|' when
+%   \mykey[spinterval]{silent} is |true|, \myhlc|_| followed by the value of
+%   \mykey[spinterval]{read-arg} when it is not empty, and otherwise \myhlc|_<word>:prefix($ab)|
 %   with the first word, preceded by the \mykey[spinterval]{prefix}, if any, and
 %   |intervalo-| when \mykey[spinterval]{concept} is |true|.
 %    \begin{macrocode}
@@ -13588,8 +13588,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spinterval_print:n}
 %   The internal function \myhlc|\@@_spinterval_print:n| typesets the endpoint passed
 %   in `|#1|' with its sign. With \mykey{read-cmd}|=school| a sign |+| or |-| is wrapped, with
-%   its value, in a native |\MathMLintent| with the intent |_más:prefix($vp)| or
-%   |_menos:prefix($vn)|, the value tagged with |\MathMLarg| and preceded by
+%   its value, in a native |\MathMLintent| with the intent \myhlc|_más:prefix($vp)| or
+%   \myhlc|_menos:prefix($vn)|, the value tagged with |\MathMLarg| and preceded by
 %   \myhlc|\@@_spinterval_inner_sep:n|; an endpoint without sign is typeset through
 %   \myhlc|\@@_spinterval_value:n|. With \mykey{read-cmd}|=mathcat| the sign is typeset as is,
 %   followed by the value.
@@ -13894,12 +13894,12 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spfun_name_school:}
 %   For \mykey{read-cmd}|=school| the name is tagged |arg="f"| with a literal
-%   |intent| such as |_f-sub-uno-| or |_F-doble-prima-| through the shared
+%   |intent| such as \myhlc|_f-sub-uno-| or \myhlc|_F-doble-prima-| through the shared
 %   queue, so \mynvmath{MathCAT} neither announces a capital letter nor reads
 %   the Unicode double prime as seconds. A subscript is typeset silenced; a
 %   prime is not, since it is not spoken on the base. The inverse exponent
 %   |^{-1}|, when present, is typeset silenced too: the literal |intent|
-%   |_f-inversa-| already says everything.
+%   \myhlc|_f-inversa-| already says everything.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spfun_name_school:
   {
@@ -14013,7 +14013,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spfun_set_intent:}
 %   Builds the concept |intent| in \myhlc|\l_@@_spfun_intent_arg_tl|:
 %   |$f($a1,$a2,...)| when \mykey{concept} is |false|, and
-%   |_prefix-función:prefix($f($a1,$a2,...))| otherwise. Without arguments,
+%   \myhlc|_prefix-función:prefix($f($a1,$a2,...))| otherwise. Without arguments,
 %   as for the inverse function written bare, the call is just |$f|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spfun_set_intent:
@@ -14050,7 +14050,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spfun_mathml:}
 %   Calls \myhlc|\@@_invisible_sep:| first, then wraps name, parentheses and
 %   arguments in a native |\MathMLintent|. With \mykey{silent} set to |true|
-%   the intent is `|_-|' and nothing inside is annotated.
+%   the intent is `\myhlc|_-|' and nothing inside is annotated.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spfun_mathml:
   {
@@ -14175,10 +14175,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 % Planck's constant. The arguments of the application, if any, are left in
 % the |\spfun| variables and typeset with its own functions, so an
 % argument may be a call. The whole is tagged with a native
-% |\MathMLintent| whose |intent| is |_compuesta-con:infix($k1,$k2,...)|; the
+% |\MathMLintent| whose |intent| is \myhlc|_compuesta-con:infix($k1,$k2,...)|; the
 % application adds |$c($a1,...)| around it, with the composition tagged
 % |arg="c"|. With two or more arguments they are grouped under their own
-% |intent|, |_coma:infix($a1,$a2,...)|, tagged |arg="l"|, because
+% |intent|, \myhlc|_coma:infix($a1,$a2,...)|, tagged |arg="l"|, because
 % \mynvmath{MathCAT} drops the commas of a call whose head is not a single
 % letter. The |\circ| and the parentheses are silenced.
 %
@@ -14351,7 +14351,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spfuncomp_mathml:}
 %   Calls \myhlc|\@@_invisible_sep:| first. With \mykey{silent} the |intent|
-%   is `|_-|'. Otherwise an application wraps the composition with |arg="c"|, and
+%   is `\myhlc|_-|'. Otherwise an application wraps the composition with |arg="c"|, and
 %   the arguments in |$c($a1,...)|; the arguments are processed as in |\spfun|,
 %   including calls nested in them.
 %    \begin{macrocode}
@@ -14473,9 +14473,9 @@ spmmli-tool -o -p build/ ejemplo.tex
 % optional subscript or primes, and the optional exponent |^{-1}|. It
 % leaves it in the shared \myhlc|\l_@@_geo_luaset_*| variables. The whole is tagged
 % with a native |\MathMLintent| whose |intent| is
-% |_[prefix-]dominio-de:prefix($f)|, with |recorrido| or |codominio| in place of |dominio| for the other two commands; the operator,
+% \myhlc|_[prefix-]dominio-de:prefix($f)|, with |recorrido| or |codominio| in place of |dominio| for the other two commands; the operator,
 % the parentheses are silenced and the name carries |arg="f"| wrapped in its
-% own literal |intent|, such as |_f-|, |_F-doble-prima-| or |_f-inversa-|, so
+% own literal |intent|, such as \myhlc|_f-|, \myhlc|_F-doble-prima-| or \myhlc|_f-inversa-|, so
 % \mynvmath{MathCAT} neither announces a capital letter nor reads the
 % inverse as a power. No \mykey{read-cmd} nor \mykey{concept} keys exist:
 % the native reading of |Dom(f)| is not useful, and the concept is already
@@ -14569,7 +14569,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spdom_mathml:}
 %   Calls \myhlc|\@@_invisible_sep:| first, then wraps operator,
 %   parentheses and name in a native |\MathMLintent|. With \mykey{silent}
-%   set to |true| the |intent| is `|_-|' and nothing inside is annotated.
+%   set to |true| the |intent| is `\myhlc|_-|' and nothing inside is annotated.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spdom_mathml:
   {
@@ -14865,10 +14865,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   inside one native |\MathMLintent|, preceded by the outer ghost
 %   \myhlc|\@@_invisible_sep:| and followed by the inner ghost
 %   \myhlc|\@@_inner_sep:|. With \mykey{silent}|=true| the
-%   intent is `|_-|'; with \mykey{read-arg} given it is
-%   |_|\mymeta{read-arg}|:nofix|; otherwise it is |_valor-absoluto($x)|. In this
+%   intent is `\myhlc|_-|'; with \mykey{read-arg} given it is
+%   \myhlc|_|\mymeta{read-arg}|:nofix|; otherwise it is \myhlc|_valor-absoluto($x)|. In this
 %   last case, when \myhlc|\@@_spabs_set_close:n| sets the closing, a native
-%   |\MathMLintent| with the literal intent |_fin-valor-absoluto| follows the bars
+%   |\MathMLintent| with the literal intent \myhlc|_fin-valor-absoluto| follows the bars
 %   as a sibling, holding \myhlc|\@@_inner_sep:| and an invisible character, and
 %   the outer ghost is omitted because the formula already has two top-level
 %   nodes.
@@ -15191,9 +15191,9 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   \myhlc|\@@_luafun_geo_point_parse_and_set:n|, reporting
 %   |spPoint-invalid-point| on error. If \mykey{silent} is |true| or
 %   \mykey{concept} is |false|, it sets \myhlc|\l_@@_spPoint_intent_arg_tl| to
-%   |_($pt)|, or to `|_-|' when \mykey{silent} is |true|, whatever
-%   \mykey{read-cmd} is. Otherwise it sets it to |_punto:prefix($pt)|, with
-%   \mykey{prefix} placed after the leading |_| when given. Finally it calls
+%   \myhlc|_($pt)|, or to `\myhlc|_-|' when \mykey{silent} is |true|, whatever
+%   \mykey{read-cmd} is. Otherwise it sets it to \myhlc|_punto:prefix($pt)|, with
+%   \mykey{prefix} placed after the leading \myhlc|_| when given. Finally it calls
 %   \myhlc|\@@_spPoint_mathml:n|.
 %
 %   Before processing the \mymarg{argument}, it sets the optional \mymeta{keys} passed in `|#1|'.
@@ -15432,10 +15432,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   The function \myhlc|\@@_spvec_mathml:n| branches on
 %   \myhlc|\l_@@_geo_luaset_is_name_str|.
 %
-%   For a proper name that is a single letter with no prime, the concept |intent| is `|_-|'
-%   when \mykey{silent} is |true|, whatever \mykey{read-cmd} is, |_($pt)| when
-%   \mykey{concept} is |false|, and otherwise |_vector:prefix($pt)|, with
-%   \mykey{prefix} placed after the leading |_| when given. With
+%   For a proper name that is a single letter with no prime, the concept |intent| is `\myhlc|_-|'
+%   when \mykey{silent} is |true|, whatever \mykey{read-cmd} is, \myhlc|_($pt)| when
+%   \mykey{concept} is |false|, and otherwise \myhlc|_vector:prefix($pt)|, with
+%   \mykey{prefix} placed after the leading \myhlc|_| when given. With
 %   \myhlc|\l_@@_geo_luaset_tipo_str| equal to |sub|, \mykey{read-cmd}|=school|
 %   tags |\vec{letra}| with \myhlc|\@@_luafun_mrow_intent_arg:nn| and a literal
 %   |kv|, and appends the subscript silenced; \mykey{read-cmd}|=mathcat| tags
@@ -15552,9 +15552,9 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   For a pair of points, \myhlc|\l_@@_geo_luaset_points_clist| is
 %   split into \myhlc|\l_@@_spvec_pt_seq| and walked to build
 %   \myhlc|\l_@@_spvec_refs_tl|, the |$pts1,$pts2| reference list.
-%   The concept |intent| is `|_-|' when \mykey{silent} is |true|,
-%   |_(refs)| when \mykey{concept} is |false| or
-%   |_vector:prefix(refs)| otherwise, applied with a native |\MathMLintent| wrapping
+%   The concept |intent| is `\myhlc|_-|' when \mykey{silent} is |true|,
+%   \myhlc|_(refs)| when \mykey{concept} is |false| or
+%   \myhlc|_vector:prefix(refs)| otherwise, applied with a native |\MathMLintent| wrapping
 %   |\overrightarrow|. The sequence is walked again, calling
 %   \myhlc|\@@_mathmlarg_point:nnn| once per point.
 %    \begin{macrocode}
@@ -15751,12 +15751,12 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_sprecta_mathml:n}
 %   The function \myhlc|\@@_sprecta_mathml:n| branches on
 %   \myhlc|\l_@@_geo_luaset_is_name_str|. For a proper name, such as |m| or |l|,
-%   the concept |intent| is |_($pt)| when \mykey{silent} is |true| \emph{or}
-%   \mykey{concept} is |false|, and |_recta:prefix($pt)| otherwise, with
-%   \mykey{prefix} placed after the leading |_| when given; with \mykey{silent}%
-%   |=true| and \mykey{read-cmd} not |school| it is `|_-|'. With
+%   the concept |intent| is \myhlc|_($pt)| when \mykey{silent} is |true| \emph{or}
+%   \mykey{concept} is |false|, and \myhlc|_recta:prefix($pt)| otherwise, with
+%   \mykey{prefix} placed after the leading \myhlc|_| when given; with \mykey{silent}%
+%   |=true| and \mykey{read-cmd} not |school| it is `\myhlc|_-|'. With
 %   \mykey{read-cmd}|=school|, the |sub| and |prima| cases tag the letter with a
-%   literal |kv| that is `|_-|' when \mykey{silent} is |true|.
+%   literal |kv| that is `\myhlc|_-|' when \mykey{silent} is |true|.
 %
 %   With \myhlc|\l_@@_geo_luaset_tipo_str| equal to |sub|,
 %   \mykey{read-cmd}|=school| tags the base through
@@ -15926,8 +15926,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   For a list of points, \myhlc|\l_@@_geo_luaset_points_clist| is
 %   split into \myhlc|\l_@@_sprecta_pt_seq| and walked to build
 %   \myhlc|\l_@@_sprecta_refs_tl|, the |$pt1,$pt2,...| reference list.
-%   The concept |intent| is `|_-|' when \mykey{silent} is |true|,
-%   |_(refs)| when \mykey{concept} is |false| or |_recta:prefix(refs)|
+%   The concept |intent| is `\myhlc|_-|' when \mykey{silent} is |true|,
+%   \myhlc|_(refs)| when \mykey{concept} is |false| or \myhlc|_recta:prefix(refs)|
 %   otherwise, applied with a native |\MathMLintent|
 %   wrapping |\overleftrightarrow|. The sequence is walked again,
 %   calling \myhlc|\@@_mathmlarg_point:nnn| once per point.
@@ -16161,11 +16161,11 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   build \myhlc|\l_@@_sprayo_refs_tl|, the comma-separated
 %   |$pts1,$pts2,...| reference list, naming each point by position.
 %
-%   The concept |intent| is `|_-|' when \mykey{silent} is |true|, |_(refs)| when
+%   The concept |intent| is `\myhlc|_-|' when \mykey{silent} is |true|, \myhlc|_(refs)| when
 %   \mykey{concept} is |false|, and otherwise
 %   \myhlc|_\l_@@_sprayo_read_sty_str|\myhlc|:prefix(refs)|, where the word
 %   |rayo| or |semirrecta| comes from \mykey{read-sty}, with \mykey{prefix}
-%   placed after the leading |_| when given. It is applied with a native
+%   placed after the leading \myhlc|_| when given. It is applied with a native
 %   |\MathMLintent| wrapping |\overrightarrow|, preceded by
 %   \myhlc|\@@_inner_sep:|. The sequence is walked a second time, calling
 %   \myhlc|\@@_mathmlarg_point:nnn| once per point with its |pts|$n$ reference
@@ -16504,8 +16504,8 @@ spmmli-tool -o -p build/ ejemplo.tex
       }
 %    \end{macrocode}
 %
-%   The concept |intent| is `|_-|' when \mykey{silent} is |true|. Otherwise, if
-%   \mykey{read-arg} is empty, it is |_(refs)| when \mykey{concept} is |false|
+%   The concept |intent| is `\myhlc|_-|' when \mykey{silent} is |true|. Otherwise, if
+%   \mykey{read-arg} is empty, it is \myhlc|_(refs)| when \mykey{concept} is |false|
 %   and \myhlc|_\l_@@_spside_intent_tl|\myhlc|:prefix(refs)| when |true|; if
 %   \mykey{read-arg} is given, it is always
 %   \myhlc|_\l_@@_spside_intent_tl|\myhlc|:prefix(refs)|. The |:prefix(...)|
@@ -16880,7 +16880,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   For |nombre|, the symbol \myhlc|\@@_spangle_sym:n| is tagged with
 %   \myhlc|\@@_luafun_mrow_intent_arg:nn| on its own, with
 %   \myhlc|_\l_@@_spangle_intent_tl| alone, without a |$|-reference, or with
-%   `|_-|' when \mykey{silent} is |true| \emph{or} \mykey{concept} is |false|.
+%   `\myhlc|_-|' when \mykey{silent} is |true| \emph{or} \mykey{concept} is |false|.
 %   With \mykey{silent}|=true|, the name that follows is silenced as a whole.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spangle_mathml:n
@@ -17001,8 +17001,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   split into \myhlc|\l_@@_spangle_pt_seq| and walked to build
 %   \myhlc|\l_@@_spangle_refs_tl|, the reference list |$pt1,$pt2,...|. A single
 %   native |\MathMLintent| wraps the symbol and the points together, with
-%   \myhlc|_\l_@@_spangle_intent_tl|\myhlc|:prefix(refs)|, or `|_-|' when
-%   \mykey{silent} is |true| and |_(refs)| when \mykey{concept} is |false|. For
+%   \myhlc|_\l_@@_spangle_intent_tl|\myhlc|:prefix(refs)|, or `\myhlc|_-|' when
+%   \mykey{silent} is |true| and \myhlc|_(refs)| when \mykey{concept} is |false|. For
 %   |\spmangle| with \mykey{print-sym}|=true|, a silent |\operatorname{m}|
 %   precedes \myhlc|\@@_spangle_sym:n| inside the same |\MathMLintent|. The
 %   sequence is walked again, calling \myhlc|\@@_mathmlarg_point:nnn| once per
@@ -17315,10 +17315,10 @@ spmmli-tool -o -p build/ ejemplo.tex
       }
 %    \end{macrocode}
 %
-%   The concept |intent| is `|_-|' when \mykey{silent} is |true|,
-%   |_(refs)| when \mykey{concept} is |false|; otherwise
+%   The concept |intent| is `\myhlc|_-|' when \mykey{silent} is |true|,
+%   \myhlc|_(refs)| when \mykey{concept} is |false|; otherwise
 %   \myhlc|_\l_@@_sparc_intent_tl|\myhlc|:prefix(refs)|, with
-%   \mykey{prefix} placed after the leading |_| when given.
+%   \mykey{prefix} placed after the leading \myhlc|_| when given.
 %    \begin{macrocode}
     \bool_if:cTF { l_@@_sp #1 _silent_bool }
       {
@@ -17562,10 +17562,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spPoly_build_concept:}
 %   Builds \myhlc|\l_@@_spPoly_intent_arg_tl|, independently of
-%   \mykey{print-sym}: `|_-|' when \mykey{silent} is |true|,
-%   |_(refs)| when \mykey{concept} is |false|; otherwise
+%   \mykey{print-sym}: `\myhlc|_-|' when \mykey{silent} is |true|,
+%   \myhlc|_(refs)| when \mykey{concept} is |false|; otherwise
 %   \myhlc|_\l_@@_geo_luaset_concept_str|\myhlc|:prefix(refs)|, with
-%   \mykey{prefix} placed after the leading |_| when given. Must be
+%   \mykey{prefix} placed after the leading \myhlc|_| when given. Must be
 %   called after \myhlc|\@@_spPoly_build_refs:|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spPoly_build_concept:
@@ -18132,15 +18132,15 @@ spmmli-tool -o -p build/ ejemplo.tex
       }
 %    \end{macrocode}
 %   The variable \myhlc|\l_@@_spfig_intent_tl| is always the |word-| shape,
-%   without the leading |_|:
+%   without the leading \myhlc|_|:
 %   \myhlc|\l_@@_spfig_op_tl| alone when \myhlc|\l_@@_spfig_desc_tl| is
 %   empty, both joined by a dash otherwise. \mykey{silent}
-%   overrides \myhlc|\l_@@_spfig_intent_arg_tl| with `|_-|'; with
+%   overrides \myhlc|\l_@@_spfig_intent_arg_tl| with `\myhlc|_-|'; with
 %   \mykey{silent}|=false| and \mykey{concept}|=false|, it becomes
-%   |_|\myhlc|\l_@@_spfig_desc_tl|\myhlc|-|, where the descriptive part
+%   \myhlc|_|\myhlc|\l_@@_spfig_desc_tl|\myhlc|-|, where the descriptive part
 %   is alone, without \emph{«área»}/\emph{«perímetro»} nor, for a table letter, its
 %   connector |de-la|/|del|; with \mykey{concept}|=true| it
-%   is |_|, then \mykey{prefix} when given, and then
+%   is \myhlc|_|, then \mykey{prefix} when given, and then
 %   \myhlc|\l_@@_spfig_intent_tl|.
 %    \begin{macrocode}
     \tl_set:Ne \l_@@_spfig_intent_tl
@@ -18267,10 +18267,10 @@ spmmli-tool -o -p build/ ejemplo.tex
           }
       }
 %    \end{macrocode}
-%   The key \mykey{silent} sets \myhlc|\l_@@_spfig_intent_arg_tl| to `|_-|'.
+%   The key \mykey{silent} sets \myhlc|\l_@@_spfig_intent_arg_tl| to `\myhlc|_-|'.
 %   Otherwise, with \mykey{read-arg} empty, \mykey{concept} chooses between
 %   \myhlc|_\l_@@_spfig_intent_tl|\myhlc|:prefix(refs)|, with \mykey{prefix}
-%   placed after the leading |_| when given, and |_(refs)| alone; with
+%   placed after the leading \myhlc|_| when given, and \myhlc|_(refs)| alone; with
 %   \mykey{read-arg} given, it is always
 %   \myhlc|_\l_@@_spfig_intent_tl|\myhlc|:prefix(refs)|.
 %    \begin{macrocode}
@@ -18589,7 +18589,7 @@ spmmli-tool -o -p build/ ejemplo.tex
           { \MathMLintent { :silent } { \diameter } }
       }
 %    \end{macrocode}
-%   With \mykey{silent}|=true|, the intent is `|_-|': the letter alone with the
+%   With \mykey{silent}|=true|, the intent is `\myhlc|_-|': the letter alone with the
 %   shared queue when there is no \mykey{sub-index}, or the letter and the
 %   subscript together in one native |\MathMLintent|, with the subscript
 %   silenced, when there is.
@@ -19165,7 +19165,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 %   The key \mykey{silent}, when |true|, overrides
 %   \myhlc|\l_@@_spcirc_intent_arg_tl|, \myhlc|\l_@@_spcirc_connector_arg_tl|
-%   and \myhlc|\l_@@_spcirc_radio_arg_tl| with `|_-|', regardless of
+%   and \myhlc|\l_@@_spcirc_radio_arg_tl| with `\myhlc|_-|', regardless of
 %   \mykey{read-arg}.
 %    \begin{macrocode}
     \bool_if:NTF \l_@@_spcirc_silent_bool
@@ -19178,10 +19178,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 %   With \mykey{concept}|=true|, \myhlc|\l_@@_spcirc_intent_arg_tl| is
 %   \myhlc|_\l_@@_spcirc_intent_tl| alone, with \mykey{prefix} placed after the
-%   leading |_| when given; \myhlc|\l_@@_spcirc_connector_arg_tl| is
+%   leading \myhlc|_| when given; \myhlc|\l_@@_spcirc_connector_arg_tl| is
 %   \myhlc|_\l_@@_spcirc_connector_tl|\myhlc|:prefix($pt)|; and
-%   \myhlc|\l_@@_spcirc_radio_arg_tl| is the literal |_y-radio-|, or
-%   |_y-diámetro-| when \mykey{diameter} is |true|, spoken on the delimiter |,|
+%   \myhlc|\l_@@_spcirc_radio_arg_tl| is the literal \myhlc|_y-radio-|, or
+%   \myhlc|_y-diámetro-| when \mykey{diameter} is |true|, spoken on the delimiter |,|
 %   before the reading of \myhlc|\@@_spcirc_radio_print:|.
 %    \begin{macrocode}
       {
@@ -19201,8 +19201,8 @@ spmmli-tool -o -p build/ ejemplo.tex
               { \tl_set:Nn \l_@@_spcirc_radio_arg_tl { _y-radio- } }
           }
 %    \end{macrocode}
-%   With \mykey{concept}|=false| and \mykey{read-arg} empty, the same `|_-|' and
-%   |_($pt)| silencing applies as with \mykey{silent}. With \mykey{read-arg}
+%   With \mykey{concept}|=false| and \mykey{read-arg} empty, the same `\myhlc|_-|' and
+%   \myhlc|_($pt)| silencing applies as with \mykey{silent}. With \mykey{read-arg}
 %   given, none of the three is silenced; the connector and the words |y-radio|
 %   and |y-diámetro| are fixed and \mykey{read-arg} does not change them.
 %    \begin{macrocode}
@@ -19271,7 +19271,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   When a radius is present, the delimiter |,| after the center carries
 %   \myhlc|\l_@@_spcirc_radio_arg_tl| and \myhlc|\@@_spcirc_radio_print:|
 %   follows as a sibling; with \mykey{silent}|=true|, it is wrapped in a literal
-%   `|_-|' |\MathMLintent| instead.
+%   `\myhlc|_-|' |\MathMLintent| instead.
 %
 %   The symbol and, when \mykey{sub-index} is given, its subscript number are
 %   silenced separately with \myhlc|\@@_luafun_mrow_intent_arg:nn|, one queue
@@ -19616,8 +19616,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   Handles the short number or letter case: builds
 %   \myhlc|\l_@@_spcircfig_intent_arg_tl| as
 %   \myhlc|_\l_@@_spcircfig_op_tl|\myhlc|-|\mymeta{number word}, with
-%   \mykey{prefix} placed after the leading |_| when given and without
-%   |:prefix|, or as `|_-|' when \mykey{silent} is |true| or \mykey{concept} is
+%   \mykey{prefix} placed after the leading \myhlc|_| when given and without
+%   |:prefix|, or as `\myhlc|_-|' when \mykey{silent} is |true| or \mykey{concept} is
 %   |false|. Receives the short command name in `|#1|'.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcircfig_build_short:n
@@ -19673,12 +19673,12 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spcircfig_build_concept:nn}
-%   Builds \myhlc|\l_@@_spcircfig_intent_arg_tl|. It is `|_-|' when \mykey{silent}
+%   Builds \myhlc|\l_@@_spcircfig_intent_arg_tl|. It is `\myhlc|_-|' when \mykey{silent}
 %   is |true|, whatever |#2| is. With \mykey{concept}|=false| and
-%   \mykey{read-arg} empty, it is `|_-|', or |_($pt)| when |#2| is non-empty.
+%   \mykey{read-arg} empty, it is `\myhlc|_-|', or \myhlc|_($pt)| when |#2| is non-empty.
 %   Otherwise it is \myhlc|_\l_@@_spcircfig_intent_tl|, with |:prefix($pt)|
 %   appended only when |#2| is non-empty and with \mykey{prefix} placed after
-%   the leading |_| when given. With \mykey{concept}|=true|,
+%   the leading \myhlc|_| when given. With \mykey{concept}|=true|,
 %   \myhlc|\l_@@_spcircfig_intent_tl| is
 %   \myhlc|\l_@@_spcircfig_op_tl|\myhlc|-|\myhlc|\l_@@_spcircfig_del_word_tl|,
 %   set by \myhlc|\@@_spcircfig_del_word:n|; with \mykey{concept}|=false| and
@@ -20020,7 +20020,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spVol_silent:}
 %   The function \myhlc|\@@_spVol_silent:| typesets |\mathcal{V}| with the
-%   intent `|_-|': the symbol alone with the shared queue when there is no
+%   intent `\myhlc|_-|': the symbol alone with the shared queue when there is no
 %   \mykey{sub-index}, or the symbol and the subscript together in one native
 %   |\MathMLintent|, with the subscript silenced, when there is.
 %    \begin{macrocode}
@@ -20086,7 +20086,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spVol_symbol_print:}
 %   With \mykey{concept}|=false|, the symbol itself is read, but only when
 %   \mykey{read-cmd} is |school|: with no \mykey{sub-index}, the shared queue
-%   tags the symbol with the intent |_V-|; with one, the symbol and the
+%   tags the symbol with the intent \myhlc|_V-|; with one, the symbol and the
 %   subscript are wrapped together in one native |\MathMLintent|, with the
 %   subscript silenced. With \mykey{read-cmd}|=mathcat|, the intent is left
 %   empty and \mynvmath{MathCAT} applies its own rules to the symbol and its
@@ -20309,7 +20309,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spProm_mathml:n}
 %   The function \myhlc|\@@_spProm_mathml:n| receives the \mymarg{argument}
 %   in `|#1|'. Under \mykey{silent} the whole expression is silenced as one
-%   unit with the intent `|_-|'.
+%   unit with the intent `\myhlc|_-|'.
 %
 %   Otherwise the \mymarg{argument} is tagged through a native
 %   |\MathMLarg|, |a|, inside |\bar|, and the outer |\MathMLintent|
@@ -20405,7 +20405,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   configured separately with |\setspintent|. Since the symbol of |\spmin|
 %   and |\spmax| already carries a subscript, they have no \mykey{sub-index}
 %   nor \mykey{read-sub} keys; their variable \myhlc|_sub_index_str| exists
-%   only because \myhlc|\@@_stat_mathml:nnnnnn| reads it, and always keeps its
+%   only because \myhlc|\@@_stat_intent:nnnn| reads it, and always keeps its
 %   initial value.
 %    \begin{macrocode}
 \clist_map_inline:nn
@@ -20538,19 +20538,17 @@ spmmli-tool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}[int]{\@@_stat_mathml:nnnnnn}
-%   The function \myhlc|\@@_stat_mathml:nnnnnn| receives the short name of the
-%   command in `|#1|', the symbol in `|#2|', the exponent in `|#3|', the
-%   name of the concept in `|#4|', the name of the letter in `|#5|', empty
-%   when the symbol is not a letter, and the spoken form of the exponent in
-%   `|#6|', empty when there is none, the last three already written as
-%   they go in the intent, with hyphens. The symbol, with its subscript and
-%   exponent, is always typeset by \myhlc|\@@_stat_typeset:nnn| inside one
-%   native |\MathMLintent|, preceded by the inner ghost
-%   \myhlc|\@@_inner_sep:|.
+% \begin{macro}[int]{\@@_stat_intent:nnnn, \@@_stat_intent:nnn, \@@_stat_intent:nn}
+%   The function \myhlc|\@@_stat_intent:nnnn| builds the name of the intent of
+%   the symbols of the family. It receives the short name of the command in
+%   `|#1|', the name of the concept in `|#2|', the name of the letter in
+%   `|#3|', empty when the symbol is not a letter, and the spoken form of the
+%   exponent in `|#4|', empty when there is none, the last three already
+%   written as they go in the intent, with hyphens. It is expandable, so it
+%   can be used inside the argument of |\MathMLintent|.
 %
-%   With \mykey{silent}|=true|, the intent is `|_-|'. With \mykey{read-arg}
-%   given, the intent is |_|\mymeta{read-arg}|:nofix| and
+%   With \mykey{silent}|=true|, the intent is `\myhlc|_-|'. With \mykey{read-arg}
+%   given, the intent is \myhlc|_|\mymeta{read-arg}|:nofix| and
 %   \mykey{sub-index} and \mykey{read-sub} are ignored for the spoken
 %   content; the subscript, if any, still displays, silenced. Otherwise
 %   the spoken content is the concept, followed by the letter and, when
@@ -20558,58 +20556,64 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   when \mykey{read-sub} is |true|, which is its default for |\spdesv| and
 %   |\spvarz|, and last by the exponent. With no
 %   \mykey{sub-index} the intent ends in |:nofix|.
+%
+%   The functions \myhlc|\@@_stat_intent:nnn| and
+%   \myhlc|\@@_stat_intent:nn| are the short forms for the symbols with a
+%   letter but no exponent, and for those with neither a letter nor an
+%   exponent. They give the empty values to the full form, so no command
+%   has to.
 %    \begin{macrocode}
-\cs_new_protected:Nn \@@_stat_mathml:nnnnnn
+\cs_new:Nn \@@_stat_intent:nnnn
   {
-    \@@_invisible_sep:
     \bool_if:cTF { l_@@_ #1 _silent_bool }
-      {
-        \MathMLintent { _- }
-          {
-            \@@_inner_sep:
-            \@@_stat_typeset:nnn {#1} {#2} {#3}
-          }
-      }
+      { _- }
       {
         \tl_if_empty:cTF { l_@@_ #1 _read_arg_tl }
           {
+            _ #2
+            \tl_if_blank:nF {#3} { - #3 }
             \str_if_empty:cTF { l_@@_ #1 _sub_index_str }
               {
-                \MathMLintent
-                  {
-                    _ #4
-                    \tl_if_blank:nF {#5} { - #5 }
-                    \tl_if_blank:nF {#6} { - #6 }
-                    :nofix
-                  }
-                  {
-                    \@@_inner_sep:
-                    \@@_stat_typeset:nnn {#1} {#2} {#3}
-                  }
+                \tl_if_blank:nF {#4} { - #4 }
+                :nofix
               }
               {
-                \MathMLintent
-                  {
-                    _ #4
-                    \tl_if_blank:nF {#5} { - #5 }
-                    -
-                    \bool_if:cTF { l_@@_ #1 _read_sub_bool } { sub } { de }
-                    - \str_use:c { l_@@_ #1 _sub_index_str }
-                    \tl_if_blank:nF {#6} { - #6 }
-                  }
-                  {
-                    \@@_inner_sep:
-                    \@@_stat_typeset:nnn {#1} {#2} {#3}
-                  }
+                -
+                \bool_if:cTF { l_@@_ #1 _read_sub_bool } { sub } { de }
+                - \str_use:c { l_@@_ #1 _sub_index_str }
+                \tl_if_blank:nF {#4} { - #4 }
               }
           }
-          {
-            \MathMLintent { _ \tl_use:c { l_@@_ #1 _read_arg_tl } :nofix }
-              {
-                \@@_inner_sep:
-                \@@_stat_typeset:nnn {#1} {#2} {#3}
-              }
-          }
+          { _ \tl_use:c { l_@@_ #1 _read_arg_tl } :nofix }
+      }
+  }
+\cs_new:Nn \@@_stat_intent:nnn
+  {
+    \@@_stat_intent:nnnn {#1} {#2} {#3} { }
+  }
+\cs_new:Nn \@@_stat_intent:nn
+  {
+    \@@_stat_intent:nnnn {#1} {#2} { } { }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_stat_mathml:nnnn}
+%   The function \myhlc|\@@_stat_mathml:nnnn| receives the short name of the
+%   command in `|#1|', the symbol in `|#2|', the exponent in `|#3|', empty
+%   when there is none, and the name of the intent in `|#4|', as given by
+%   \myhlc|\@@_stat_intent:nnnn|. The symbol, with its subscript and
+%   exponent, is always typeset by \myhlc|\@@_stat_typeset:nnn| inside one
+%   native |\MathMLintent|, preceded by the inner ghost
+%   \myhlc|\@@_inner_sep:|.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_stat_mathml:nnnn
+  {
+    \@@_invisible_sep:
+    \MathMLintent {#4}
+      {
+        \@@_inner_sep:
+        \@@_stat_typeset:nnn {#1} {#2} {#3}
       }
   }
 %    \end{macrocode}
@@ -20624,7 +20628,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   the \mymeta{keys} already set, as \mykey{sigma} does.
 %
 %   The function \myhlc|\@@_stat_simple:nnn| is the short form of
-%   \myhlc|\@@_stat_mathml:nnnnnn| for the symbols with neither a letter nor
+%   \myhlc|\@@_stat_mathml:nnnn| for the symbols with neither a letter nor
 %   an exponent. It receives the short name in `|#1|', the symbol in `|#2|'
 %   and the name of the concept in `|#3|'.
 %
@@ -20646,11 +20650,13 @@ spmmli-tool -o -p build/ ejemplo.tex
   }
 \cs_new_protected:Nn \@@_stat_simple:nnn
   {
-    \@@_stat_mathml:nnnnnn {#1} {#2} { } {#3} { } { }
+    \@@_stat_mathml:nnnn {#1} {#2} { }
+      { \@@_stat_intent:nn {#1} {#3} }
   }
 \cs_new_protected:Nn \@@_stat_letter:nnnn
   {
-    \@@_stat_mathml:nnnnnn {#1} {#2} { } {#3} {#4} { }
+    \@@_stat_mathml:nnnn {#1} {#2} { }
+      { \@@_stat_intent:nnn {#1} {#3} {#4} }
   }
 %    \end{macrocode}
 % \end{macro}
@@ -20682,7 +20688,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}{\spdesv, \spvarz}
 %   The public commands \ics*{spdesv} and \ics*{spvarz} work the same way, but
 %   \ics*{spdesv} calls \myhlc|\@@_stat_letter:nnnn| and \ics*{spvarz} calls
-%   \myhlc|\@@_stat_mathml:nnnnnn| directly. The symbol is |s|, or |\sigma|
+%   \myhlc|\@@_stat_mathml:nnnn| directly. The symbol is |s|, or |\sigma|
 %   when \mykey{sigma} is |true|, and its name is part of the spoken
 %   content; |\spvarz| adds the exponent |2|, spoken |al-cuadrado|. The
 %   concepts are |desviación-estándar| and |varianza|.
@@ -20708,12 +20714,12 @@ spmmli-tool -o -p build/ ejemplo.tex
       {
         \bool_if:NTF \l_@@_spvarz_sigma_bool
           {
-            \@@_stat_mathml:nnnnnn { spvarz } { \sigma } { 2 }
-              { varianza } { sigma } { al-cuadrado }
+            \@@_stat_mathml:nnnn { spvarz } { \sigma } { 2 }
+              { \@@_stat_intent:nnnn { spvarz } { varianza } { sigma } { al-cuadrado } }
           }
           {
-            \@@_stat_mathml:nnnnnn { spvarz } { s } { 2 }
-              { varianza } { s } { al-cuadrado }
+            \@@_stat_mathml:nnnn { spvarz } { s } { 2 }
+              { \@@_stat_intent:nnnn { spvarz } { varianza } { s } { al-cuadrado } }
           }
       }
   }
@@ -20784,7 +20790,9 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   zeros.
 %    \begin{macrocode}
 \clist_map_inline:nn { spcuartil , spdecil , spPerc }
-  { \tl_new:c { l_@@_ #1 _read_arg_tl } }
+  {
+    \tl_new:c { l_@@_ #1 _read_arg_tl }
+  }
 \bool_new:N \l_@@_stat_pos_error_bool
 \int_new:N  \l_@@_stat_pos_value_int
 %    \end{macrocode}
@@ -20886,10 +20894,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   typeset by \myhlc|\@@_stat_pos_typeset:nn| inside one native
 %   |\MathMLintent|, preceded by the inner ghost \myhlc|\@@_inner_sep:|.
 %
-%   With \mykey{silent}|=true|, the intent is `|_-|'. With \mykey{read-arg}
-%   given, the intent is |_|\mymeta{read-arg}|:nofix|. Otherwise the
+%   With \mykey{silent}|=true|, the intent is `\myhlc|_-|'. With \mykey{read-arg}
+%   given, the intent is \myhlc|_|\mymeta{read-arg}|:nofix|. Otherwise the
 %   spoken content is the name of the measure followed by the index, as in
-%   |_cuartil-1:nofix|.
+%   \myhlc|_cuartil-1:nofix|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_stat_pos_mathml:nnnn
   {
@@ -21195,7 +21203,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   of the key \mykey[spcase]{read-arg}. This command has no
 %   \mykey{sub-index} key, so the string variable
 %   \myhlc|\l_@@_spcase_sub_index_str| exists only because
-%   \myhlc|\@@_stat_mathml:nnnnnn| reads it, and always keeps its initial
+%   \myhlc|\@@_stat_intent:nnnn| reads it, and always keeps its initial
 %   value.
 %    \begin{macrocode}
 \str_new:N \l_@@_spcase_sub_index_str
@@ -21596,7 +21604,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spProb_cap:, \@@_spProb_cup:, \@@_spProb_mid:, \@@_spProb_nested_ops:, \@@_spProb_event:N}
 %   The functions \myhlc|\@@_spProb_cap:|, \myhlc|\@@_spProb_cup:| and
 %   \myhlc|\@@_spProb_mid:| wrap the saved meaning of |\cap|, |\cup| and
-%   |\mid|, each in its own |\MathMLintent|, which is |_y-|, |_o| and |_dado| respectively, while keeping
+%   |\mid|, each in its own |\MathMLintent|, which is \myhlc|_y-|, \myhlc|_o| and \myhlc|_dado| respectively, while keeping
 %   its math class and therefore its spacing.
 %   The function \myhlc|\@@_spProb_nested_ops:| saves the three meanings and
 %   redefines, locally, |\cap|, |\cup| and |\mid| as these functions. The function
@@ -21663,12 +21671,12 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   \myhlc|\@@_invisible_sep:| and by the inner ghost
 %   \myhlc|\@@_inner_sep:|.
 %
-%   With \mykey{silent}|=true|, the intent is `|_-|'. With \mykey{read-arg}
-%   given, the intent is |_|\mymeta{read-arg}|:nofix|. Otherwise the
-%   intent is |_probabilidad-de:prefix($a)| with the single event tagged as
-%   |a|; with an operator, the intent is |_probabilidad-de:prefix($p)|, where
+%   With \mykey{silent}|=true|, the intent is `\myhlc|_-|'. With \mykey{read-arg}
+%   given, the intent is \myhlc|_|\mymeta{read-arg}|:nofix|. Otherwise the
+%   intent is \myhlc|_probabilidad-de:prefix($a)| with the single event tagged as
+%   |a|; with an operator, the intent is \myhlc|_probabilidad-de:prefix($p)|, where
 %   |p| is the group of the two events, which carries its own intent
-%   |_y-:infix($a,$b)|, |_o:infix($a,$b)| or |_dado:infix($a,$b)| according to
+%   \myhlc|_y-:infix($a,$b)|, \myhlc|_o:infix($a,$b)| or \myhlc|_dado:infix($a,$b)| according to
 %   the operator, with the two events tagged as |a| and |b|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spProb_mathml:
@@ -21944,11 +21952,11 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   event `|#1|' inside one native |\MathMLintent|, preceded by the outer
 %   ghost \myhlc|\@@_invisible_sep:| and by the inner ghost
 %   \myhlc|\@@_inner_sep:|. With \mykey{silent}%
-%   |=true| the intent is `|_-|'; with \mykey{read-arg} given it is
-%   |_|\mymeta{read-arg}|:nofix|; otherwise it is
-%   |_complemento-de:prefix($a)| with the event tagged as |a|; when the
+%   |=true| the intent is `\myhlc|_-|'; with \mykey{read-arg} given it is
+%   \myhlc|_|\mymeta{read-arg}|:nofix|; otherwise it is
+%   \myhlc|_complemento-de:prefix($a)| with the event tagged as |a|; when the
 %   key \mykey[spcomp]{bar} is set and the event is compound, the intent is
-%   |_complemento-de-la-expresión:prefix($a)|, because the overline is not
+%   \myhlc|_complemento-de-la-expresión:prefix($a)|, because the overline is not
 %   read and the reading would not tell what the complement covers.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcomp_mathml:n
@@ -22330,7 +22338,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   \myhlc|\@@_spcomb_last:n| are the places where the symbol is annotated.
 %   They are set locally to the annotated versions, which use an |\MathMLarg| with the
 %   inner ghost, a silent comma, and a last multiplicity that carries the
-%   intent |_y-:prefix($l)| so that it reads \emph{\enquote{y 4}}, or to the plain
+%   intent \myhlc|_y-:prefix($l)| so that it reads \emph{\enquote{y 4}}, or to the plain
 %   ones, the content alone and a plain comma, so that the same function
 %   \myhlc|\@@_spcomb_symbol:| prints the symbol in both cases.
 %    \begin{macrocode}
@@ -22368,7 +22376,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}[int]{\@@_spcomb_list:}
 %   The function \myhlc|\@@_spcomb_list:| typesets the multiplicities
 %   separated by commas; the last one reads with a \emph{\enquote{y}} before it,
-%   \emph{\enquote{3 3 y 4}}, through the intent |_y-:prefix($l)|.
+%   \emph{\enquote{3 3 y 4}}, through the intent \myhlc|_y-:prefix($l)|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcomb_list:
   {
@@ -22454,16 +22462,16 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   |\MathMLintent|, preceded by the outer ghost \myhlc|\@@_invisible_sep:|
 %   and by the inner ghost \myhlc|\@@_inner_sep:|.
 %
-%   With \mykey{silent}|=true| the intent is `|_-|'. With \mykey{read-arg}
-%   given it is |_|\mymeta{read-arg}|:nofix|. Otherwise the intent of the
+%   With \mykey{silent}|=true| the intent is `\myhlc|_-|'. With \mykey{read-arg}
+%   given it is \myhlc|_|\mymeta{read-arg}|:nofix|. Otherwise the intent of the
 %   whole symbol is the concept followed by |-de|: with |one| argument it is
-%   |_|\mymeta{concept}|-de:prefix($c)|, where |c| wraps the symbol with the
-%   intent |_elementos:postfix($n)|; with |pair| it is
-%   |_|\mymeta{concept}|-de:prefix($c)|, where |c| is the symbol, which
-%   carries its own intent |_elementos-tomados-de-a:infix($n,$k)|, except for the binomial
-%   coefficient, whose single intent is |_sobre:infix($n,$k)|; with |list| it is
-%   |_|\mymeta{concept}|-de:prefix($c)|, where |c| is the symbol, which
-%   carries the intent |_elementos-con-repeticiones:infix($n,$m)|, and |m| is the
+%   \myhlc|_|\mymeta{concept}|-de:prefix($c)|, where |c| wraps the symbol with the
+%   intent \myhlc|_elementos:postfix($n)|; with |pair| it is
+%   \myhlc|_|\mymeta{concept}|-de:prefix($c)|, where |c| is the symbol, which
+%   carries its own intent \myhlc|_elementos-tomados-de-a:infix($n,$k)|, except for the binomial
+%   coefficient, whose single intent is \myhlc|_sobre:infix($n,$k)|; with |list| it is
+%   \myhlc|_|\mymeta{concept}|-de:prefix($c)|, where |c| is the symbol, which
+%   carries the intent \myhlc|_elementos-con-repeticiones:infix($n,$m)|, and |m| is the
 %   group of the multiplicities, typeset by \myhlc|\@@_spcomb_list:|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcomb_mathml:
@@ -22722,24 +22730,28 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   The function \myhlc|\@@_spfact_mathml:n| prints the factorial of `|#1|'
 %   inside one native |\MathMLintent|, preceded by the outer ghost
 %   \myhlc|\@@_invisible_sep:| and followed by the inner ghost
-%   \myhlc|\@@_inner_sep:|. With \mykey{silent}|=true| the intent is `|_-|';
-%   with \mykey{read-arg} given it is |_|\mymeta{read-arg}|:nofix|;
-%   otherwise it is |_factorial:postfix($n)|.
+%   \myhlc|\@@_inner_sep:|. With \mykey{silent}|=true| the intent is `\myhlc|_-|';
+%   with \mykey{read-arg} given it is \myhlc|_|\mymeta{read-arg}|:nofix|;
+%   otherwise it is \myhlc|_factorial:postfix($n)|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spfact_mathml:n
   {
     \@@_invisible_sep:
     \bool_if:NTF \l_@@_spfact_silent_bool
-      { \MathMLintent { _- } { \@@_inner_sep: #1 ! } }
+      { \MathMLintent { _- } { \@@_inner_sep: #1 \mathexclam } }
       {
         \tl_if_empty:NTF \l_@@_spfact_read_arg_tl
           {
             \MathMLintent { _factorial:postfix($n) }
-              { \@@_inner_sep: \MathMLarg { n } { \@@_inner_sep: #1 } ! }
+              {
+                \@@_inner_sep:
+                \MathMLarg { n } { \@@_inner_sep: #1 }
+                \mathexclam
+              }
           }
           {
             \MathMLintent { _ \tl_use:N \l_@@_spfact_read_arg_tl :nofix }
-              { \@@_inner_sep: #1 ! }
+              { \@@_inner_sep: #1 \mathexclam }
           }
       }
   }

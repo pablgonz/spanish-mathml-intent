@@ -115,7 +115,7 @@ uploadconfig = {
   uploader     = "Pablo González L",
   email        = "pablgonz@yahoo.com",
   pkg          = ctanpkg,
-  version      = pkgversion,
+  version      = pkgversion .. " " .. pkgdate,
   license      = "lppl1.3c",
   summary      = "Spanish MathML intent for accessible (tagged) PDF with LuaLaTeX",
   description  = "This package adds MathML intent to mathematics written in Spanish with LuaLaTeX. "
@@ -125,7 +125,7 @@ uploadconfig = {
     .. "statistics, each with the Spanish reading it should have. "
     .. "It is aimed at primary and secondary school teachers.",
   topic        = { "spanish", "luatex", "accessible", "teaching", "maths", "tagged-pdf" },
-  ctanPath     = "/macros/latex/contrib/" .. ctanpkg,
+  ctanPath     = "/macros/luatex/latex/" .. ctanpkg,
   repository   = "https://github.com/pablgonz/" .. module,
   bugtracker   = "https://github.com/pablgonz/" .. module .. "/issues",
   support      = "https://github.com/pablgonz/" .. module .. "/issues",
@@ -932,7 +932,7 @@ local function release_target()
   os_message("Running dry-run upload check")
   local dryrun = os_capture("l3build upload -F ctan.ann --debug 2>&1", true)
   local okpkg = string.find(dryrun, '"pkg": "spanish-mathml-intent"', 1, true)
-  local okver = string.find(dryrun, '"version": "' .. pkgversion .. '"', 1, true)
+  local okver = string.find(dryrun, '"version": "' .. uploadconfig.version .. '"', 1, true)
   if not (okpkg and okver) then
     error("** Error!!: dry-run upload check failed; nothing was tagged or pushed")
   end
