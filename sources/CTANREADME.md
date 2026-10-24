@@ -1,6 +1,6 @@
 ## spanish-mathml-intent — Spanish MathML intent for accessible (tagged) PDF with LuaLaTeX
 
-Release v1.1 \[2026-10-22\]
+Release v1.2 \[2026-10-24\]
 
 ## Description
 
@@ -56,6 +56,22 @@ $ pdfdetach -saveall spanish-mathml-intent.pdf
 ```
 
 and then compile them with `lualatex-dev`.
+
+## Other languages
+
+The _intent_ attribute is not tied to Spanish. What belongs to this package is
+the Spanish reading of each concept, written in the names of the intents, such
+as `_valor-absoluto($x)`, and the set of commands for the school curriculum it
+targets. A package for another language would keep the same idea, a command
+that typesets an expression and annotates it with an intent, but would choose
+its own intent names and its own commands.
+
+The implementation in the manual follows the same order for every command:
+variables, error messages, keys and internal functions, with the public command
+at the end. The code written in Lua only parses the argument and sets variables
+that expl3 reads. That order is meant to be reused, under the terms of the
+LPPL. Anyone who wants to start a package for another language is welcome to
+do so, as a separate package with its own name.
 
 ## AI-assisted development
 

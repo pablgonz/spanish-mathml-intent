@@ -39,7 +39,7 @@
         later.~Update~your~TeX~distribution.
       }
   }
-\ProvidesExplPackage {spanish-mathml-intent} {2026-10-22} {1.1} {Spanish parse intents}
+\ProvidesExplPackage {spanish-mathml-intent} {2026-10-24} {1.2} {Spanish MathML intent}
 \keys_define:nn { spintent }
   {
     mathcal .usage:n = load,
@@ -5552,7 +5552,7 @@
   }
 \cs_new_protected:Nn \__spintent_spangle_mathml:n
   {
-    \__spintent_invisible_sep: % (luamml issues #26)
+    \__spintent_invisible_sep:
     \str_if_eq:VnTF \l__spintent_geo_luaset_angulo_case_str { nombre }
       {
         \bool_if:cTF { l__spintent_sp #1 _silent_bool }
@@ -5848,7 +5848,7 @@
               { _( \l__spintent_sparc_refs_tl ) }
           }
       }
-    \__spintent_invisible_sep: % need by MathCAT (bug in luamml issues #26)
+    \__spintent_invisible_sep:
     \MathMLintent { \l__spintent_sparc_intent_arg_tl }
       {
         \__spintent_inner_sep:
@@ -6013,7 +6013,7 @@
   }
 \cs_new_protected:Nn \__spintent_spPoly_mathml:
   {
-    \__spintent_invisible_sep: % (luamml issues #26)
+    \__spintent_invisible_sep:
     \__spintent_spPoly_build_refs:
     \__spintent_spPoly_build_concept:
     \MathMLintent { \l__spintent_spPoly_intent_arg_tl }
@@ -6439,7 +6439,7 @@
   }
 \cs_new_protected:Nn \__spintent_spfig_mathml:n
   {
-    \__spintent_invisible_sep: % (luamml issues #26)
+    \__spintent_invisible_sep:
     \clist_if_empty:NTF \l__spintent_geo_luaset_points_clist
       {
         \__spintent_spfig_build_simple:n {#1}
@@ -6996,7 +6996,7 @@
   }
 \cs_new_protected:Nn \__spintent_spcirc_mathml:
   {
-    \__spintent_invisible_sep: % (luamml issues #26)
+    \__spintent_invisible_sep:
     \__spintent_spcirc_build_concept:
     \MathMLintent { \l__spintent_spcirc_intent_arg_tl }
       {
@@ -7329,7 +7329,7 @@
   }
 \cs_new_protected:Nn \__spintent_spcircfig_mathml:nn
   {
-    \__spintent_invisible_sep: % (luamml issues #26)
+    \__spintent_invisible_sep:
     \MathMLintent { \l__spintent_spcircfig_intent_arg_tl }
       {
         \__spintent_inner_sep:
@@ -7738,57 +7738,45 @@
     \tl_if_blank:nF {#3}
       { \c_math_superscript_token {#3} }
   }
-\cs_new_protected:Nn \__spintent_stat_mathml:nnnnnn
+\cs_new:Nn \__spintent_stat_intent:nnnn
   {
-    \__spintent_invisible_sep:
     \bool_if:cTF { l__spintent_ #1 _silent_bool }
-      {
-        \MathMLintent { _- }
-          {
-            \__spintent_inner_sep:
-            \__spintent_stat_typeset:nnn {#1} {#2} {#3}
-          }
-      }
+      { _- }
       {
         \tl_if_empty:cTF { l__spintent_ #1 _read_arg_tl }
           {
+            _ #2
+            \tl_if_blank:nF {#3} { - #3 }
             \str_if_empty:cTF { l__spintent_ #1 _sub_index_str }
               {
-                \MathMLintent
-                  {
-                    _ #4
-                    \tl_if_blank:nF {#5} { - #5 }
-                    \tl_if_blank:nF {#6} { - #6 }
-                    :nofix
-                  }
-                  {
-                    \__spintent_inner_sep:
-                    \__spintent_stat_typeset:nnn {#1} {#2} {#3}
-                  }
+                \tl_if_blank:nF {#4} { - #4 }
+                :nofix
               }
               {
-                \MathMLintent
-                  {
-                    _ #4
-                    \tl_if_blank:nF {#5} { - #5 }
-                    -
-                    \bool_if:cTF { l__spintent_ #1 _read_sub_bool } { sub } { de }
-                    - \str_use:c { l__spintent_ #1 _sub_index_str }
-                    \tl_if_blank:nF {#6} { - #6 }
-                  }
-                  {
-                    \__spintent_inner_sep:
-                    \__spintent_stat_typeset:nnn {#1} {#2} {#3}
-                  }
+                -
+                \bool_if:cTF { l__spintent_ #1 _read_sub_bool } { sub } { de }
+                - \str_use:c { l__spintent_ #1 _sub_index_str }
+                \tl_if_blank:nF {#4} { - #4 }
               }
           }
-          {
-            \MathMLintent { _ \tl_use:c { l__spintent_ #1 _read_arg_tl } :nofix }
-              {
-                \__spintent_inner_sep:
-                \__spintent_stat_typeset:nnn {#1} {#2} {#3}
-              }
-          }
+          { _ \tl_use:c { l__spintent_ #1 _read_arg_tl } :nofix }
+      }
+  }
+\cs_new:Nn \__spintent_stat_intent:nnn
+  {
+    \__spintent_stat_intent:nnnn {#1} {#2} {#3} { }
+  }
+\cs_new:Nn \__spintent_stat_intent:nn
+  {
+    \__spintent_stat_intent:nnnn {#1} {#2} { } { }
+  }
+\cs_new_protected:Nn \__spintent_stat_mathml:nnnn
+  {
+    \__spintent_invisible_sep:
+    \MathMLintent {#4}
+      {
+        \__spintent_inner_sep:
+        \__spintent_stat_typeset:nnn {#1} {#2} {#3}
       }
   }
 \cs_new_protected:Nn \__spintent_stat_exec:nnn
@@ -7805,11 +7793,13 @@
   }
 \cs_new_protected:Nn \__spintent_stat_simple:nnn
   {
-    \__spintent_stat_mathml:nnnnnn {#1} {#2} { } {#3} { } { }
+    \__spintent_stat_mathml:nnnn {#1} {#2} { }
+      { \__spintent_stat_intent:nn {#1} {#3} }
   }
 \cs_new_protected:Nn \__spintent_stat_letter:nnnn
   {
-    \__spintent_stat_mathml:nnnnnn {#1} {#2} { } {#3} {#4} { }
+    \__spintent_stat_mathml:nnnn {#1} {#2} { }
+      { \__spintent_stat_intent:nnn {#1} {#3} {#4} }
   }
 \NewDocumentCommand \spmedia { O{} }
   {
@@ -7847,12 +7837,12 @@
       {
         \bool_if:NTF \l__spintent_spvarz_sigma_bool
           {
-            \__spintent_stat_mathml:nnnnnn { spvarz } { \sigma } { 2 }
-              { varianza } { sigma } { al-cuadrado }
+            \__spintent_stat_mathml:nnnn { spvarz } { \sigma } { 2 }
+              { \__spintent_stat_intent:nnnn { spvarz } { varianza } { sigma } { al-cuadrado } }
           }
           {
-            \__spintent_stat_mathml:nnnnnn { spvarz } { s } { 2 }
-              { varianza } { s } { al-cuadrado }
+            \__spintent_stat_mathml:nnnn { spvarz } { s } { 2 }
+              { \__spintent_stat_intent:nnnn { spvarz } { varianza } { s } { al-cuadrado } }
           }
       }
   }
@@ -7883,7 +7873,9 @@
       }
   }
 \clist_map_inline:nn { spcuartil , spdecil , spPerc }
-  { \tl_new:c { l__spintent_ #1 _read_arg_tl } }
+  {
+    \tl_new:c { l__spintent_ #1 _read_arg_tl }
+  }
 \bool_new:N \l__spintent_stat_pos_error_bool
 \int_new:N  \l__spintent_stat_pos_value_int
 \msg_new:nnnn { spintent } { stat-pos-invalid-index }
@@ -9011,16 +9003,20 @@
   {
     \__spintent_invisible_sep:
     \bool_if:NTF \l__spintent_spfact_silent_bool
-      { \MathMLintent { _- } { \__spintent_inner_sep: #1 ! } }
+      { \MathMLintent { _- } { \__spintent_inner_sep: #1 \mathexclam } }
       {
         \tl_if_empty:NTF \l__spintent_spfact_read_arg_tl
           {
             \MathMLintent { _factorial:postfix($n) }
-              { \__spintent_inner_sep: \MathMLarg { n } { \__spintent_inner_sep: #1 } ! }
+              {
+                \__spintent_inner_sep:
+                \MathMLarg { n } { \__spintent_inner_sep: #1 }
+                \mathexclam
+              }
           }
           {
             \MathMLintent { _ \tl_use:N \l__spintent_spfact_read_arg_tl :nofix }
-              { \__spintent_inner_sep: #1 ! }
+              { \__spintent_inner_sep: #1 \mathexclam }
           }
       }
   }

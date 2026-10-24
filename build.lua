@@ -30,8 +30,8 @@
 
 -- General package identification
 module     = "spanish-mathml-intent"
-pkgversion = "1.1"
-pkgdate    = "2026-10-22"
+pkgversion = "1.2"
+pkgdate    = "2026-10-24"
 ltxrelease = "2026-11-01"
 
 -- Configuration of files for build and installation
@@ -78,8 +78,7 @@ end
 function docinit_hook()
   local errorlevel = (cp("*mylhmc.lua", sourcefiledir, typesetdir) + cp("*mylhmc.sty", sourcefiledir, typesetdir))
   if errorlevel ~= 0 then
-    error("** Error!!: Can't copy mylhmc.lua and mylhmc.lua files from "..sourcefiledir.." to "..typesetdir)
-    return errorlevel
+    error("** Error!!: Can't copy mylhmc.lua and mylhmc.sty files from "..sourcefiledir.." to "..typesetdir)
   end
   -- Examples attached to the manual (last section of spanish-mathml-intent.dtx): what is
   -- in sources/test-pkg is copied as it is. Nothing is checked here; the
@@ -98,7 +97,6 @@ function typeset(file)
   local errorlevel = runcmd("arara "..file..".dtx", typesetdir, {"TEXINPUTS","LUAINPUTS"})
   if errorlevel ~= 0 then
     error("Error!!: Typesetting "..file..".dtx")
-    return errorlevel
   end
   return 0
 end
@@ -128,7 +126,7 @@ uploadconfig = {
   ctanPath     = "/macros/luatex/latex/" .. ctanpkg,
   repository   = "https://github.com/pablgonz/" .. module,
   bugtracker   = "https://github.com/pablgonz/" .. module .. "/issues",
-  support      = "https://github.com/pablgonz/" .. module .. "/issues",
+  support      = "https://github.com/pablgonz/" .. module .. "/discussions",
   note         = [[Uploaded automatically by l3build...]],
   announcement_file="ctan.ann",
   update       = true
@@ -196,19 +194,6 @@ function update_tag(file, content, tagname, tagdate)
       and pkgd == tagdate and ltxr == ltxrelease and luav == tagname and luad == tagdate
       and spv == tagname)
 
-  elseif string.match(file, "spanish%-mathml%-intent%.sty$") then
-    local pkgd, pkgv = string.match(content, "\\ProvidesExplPackage%s*{spanish%-mathml%-intent}%s*{(.-)}%s*{(.-)}")
-    local ltxr = string.match(content, "\\NeedsTeXFormat%s*{LaTeX2e}%s*%[(%d%d%d%d%-%d%d%-%d%d)%]")
-    already_ok = (pkgv == tagname and pkgd == tagdate and ltxr == ltxrelease)
-
-  elseif string.match(file, "spintent%.lua$") then
-    local luav, luad = string.match(content, "%-%s*v(%d+%.%d+%a*)%s*%[(%d%d%d%d%-%d%d%-%d%d)%]")
-    already_ok = (luav == tagname and luad == tagdate)
-
-  elseif string.match(file, "spmmli%-tool%.lua$") then
-    local spv = string.match(content, 'local%s+SPITOOL_VERSION%s*=%s*"(.-)"')
-    already_ok = (spv == tagname)
-
   elseif string.match(file, "spmmli%-tool%.1$") then
     local mand, manv = string.match(content, '%.TH%s+SPMMLI%-TOOL%s+1%s+"(%d%d%d%d%-%d%d%-%d%d)"%s+"spmmli%-tool%s+(.-)"')
     already_ok = (manv == tagname and mand == tagdate)
@@ -227,8 +212,6 @@ function update_tag(file, content, tagname, tagdate)
     return content
   end
 
-  local original_content = content
-
   -- Substitutions in spanish-mathml-intent.dtx
   if string.match(file, "spanish%-mathml%-intent%.dtx$") then
     content = string.gsub(content, "\\def\\fileversion{%s*v?.-%s*}", "\\def\\fileversion{v" .. tagname .. "}")
@@ -236,22 +219,6 @@ function update_tag(file, content, tagname, tagdate)
     content = string.gsub(content, "(\\ProvidesExplPackage%s*{spanish%-mathml%-intent}%s*){[^}]+}%s*{[^}]+}", "%1{" .. tagdate .. "} {" .. tagname .. "}")
     content = string.gsub(content, "(\\NeedsTeXFormat{LaTeX2e})%[%d%d%d%d%-%d%d%-%d%d%]", "%1[" .. ltxrelease .. "]")
     content = string.gsub(content, "(%-%s*v)%d+%.%d+%a*%s*%[%d%d%d%d%-%d%d%-%d%d%]", "%1" .. tagname .. " [" .. tagdate .. "]")
-    content = string.gsub(content, '(local%s+SPITOOL_VERSION%s*=%s*)"[^"]*"', '%1"' .. tagname .. '"')
-  end
-
-  -- Substitutions in spanish-mathml-intent.sty
-  if string.match(file, "spanish%-mathml%-intent%.sty$") then
-    content = string.gsub(content, "(\\ProvidesExplPackage%s*{spanish%-mathml%-intent}%s*){[^}]+}%s*{[^}]+}", "%1{" .. tagdate .. "} {" .. tagname .. "}")
-    content = string.gsub(content, "(\\NeedsTeXFormat{LaTeX2e})%[%d%d%d%d%-%d%d%-%d%d%]", "%1[" .. ltxrelease .. "]")
-  end
-
-  -- Substitutions in spintent.lua
-  if string.match(file, "spintent%.lua$") then
-    content = string.gsub(content, "(%-%s*v)%d+%.%d+%a*%s*%[%d%d%d%d%-%d%d%-%d%d%]", "%1" .. tagname .. " [" .. tagdate .. "]")
-  end
-
-  -- Substitutions in spmmli-tool.lua
-  if string.match(file, "spmmli%-tool%.lua$") then
     content = string.gsub(content, '(local%s+SPITOOL_VERSION%s*=%s*)"[^"]*"', '%1"' .. tagname .. '"')
   end
 
@@ -364,7 +331,7 @@ local function check_readme_tags()
     print("** Warning: Mismatches found in sources/CTANREADME.md")
     return false
   end
-  os_message("Checking version and date in README.md")
+  os_message("Checking version and date in CTANREADME.md")
   return true
 end
 
@@ -968,7 +935,7 @@ local function release_target()
   os_message("Checking latest Git tag (latest: " .. (tagongit ~= "" and tagongit or "none") .. ")")
 
   local tag_cmd = string.format('git tag -a %s -m "Release %s %s"', tag_version, tag_version, pkgdate)
-  res = os.execute(tag_cmd)
+  local res = os.execute(tag_cmd)
   if res ~= 0 and res ~= true then
     error("** Error!!: Could not create Git tag " .. tag_version .. ". Verify if it already exists.")
   else
