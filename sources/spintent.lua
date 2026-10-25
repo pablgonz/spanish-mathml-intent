@@ -1,5 +1,5 @@
 --[[
-     Lua module spintent.lua for spintent package - v1.2 [2026-10-24]
+     Lua module spintent.lua for spintent package - v1.2 [2026-10-25]
 --]]
 
 -- ÍNDICE DE SECCIONES (cada una empieza con su título en mayúsculas)
@@ -46,17 +46,17 @@ local d_setfield = node.direct.setfield
 local token_set_macro = token.set_macro
 
 -- Todas las variables que Lua entrega a TeX comparten el prefijo l__spintent_
-local function set_macro(name, value)
+local function spintent_set_macro(name, value)
     token_set_macro("l__spintent_" .. name, value)
 end
 
 -- Valor booleano en la forma que TeX espera
-local function bool_str(cond)
+local function spintent_bool_str(cond)
     return cond and "true" or "false"
 end
 
-local function set_bool(name, cond)
-    set_macro(name, bool_str(cond))
+local function spintent_set_bool(name, cond)
+    spintent_set_macro(name, spintent_bool_str(cond))
 end
 
 local document_cctab = luatexbase.registernumber("c_document_cctab")
@@ -188,7 +188,7 @@ end, { "string", "string" })
 -- Numero de atributo asignado por el propio kernel de LuaTeX (sin
 -- riesgo de colision con otro paquete).
 local spintent_scope_attr = luatexbase.new_attribute("spintent_scope")
-set_macro("luaset_scope_attr_str", tostring(spintent_scope_attr))
+spintent_set_macro("luaset_scope_attr_str", tostring(spintent_scope_attr))
 
 -- Reclama 'target' con la siguiente entrada de la cola. Solo si
 -- tiene spintent_scope_attr=1 (tipografiado dentro de un comando
@@ -457,26 +457,30 @@ register_tex_cmd("luafun_right_angle_sqr", spintent_right_angle_sqr, {})
 local function spintent_init_math_fallbacks()
     spintent_cal_fam = spintent_find_free_family()
     spintent_cal_fam_ok = spintent_cal_fam and spintent_load_family("NewCMMath-Regular.otf", {}, spintent_cal_fam)
-    set_bool("luaset_cal_fam_ok_str", spintent_cal_fam_ok)
+    spintent_set_bool("luaset_cal_fam_ok_str", spintent_cal_fam_ok)
 
     spintent_sym_fam = spintent_find_free_family()
     spintent_sym_fam_ok = spintent_sym_fam and spintent_load_family("NewCMMath-Regular.otf", {}, spintent_sym_fam)
-    set_bool("luaset_sym_fam_ok_str", spintent_sym_fam_ok)
+    spintent_set_bool("luaset_sym_fam_ok_str", spintent_sym_fam_ok)
 end
 register_tex_cmd("luafun_init_math_fallbacks", spintent_init_math_fallbacks, {})
 end
 
+-- Locales compartidos entre secciones; se asignan dentro de sus bloques do … end
+local spintent_number_pattern, spintent_custom_spunit_aliases, spintent_sanitize_for_screen_reader
+
 -- MOTOR CENTRAL Y NÚMEROS (\spnum y \spunit)
 
+do
 local spintent_num_sign = S "+-"
 local spintent_num_decimal = S ".," + P "{.}" + P "{,}"
 local spintent_num_semi = P ";"
 local spintent_forbidden_in_extra = spintent_num_decimal + spintent_num_semi
-local spintent_custom_spunit_aliases = {}
+spintent_custom_spunit_aliases = {}
 
 local spintent_extra_char = P(1) - spintent_forbidden_in_extra
 
-local spintent_number_pattern = Ct(
+spintent_number_pattern = Ct(
     Cg(spintent_num_sign^-1, "sign")
     * spintent_opt_spaces
     * Cg(spintent_num_chunk_keep^-1, "integer")
@@ -548,7 +552,7 @@ register_tex_cmd("luafun_clean_split_and_set", function(raw_string)
     local r_extra  = (result and result.extra)
     local r_exp    = (result and result.exponent) or ""
 
-    local has_exponent = bool_str(r_exp ~= "")
+    local has_exponent = spintent_bool_str(r_exp ~= "")
     local above = ""
     local below = ""
     local unit_status = "valid"
@@ -611,38 +615,40 @@ register_tex_cmd("luafun_clean_split_and_set", function(raw_string)
         has_integer = "true"
     end
 
-    set_macro("luaset_part_int_tl", r_int)
-    set_macro("luaset_part_dec_tl", r_frac)
-    set_macro("luaset_sign_tl", r_sign)
-    set_macro("luaset_dec_sep_tl", r_dec)
-    set_macro("luaset_part_period_tl", r_period)
-    set_macro("luaset_only_part_int_str", r_int_clean)
-    set_macro("luaset_only_part_dec_str", r_frac_clean)
-    set_macro("luaset_only_part_period_str", (result and result.period) or "")
-    set_macro("luaset_format_part_int_str", spintent_rae_format_digits(r_int_clean, false))
-    set_macro("luaset_format_part_dec_str", spintent_rae_format_digits(r_frac_clean, true))
-    set_macro("luaset_millons_str", is_million_clean)
-    set_macro("luaset_decimal_period_str", dec_and_per)
-    set_macro("luaset_not_decimal_period_str", not_dec_and_per)
-    set_macro("luaset_not_decimal_not_period_str", not_dec_not_per)
-    set_macro("luaset_has_exponent_str", has_exponent)
-    set_macro("luaset_exponent_tl", r_exp)
-    set_macro("luaset_has_units_str", has_units)
-    set_macro("luaset_status_str", unit_status)
-    set_macro("luaset_arg_above_tl", above)
-    set_macro("luaset_arg_below_tl", below)
-    set_macro("luaset_denom_has_number_str", denom_has_numeric)
-    set_macro("luaset_has_integer_str", has_integer)
+    spintent_set_macro("luaset_part_int_tl", r_int)
+    spintent_set_macro("luaset_part_dec_tl", r_frac)
+    spintent_set_macro("luaset_sign_tl", r_sign)
+    spintent_set_macro("luaset_dec_sep_tl", r_dec)
+    spintent_set_macro("luaset_part_period_tl", r_period)
+    spintent_set_macro("luaset_only_part_int_str", r_int_clean)
+    spintent_set_macro("luaset_only_part_dec_str", r_frac_clean)
+    spintent_set_macro("luaset_only_part_period_str", (result and result.period) or "")
+    spintent_set_macro("luaset_format_part_int_str", spintent_rae_format_digits(r_int_clean, false))
+    spintent_set_macro("luaset_format_part_dec_str", spintent_rae_format_digits(r_frac_clean, true))
+    spintent_set_macro("luaset_millons_str", is_million_clean)
+    spintent_set_macro("luaset_decimal_period_str", dec_and_per)
+    spintent_set_macro("luaset_not_decimal_period_str", not_dec_and_per)
+    spintent_set_macro("luaset_not_decimal_not_period_str", not_dec_not_per)
+    spintent_set_macro("luaset_has_exponent_str", has_exponent)
+    spintent_set_macro("luaset_exponent_tl", r_exp)
+    spintent_set_macro("luaset_has_units_str", has_units)
+    spintent_set_macro("luaset_status_str", unit_status)
+    spintent_set_macro("luaset_arg_above_tl", above)
+    spintent_set_macro("luaset_arg_below_tl", below)
+    spintent_set_macro("luaset_denom_has_number_str", denom_has_numeric)
+    spintent_set_macro("luaset_has_integer_str", has_integer)
 
     if r_frac_clean ~= "" and s_match(r_frac_clean, "^0+$") then
-        set_macro("luaset_dec_is_all_zeros_str", "true")
+        spintent_set_macro("luaset_dec_is_all_zeros_str", "true")
     else
-        set_macro("luaset_dec_is_all_zeros_str", "false")
+        spintent_set_macro("luaset_dec_is_all_zeros_str", "false")
     end
 end, { "string" })
+end
 
 -- UNIDADES FÍSICAS Y CIENTÍFICAS (\spunit)
 
+do
 local spintent_units = {
     ["°K"]   = "°K",
     ["A"]    = "A",    ["B"]    = "B",     ["Bq"]   = "Bq",   ["C"]    = "C",
@@ -742,7 +748,7 @@ local spintent_tex_accents = {
     ["\\\"u"] = "ü", ["\\\"U"] = "Ü", ["\\~n"] = "ñ", ["\\~N"] = "Ñ"
 }
 
-local function spintent_sanitize_for_screen_reader(raw_string)
+function spintent_sanitize_for_screen_reader(raw_string)
     if not raw_string then return "" end
     local clean = s_gsub(raw_string, "[{}]", "")
     clean = s_gsub(clean, "\\[\'~\x22].", spintent_tex_accents)
@@ -752,7 +758,7 @@ end
 
 register_tex_cmd("luafun_define_custom_unit", function(unit_symbol, spoken_name)
     if spintent_units[unit_symbol] or spintent_custom_spunit_spoken_names[unit_symbol] or spintent_custom_spunit_aliases[unit_symbol] then
-        set_macro("spunit_luaset_status_str", "duplicate")
+        spintent_set_macro("spunit_luaset_status_str", "duplicate")
         return
     end
 
@@ -763,7 +769,7 @@ register_tex_cmd("luafun_define_custom_unit", function(unit_symbol, spoken_name)
     spintent_custom_spunit_spoken_names[unit_symbol] = "_" .. clean_spoken_name
     spintent_units[unit_symbol] = unit_symbol
 
-    set_macro("spunit_luaset_status_str", "success")
+    spintent_set_macro("spunit_luaset_status_str", "success")
 end, { "string", "string" })
 
 -- °, ′, ″ son los tres símbolos sexagesimales reconocidos -- chequeo
@@ -830,24 +836,24 @@ register_tex_cmd("luafun_spunit_parse_product", function(which, product)
         n = n + 1
         local info = spintent_spunit_lookup(term)
         if info then
-            set_macro(prefix .. n .. "_canonical_str", info.canonical)
-            set_macro(prefix .. n .. "_read_str", info.read)
-            set_macro(prefix .. n .. "_exp_tl", info.exp)
+            spintent_set_macro(prefix .. n .. "_canonical_str", info.canonical)
+            spintent_set_macro(prefix .. n .. "_read_str", info.read)
+            spintent_set_macro(prefix .. n .. "_exp_tl", info.exp)
             sexagesimal = info.sexagesimal
         else
             all_found = false
         end
     end
-    set_macro(prefix .. "n_str", tostring(n))
-    set_bool(prefix .. "found_str", all_found)
-    set_bool(prefix .. "sexa_str", all_found and n == 1 and sexagesimal)
+    spintent_set_macro(prefix .. "n_str", tostring(n))
+    spintent_set_bool(prefix .. "found_str", all_found)
+    spintent_set_bool(prefix .. "sexa_str", all_found and n == 1 and sexagesimal)
 end, { "string", "string" })
 
 register_tex_cmd("luafun_define_spunit_alias", function(alias_name, unit_expression)
     alias_name = s_gsub(alias_name, "%s+", "")
     unit_expression = spintent_trim(unit_expression)
     if spintent_units[alias_name] or spintent_normalizations[alias_name] or spintent_custom_spunit_aliases[alias_name] then
-        set_macro("spunit_luaset_status_str", "duplicate")
+        spintent_set_macro("spunit_luaset_status_str", "duplicate")
         return
     end
     local is_valid = true
@@ -861,12 +867,13 @@ register_tex_cmd("luafun_define_spunit_alias", function(alias_name, unit_express
         end
     end
     if not is_valid then
-        set_macro("spunit_luaset_status_str", "invalid-expr")
+        spintent_set_macro("spunit_luaset_status_str", "invalid-expr")
     else
         spintent_custom_spunit_aliases[alias_name] = unit_expression
-        set_macro("spunit_luaset_status_str", "success")
+        spintent_set_macro("spunit_luaset_status_str", "success")
     end
 end, { "string", "string" })
+end
 
 -- DIVISAS Y MONEDAS (\spmoney)
 
@@ -1018,31 +1025,31 @@ register_tex_cmd("luafun_spmoney_lookup_data", function(currency_name)
     local resolved_symbol = spintent_internal_currencies[clean] or "$"
 
     local gram_entry = spintent_currency_grammatical_dict[clean] or spintent_currency_grammatical_dict[resolved_symbol]
-      or { sing = "peso", plur = "pesos", conde = "de-pesos" }
+        or { sing = "peso", plur = "pesos", conde = "de-pesos" }
 
     local position = "pre"
     if resolved_symbol == "€" or resolved_symbol == "¢" then position = "post" end
 
     if spintent_money_iso_codes[clean] and trimmed == s_upper(trimmed) then
-        set_macro("spmoney_luaset_print_iso_str", "true")
+        spintent_set_macro("spmoney_luaset_print_iso_str", "true")
     else
-        set_macro("spmoney_luaset_print_iso_str", "false")
+        spintent_set_macro("spmoney_luaset_print_iso_str", "false")
     end
 
     local sub_db = spintent_currency_subunits_matrix[gram_entry.plur]
 
-    set_macro("spmoney_luaset_symbol_str", resolved_symbol)
-    set_macro("spmoney_luaset_position_str", position)
-    set_macro("spmoney_luaset_sing_str", gram_entry.sing)
-    set_macro("spmoney_luaset_plur_str", gram_entry.plur)
-    set_macro("spmoney_luaset_conde_str", gram_entry.conde)
+    spintent_set_macro("spmoney_luaset_symbol_str", resolved_symbol)
+    spintent_set_macro("spmoney_luaset_position_str", position)
+    spintent_set_macro("spmoney_luaset_sing_str", gram_entry.sing)
+    spintent_set_macro("spmoney_luaset_plur_str", gram_entry.plur)
+    spintent_set_macro("spmoney_luaset_conde_str", gram_entry.conde)
 
     if sub_db then
-        set_macro("spmoney_luaset_subsing_str", sub_db.sing)
-        set_macro("spmoney_luaset_subplur_str", sub_db.plur)
+        spintent_set_macro("spmoney_luaset_subsing_str", sub_db.sing)
+        spintent_set_macro("spmoney_luaset_subplur_str", sub_db.plur)
     else
-        set_macro("spmoney_luaset_subsing_str", "")
-        set_macro("spmoney_luaset_subplur_str", "")
+        spintent_set_macro("spmoney_luaset_subsing_str", "")
+        spintent_set_macro("spmoney_luaset_subplur_str", "")
     end
 end, { "string" })
 
@@ -1053,11 +1060,11 @@ register_tex_cmd("luafun_spmoney_normalize_key", function(raw_input)
         or (resolved_symbol and spintent_currency_spoken_names[resolved_symbol])
 
     if resolved_spoken and spintent_money_valid_case(raw_input, clean) then
-        set_macro("spmoney_luaset_currency_arg_str", resolved_spoken)
-        set_macro("spmoney_luaset_status_str", "found")
+        spintent_set_macro("spmoney_luaset_currency_arg_str", resolved_spoken)
+        spintent_set_macro("spmoney_luaset_status_str", "found")
     else
-        set_macro("spmoney_luaset_currency_arg_str", raw_input)
-        set_macro("spmoney_luaset_status_str", "notfound")
+        spintent_set_macro("spmoney_luaset_currency_arg_str", raw_input)
+        spintent_set_macro("spmoney_luaset_status_str", "notfound")
     end
 end, { "string" })
 
@@ -1074,8 +1081,8 @@ register_tex_cmd("luafun_spmoney_prepare_input", function(raw_input)
     local curr_part = spintent_money_curr_only:match(raw_input)
     local num_part  = spintent_money_num_only:match(raw_input)
 
-    set_macro("spmoney_extracted_curr_str", curr_part)
-    set_macro("spmoney_extracted_num_tl", num_part)
+    spintent_set_macro("spmoney_luaset_extracted_curr_str", curr_part)
+    spintent_set_macro("spmoney_luaset_extracted_num_tl", num_part)
 end, { "string" })
 end
 
@@ -1219,46 +1226,46 @@ local spintent_ord_tens = {
 }
 
 local function spintent_get_semantic_ordinal(val, suffix)
-  if val < 1 or val > 99 then
-    return val .. (spintent_spshort_ord_suffixes[suffix] or suffix)
-  end
-
-  local end_char = (suffix == "a" or suffix == "as") and "a" or "o"
-  local plural = (suffix == "as" or suffix == "os") and "s" or ""
-
-  if suffix == "er" then
-    end_char = "o"
-    plural = ""
-  end
-
-  local ten_val = math_floor(val / 10)
-  local unit_val = val % 10
-
-  if val == 11 and suffix ~= "er" then return "undécim" .. end_char .. plural end
-  if val == 12 then return "duodécim" .. end_char .. plural end
-
-  local result = ""
-  if ten_val > 0 then
-    result = spintent_ord_tens[ten_val] .. end_char .. plural
-  end
-
-  if unit_val > 0 then
-    local unit_str = spintent_ord_units[unit_val]
-
-    if unit_val == 1 and suffix ~= "er" then unit_str = "primer" end
-    if unit_val == 3 and suffix ~= "er" then unit_str = "tercer" end
-
-    local unit_end = (suffix == "er") and "" or (end_char .. plural)
-    local full_unit = unit_str .. unit_end
-
-    if ten_val > 0 then
-      result = result .. " " .. full_unit
-    else
-      result = full_unit
+    if val < 1 or val > 99 then
+        return val .. (spintent_spshort_ord_suffixes[suffix] or suffix)
     end
-  end
 
-  return result
+    local end_char = (suffix == "a" or suffix == "as") and "a" or "o"
+    local plural = (suffix == "as" or suffix == "os") and "s" or ""
+
+    if suffix == "er" then
+        end_char = "o"
+        plural = ""
+    end
+
+    local ten_val = math_floor(val / 10)
+    local unit_val = val % 10
+
+    if val == 11 and suffix ~= "er" then return "undécim" .. end_char .. plural end
+    if val == 12 then return "duodécim" .. end_char .. plural end
+
+    local result = ""
+    if ten_val > 0 then
+        result = spintent_ord_tens[ten_val] .. end_char .. plural
+    end
+
+    if unit_val > 0 then
+        local unit_str = spintent_ord_units[unit_val]
+
+        if unit_val == 1 and suffix ~= "er" then unit_str = "primer" end
+        if unit_val == 3 and suffix ~= "er" then unit_str = "tercer" end
+
+        local unit_end = (suffix == "er") and "" or (end_char .. plural)
+        local full_unit = unit_str .. unit_end
+
+        if ten_val > 0 then
+            result = result .. " " .. full_unit
+        else
+            result = full_unit
+        end
+    end
+
+    return result
 end
 
 local spintent_spshort_digits       = spintent_digit^1
@@ -1274,71 +1281,71 @@ local spintent_spshort_ord_grammar = P({
 })
 
 local function spintent_spshort_execute_analysis(raw_input)
-  local clean_input = spintent_normalize_key(raw_input)
+    local clean_input = spintent_normalize_key(raw_input)
 
-  local dict_match = spintent_spshort_dict[clean_input]
-  if not dict_match then
-    if s_sub(clean_input, -1) == "." then
-      dict_match = spintent_spshort_dict[s_sub(clean_input, 1, -2)]
-    else
-      dict_match = spintent_spshort_dict[clean_input .. "."]
+    local dict_match = spintent_spshort_dict[clean_input]
+    if not dict_match then
+        if s_sub(clean_input, -1) == "." then
+            dict_match = spintent_spshort_dict[s_sub(clean_input, 1, -2)]
+        else
+            dict_match = spintent_spshort_dict[clean_input .. "."]
+        end
     end
-  end
 
-  if dict_match then
-    set_macro("spshort_luaset_status_str", "success")
-    set_macro("spshort_luaset_layout_str", dict_match.layout_type)
-    set_macro("spshort_luaset_expand_str", dict_match.expand)
+    if dict_match then
+        spintent_set_macro("spshort_luaset_status_str", "success")
+        spintent_set_macro("spshort_luaset_layout_str", dict_match.layout_type)
+        spintent_set_macro("spshort_luaset_expand_str", dict_match.expand)
 
-    if dict_match.layout_type == "superscript" then
-      set_macro("spshort_luaset_base_str", dict_match.base)
-      set_macro("spshort_luaset_suffix_str", dict_match.suffix)
-    else
-      set_macro("spshort_luaset_output_str", dict_match.output)
-    end
-    return
-  end
-
-  local ordinal_input = clean_input
-  if s_sub(ordinal_input, -1) == "." and not s_match(ordinal_input, "%d+%.%a+$") and not s_match(ordinal_input, "^%d+%.") then
-    ordinal_input = s_sub(ordinal_input, 1, -2)
-  end
-
-  local num_part, suffix_part, is_illegal = spintent_spshort_ord_grammar:match(ordinal_input)
-
-  if num_part and not is_illegal and spintent_spshort_ord_suffixes[suffix_part] then
-
-    if suffix_part == "er" then
-      local val = tonumber(num_part)
-      local last_digit = val % 10
-      if last_digit ~= 1 and last_digit ~= 3 then
-        set_macro("spshort_luaset_status_str", "error")
+        if dict_match.layout_type == "superscript" then
+            spintent_set_macro("spshort_luaset_base_str", dict_match.base)
+            spintent_set_macro("spshort_luaset_suffix_str", dict_match.suffix)
+        else
+            spintent_set_macro("spshort_luaset_output_str", dict_match.output)
+        end
         return
-      end
     end
 
-    local semantic_read = spintent_get_semantic_ordinal(tonumber(num_part), suffix_part)
+    local ordinal_input = clean_input
+    if s_sub(ordinal_input, -1) == "." and not s_match(ordinal_input, "%d+%.%a+$") and not s_match(ordinal_input, "^%d+%.") then
+        ordinal_input = s_sub(ordinal_input, 1, -2)
+    end
 
-    set_macro("spshort_luaset_status_str", "success")
-    set_macro("spshort_luaset_layout_str", "superscript")
-    set_macro("spshort_luaset_expand_str", semantic_read)
-    set_macro("spshort_luaset_base_str", num_part .. ".")
-    set_macro("spshort_luaset_suffix_str", spintent_spshort_ord_suffixes[suffix_part])
-    return
-  end
+    local num_part, suffix_part, is_illegal = spintent_spshort_ord_grammar:match(ordinal_input)
 
-  if s_match(raw_input, "^%a+$") then
-    set_macro("spshort_luaset_status_str", "fallback")
-    set_macro("spshort_luaset_layout_str", "none")
-    set_macro("spshort_luaset_expand_str", raw_input)
-    set_macro("spshort_luaset_output_str", raw_input)
-  else
-    set_macro("spshort_luaset_status_str", "error")
-  end
+    if num_part and not is_illegal and spintent_spshort_ord_suffixes[suffix_part] then
+
+        if suffix_part == "er" then
+            local val = tonumber(num_part)
+            local last_digit = val % 10
+            if last_digit ~= 1 and last_digit ~= 3 then
+                spintent_set_macro("spshort_luaset_status_str", "error")
+                return
+            end
+        end
+
+        local semantic_read = spintent_get_semantic_ordinal(tonumber(num_part), suffix_part)
+
+        spintent_set_macro("spshort_luaset_status_str", "success")
+        spintent_set_macro("spshort_luaset_layout_str", "superscript")
+        spintent_set_macro("spshort_luaset_expand_str", semantic_read)
+        spintent_set_macro("spshort_luaset_base_str", num_part .. ".")
+        spintent_set_macro("spshort_luaset_suffix_str", spintent_spshort_ord_suffixes[suffix_part])
+        return
+    end
+
+    if s_match(raw_input, "^%a+$") then
+        spintent_set_macro("spshort_luaset_status_str", "fallback")
+        spintent_set_macro("spshort_luaset_layout_str", "none")
+        spintent_set_macro("spshort_luaset_expand_str", raw_input)
+        spintent_set_macro("spshort_luaset_output_str", raw_input)
+    else
+        spintent_set_macro("spshort_luaset_status_str", "error")
+    end
 end
 
 register_tex_cmd("luafun_spshort_process", function(raw_input)
-  spintent_spshort_execute_analysis(raw_input)
+    spintent_spshort_execute_analysis(raw_input)
 end, { "string" })
 end
 
@@ -1362,76 +1369,76 @@ local spintent_roman_to_arab_byte_map = {
 }
 
 local function spintent_arabic_to_roman(num)
-  local result = {}
-  for i = 1, #spintent_arab_to_roman_map do
-    local pair = spintent_arab_to_roman_map[i]
-    while num >= pair[1] do
-      result[#result + 1] = pair[2]
-      num = num - pair[1]
+    local result = {}
+    for i = 1, #spintent_arab_to_roman_map do
+        local pair = spintent_arab_to_roman_map[i]
+        while num >= pair[1] do
+            result[#result + 1] = pair[2]
+            num = num - pair[1]
+        end
     end
-  end
-  return t_concat(result)
+    return t_concat(result)
 end
 
 local function spintent_roman_to_arabic(str_roman)
-  local total = 0
-  local i = 1
-  local len = #str_roman
+    local total = 0
+    local i = 1
+    local len = #str_roman
 
-  while i <= len do
-    local v1 = spintent_roman_to_arab_byte_map[s_byte(str_roman, i)] or 0
+    while i <= len do
+        local v1 = spintent_roman_to_arab_byte_map[s_byte(str_roman, i)] or 0
 
-    if i + 1 <= len then
-      local v2 = spintent_roman_to_arab_byte_map[s_byte(str_roman, i + 1)] or 0
+        if i + 1 <= len then
+            local v2 = spintent_roman_to_arab_byte_map[s_byte(str_roman, i + 1)] or 0
 
-      if v1 < v2 then
-        total = total + (v2 - v1)
-        i = i + 2
-      else
-        total = total + v1
-        i = i + 1
-      end
-    else
-      total = total + v1
-      i = i + 1
+            if v1 < v2 then
+                total = total + (v2 - v1)
+                i = i + 2
+            else
+                total = total + v1
+                i = i + 1
+            end
+        else
+            total = total + v1
+            i = i + 1
+        end
     end
-  end
-  return total
+    return total
 end
 
 register_tex_cmd("luafun_spsiglo_parse", function(raw_siglo_input)
-  local clean = s_lower(s_gsub(raw_siglo_input, "%s+", ""))
-  local arabic_val = nil
-  local roman_val = nil
-  local is_error = false
+    local clean = s_lower(s_gsub(raw_siglo_input, "%s+", ""))
+    local arabic_val = nil
+    local roman_val = nil
+    local is_error = false
 
-  if s_match(clean, "^%d+$") then
-    arabic_val = tonumber(clean)
-    if arabic_val > 0 and arabic_val < 4000 then
-      roman_val = spintent_arabic_to_roman(arabic_val)
+    if s_match(clean, "^%d+$") then
+        arabic_val = tonumber(clean)
+        if arabic_val > 0 and arabic_val < 4000 then
+            roman_val = spintent_arabic_to_roman(arabic_val)
+        else
+            is_error = true
+        end
+    elseif s_match(clean, "^[ivxlcdm]+$") and clean ~= "" then
+        roman_val = clean
+        arabic_val = spintent_roman_to_arabic(clean)
+
+        if arabic_val >= 4000 or spintent_arabic_to_roman(arabic_val) ~= clean then
+            is_error = true
+        end
     else
-      is_error = true
+        is_error = true
     end
-  elseif s_match(clean, "^[ivxlcdm]+$") and clean ~= "" then
-    roman_val = clean
-    arabic_val = spintent_roman_to_arabic(clean)
 
-    if arabic_val >= 4000 or spintent_arabic_to_roman(arabic_val) ~= clean then
-      is_error = true
+    if is_error then
+        spintent_set_macro("spsiglo_luaset_error_str", "true")
+        spintent_set_macro("spsiglo_luaset_arabic_str", "")
+        spintent_set_macro("spsiglo_luaset_roman_min_str", "")
+    else
+        spintent_set_macro("spsiglo_luaset_error_str", "false")
+        spintent_set_macro("spsiglo_luaset_arabic_str", tostring(arabic_val))
+        spintent_set_macro("spsiglo_luaset_roman_min_str", roman_val)
     end
-  else
-    is_error = true
-  end
-
-  if is_error then
-    set_macro("spsiglo_luaset_error_str", "true")
-    set_macro("spsiglo_luaset_arabic_str", "")
-    set_macro("spsiglo_luaset_roman_min_str", "")
-  else
-    set_macro("spsiglo_luaset_error_str", "false")
-    set_macro("spsiglo_luaset_arabic_str", tostring(arabic_val))
-    set_macro("spsiglo_luaset_roman_min_str", roman_val)
-  end
 end, { "string" })
 end
 
@@ -1469,7 +1476,7 @@ register_tex_cmd("luafun_spdate_parse", function(raw_date_input)
 
     -- Si no encaja el patrón, o si el usuario mezcla separadores (ej. 2024-01/02) -> error
     if not result or result.sep1 ~= result.sep2 then
-        set_macro("spdate_luaset_error_str", "true")
+        spintent_set_macro("spdate_luaset_error_str", "true")
         return
     end
 
@@ -1488,7 +1495,7 @@ register_tex_cmd("luafun_spdate_parse", function(raw_date_input)
         day, month, year = p1, p2, p3
     else
         -- Si ninguno tiene 4 dígitos (ej. 12-10-81) o ambos lo tienen, hay ambigüedad
-        set_macro("spdate_luaset_error_str", "true")
+        spintent_set_macro("spdate_luaset_error_str", "true")
         return
     end
 
@@ -1496,7 +1503,7 @@ register_tex_cmd("luafun_spdate_parse", function(raw_date_input)
 
     -- Validación de calendario real
     if not (num_y and num_m and num_d) or not spintent_is_valid_date(num_d, num_m, num_y) then
-        set_macro("spdate_luaset_error_str", "true")
+        spintent_set_macro("spdate_luaset_error_str", "true")
         return
     end
 
@@ -1511,11 +1518,11 @@ register_tex_cmd("luafun_spdate_parse", function(raw_date_input)
     end
 
     -- Si sobrevivió a todo, pasamos las variables limpias a TeX
-    set_macro("spdate_luaset_error_str", "false")
-    set_macro("spdate_luaset_day_str", day)
-    set_macro("spdate_luaset_month_str", month)
-    set_macro("spdate_luaset_year_str", year)
-    set_macro("spdate_luaset_output_str", output_str)
+    spintent_set_macro("spdate_luaset_error_str", "false")
+    spintent_set_macro("spdate_luaset_day_str", day)
+    spintent_set_macro("spdate_luaset_month_str", month)
+    spintent_set_macro("spdate_luaset_year_str", year)
+    spintent_set_macro("spdate_luaset_output_str", output_str)
 end, { "string" })
 
 local spintent_time_pattern = Ct(
@@ -1528,7 +1535,7 @@ register_tex_cmd("luafun_sptime_parse", function(raw_time_input)
     local result = spintent_time_pattern:match(clean_str)
 
     if not result then
-        set_macro("sptime_luaset_error_str", "true")
+        spintent_set_macro("sptime_luaset_error_str", "true")
         return
     end
 
@@ -1537,26 +1544,26 @@ register_tex_cmd("luafun_sptime_parse", function(raw_time_input)
     local s = result.s and tonumber(result.s) or nil
 
     if not h or not m or h >= 24 or m >= 60 or (s and s >= 60) then
-        set_macro("sptime_luaset_error_str", "true")
+        spintent_set_macro("sptime_luaset_error_str", "true")
         return
     end
 
-    set_macro("sptime_luaset_error_str", "false")
-    set_macro("sptime_luaset_base_str", result.h .. ":" .. result.m)
+    spintent_set_macro("sptime_luaset_error_str", "false")
+    spintent_set_macro("sptime_luaset_base_str", result.h .. ":" .. result.m)
 
     -- Solo es "fracción especial" si la hora es < 13 y los minutos son 15 o 30
     if h < 13 and (m == 15 or m == 30) then
-        set_macro("sptime_luaset_is_fraction_str", "true")
+        spintent_set_macro("sptime_luaset_is_fraction_str", "true")
     else
-        set_macro("sptime_luaset_is_fraction_str", "false")
+        spintent_set_macro("sptime_luaset_is_fraction_str", "false")
     end
 
     if result.s then
-        set_macro("sptime_luaset_has_seconds_str", "true")
-        set_macro("sptime_luaset_seconds_str", result.s)
+        spintent_set_macro("sptime_luaset_has_seconds_str", "true")
+        spintent_set_macro("sptime_luaset_seconds_str", result.s)
     else
-        set_macro("sptime_luaset_has_seconds_str", "false")
-        set_macro("sptime_luaset_seconds_str", "")
+        spintent_set_macro("sptime_luaset_has_seconds_str", "false")
+        spintent_set_macro("sptime_luaset_seconds_str", "")
     end
 end, { "string" })
 end
@@ -1588,8 +1595,8 @@ local function spintent_execute_mcm_mcd_result(raw_csv_list, tl_out, operation_f
         local r_ext  = result.extra
 
         local es_natural = r_int and (not r_sign or r_sign == "")
-          and (not r_dec or r_dec == "") and (not r_per or r_per == "")
-          and (not r_ext or s_gsub(r_ext, "%s+", "") == "")
+            and (not r_dec or r_dec == "") and (not r_per or r_per == "")
+            and (not r_ext or s_gsub(r_ext, "%s+", "") == "")
 
         if es_natural then
             numbers[#numbers + 1] = tonumber(r_int)
@@ -1621,8 +1628,8 @@ register_tex_cmd("luafun_mc_classify_args", function(raw_csv_list)
         local result = spintent_number_pattern:match(clean_item) or {}
 
         local es_natural = result.integer and (not result.sign or result.sign == "")
-          and (not result.decimal or result.decimal == "") and (not result.period or result.period == "")
-          and (not result.extra or s_gsub(result.extra, "%s+", "") == "")
+            and (not result.decimal or result.decimal == "") and (not result.period or result.period == "")
+            and (not result.extra or s_gsub(result.extra, "%s+", "") == "")
 
         if es_natural then
             types[#types + 1] = "number"
@@ -1631,8 +1638,8 @@ register_tex_cmd("luafun_mc_classify_args", function(raw_csv_list)
             all_numeric = false
         end
     end
-    set_macro("mc_luaset_types_clist", t_concat(types, ","))
-    set_bool("mc_luaset_all_numeric_str", all_numeric)
+    spintent_set_macro("mc_luaset_types_clist", t_concat(types, ","))
+    spintent_set_bool("mc_luaset_all_numeric_str", all_numeric)
 end, { "string" })
 
 -- Clasifica un solo argumento (mismo chequeo que
@@ -1643,13 +1650,13 @@ register_tex_cmd("luafun_spnmd_classify", function(raw_arg)
     local result = spintent_number_pattern:match(clean_item) or {}
 
     local es_natural = result.integer and (not result.sign or result.sign == "")
-      and (not result.decimal or result.decimal == "") and (not result.period or result.period == "")
-      and (not result.extra or s_gsub(result.extra, "%s+", "") == "")
+        and (not result.decimal or result.decimal == "") and (not result.period or result.period == "")
+        and (not result.extra or s_gsub(result.extra, "%s+", "") == "")
 
     local es_cero = es_natural and s_match(result.integer, "^0+$") ~= nil
 
-    set_bool("spnmd_luaset_is_number_str", es_natural and not es_cero)
-    set_bool("spnM_spnD_luaset_error_str", es_cero)
+    spintent_set_bool("spnmd_luaset_is_number_str", es_natural and not es_cero)
+    spintent_set_bool("spnM_spnD_luaset_error_str", es_cero)
 end, { "string" })
 end
 
@@ -1669,14 +1676,14 @@ register_tex_cmd("luafun_spang_parse", function(raw_sexag_str)
     local result = spintent_angle_sexag_pattern:match(raw_sexag_str)
 
     if not result then
-        set_macro("spang_luaset_error_str", "true")
+        spintent_set_macro("spang_luaset_error_str", "true")
         return
     end
 
-    set_macro("spang_luaset_error_str", "false")
-    set_macro("spang_luaset_grado_str", result.a or "")
-    set_macro("spang_luaset_minuto_str", result.b or "")
-    set_macro("spang_luaset_segundo_str", result.c or "")
+    spintent_set_macro("spang_luaset_error_str", "false")
+    spintent_set_macro("spang_luaset_grado_str", result.a or "")
+    spintent_set_macro("spang_luaset_minuto_str", result.b or "")
+    spintent_set_macro("spang_luaset_segundo_str", result.c or "")
 end, { "string" })
 end
 
@@ -1715,16 +1722,16 @@ local function spintent_calculate_divisors(n_val, limit)
         results[#results + 1] = tostring(divisors[i])
     end
 
-    local is_truncated = bool_str(count_to_show < actual_count)
+    local is_truncated = spintent_bool_str(count_to_show < actual_count)
     return t_concat(results, ", "), is_truncated
 end
 
 local function spintent_execute_spnM_spnD_result(raw_n, raw_limit, is_multiple)
-    set_macro("spnM_spnD_luaset_error_str", "false")
+    spintent_set_macro("spnM_spnD_luaset_error_str", "false")
 
     local num_n = tonumber(raw_n)
     if not num_n or num_n < 1 then
-        set_macro("spnM_spnD_luaset_error_str", "true")
+        spintent_set_macro("spnM_spnD_luaset_error_str", "true")
         return
     end
 
@@ -1738,13 +1745,13 @@ local function spintent_execute_spnM_spnD_result(raw_n, raw_limit, is_multiple)
         if num_limit <= 0 then num_limit = 5 end -- 5 múltiplos por defecto
         local result_str = spintent_calculate_multiples(num_n, num_limit)
 
-        set_macro("spnM_luaset_result_tl", result_str)
-        set_macro("spnM_luaset_is_truncated_str", "true") -- Siempre infinitos
+        spintent_set_macro("spnM_luaset_result_tl", result_str)
+        spintent_set_macro("spnM_luaset_is_truncated_str", "true") -- Siempre infinitos
     else
         local result_str, is_truncated = spintent_calculate_divisors(num_n, num_limit)
 
-        set_macro("spnD_luaset_result_tl", result_str)
-        set_macro("spnD_luaset_is_truncated_str", is_truncated)
+        spintent_set_macro("spnD_luaset_result_tl", result_str)
+        spintent_set_macro("spnD_luaset_is_truncated_str", is_truncated)
     end
 end
 
@@ -1762,20 +1769,20 @@ local spintent_spread_dict = {}
 
 register_tex_cmd("luafun_spread_new", function(sym, reading)
     if spintent_spread_dict[sym] then
-        set_macro("spread_luaset_status_str", "duplicate")
+        spintent_set_macro("spread_luaset_status_str", "duplicate")
     else
         spintent_spread_dict[sym] = reading
-        set_macro("spread_luaset_status_str", "success")
+        spintent_set_macro("spread_luaset_status_str", "success")
     end
 end, { "string", "string" })
 
 register_tex_cmd("luafun_spread_lookup", function(sym)
     local reading = spintent_spread_dict[sym]
     if reading then
-        set_macro("spread_luaset_status_str", "found")
-        set_macro("spread_luaset_reading_str", reading)
+        spintent_set_macro("spread_luaset_status_str", "found")
+        spintent_set_macro("spread_luaset_reading_str", reading)
     else
-        set_macro("spread_luaset_status_str", "notfound")
+        spintent_set_macro("spread_luaset_status_str", "notfound")
     end
 end, { "string" })
 end
@@ -1931,10 +1938,14 @@ register_tex_cmd("luafun_spmQ_scale_int", function(entero, frac_cmd)
 end, {"string", "string"})
 end
 
+-- Locales compartidos con la sección FUNCIONES; se asignan dentro del bloque de GEOMETRÍA PLANA
+local spintent_geo_primas, spintent_geo_normalize_primes, spintent_geo_build_body_nombre, spintent_geo_build_visual_nombre
+
 -- GEOMETRÍA PLANA
 
+do
 local spintent_geo_cont_sub = C((1 - P"}")^1)
-local spintent_geo_primas   = C(P"'"^1)
+spintent_geo_primas   = C(P"'"^1)
 
 local spintent_geo_punto = Ct(
     C(R"AZ") *
@@ -1996,7 +2007,7 @@ local spintent_geo_prima_prefijo = {
 
 -- Normaliza Unicode (′″‴) y comandos (^{\prime}, ^{\dprime}, ...) a
 -- comillas rectas, único formato que spintent_geo_primas reconoce.
-local function spintent_geo_normalize_primes(str)
+function spintent_geo_normalize_primes(str)
     str = s_gsub(str, "‴", "'''")
     str = s_gsub(str, "″", "''")
     str = s_gsub(str, "′", "'")
@@ -2049,7 +2060,7 @@ local function spintent_geo_build_body(puntos)
     return spintent_geo_build_intent("", puntos):match("^_(.-)-$")
 end
 
-local function spintent_geo_build_body_nombre(nombre)
+function spintent_geo_build_body_nombre(nombre)
     return spintent_geo_build_body({ nombre })
 end
 
@@ -2059,7 +2070,7 @@ end
 -- para "prima" el contenido ya trae las comillas ("'", "''", ...)
 -- listas para pegar, sin necesidad de reconstruirlas caracter por
 -- caracter.
-local function spintent_geo_build_visual_nombre(nombre)
+function spintent_geo_build_visual_nombre(nombre)
     local letra, mod, tipo = nombre[1], nombre[2], nombre[3]
     if tipo == "sub" then
         return letra .. "_{" .. mod .. "}"
@@ -2086,7 +2097,7 @@ local function spintent_geo_set_points_clist(puntos)
     for i, punto in ipairs(puntos) do
         raw_parts[i] = spintent_geo_build_visual_nombre(punto)
     end
-    set_macro("geo_luaset_points_clist", t_concat(raw_parts, ","))
+    spintent_set_macro("geo_luaset_points_clist", t_concat(raw_parts, ","))
 end
 
 -- Punto: \spPoint
@@ -2099,28 +2110,28 @@ register_tex_cmd("luafun_geo_point_parse_and_set",
 
     local punto = spintent_geo_single_point_grammar:match(csv)
     if not punto then
-        set_macro("geo_luaset_error_str",  "true")
-        set_macro("geo_luaset_intent_str", "")
-        set_macro("geo_luaset_print_tl",   "")
-        set_macro("geo_luaset_letra_str",  "")
-        set_macro("geo_luaset_sub_str",    "")
-        set_macro("geo_luaset_tipo_str",   "")
+        spintent_set_macro("geo_luaset_error_str",  "true")
+        spintent_set_macro("geo_luaset_intent_str", "")
+        spintent_set_macro("geo_luaset_print_tl",   "")
+        spintent_set_macro("geo_luaset_letra_str",  "")
+        spintent_set_macro("geo_luaset_sub_str",    "")
+        spintent_set_macro("geo_luaset_tipo_str",   "")
         return
     end
 
-    set_macro("geo_luaset_error_str", "false")
-    set_macro("geo_luaset_intent_str",
+    spintent_set_macro("geo_luaset_error_str", "false")
+    spintent_set_macro("geo_luaset_intent_str",
                     spintent_geo_build_body_nombre(punto))
-    set_macro("geo_luaset_print_tl",
+    spintent_set_macro("geo_luaset_print_tl",
                     spintent_geo_build_visual_nombre(punto))
 
     -- letra/sub/tipo por separado: así \__spintent_mathmlarg_point:nnn puede
     -- silenciar el subíndice VISUAL aparte de la base; pegado en una sola
     -- cadena quedaría sin proteger y la cola compartida podría
     -- asignárselo a otro comando (\spPoint{A_{1}}\spPoint{B}).
-    set_macro("geo_luaset_letra_str", punto[1])
-    set_macro("geo_luaset_sub_str",   punto[2] or "")
-    set_macro("geo_luaset_tipo_str",  punto[3] or "")
+    spintent_set_macro("geo_luaset_letra_str", punto[1])
+    spintent_set_macro("geo_luaset_sub_str",   punto[2] or "")
+    spintent_set_macro("geo_luaset_tipo_str",  punto[3] or "")
 end, { "string" })
 
 -- Recta, rayo, segmento y arco
@@ -2128,14 +2139,14 @@ end, { "string" })
 -- (preserva la semántica de \sprecta con una sola letra), luego
 -- puntos concatenados sin separador, luego error.
 local function spintent_geo_set_error_recta()
-    set_macro("geo_luaset_error_str",    "true")
-    set_macro("geo_luaset_intent_str",   "")
-    set_macro("geo_luaset_print_tl",     "")
-    set_macro("geo_luaset_is_name_str",  "false")
-    set_macro("geo_luaset_points_clist", "")
-    set_macro("geo_luaset_letra_str",    "")
-    set_macro("geo_luaset_sub_str",      "")
-    set_macro("geo_luaset_tipo_str",     "")
+    spintent_set_macro("geo_luaset_error_str",    "true")
+    spintent_set_macro("geo_luaset_intent_str",   "")
+    spintent_set_macro("geo_luaset_print_tl",     "")
+    spintent_set_macro("geo_luaset_is_name_str",  "false")
+    spintent_set_macro("geo_luaset_points_clist", "")
+    spintent_set_macro("geo_luaset_letra_str",    "")
+    spintent_set_macro("geo_luaset_sub_str",      "")
+    spintent_set_macro("geo_luaset_tipo_str",     "")
 end
 
 register_tex_cmd("luafun_geo_parse_and_set", function(csv)
@@ -2150,11 +2161,11 @@ register_tex_cmd("luafun_geo_parse_and_set", function(csv)
             spintent_geo_set_error_recta()
             return
         end
-        set_macro("geo_luaset_error_str",    "false")
-        set_macro("geo_luaset_is_name_str",  "false")
-        set_macro("geo_luaset_intent_str",
+        spintent_set_macro("geo_luaset_error_str",    "false")
+        spintent_set_macro("geo_luaset_is_name_str",  "false")
+        spintent_set_macro("geo_luaset_intent_str",
                         spintent_geo_build_body(puntos))
-        set_macro("geo_luaset_print_tl",
+        spintent_set_macro("geo_luaset_print_tl",
                         spintent_geo_build_visual(puntos))
         spintent_geo_set_points_clist(puntos)
         return
@@ -2162,29 +2173,29 @@ register_tex_cmd("luafun_geo_parse_and_set", function(csv)
 
     local nombre = spintent_geo_nombre_recta:match(csv)
     if nombre then
-        set_macro("geo_luaset_error_str",    "false")
-        set_macro("geo_luaset_is_name_str",  "true")
-        set_macro("geo_luaset_intent_str",
+        spintent_set_macro("geo_luaset_error_str",    "false")
+        spintent_set_macro("geo_luaset_is_name_str",  "true")
+        spintent_set_macro("geo_luaset_intent_str",
                         spintent_geo_build_body_nombre(nombre))
-        set_macro("geo_luaset_print_tl",
+        spintent_set_macro("geo_luaset_print_tl",
                         spintent_geo_build_visual_nombre(nombre))
-        set_macro("geo_luaset_points_clist", "") -- nombre = 1 solo punto, no aplica
+        spintent_set_macro("geo_luaset_points_clist", "") -- nombre = 1 solo punto, no aplica
         -- letra/sub/tipo por separado -- mismo motivo que en
         -- luafun_geo_point_parse_and_set: permite silenciar el
         -- subíndice VISUAL aparte de la base.
-        set_macro("geo_luaset_letra_str", nombre[1])
-        set_macro("geo_luaset_sub_str",   nombre[2] or "")
-        set_macro("geo_luaset_tipo_str",  nombre[3] or "")
+        spintent_set_macro("geo_luaset_letra_str", nombre[1])
+        spintent_set_macro("geo_luaset_sub_str",   nombre[2] or "")
+        spintent_set_macro("geo_luaset_tipo_str",  nombre[3] or "")
         return
     end
 
     local puntos = spintent_geo_puntos_concat:match(csv)
     if puntos and #puntos > 0 then
-        set_macro("geo_luaset_error_str",    "false")
-        set_macro("geo_luaset_is_name_str",  "false")
-        set_macro("geo_luaset_intent_str",
+        spintent_set_macro("geo_luaset_error_str",    "false")
+        spintent_set_macro("geo_luaset_is_name_str",  "false")
+        spintent_set_macro("geo_luaset_intent_str",
                         spintent_geo_build_body(puntos))
-        set_macro("geo_luaset_print_tl",
+        spintent_set_macro("geo_luaset_print_tl",
                         spintent_geo_build_visual(puntos))
         spintent_geo_set_points_clist(puntos)
         return
@@ -2241,8 +2252,8 @@ local function spintent_geo_build_body_angulo(csv)
     if nombre == "" then return nil, nil, nil end
     local es_numero = s_match(nombre, "^%d+$") ~= nil
     local cuerpo = es_numero and nombre or spintent_sanitize_for_screen_reader(nombre)
-    set_macro("geo_luaset_points_clist", "")
-    set_bool("geo_luaset_nombre_es_num_str", es_numero)
+    spintent_set_macro("geo_luaset_points_clist", "")
+    spintent_set_bool("geo_luaset_nombre_es_num_str", es_numero)
     return cuerpo, nombre, "nombre"
 end
 
@@ -2253,18 +2264,18 @@ register_tex_cmd("luafun_geo_angulo_parse_and_set",
 
     local cuerpo, visual, caso = spintent_geo_build_body_angulo(csv)
     if not visual then
-        set_macro("geo_luaset_error_str",       "true")
-        set_macro("geo_luaset_intent_str",      "")
-        set_macro("geo_luaset_print_tl",        "")
-        set_macro("geo_luaset_angulo_case_str", "")
-        set_macro("geo_luaset_points_clist",    "")
+        spintent_set_macro("geo_luaset_error_str",       "true")
+        spintent_set_macro("geo_luaset_intent_str",      "")
+        spintent_set_macro("geo_luaset_print_tl",        "")
+        spintent_set_macro("geo_luaset_angulo_case_str", "")
+        spintent_set_macro("geo_luaset_points_clist",    "")
         return
     end
 
-    set_macro("geo_luaset_error_str", "false")
-    set_macro("geo_luaset_angulo_case_str", caso)
-    set_macro("geo_luaset_intent_str", cuerpo)
-    set_macro("geo_luaset_print_tl", visual)
+    spintent_set_macro("geo_luaset_error_str", "false")
+    spintent_set_macro("geo_luaset_angulo_case_str", caso)
+    spintent_set_macro("geo_luaset_intent_str", cuerpo)
+    spintent_set_macro("geo_luaset_print_tl", visual)
 end, { "string" })
 
 -- Polígono: \spPoly, \spAfig, \spPfig
@@ -2298,10 +2309,10 @@ register_tex_cmd("luafun_geo_poly_parse_and_set",
     end
 
     if not puntos or #puntos < 3 then
-        set_macro("geo_luaset_error_str", "true")
-        set_macro("geo_luaset_print_tl", "")
-        set_macro("geo_luaset_poly_sym_str", "")
-        set_macro("geo_luaset_points_clist","")
+        spintent_set_macro("geo_luaset_error_str", "true")
+        spintent_set_macro("geo_luaset_print_tl", "")
+        spintent_set_macro("geo_luaset_poly_sym_str", "")
+        spintent_set_macro("geo_luaset_points_clist","")
         return
     end
 
@@ -2309,10 +2320,10 @@ register_tex_cmd("luafun_geo_poly_parse_and_set",
     local cmd_base = info and info.cmd or "polígono"
     local sym      = info and info.sym or ""
 
-    set_macro("geo_luaset_error_str",      "false")
-    set_macro("geo_luaset_poly_sym_str",   sym)
-    set_macro("geo_luaset_concept_str",    cmd_base)
-    set_macro("geo_luaset_print_tl", spintent_geo_build_visual(puntos))
+    spintent_set_macro("geo_luaset_error_str",      "false")
+    spintent_set_macro("geo_luaset_poly_sym_str",   sym)
+    spintent_set_macro("geo_luaset_concept_str",    cmd_base)
+    spintent_set_macro("geo_luaset_print_tl", spintent_geo_build_visual(puntos))
     spintent_geo_set_points_clist(puntos)
 end, { "string" })
 
@@ -2378,13 +2389,13 @@ local function spintent_geo_fig_set_vertices(op, puntos)
     local sym     = (info and info.sym) or ""
     local concepto = op .. "-del-" .. cmd_fig
 
-    set_macro("geo_luaset_error_str",         "false")
-    set_macro("geo_luaset_poly_sym_str",      sym)
-    set_macro("geo_luaset_concept_str",       concepto)
-    set_macro("geo_luaset_print_tl", spintent_geo_build_visual(puntos))
-    set_macro("geo_luaset_letra_word_str",    "")
-    set_macro("geo_luaset_letra_conector_str","")
-    set_macro("geo_luaset_sub_spoken_str",    "")
+    spintent_set_macro("geo_luaset_error_str",         "false")
+    spintent_set_macro("geo_luaset_poly_sym_str",      sym)
+    spintent_set_macro("geo_luaset_concept_str",       concepto)
+    spintent_set_macro("geo_luaset_print_tl", spintent_geo_build_visual(puntos))
+    spintent_set_macro("geo_luaset_letra_word_str",    "")
+    spintent_set_macro("geo_luaset_letra_conector_str","")
+    spintent_set_macro("geo_luaset_sub_spoken_str",    "")
     spintent_geo_set_points_clist(puntos)
 end
 
@@ -2392,14 +2403,14 @@ end
 -- (argumento vacío, error, y letra sola de la tabla F/P/B/L/T): ningún
 -- campo de vértices aplica, solo cambian error/concept/print/letra.
 local function spintent_geo_fig_reset(error_val, concept_val, print_val, palabra, conector, sub_spoken)
-    set_macro("geo_luaset_error_str",          error_val)
-    set_macro("geo_luaset_poly_sym_str",       "")
-    set_macro("geo_luaset_concept_str",        concept_val)
-    set_macro("geo_luaset_print_tl",           print_val)
-    set_macro("geo_luaset_letra_word_str",     palabra)
-    set_macro("geo_luaset_letra_conector_str", conector)
-    set_macro("geo_luaset_sub_spoken_str",     sub_spoken)
-    set_macro("geo_luaset_points_clist",       "")
+    spintent_set_macro("geo_luaset_error_str",          error_val)
+    spintent_set_macro("geo_luaset_poly_sym_str",       "")
+    spintent_set_macro("geo_luaset_concept_str",        concept_val)
+    spintent_set_macro("geo_luaset_print_tl",           print_val)
+    spintent_set_macro("geo_luaset_letra_word_str",     palabra)
+    spintent_set_macro("geo_luaset_letra_conector_str", conector)
+    spintent_set_macro("geo_luaset_sub_spoken_str",     sub_spoken)
+    spintent_set_macro("geo_luaset_points_clist",       "")
 end
 
 -- l__spintent_geo_luaset_concept_str lleva solo el nombre del
@@ -2488,56 +2499,56 @@ register_tex_cmd("luafun_geo_circ_parse_and_set",
 
     local centro = spintent_geo_single_point:match(spintent_trim(centro_str))
     if not centro then
-        set_macro("geo_luaset_error_str",      "true")
-        set_macro("geo_luaset_print_tl",       "")
-        set_macro("geo_luaset_circ_radio_type_str", "")
-        set_macro("geo_luaset_circ_radio_raw_str",  "")
-        set_macro("geo_luaset_points_clist",   "")
+        spintent_set_macro("geo_luaset_error_str",      "true")
+        spintent_set_macro("geo_luaset_print_tl",       "")
+        spintent_set_macro("geo_luaset_circ_radio_type_str", "")
+        spintent_set_macro("geo_luaset_circ_radio_raw_str",  "")
+        spintent_set_macro("geo_luaset_points_clist",   "")
         return
     end
 
-    set_macro("geo_luaset_error_str", "false")
-    set_macro("geo_luaset_print_tl",
+    spintent_set_macro("geo_luaset_error_str", "false")
+    spintent_set_macro("geo_luaset_print_tl",
                     spintent_geo_build_visual_nombre(centro))
     spintent_geo_set_points_clist({ centro })
 
     if radio_str == "" then
-        set_macro("geo_luaset_circ_radio_type_str", "")
-        set_macro("geo_luaset_circ_radio_raw_str",  "")
+        spintent_set_macro("geo_luaset_circ_radio_type_str", "")
+        spintent_set_macro("geo_luaset_circ_radio_raw_str",  "")
         return
     end
 
     local seg_puntos = spintent_geo_radio_segment:match(radio_str)
     if seg_puntos then
-        set_macro("geo_luaset_circ_radio_type_str", "segment")
-        set_macro("geo_luaset_circ_radio_raw_str",
+        spintent_set_macro("geo_luaset_circ_radio_type_str", "segment")
+        spintent_set_macro("geo_luaset_circ_radio_raw_str",
                         spintent_geo_build_visual(seg_puntos))
         return
     end
 
     local numero = spintent_geo_radio_number:match(radio_str)
     if numero then
-        set_macro("geo_luaset_circ_radio_type_str", "number")
-        set_macro("geo_luaset_circ_radio_raw_str",  numero)
+        spintent_set_macro("geo_luaset_circ_radio_type_str", "number")
+        spintent_set_macro("geo_luaset_circ_radio_raw_str",  numero)
         return
     end
 
     local etiqueta = spintent_geo_radio_label:match(radio_str)
     if etiqueta then
-        set_macro("geo_luaset_circ_radio_type_str", "label")
-        set_macro("geo_luaset_circ_radio_raw_str",  etiqueta)
+        spintent_set_macro("geo_luaset_circ_radio_type_str", "label")
+        spintent_set_macro("geo_luaset_circ_radio_raw_str",  etiqueta)
         return
     end
 
     if spintent_geo_radio_measure:match(radio_str) then
-        set_macro("geo_luaset_circ_radio_type_str", "measure")
-        set_macro("geo_luaset_circ_radio_raw_str",  radio_str)
+        spintent_set_macro("geo_luaset_circ_radio_type_str", "measure")
+        spintent_set_macro("geo_luaset_circ_radio_raw_str",  radio_str)
         return
     end
 
-    set_macro("geo_luaset_error_str",           "true")
-    set_macro("geo_luaset_circ_radio_type_str", "")
-    set_macro("geo_luaset_circ_radio_raw_str",  "")
+    spintent_set_macro("geo_luaset_error_str",           "true")
+    spintent_set_macro("geo_luaset_circ_radio_type_str", "")
+    spintent_set_macro("geo_luaset_circ_radio_raw_str",  "")
 end, { "string" })
 
 -- Coordenadas
@@ -2582,8 +2593,8 @@ local function spintent_spcoord_classify_base(part)
 
     local num_result = spintent_number_pattern:match(rest)
     if num_result
-       and (num_result.extra or "") == ""
-       and ((num_result.integer or "") ~= "" or (num_result.fraction or "") ~= "") then
+        and (num_result.extra or "") == ""
+        and ((num_result.integer or "") ~= "" or (num_result.fraction or "") ~= "") then
         return sign, "number", rest, "none"
     end
 
@@ -2597,8 +2608,8 @@ local function spintent_spcoord_classify(part)
     local sign, type_, value, has_frac = spintent_spcoord_classify_base(part)
     local comp = "false"
     if type_ == "raw"
-       and not s_match(value, "^\\d?frac%f[%A]")
-       and (s_match(value, "[_^]") or s_match(value, "\\sqrt")) then
+        and not s_match(value, "^\\d?frac%f[%A]")
+        and (s_match(value, "[_^]") or s_match(value, "\\sqrt")) then
         comp = "true"
     end
     return sign, type_, value, has_frac, comp
@@ -2631,18 +2642,18 @@ local function spintent_interval_scan(inner)
 end
 
 local function spintent_spcoord_set_error()
-    set_macro("spcoord_luaset_error_str", "true")
-    set_macro("spcoord_luaset_sep_str",   "")
-    set_macro("spcoord_luaset_x_sign_str",     "")
-    set_macro("spcoord_luaset_x_type_str",     "")
-    set_macro("spcoord_luaset_x_value_str",    "")
-    set_macro("spcoord_luaset_x_has_frac_str", "")
-    set_macro("spcoord_luaset_x_composite_str", "")
-    set_macro("spcoord_luaset_y_sign_str",     "")
-    set_macro("spcoord_luaset_y_type_str",     "")
-    set_macro("spcoord_luaset_y_value_str",    "")
-    set_macro("spcoord_luaset_y_has_frac_str", "")
-    set_macro("spcoord_luaset_y_composite_str", "")
+    spintent_set_macro("spcoord_luaset_error_str", "true")
+    spintent_set_macro("spcoord_luaset_sep_str",   "")
+    spintent_set_macro("spcoord_luaset_x_sign_str",     "")
+    spintent_set_macro("spcoord_luaset_x_type_str",     "")
+    spintent_set_macro("spcoord_luaset_x_value_str",    "")
+    spintent_set_macro("spcoord_luaset_x_has_frac_str", "")
+    spintent_set_macro("spcoord_luaset_x_composite_str", "")
+    spintent_set_macro("spcoord_luaset_y_sign_str",     "")
+    spintent_set_macro("spcoord_luaset_y_type_str",     "")
+    spintent_set_macro("spcoord_luaset_y_value_str",    "")
+    spintent_set_macro("spcoord_luaset_y_has_frac_str", "")
+    spintent_set_macro("spcoord_luaset_y_composite_str", "")
 end
 
 register_tex_cmd("luafun_spcoord_parse_and_set", function(raw_content)
@@ -2679,20 +2690,20 @@ register_tex_cmd("luafun_spcoord_parse_and_set", function(raw_content)
     local x_sign, x_type, x_value, x_has_frac, x_comp = spintent_spcoord_classify(x_raw)
     local y_sign, y_type, y_value, y_has_frac, y_comp = spintent_spcoord_classify(y_raw)
 
-    set_macro("spcoord_luaset_error_str", "false")
-    set_macro("spcoord_luaset_sep_str",   sep_char)
+    spintent_set_macro("spcoord_luaset_error_str", "false")
+    spintent_set_macro("spcoord_luaset_sep_str",   sep_char)
 
-    set_macro("spcoord_luaset_x_sign_str",     x_sign)
-    set_macro("spcoord_luaset_x_type_str",     x_type)
-    set_macro("spcoord_luaset_x_value_str",    x_value)
-    set_macro("spcoord_luaset_x_has_frac_str", x_has_frac)
-    set_macro("spcoord_luaset_x_composite_str", x_comp)
+    spintent_set_macro("spcoord_luaset_x_sign_str",     x_sign)
+    spintent_set_macro("spcoord_luaset_x_type_str",     x_type)
+    spintent_set_macro("spcoord_luaset_x_value_str",    x_value)
+    spintent_set_macro("spcoord_luaset_x_has_frac_str", x_has_frac)
+    spintent_set_macro("spcoord_luaset_x_composite_str", x_comp)
 
-    set_macro("spcoord_luaset_y_sign_str",     y_sign)
-    set_macro("spcoord_luaset_y_type_str",     y_type)
-    set_macro("spcoord_luaset_y_value_str",    y_value)
-    set_macro("spcoord_luaset_y_has_frac_str", y_has_frac)
-    set_macro("spcoord_luaset_y_composite_str", y_comp)
+    spintent_set_macro("spcoord_luaset_y_sign_str",     y_sign)
+    spintent_set_macro("spcoord_luaset_y_type_str",     y_type)
+    spintent_set_macro("spcoord_luaset_y_value_str",    y_value)
+    spintent_set_macro("spcoord_luaset_y_has_frac_str", y_has_frac)
+    spintent_set_macro("spcoord_luaset_y_composite_str", y_comp)
 end, { "string" })
 
 -- Intervalos
@@ -2707,14 +2718,14 @@ local spintent_interval_keys_end = { "sign", "type", "value", "inf", "tall", "co
 local spintent_interval_keys_all = { "left_sym", "right_sym", "type", "sep", "tall" }
 
 local function spintent_interval_set_error(code)
-    set_macro("spinterval_luaset_error_str",      "true")
-    set_macro("spinterval_luaset_error_code_str", code)
+    spintent_set_macro("spinterval_luaset_error_str",      "true")
+    spintent_set_macro("spinterval_luaset_error_code_str", code)
     for _, k in ipairs(spintent_interval_keys_all) do
-        set_macro("spinterval_luaset_" .. k .. "_str", "")
+        spintent_set_macro("spinterval_luaset_" .. k .. "_str", "")
     end
     for _, p in ipairs({ "a", "b" }) do
         for _, k in ipairs(spintent_interval_keys_end) do
-            set_macro("spinterval_luaset_" .. p .. "_" .. k .. "_str", "")
+            spintent_set_macro("spinterval_luaset_" .. p .. "_" .. k .. "_str", "")
         end
     end
 end
@@ -2802,8 +2813,8 @@ register_tex_cmd("luafun_spinterval_parse_and_set", function(raw_content)
     if b_inf ~= "none" then b_type = "infinity" end
 
     -- is_integer: solo dígitos; is_short: además a lo más tres dígitos
-    local function is_integer(v) return bool_str(s_match(v, "^%d+$")) end
-    local function is_short(v) return bool_str(s_match(v, "^%d%d?%d?$")) end
+    local function is_integer(v) return spintent_bool_str(s_match(v, "^%d+$")) end
+    local function is_short(v) return spintent_bool_str(s_match(v, "^%d%d?%d?$")) end
 
     local a_tall = spintent_interval_tall(a_value)
     local b_tall = spintent_interval_tall(b_value)
@@ -2825,33 +2836,33 @@ register_tex_cmd("luafun_spinterval_parse_and_set", function(raw_content)
         kind = "closed-open"
     end
 
-    set_macro("spinterval_luaset_error_str",      "false")
-    set_macro("spinterval_luaset_error_code_str", "")
-    set_macro("spinterval_luaset_left_sym_str",   left)
-    set_macro("spinterval_luaset_right_sym_str",  right)
-    set_macro("spinterval_luaset_type_str",       kind)
-    set_macro("spinterval_luaset_sep_str",        sep_char)
-    set_macro("spinterval_luaset_tall_str",       tall)
+    spintent_set_macro("spinterval_luaset_error_str",      "false")
+    spintent_set_macro("spinterval_luaset_error_code_str", "")
+    spintent_set_macro("spinterval_luaset_left_sym_str",   left)
+    spintent_set_macro("spinterval_luaset_right_sym_str",  right)
+    spintent_set_macro("spinterval_luaset_type_str",       kind)
+    spintent_set_macro("spinterval_luaset_sep_str",        sep_char)
+    spintent_set_macro("spinterval_luaset_tall_str",       tall)
 
-    set_macro("spinterval_luaset_a_sign_str",      a_sign)
-    set_macro("spinterval_luaset_a_type_str",      a_type)
-    set_macro("spinterval_luaset_a_value_str",     a_value)
-    set_macro("spinterval_luaset_a_inf_str",       a_inf)
-    set_macro("spinterval_luaset_a_tall_str",      a_tall)
-    set_macro("spinterval_luaset_a_composite_str", a_comp)
-    set_macro("spinterval_luaset_a_integer_str",   is_integer(a_value))
-    set_macro("spinterval_luaset_a_short_str",     is_short(a_value))
-    set_macro("spinterval_luaset_a_braced_str",    (s_gsub(a_value, ",", "{,}")))
+    spintent_set_macro("spinterval_luaset_a_sign_str",      a_sign)
+    spintent_set_macro("spinterval_luaset_a_type_str",      a_type)
+    spintent_set_macro("spinterval_luaset_a_value_str",     a_value)
+    spintent_set_macro("spinterval_luaset_a_inf_str",       a_inf)
+    spintent_set_macro("spinterval_luaset_a_tall_str",      a_tall)
+    spintent_set_macro("spinterval_luaset_a_composite_str", a_comp)
+    spintent_set_macro("spinterval_luaset_a_integer_str",   is_integer(a_value))
+    spintent_set_macro("spinterval_luaset_a_short_str",     is_short(a_value))
+    spintent_set_macro("spinterval_luaset_a_braced_str",    (s_gsub(a_value, ",", "{,}")))
 
-    set_macro("spinterval_luaset_b_sign_str",      b_sign)
-    set_macro("spinterval_luaset_b_type_str",      b_type)
-    set_macro("spinterval_luaset_b_value_str",     b_value)
-    set_macro("spinterval_luaset_b_inf_str",       b_inf)
-    set_macro("spinterval_luaset_b_tall_str",      b_tall)
-    set_macro("spinterval_luaset_b_composite_str", b_comp)
-    set_macro("spinterval_luaset_b_integer_str",   is_integer(b_value))
-    set_macro("spinterval_luaset_b_short_str",     is_short(b_value))
-    set_macro("spinterval_luaset_b_braced_str",    (s_gsub(b_value, ",", "{,}")))
+    spintent_set_macro("spinterval_luaset_b_sign_str",      b_sign)
+    spintent_set_macro("spinterval_luaset_b_type_str",      b_type)
+    spintent_set_macro("spinterval_luaset_b_value_str",     b_value)
+    spintent_set_macro("spinterval_luaset_b_inf_str",       b_inf)
+    spintent_set_macro("spinterval_luaset_b_tall_str",      b_tall)
+    spintent_set_macro("spinterval_luaset_b_composite_str", b_comp)
+    spintent_set_macro("spinterval_luaset_b_integer_str",   is_integer(b_value))
+    spintent_set_macro("spinterval_luaset_b_short_str",     is_short(b_value))
+    spintent_set_macro("spinterval_luaset_b_braced_str",    (s_gsub(b_value, ",", "{,}")))
 end, { "string" })
 
 -- \spProb: separa  A \cap B,  A \cup B  o  A \mid B  (también A | B).
@@ -2860,10 +2871,10 @@ end, { "string" })
 local spintent_prob_words = { cap = "cap", cup = "cup", mid = "mid", vert = "mid" }
 
 local function spintent_prob_set_error()
-    set_macro("spProb_luaset_error_str", "true")
-    set_macro("spProb_luaset_op_str",    "")
-    set_macro("spProb_luaset_a_str",     "")
-    set_macro("spProb_luaset_b_str",     "")
+    spintent_set_macro("spProb_luaset_error_str", "true")
+    spintent_set_macro("spProb_luaset_op_str",    "")
+    spintent_set_macro("spProb_luaset_a_str",     "")
+    spintent_set_macro("spProb_luaset_b_str",     "")
 end
 
 register_tex_cmd("luafun_spProb_parse_and_set", function(raw_content)
@@ -2929,15 +2940,15 @@ register_tex_cmd("luafun_spProb_parse_and_set", function(raw_content)
         end
     end
 
-    set_macro("spProb_luaset_error_str", "false")
-    set_macro("spProb_luaset_op_str",    op)
-    set_macro("spProb_luaset_a_str",     a_raw)
-    set_macro("spProb_luaset_b_str",     b_raw)
+    spintent_set_macro("spProb_luaset_error_str", "false")
+    spintent_set_macro("spProb_luaset_op_str",    op)
+    spintent_set_macro("spProb_luaset_a_str",     a_raw)
+    spintent_set_macro("spProb_luaset_b_str",     b_raw)
 end, { "string" })
 
 -- \spAcirc, \spPcirc: una coma en el argumento nunca es válida.
 register_tex_cmd("luafun_spcircfig_comma", function(raw)
-    set_bool("spcircfig_luaset_comma_str", string.find(raw, ",", 1, true))
+    spintent_set_bool("spcircfig_luaset_comma_str", string.find(raw, ",", 1, true))
 end, { "string" })
 
 -- \spcomp: un evento es compuesto si contiene \cap, \cup, \setminus
@@ -2959,7 +2970,7 @@ register_tex_cmd("luafun_spcomp_compound", function(raw)
             i = i + 1
         end
     end
-    set_macro("spcomp_luaset_compound_str", compound)
+    spintent_set_macro("spcomp_luaset_compound_str", compound)
 end, { "string" })
 
 -- \spabs: decide si se lee el cierre del valor absoluto. Cuenta los
@@ -3006,7 +3017,7 @@ register_tex_cmd("luafun_spabs_close", function(raw)
             end
         end
     end
-    set_bool("spabs_luaset_close_str", count > 1)
+    spintent_set_bool("spabs_luaset_close_str", count > 1)
 end, { "string" })
 
 -- \spcomb: combinatoria. El argumento único es n o n,k. La función
@@ -3021,10 +3032,10 @@ end, { "string" })
 -- (también \left...\right) no separan elementos. Si todo es entero,
 -- la suma de las multiplicidades no puede pasar de n.
 local function spintent_comb_set_error()
-    set_macro("spcomb_luaset_error_str", "true")
-    set_macro("spcomb_luaset_n_str",     "")
-    set_macro("spcomb_luaset_k_str",     "")
-    set_macro("spcomb_luaset_list_tl",   "")
+    spintent_set_macro("spcomb_luaset_error_str", "true")
+    spintent_set_macro("spcomb_luaset_n_str",     "")
+    spintent_set_macro("spcomb_luaset_k_str",     "")
+    spintent_set_macro("spcomb_luaset_list_tl",   "")
 end
 
 local function spintent_comb_split(raw)
@@ -3079,9 +3090,9 @@ register_tex_cmd("luafun_spcomb_split", function(raw)
     if items and #items >= 2 then
         raw_n, raw_k, single = items[1], t_concat(items, ",", 2), "false"
     end
-    set_macro("spcomb_luaset_raw_n_str",  raw_n)
-    set_macro("spcomb_luaset_raw_k_str",  raw_k)
-    set_macro("spcomb_luaset_single_str", single)
+    spintent_set_macro("spcomb_luaset_raw_n_str",  raw_n)
+    spintent_set_macro("spcomb_luaset_raw_k_str",  raw_k)
+    spintent_set_macro("spcomb_luaset_single_str", single)
 end, { "string" })
 
 register_tex_cmd("luafun_spcomb_prepare", function(mode, raw_n, raw_k, check_le)
@@ -3113,11 +3124,12 @@ register_tex_cmd("luafun_spcomb_prepare", function(mode, raw_n, raw_k, check_le)
         if numeric and sum > tonumber(n_s) then return spintent_comb_set_error() end
         list = t_concat(parts)
     end
-    set_macro("spcomb_luaset_error_str", "false")
-    set_macro("spcomb_luaset_n_str",     n_s)
-    set_macro("spcomb_luaset_k_str",     k_s)
-    set_macro("spcomb_luaset_list_tl",   list)
+    spintent_set_macro("spcomb_luaset_error_str", "false")
+    spintent_set_macro("spcomb_luaset_n_str",     n_s)
+    spintent_set_macro("spcomb_luaset_k_str",     k_s)
+    spintent_set_macro("spcomb_luaset_list_tl",   list)
 end, { "string", "string", "string", "string" })
+end
 
 -- FUNCIONES: \spfun, \spdom, \sprec, \spcod
 --
@@ -3256,14 +3268,14 @@ spintent_fun_analyze = function(raw)
 end
 
 local function spintent_fun_set_error()
-    set_macro("spfun_luaset_error_str", "true")
-    set_macro("spfun_luaset_nargs_str", "0")
-    set_macro("spfun_luaset_inv_str",   "false")
-    set_macro("geo_luaset_intent_str",  "")
-    set_macro("geo_luaset_print_tl",    "")
-    set_macro("geo_luaset_letra_str",   "")
-    set_macro("geo_luaset_sub_str",     "")
-    set_macro("geo_luaset_tipo_str",    "")
+    spintent_set_macro("spfun_luaset_error_str", "true")
+    spintent_set_macro("spfun_luaset_nargs_str", "0")
+    spintent_set_macro("spfun_luaset_inv_str",   "false")
+    spintent_set_macro("geo_luaset_intent_str",  "")
+    spintent_set_macro("geo_luaset_print_tl",    "")
+    spintent_set_macro("geo_luaset_letra_str",   "")
+    spintent_set_macro("geo_luaset_sub_str",     "")
+    spintent_set_macro("geo_luaset_tipo_str",    "")
 end
 
 -- Deja el nombre en las variables compartidas. Con la inversa, el
@@ -3275,12 +3287,12 @@ local function spintent_fun_set_name(nombre, inv)
         intent = intent .. "-inversa"
         visual = visual .. "^{-1}"
     end
-    set_macro("geo_luaset_intent_str", intent)
-    set_macro("geo_luaset_print_tl",   visual)
-    set_macro("geo_luaset_letra_str",  nombre[1])
-    set_macro("geo_luaset_sub_str",    nombre[2] or "")
-    set_macro("geo_luaset_tipo_str",   nombre[3] or "")
-    set_bool("spfun_luaset_inv_str",  inv)
+    spintent_set_macro("geo_luaset_intent_str", intent)
+    spintent_set_macro("geo_luaset_print_tl",   visual)
+    spintent_set_macro("geo_luaset_letra_str",  nombre[1])
+    spintent_set_macro("geo_luaset_sub_str",    nombre[2] or "")
+    spintent_set_macro("geo_luaset_tipo_str",   nombre[3] or "")
+    spintent_set_bool("spfun_luaset_inv_str",  inv)
 end
 
 register_tex_cmd("luafun_spfun_parse_and_set", function(raw)
@@ -3293,11 +3305,11 @@ register_tex_cmd("luafun_spfun_parse_and_set", function(raw)
         return
     end
 
-    set_macro("spfun_luaset_error_str", "false")
-    set_macro("spfun_luaset_nargs_str", tostring(#args))
+    spintent_set_macro("spfun_luaset_error_str", "false")
+    spintent_set_macro("spfun_luaset_nargs_str", tostring(#args))
     for i = 1, #args do
-        set_macro("spfun_luaset_arg_" .. i .. "_tl", args[i][1])
-        set_macro("spfun_luaset_simple_" .. i .. "_str", args[i][2])
+        spintent_set_macro("spfun_luaset_arg_" .. i .. "_tl", args[i][1])
+        spintent_set_macro("spfun_luaset_simple_" .. i .. "_str", args[i][2])
     end
     spintent_fun_set_name(nombre, inv)
 end, { "string" })
@@ -3309,10 +3321,10 @@ register_tex_cmd("luafun_spdom_parse_and_set", function(raw)
     local nombre, inv, rest = spintent_fun_parse_name(raw)
     if not nombre or not s_match(rest, "^%s*$") then
         spintent_fun_set_error()
-        set_macro("spdom_luaset_error_str", "true")
+        spintent_set_macro("spdom_luaset_error_str", "true")
         return
     end
-    set_macro("spdom_luaset_error_str", "false")
+    spintent_set_macro("spdom_luaset_error_str", "false")
     spintent_fun_set_name(nombre, inv)
 end, { "string" })
 
@@ -3353,7 +3365,7 @@ local function spintent_fun_split_circ(str)
         local c = s_sub(str, i, i)
         if c == "\\" then
             if depth == 0 and s_sub(str, i, i + 4) == "\\circ"
-               and not s_match(s_sub(str, i + 5, i + 5), "%a") then
+                and not s_match(s_sub(str, i + 5, i + 5), "%a") then
                 parts[#parts + 1] = s_sub(str, start, i - 1)
                 i = i + 5
                 start = i
@@ -3400,7 +3412,7 @@ local function spintent_fun_comp_funs(str)
 end
 
 local function spintent_fun_comp_error()
-    set_macro("spfuncomp_luaset_error_str", "true")
+    spintent_set_macro("spfuncomp_luaset_error_str", "true")
 end
 
 register_tex_cmd("luafun_spfuncomp_parse_and_set", function(raw)
@@ -3429,23 +3441,23 @@ register_tex_cmd("luafun_spfuncomp_parse_and_set", function(raw)
     end
     if not funs then spintent_fun_comp_error() return end
 
-    set_macro("spfuncomp_luaset_error_str", "false")
-    set_macro("spfuncomp_luaset_n_str", tostring(#funs))
-    set_bool("spfuncomp_luaset_paren_str", paren)
-    set_bool("spfuncomp_luaset_apply_str", args)
+    spintent_set_macro("spfuncomp_luaset_error_str", "false")
+    spintent_set_macro("spfuncomp_luaset_n_str", tostring(#funs))
+    spintent_set_bool("spfuncomp_luaset_paren_str", paren)
+    spintent_set_bool("spfuncomp_luaset_apply_str", args)
     for i = 1, #funs do
-        set_macro("spfuncomp_luaset_intent_" .. i .. "_str", funs[i][1])
-        set_macro("spfuncomp_luaset_print_" .. i .. "_tl",  funs[i][2])
-        set_macro("spfuncomp_luaset_letra_" .. i .. "_str", funs[i][3])
-        set_macro("spfuncomp_luaset_sub_" .. i .. "_str",   funs[i][4])
-        set_macro("spfuncomp_luaset_tipo_" .. i .. "_str",  funs[i][5])
-        set_bool("spfuncomp_luaset_inv_" .. i .. "_str",   funs[i][6])
+        spintent_set_macro("spfuncomp_luaset_intent_" .. i .. "_str", funs[i][1])
+        spintent_set_macro("spfuncomp_luaset_print_" .. i .. "_tl",  funs[i][2])
+        spintent_set_macro("spfuncomp_luaset_letra_" .. i .. "_str", funs[i][3])
+        spintent_set_macro("spfuncomp_luaset_sub_" .. i .. "_str",   funs[i][4])
+        spintent_set_macro("spfuncomp_luaset_tipo_" .. i .. "_str",  funs[i][5])
+        spintent_set_bool("spfuncomp_luaset_inv_" .. i .. "_str",   funs[i][6])
     end
     if args then
-        set_macro("spfun_luaset_nargs_str", tostring(#args))
+        spintent_set_macro("spfun_luaset_nargs_str", tostring(#args))
         for i = 1, #args do
-            set_macro("spfun_luaset_arg_" .. i .. "_tl", args[i][1])
-            set_macro("spfun_luaset_simple_" .. i .. "_str", args[i][2])
+            spintent_set_macro("spfun_luaset_arg_" .. i .. "_tl", args[i][1])
+            spintent_set_macro("spfun_luaset_simple_" .. i .. "_str", args[i][2])
         end
     end
 end, { "string" })

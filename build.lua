@@ -31,7 +31,7 @@
 -- General package identification
 module     = "spanish-mathml-intent"
 pkgversion = "1.2"
-pkgdate    = "2026-10-24"
+pkgdate    = "2026-10-25"
 ltxrelease = "2026-11-01"
 
 -- Configuration of files for build and installation
@@ -124,6 +124,8 @@ uploadconfig = {
     .. "It is aimed at primary and secondary school teachers.",
   topic        = { "spanish", "luatex", "accessible", "teaching", "maths", "tagged-pdf" },
   ctanPath     = "/macros/luatex/latex/" .. ctanpkg,
+  home         = "https://github.com/pablgonz/" .. module,
+  development  = "https://github.com/pablgonz/" .. module,
   repository   = "https://github.com/pablgonz/" .. module,
   bugtracker   = "https://github.com/pablgonz/" .. module .. "/issues",
   support      = "https://github.com/pablgonz/" .. module .. "/discussions",

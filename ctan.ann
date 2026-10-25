@@ -1,4 +1,5 @@
-Release v1.2:
-- New subsection "Other languages" in the implementation.
-- The title and PDF metadata use the name "Spanish MathML intent".
+Release v1.3:
+- The variables of the implementation are documented in groups, by purpose.
+- New note on the plural of acronyms in the manual.
+- The Spanish text of the manual follows the RAE rules.
 - Minor internal cleanups; the output of the commands does not change.

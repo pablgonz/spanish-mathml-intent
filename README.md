@@ -14,6 +14,12 @@ números, unidades, dinero, fechas y horas, geometría, álgebra y estadística,
 cada uno con la lectura en español que le corresponde. Está pensado para
 docentes de educación primaria y secundaria.
 
+El conjunto de comandos está cerrado: no se agregarán comandos nuevos. El
+paquete seguirá el paso a `luamml` y al proyecto de etiquetado de `LaTeX` para
+funcionar con ellos. El código y la documentación están pensados para quien
+necesite un comando que no existe aquí: los comandos actuales sirven de
+plantilla.
+
 ## Requerimientos
 
 El requisito mínimo es el release de `LaTeX` 2026-11-01. Se carga y depende
