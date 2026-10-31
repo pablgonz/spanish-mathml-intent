@@ -23,14 +23,11 @@
    * release    : It performs the checks before generating a public
                   release (on git and ctan), commits the PDFs that example
                   and ctan regenerate and creates the git tag.
-   The targets testSE, testAF and example accept file names (with or
-   without .tex) to run only those files, as l3build check does with the
-   names of the tests: l3build testAF spintent-04 spintent-05
 --]]
 
 -- General package identification
 module     = "spanish-mathml-intent"
-pkgversion = "1.2"
+pkgversion = "1.3"
 pkgdate    = "2026-11-01"
 ltxrelease = "2026-11-01"
 
@@ -43,15 +40,15 @@ installfiles   = {"**/*.sty", "**/*.lua"}
 scriptmanfiles = {"spmmli-tool.1"}
 docfiles       = {"spmmli-tool.man1.pdf"}
 tdslocations   = {
-  "tex/lualatex/spanishmathmlintent/spanish-mathml-intent.sty",
-  "tex/lualatex/spanishmathmlintent/spintent.lua",
-  "doc/lualatex/spanishmathmlintent/spanish-mathml-intent.pdf",
-  "doc/lualatex/spanishmathmlintent/README.md",
+  "tex/lualatex/spanish-mathml-intent/spanish-mathml-intent.sty",
+  "tex/lualatex/spanish-mathml-intent/spintent.lua",
+  "doc/lualatex/spanish-mathml-intent/spanish-mathml-intent.pdf",
+  "doc/lualatex/spanish-mathml-intent/README.md",
   "doc/man/man1/spmmli-tool.1",
   "doc/man/man1/spmmli-tool.man1.pdf",
   "scripts/spanish-mathml-intent/spmmli-tool.lua",
-  "source/lualatex/spanishmathmlintent/spanish-mathml-intent.dtx",
-  "source/lualatex/spanishmathmlintent/spanish-mathml-intent.ins",
+  "source/lualatex/spanish-mathml-intent/spanish-mathml-intent.dtx",
+  "source/lualatex/spanish-mathml-intent/spanish-mathml-intent.ins",
 }
 
 -- Unpacking files from spanish-mathml-intent.ins
@@ -598,17 +595,50 @@ local function remove_tmp_dir()
   os_message("Removed temporary directory " .. tmpdir)
 end
 
+-- Extensions of the files that a compilation leaves behind
+local generated_ext = {
+  aux = true, log = true, out = true, toc = true, lof = true, lot = true,
+  nav = true, snm = true, vrb = true, bbl = true, blg = true, fls = true,
+  tuc = true, xdv = true, gz = true, fdb_latexmk = true,
+}
+
+-- Copies to the temporary directory what the examples in srcdir need: every
+-- file except the leftovers of a compilation and the PDF of each .tex (the
+-- PDF, mathml-SE or mathml-AF, is the result, not an input). Returns the
+-- number of files copied or, on failure, nil and the name of the file.
+local function copy_inputs(srcdir)
+  local tex = {}
+  for file in lfs.dir(srcdir) do
+    local name = file:match("^(.+)%.tex$")
+    if name then tex[name] = true end
+  end
+  local count = 0
+  for file in lfs.dir(srcdir) do
+    local name, ext = file:match("^(.+)%.([^.]+)$")
+    if name and lfs.attributes(srcdir .. "/" .. file, "mode") == "file"
+       and not generated_ext[ext]
+       and not (ext == "pdf" and (tex[name] or tex[name:gsub("%-AF$", "")])) then
+      if cp(file, srcdir, tmpdir) ~= 0 then return nil, file end
+      count = count + 1
+    end
+  end
+  return count
+end
+
 -- Check every .tex in srcdir as mathml-SE (sample.tex compiled as it is).
--- Nothing is copied out of the temporary directory.
+-- Only the inputs are copied to the temporary directory.
 local function check_se(srcdir)
   local samples = list_samples(srcdir)
   make_tmp_dir()
   announce_validators()
 
+  local copied, bad = copy_inputs(srcdir)
+  if not copied then
+    fail("** Error!!: Failed to copy " .. bad .. " from " .. srcdir .. " to " .. tmpdir)
+  end
+  os_message("Copied " .. copied .. " files from " .. srcdir .. " to " .. tmpdir)
+
   for _, sample in ipairs(samples) do
-    if cp(sample .. ".tex", srcdir, tmpdir) ~= 0 then
-      fail("** Error!!: Could not copy " .. sample .. ".tex")
-    end
     compile_sample(tmpdir, sample, "with mathml-SE", false)
     os_message("OK: " .. sample .. ".tex (mathml-SE)")
   end
@@ -639,11 +669,13 @@ local function check_se_af(srcdir, copy_pdf)
     fail("** Error!!: Could not copy the package files to " .. afdir)
   end
 
-  for _, sample in ipairs(samples) do
-    if cp(sample .. ".tex", srcdir, tmpdir) ~= 0 then
-      fail("** Error!!: Could not copy " .. sample .. ".tex")
-    end
+  local copied, bad = copy_inputs(srcdir)
+  if not copied then
+    fail("** Error!!: Failed to copy " .. bad .. " from " .. srcdir .. " to " .. tmpdir)
+  end
+  os_message("Copied " .. copied .. " files from " .. srcdir .. " to " .. tmpdir)
 
+  for _, sample in ipairs(samples) do
     -- 1. mathml-SE run with AFghost=true: writes sample-luamml-mathml.html
     compile_sample(tmpdir, sample, "with mathml-SE and AFghost=true", true)
 
@@ -895,13 +927,15 @@ local function release_target()
     end
   end
 
-  -- 7. Perform CTAN upload dry run. With --debug l3build posts the form to
-  -- httpbin.org and always exits with status 1, so the check looks at the
-  -- echoed form (package and version) instead of the exit status.
+  -- 7. Perform CTAN upload dry run. With --debug l3build prints the fields of
+  -- the form and then posts it to httpbin.org, which can refuse the zip (body
+  -- too large) or be down; l3build exits with status 1 in any case. So the
+  -- check looks at the fields that l3build prints (package and version), not
+  -- at the answer of the server.
   os_message("Running dry-run upload check")
   local dryrun = os_capture("l3build upload -F ctan.ann --debug 2>&1", true)
-  local okpkg = string.find(dryrun, '"pkg": "spanish-mathml-intent"', 1, true)
-  local okver = string.find(dryrun, '"version": "' .. uploadconfig.version .. '"', 1, true)
+  local okpkg = string.find(dryrun, "ctan-upload | pkg: " .. ctanpkg .. "\n", 1, true)
+  local okver = string.find(dryrun, "ctan-upload | version: " .. uploadconfig.version .. "\n", 1, true)
   if not (okpkg and okver) then
     error("** Error!!: dry-run upload check failed; nothing was tagged or pushed")
   end
