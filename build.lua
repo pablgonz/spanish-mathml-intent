@@ -31,7 +31,7 @@
 -- General package identification
 module     = "spanish-mathml-intent"
 pkgversion = "1.2"
-pkgdate    = "2026-10-25"
+pkgdate    = "2026-11-01"
 ltxrelease = "2026-11-01"
 
 -- Configuration of files for build and installation

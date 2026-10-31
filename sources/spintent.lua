@@ -1,5 +1,5 @@
 --[[
-     Lua module spintent.lua for spintent package - v1.2 [2026-10-25]
+     Lua module spintent.lua for spanish-mathml-intent package - v1.2 [2026-11-01]
 --]]
 
 -- ÍNDICE DE SECCIONES (cada una empieza con su título en mayúsculas)
@@ -452,7 +452,7 @@ local function spintent_right_angle_sqr()
 end
 register_tex_cmd("luafun_right_angle_sqr", spintent_right_angle_sqr, {})
 
--- Se llama desde \AtBeginDocument en spintent.sty, no al cargar el modulo
+-- Se llama desde \AtBeginDocument en spanish-mathml-intent.sty, no al cargar el modulo
 -- Si no hay fuente matematica cargada, degrada con un aviso..
 local function spintent_init_math_fallbacks()
     spintent_cal_fam = spintent_find_free_family()
@@ -3132,6 +3132,8 @@ end, { "string", "string", "string", "string" })
 end
 
 -- FUNCIONES: \spfun, \spdom, \sprec, \spcod
+
+do
 --
 -- \spfun reconoce  nombre(arg, arg, ...)  donde nombre es una letra
 -- (mayúscula o minúscula) con subíndice entre llaves (letras o
@@ -3461,3 +3463,4 @@ register_tex_cmd("luafun_spfuncomp_parse_and_set", function(raw)
         end
     end
 end, { "string" })
+end
