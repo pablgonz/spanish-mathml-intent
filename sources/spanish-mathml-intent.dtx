@@ -6993,6 +6993,13 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{description}[font=\small\sffamily,wide=0pt,style=multiline,leftmargin=1.1\descrwidth,nosep,noitemsep]
 %  \item [\fileversion{} (ctan), \filedate]
 %    \begin{itemize}
+%      \item The geometry commands put an invisible separator between
+%        consecutive points (|AB|, |AOB|, |ABC|\ldots), so that
+%        \mynvmath{MathCAT} 0.7.7 reads each point on its own instead of merging
+%        the letters into a word.
+%    \end{itemize}
+%  \item [v1.3 (ctan), 2026-11-01]
+%    \begin{itemize}
 %      \item Documentation: the variables of the implementation are described
 %        in groups, by purpose.
 %      \item Documentation: new note on the plural of acronyms, which explains
@@ -15549,8 +15556,9 @@ spmmli-tool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 %
 %   Otherwise, the same distinction applies to the
-%   combined \myhlc|\l_@@_geo_luaset_print_tl|: the shared queue for |school|
-%   or when \mykey{silent} is |true|, and a native |\MathMLarg| for |mathcat|.
+%   combined \myhlc|\l_@@_geo_luaset_print_tl|: the shared queue for
+%   \mykey{read-cmd}|=school| or when \mykey{silent} is |true|, and a native
+%   |\MathMLarg| for \mykey{read-cmd}|=mathcat|.
 %   The two mechanisms are never mixed in the same formula.
 %    \begin{macrocode}
       {
@@ -16434,7 +16442,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 %   Otherwise, the same |kv| logic wraps the combined
 %   \myhlc|\l_@@_geo_luaset_print_tl| as a whole: with the shared queue for
-%   |school| and with its own |arg| alone for |mathcat|.
+%   \mykey{read-cmd}|=school| and with its own |arg| alone for
+%   \mykey{read-cmd}|=mathcat|.
 %    \begin{macrocode}
           {
             \bool_if:NTF \l_@@_sprecta_silent_bool
