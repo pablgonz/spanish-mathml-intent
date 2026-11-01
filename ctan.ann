@@ -1,5 +1,2 @@
-Release v1.3:
-- The variables of the implementation are documented in groups, by purpose.
-- New note on the plural of acronyms in the manual.
-- The Spanish text of the manual follows the RAE rules.
-- Minor internal cleanups; the output of the commands does not change.
+Release v1.4:
+- The geometry commands put an invisible separator between consecutive points, so that MathCAT 0.7.7 reads each point on its own.

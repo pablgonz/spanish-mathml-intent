@@ -1,5 +1,5 @@
 --[[
-     Lua module spintent.lua for spanish-mathml-intent package - v1.3 [2026-11-01]
+     Lua module spintent.lua for spanish-mathml-intent package - v1.4 [2026-11-02]
 --]]
 
 -- ÍNDICE DE SECCIONES (cada una empieza con su título en mayúsculas)
@@ -311,6 +311,43 @@ register_tex_cmd("luafun_inner_sep", function()
         if spintent_debug_ghost then result.sptmp = "inner" end
         return result, core
     end
+    properties[kernel] = p
+
+    node.write(noad)
+end, {})
+
+-- \__spintent_point_sep: separador entre puntos consecutivos (AOB, ABC...).
+-- Escribe <mo intent=":silent" mathvariant="normal">U+2063</mo>.
+-- Tiene que ser <mo>: MathCAT (desde 1d864232, en 0.7.7) fusiona letras
+-- <mi> seguidas en una sola palabra antes de leer el intent (heurística
+-- "c o s"), aunque tengan arg; un <mi> silencioso entre ellas cuenta
+-- como una letra más y no lo evita.
+-- El noad sigue siendo ord (el PDF no cambia). Por eso no basta con
+-- renombrar en mathml_filter: luamml (noad_to_table) devuelve a <mi>
+-- todo <mo> de un noad ord. Con mathml_table, sin mathml_core, luamml
+-- usa el elemento tal cual (como luamml-array). :nodes enlaza el glifo
+-- con el elemento en el modo mathml-SE. El mathml_filter queda solo
+-- como marca de "ya reclamado" para spintent_claim_target.
+-- No se deduplica: va uno entre cada par de puntos. Sin marca sptmp: es
+-- contenido real de la formula, spmmli-tool no debe quitarlo.
+register_tex_cmd("luafun_point_sep", function()
+    local kernel = node.new("math_char")
+    kernel.char  = 0x2063
+    kernel.fam   = 0
+    local noad   = node.new("noad")
+    noad.subtype = 0
+    noad.nucleus = kernel
+
+    local properties = node.get_properties_table()
+    local p = properties[kernel] or {}
+    p.mathml_table = {
+        [0]          = "mo",
+        "\u{2063}",
+        intent       = ":silent",
+        mathvariant  = "normal",
+        [":nodes"]   = { kernel },
+    }
+    p.mathml_filter = function(result, core) return result, core end
     properties[kernel] = p
 
     node.write(noad)
