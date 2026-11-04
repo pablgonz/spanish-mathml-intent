@@ -6993,6 +6993,14 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{description}[font=\small\sffamily,wide=0pt,style=multiline,leftmargin=1.1\descrwidth,nosep,noitemsep]
 %  \item [\fileversion{} (ctan), \filedate]
 %    \begin{itemize}
+%      \item |\spang| writes the minutes as an intent whose argument is the
+%        number, so that the development version of \mynvmath{MathCAT}, which
+%        turns a number followed by `$\prime$' into a superscript, does not
+%        read \emph{\enquote{superíndice}} before \emph{\enquote{minutos}}.
+%        The output in the \texttt{PDF} does not change.
+%    \end{itemize}
+%  \item [v1.4 (ctan), 2026-11-02]
+%    \begin{itemize}
 %      \item The geometry commands put an invisible separator between
 %        consecutive points (|AB|, |AOB|, |ABC|\ldots), so that
 %        \mynvmath{MathCAT} 0.7.7 reads each point on its own instead of merging
@@ -8431,6 +8439,21 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \begin{variable}[int]
 %   {
+%     \l_@@_spunit_sexa_arg_bool,
+%     \l_@@_spunit_sexa_name_str,
+%   }
+% When the boolean is |true|, a sexagesimal \emph{\enquote{unit}} is written as an
+% intent with the number as its argument (see \myhlc|\@@_spunit_sexa_arg_mathml:|).
+% It is |false| by default and only |\spang| sets it, locally, for the minutes.
+% The string holds the name of that intent.
+%    \begin{macrocode}
+\bool_new:N \l_@@_spunit_sexa_arg_bool
+\str_new:N  \l_@@_spunit_sexa_name_str
+%    \end{macrocode}
+% \end{variable}
+%
+% \begin{variable}[int]
+%   {
 %     \l_@@_spunit_exponent_tl,
 %     \l_@@_spunit_read_slash_str,
 %   }
@@ -8713,27 +8736,101 @@ spmmli-tool -o -p build/ ejemplo.tex
   {
     \str_if_eq:VnTF \l_@@_spunit_luaset_above_sexa_str { true }
       {
-        \@@_spunit_load_term:nn { above } { 1 }
+        \bool_if:NTF \l_@@_spunit_sexa_arg_bool
+          { \@@_spunit_sexa_arg_mathml: }
+          { \@@_spunit_sexa_mathml: }
+      }
+      {
         \tl_if_empty:NF \l_@@_luaset_part_int_tl
           {
-            \@@_spnum_mathml:
+            \@@_spnum_mathml: \,
           }
-        \bool_lazy_and:nnT
+        \@@_print_spunit_hierarchy:
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_spunit_sexa_mathml:}
+%   The function \myhlc|\@@_spunit_sexa_mathml:| prints a sexagesimal angle
+%   in degrees, minutes, or seconds as described for \myhlc|\@@_spunit_mathml:|:
+%   the number, and then the symbol with the reading as its intent.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spunit_sexa_mathml:
+  {
+    \@@_spunit_load_term:nn { above } { 1 }
+    \tl_if_empty:NF \l_@@_luaset_part_int_tl
+      {
+        \@@_spnum_mathml:
+      }
+    \bool_lazy_and:nnT
+      { \str_if_eq_p:ee { \l_@@_luaset_part_int_tl } { 1 } }
+      { \tl_if_empty_p:N \l_@@_luaset_part_dec_tl }
+      {
+        \str_set:Ne \l_@@_spunit_luaset_read_str
+          {
+            \str_case:Vn \l_@@_spunit_luaset_canonical_str
+              {
+                { ° } { _grado:unit   }
+                { ′ } { _minuto:unit  }
+                { ″ } { _segundo:unit }
+              }
+          }
+      }
+    \MathMLintent { \l_@@_spunit_luaset_read_str }
+      {
+        \mathord
+          {
+            \str_case:Vn \l_@@_spunit_luaset_canonical_str
+              {
+                { ″ } { \prime \! \prime }
+                { ′ } { \prime           }
+                { ° } { °                }
+              }
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_spunit_sexa_arg_mathml:}
+%   The function \myhlc|\@@_spunit_sexa_arg_mathml:| prints the same output in
+%   the \texttt{PDF}, but the intent goes on the whole expression and has the
+%   number as its argument, for example |minutos:postfix($n)|. The symbol
+%   carries no intent. The development version of \mynvmath{MathCAT} turns a
+%   number followed by `$\prime$' into a superscript before it reads the
+%   intent, unless the number is the argument of an intent of their common
+%   parent. When the number is exactly |1|, with no decimal part, the name is
+%   the singular literal |_grado|, |_minuto| or |_segundo|. Without a number,
+%   it falls back to \myhlc|\@@_spunit_sexa_mathml:|.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spunit_sexa_arg_mathml:
+  {
+    \tl_if_empty:NTF \l_@@_luaset_part_int_tl
+      { \@@_spunit_sexa_mathml: }
+      {
+        \@@_spunit_load_term:nn { above } { 1 }
+        \bool_lazy_and:nnTF
           { \str_if_eq_p:ee { \l_@@_luaset_part_int_tl } { 1 } }
           { \tl_if_empty_p:N \l_@@_luaset_part_dec_tl }
           {
-            \str_set:Ne \l_@@_spunit_luaset_read_str
+            \str_set:Ne \l_@@_spunit_sexa_name_str
               {
                 \str_case:Vn \l_@@_spunit_luaset_canonical_str
                   {
-                    { ° } { _grado:unit   }
-                    { ′ } { _minuto:unit  }
-                    { ″ } { _segundo:unit }
+                    { ° } { _grado   }
+                    { ′ } { _minuto  }
+                    { ″ } { _segundo }
                   }
               }
           }
-        \MathMLintent { \l_@@_spunit_luaset_read_str }
           {
+            \str_set_eq:NN \l_@@_spunit_sexa_name_str
+              \l_@@_spunit_luaset_read_str
+          }
+        \MathMLintent { \l_@@_spunit_sexa_name_str :postfix($n) }
+          {
+            \MathMLarg { n } { \@@_spnum_mathml: }
             \mathord
               {
                 \str_case:Vn \l_@@_spunit_luaset_canonical_str
@@ -8744,13 +8841,6 @@ spmmli-tool -o -p build/ ejemplo.tex
                   }
               }
           }
-      }
-      {
-        \tl_if_empty:NF \l_@@_luaset_part_int_tl
-          {
-            \@@_spnum_mathml: \,
-          }
-        \@@_print_spunit_hierarchy:
       }
   }
 %    \end{macrocode}
@@ -12247,13 +12337,9 @@ spmmli-tool -o -p build/ ejemplo.tex
       }
     \str_if_empty:NF \l_@@_spang_luaset_minuto_str
       {
-        \MathMLintent { _minutos:postfix($m) }
-          {
-            \MathMLarg { m }
-              {
-                \exp_args:Ne \spunit { \l_@@_spang_luaset_minuto_str ′ }
-              }
-          }
+        \bool_set_true:N \l_@@_spunit_sexa_arg_bool
+        \exp_args:Ne \spunit { \l_@@_spang_luaset_minuto_str ′ }
+        \bool_set_false:N \l_@@_spunit_sexa_arg_bool
       }
     \str_if_empty:NF \l_@@_spang_luaset_segundo_str
       {

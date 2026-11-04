@@ -590,6 +590,8 @@
 \str_new:N \l__spintent_spunit_luaset_canonical_str
 \str_new:N \l__spintent_spunit_luaset_read_str
 \str_new:N \l__spintent_spunit_luaset_status_str
+\bool_new:N \l__spintent_spunit_sexa_arg_bool
+\str_new:N  \l__spintent_spunit_sexa_name_str
 \tl_new:N  \l__spintent_spunit_exponent_tl
 \str_new:N \l__spintent_spunit_read_slash_str
 \msg_new:nnnn { spintent } { spunit-invalid-unit }
@@ -764,27 +766,79 @@
   {
     \str_if_eq:VnTF \l__spintent_spunit_luaset_above_sexa_str { true }
       {
-        \__spintent_spunit_load_term:nn { above } { 1 }
+        \bool_if:NTF \l__spintent_spunit_sexa_arg_bool
+          { \__spintent_spunit_sexa_arg_mathml: }
+          { \__spintent_spunit_sexa_mathml: }
+      }
+      {
         \tl_if_empty:NF \l__spintent_luaset_part_int_tl
           {
-            \__spintent_spnum_mathml:
+            \__spintent_spnum_mathml: \,
           }
-        \bool_lazy_and:nnT
+        \__spintent_print_spunit_hierarchy:
+      }
+  }
+\cs_new_protected:Nn \__spintent_spunit_sexa_mathml:
+  {
+    \__spintent_spunit_load_term:nn { above } { 1 }
+    \tl_if_empty:NF \l__spintent_luaset_part_int_tl
+      {
+        \__spintent_spnum_mathml:
+      }
+    \bool_lazy_and:nnT
+      { \str_if_eq_p:ee { \l__spintent_luaset_part_int_tl } { 1 } }
+      { \tl_if_empty_p:N \l__spintent_luaset_part_dec_tl }
+      {
+        \str_set:Ne \l__spintent_spunit_luaset_read_str
+          {
+            \str_case:Vn \l__spintent_spunit_luaset_canonical_str
+              {
+                { ° } { _grado:unit   }
+                { ′ } { _minuto:unit  }
+                { ″ } { _segundo:unit }
+              }
+          }
+      }
+    \MathMLintent { \l__spintent_spunit_luaset_read_str }
+      {
+        \mathord
+          {
+            \str_case:Vn \l__spintent_spunit_luaset_canonical_str
+              {
+                { ″ } { \prime \! \prime }
+                { ′ } { \prime           }
+                { ° } { °                }
+              }
+          }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spunit_sexa_arg_mathml:
+  {
+    \tl_if_empty:NTF \l__spintent_luaset_part_int_tl
+      { \__spintent_spunit_sexa_mathml: }
+      {
+        \__spintent_spunit_load_term:nn { above } { 1 }
+        \bool_lazy_and:nnTF
           { \str_if_eq_p:ee { \l__spintent_luaset_part_int_tl } { 1 } }
           { \tl_if_empty_p:N \l__spintent_luaset_part_dec_tl }
           {
-            \str_set:Ne \l__spintent_spunit_luaset_read_str
+            \str_set:Ne \l__spintent_spunit_sexa_name_str
               {
                 \str_case:Vn \l__spintent_spunit_luaset_canonical_str
                   {
-                    { ° } { _grado:unit   }
-                    { ′ } { _minuto:unit  }
-                    { ″ } { _segundo:unit }
+                    { ° } { _grado   }
+                    { ′ } { _minuto  }
+                    { ″ } { _segundo }
                   }
               }
           }
-        \MathMLintent { \l__spintent_spunit_luaset_read_str }
           {
+            \str_set_eq:NN \l__spintent_spunit_sexa_name_str
+              \l__spintent_spunit_luaset_read_str
+          }
+        \MathMLintent { \l__spintent_spunit_sexa_name_str :postfix($n) }
+          {
+            \MathMLarg { n } { \__spintent_spnum_mathml: }
             \mathord
               {
                 \str_case:Vn \l__spintent_spunit_luaset_canonical_str
@@ -795,13 +849,6 @@
                   }
               }
           }
-      }
-      {
-        \tl_if_empty:NF \l__spintent_luaset_part_int_tl
-          {
-            \__spintent_spnum_mathml: \,
-          }
-        \__spintent_print_spunit_hierarchy:
       }
   }
 \NewDocumentCommand \spunit { O{} m }
@@ -2686,13 +2733,9 @@
       }
     \str_if_empty:NF \l__spintent_spang_luaset_minuto_str
       {
-        \MathMLintent { _minutos:postfix($m) }
-          {
-            \MathMLarg { m }
-              {
-                \exp_args:Ne \spunit { \l__spintent_spang_luaset_minuto_str ′ }
-              }
-          }
+        \bool_set_true:N \l__spintent_spunit_sexa_arg_bool
+        \exp_args:Ne \spunit { \l__spintent_spang_luaset_minuto_str ′ }
+        \bool_set_false:N \l__spintent_spunit_sexa_arg_bool
       }
     \str_if_empty:NF \l__spintent_spang_luaset_segundo_str
       {
