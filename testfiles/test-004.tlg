@@ -5852,18 +5852,17 @@ TEST 1: Show PDF Tags
         </mi>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00910"
-           arg="m"
-           intent="_minutos:postfix($m)"
+           intent="minutos:postfix($n)"
           >
          <mn xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00911"
+            arg="n"
             intent="30:number"
            >
           <?MarkedContent page="2" ?>30
          </mn>
          <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00912"
-            intent="minutos"
             lspace="0"
             rspace="0"
            >
@@ -5919,18 +5918,17 @@ TEST 1: Show PDF Tags
         </mi>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00920"
-           arg="m"
-           intent="_minutos:postfix($m)"
+           intent="minutos:postfix($n)"
           >
          <mn xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00921"
+            arg="n"
             intent="30:number"
            >
           <?MarkedContent page="2" ?>30
          </mn>
          <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00922"
-            intent="minutos"
             lspace="0"
             rspace="0"
            >

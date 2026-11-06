@@ -1929,6 +1929,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{longtable}
 % \endgroup
 %
+% Si el prefijo `$\mathrm{µ}$' (o `$\mathrm{μ}$') va pegado a una \mymarg{unidad}
+% de la tabla, como en `$10\,\mathrm{µm}$' o `$5\,\mathrm{µg}$', se imprime y se
+% trata como una sola \mymarg{unidad}, y \mynvmath{NVDA/MathCAT} aplica su
+% propia lectura del prefijo junto con la \mymarg{unidad}. En cambio, si el
+% prefijo se separa con un asterisco, se trata de un producto de dos
+% \mymarg{unidades} y el `$\mathrm{µ}$' se lee como una \mymarg{unidad} más.
+%
 % \subsubsection{El comando \cs[no-index]{spnewunit}}\label{subsubsec:spnewunit}
 %
 % \begin{function}{\spnewunit}
@@ -6993,6 +7000,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{description}[font=\small\sffamily,wide=0pt,style=multiline,leftmargin=1.1\descrwidth,nosep,noitemsep]
 %  \item [\fileversion{} (ctan), \filedate]
 %    \begin{itemize}
+%      \item |\spunit| accepts the prefix $\mathrm{µ}$ (or $\mathrm{μ}$) glued to
+%        a unit of the table, as in $\mathrm{µm}$, $\mathrm{µg}$ or
+%        $\mathrm{µs}$, and treats it as a single unit, so that
+%        \mynvmath{MathCAT} reads the prefix together with the unit.
 %      \item |\spang| writes the minutes as an intent whose argument is the
 %        number, so that the development version of \mynvmath{MathCAT}, which
 %        turns a number followed by `$\prime$' into a superscript, does not
@@ -24433,6 +24444,21 @@ local function spintent_spunit_lookup(raw_unit_name)
                 exp         = literal_exp,
                 sexagesimal = spintent_is_sexagesimal_symbol(canonical_base),
             }
+        end
+    end
+
+    -- µ (o μ) pegada a una unidad conocida ("µm", "µg", "µs^2"): una sola
+    -- unidad con prefijo, para que MathCAT lea el prefijo junto con la
+    -- unidad y no el símbolo µ suelto. Solo si la unidad se lee con :unit
+    -- (sin lectura propia) y no es sexagesimal ni lleva otro µ delante.
+    local rest = s_match(clean_exp_format, "^µ(.+)$")
+        or s_match(clean_exp_format, "^μ(.+)$")
+    if rest then
+        local inner = spintent_spunit_lookup(rest)
+        if inner and inner.read == ":unit" and not inner.sexagesimal
+           and not s_match(inner.canonical, "^µ") then
+            inner.canonical = "µ" .. inner.canonical
+            return inner
         end
     end
     return nil
