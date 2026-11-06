@@ -54,6 +54,7 @@ luacode
 fontspec
 geometry
 gettitlestring
+nameref
 hologo
 hycolor
 hypdoc
