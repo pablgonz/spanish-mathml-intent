@@ -5607,7 +5607,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % |$\spfun{f_{1}(x)}$| imprimirá `$f_{1}(x)$' y verbalizará
 % \emph{«f sub uno de x»}; |$\spfun{f'(x)}$| imprimirá `$f'(x)$' y
 % verbalizará \emph{«f prima de x»}; |$\spfun{f''(x)}$| imprimirá
-% `$f''(x)$' y verbalizará \emph{«f doble prima de x»}.
+% `$f''(x)$' y verbalizará \emph{«f segunda de x»}.
 %
 % Con dos o más argumentos, |$\spfun{f(x,y)}$| imprimirá `$f(x,y)$' y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«f de x coma y»}. Un argumento
@@ -5644,7 +5644,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece la \emph{forma} en la que \mynvmath{NVDA/MathCAT} verbalizará el
 % nombre de la función. Si se establece en |school|, \mynvmath{NVDA/MathCAT}
 % verbaliza el nombre sin el prefijo «mayúscula»: |$\spfun{F''(x)}$| se
-% verbaliza \emph{«F doble prima de x»}; si se establece en |mathcat|,
+% verbaliza \emph{«F segunda de x»}; si se establece en |mathcat|,
 % \mynvmath{NVDA/MathCAT} aplica sus propias reglas, que pueden incluir el
 % prefijo «mayúscula» dependiendo de la configuración del usuario.
 %
@@ -5703,7 +5703,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % y verbalizará \emph{«dominio de f prima»}; |$\sprec{f_{1}}$| imprimirá
 % `$\operatorname{Rec}(f_{1})$' y verbalizará \emph{«recorrido de f sub
 % uno»}; |$\spcod{F''}$| imprimirá `$\operatorname{Cod}(F'')$' y verbalizará
-% \emph{«codominio de F doble prima»}.
+% \emph{«codominio de F segunda»}.
 %
 % Con la inversa, |$\spdom{f^{-1}}$| imprimirá
 % `$\operatorname{Dom}(f^{-1})$' y verbalizará
@@ -5806,13 +5806,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«valor absoluto de x»};
 % |$\spabs{-5}$| imprimirá `$\lvert -5\rvert$' y verbalizará \emph{«valor
 % absoluto de menos 5»}; |$\spabs{x-3}$| imprimirá `$\lvert x-3\rvert$' y
-% verbalizará \emph{«valor absoluto de x menos 3 fin valor absoluto»}.
+% verbalizará \emph{«valor absoluto de x menos 3 fin del valor absoluto»}.
 %
 % Cuando el argumento tiene más de un símbolo, sin contar un signo `|+|' o
 % `|-|' inicial, \mynvmath{NVDA/MathCAT} anuncia el final del valor absoluto
-% con \emph{«fin valor absoluto»}. Así se sabe dónde termina cuando la
+% con \emph{«fin del valor absoluto»}. Así se sabe dónde termina cuando la
 % expresión sigue: |$\spabs{x-3} - 1$| verbalizará \emph{«valor absoluto de x
-% menos 3 fin valor absoluto menos 1»}. La llave \mykey{close} controla
+% menos 3 fin del valor absoluto menos 1»}. La llave \mykey{close} controla
 % este cierre.
 %
 % El comando |\spabs| devuelve un \enquote{error} y se detiene la compilación
@@ -5829,7 +5829,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % cuando \mymarg{x} tiene más de un símbolo, sin contar un signo |+| o |-|
 % inicial: |$\spabs{x}$| y |$\spabs{-5}$| no lo llevan y |$\spabs{x-3}$| sí.
 % Con |true| siempre se verbaliza: |$\spabs[close=true]{x}$| verbalizará
-% \emph{«valor absoluto de x fin valor absoluto»}. Con |false| nunca se
+% \emph{«valor absoluto de x fin del valor absoluto»}. Con |false| nunca se
 % verbaliza: |$\spabs[close=false]{x-3}$| verbalizará \emph{«valor absoluto de
 % x menos 3»}. La llave no tiene efecto con \mykey{silent} ni con
 % \mykey{read-arg}.
@@ -6556,7 +6556,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
 % |$\spfact{5}$| imprimirá `$5!$' en la salida \texttt{PDF} y
-% \mynvmath{NVDA/MathCAT} verbalizará \emph{«5 factorial»}.
+% \mynvmath{NVDA/MathCAT} verbalizará \emph{«factorial de 5»}.
 %
 % El comando |\spfact| devuelve un \enquote{error} y se detiene la compilación
 % del documento cuando el argumento está vacío.
@@ -14422,7 +14422,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spfun_name_school:}
 %   For \mykey{read-cmd}|=school| the name is tagged |arg="f"| with a literal
-%   |intent| such as \myhlc|_f-sub-uno-| or \myhlc|_F-doble-prima-| through the shared
+%   |intent| such as \myhlc|_f-sub-uno-| or \myhlc|_F-segunda-| through the shared
 %   queue, so \mynvmath{MathCAT} neither announces a capital letter nor reads
 %   the Unicode double prime as seconds. A subscript is typeset silenced; a
 %   prime is not, since it is not spoken on the base. The inverse exponent
@@ -15025,7 +15025,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % with a native |\MathMLintent| whose |intent| is
 % \myhlc|_[prefix-]dominio-de:prefix($f)|, with |recorrido| or |codominio| in place of |dominio| for the other two commands; the operator,
 % the parentheses are silenced and the name carries |arg="f"| wrapped in its
-% own literal |intent|, such as \myhlc|_f-|, \myhlc|_F-doble-prima-| or \myhlc|_f-inversa-|, so
+% own literal |intent|, such as \myhlc|_f-|, \myhlc|_F-segunda-| or \myhlc|_f-inversa-|, so
 % \mynvmath{MathCAT} neither announces a capital letter nor reads the
 % inverse as a power. No \mykey{read-cmd} nor \mykey{concept} keys exist:
 % the native reading of |Dom(f)| is not useful, and the concept is already
@@ -15234,7 +15234,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % The user command |\spabs| typesets the absolute value |\lvert x\rvert| and
 % reads it with the literal intent |valor-absoluto($x)|. Optionally, a second
-% literal intent |fin-valor-absoluto| announces where it ends. It has the keys
+% literal intent |fin-del-valor-absoluto| announces where it ends. It has the keys
 % \mykey[spabs]{silent}, \mykey[spabs]{read-arg}, \mykey[spabs]{size} and
 % \mykey[spabs]{close}.
 %
@@ -15443,7 +15443,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   intent is `\myhlc|_-|'; with \mykey{read-arg} given it is
 %   \myhlc|_|\mymeta{read-arg}|:nofix|; otherwise it is \myhlc|_valor-absoluto($x)|. In this
 %   last case, when \myhlc|\@@_spabs_set_close:n| sets the closing, a native
-%   |\MathMLintent| with the literal intent \myhlc|_fin-valor-absoluto| follows the bars
+%   |\MathMLintent| with the literal intent \myhlc|_fin-del-valor-absoluto| follows the bars
 %   as a sibling, holding \myhlc|\@@_inner_sep:| and an invisible character, and
 %   the outer ghost is omitted because the formula already has two top-level
 %   nodes.
@@ -15472,7 +15472,7 @@ spmmli-tool -o -p build/ ejemplo.tex
               }
             \bool_if:NT \l_@@_spabs_close_bool
               {
-                \MathMLintent { _fin-valor-absoluto }
+                \MathMLintent { _fin-del-valor-absoluto }
                   { \@@_inner_sep: \c_@@_invisible_sep_int }
               }
           }
@@ -23456,7 +23456,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \subsection{The command \cs{spfact}}\label{cmd:spfact}
 %
 % The user command |\spfact| typesets the factorial |n!| and reads it
-% \emph{«n factorial»}. It has the keys \mykey[spfact]{silent} and
+% \emph{«factorial de n»}. It has the keys \mykey[spfact]{silent} and
 % \mykey[spfact]{read-arg}.
 %
 % \subsubsection{Definition of variables for \cs[no-index]{spfact}}
@@ -23528,7 +23528,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   \myhlc|\@@_invisible_sep:| and followed by the inner ghost
 %   \myhlc|\@@_inner_sep:|. With \mykey{silent}|=true| the intent is `\myhlc|_-|';
 %   with \mykey{read-arg} given it is \myhlc|_|\mymeta{read-arg}|:nofix|;
-%   otherwise it is \myhlc|_factorial:postfix($n)|.
+%   otherwise it is \myhlc|_factorial-de:prefix($n)|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spfact_mathml:n
   {
@@ -23538,7 +23538,7 @@ spmmli-tool -o -p build/ ejemplo.tex
       {
         \tl_if_empty:NTF \l_@@_spfact_read_arg_tl
           {
-            \MathMLintent { _factorial:postfix($n) }
+            \MathMLintent { _factorial-de:prefix($n) }
               {
                 \@@_inner_sep:
                 \MathMLarg { n } { \@@_inner_sep: #1 }
@@ -25646,6 +25646,12 @@ local spintent_geo_prima_prefijo = {
     "prima", "doble-prima", "triple-prima", "cuádruple-prima"
 }
 
+-- En las funciones las primas son derivadas: "f segunda", como en el
+-- CMU y en MathCAT; los puntos siguen con "A doble prima".
+local spintent_fun_prima_ordinal = {
+    "prima", "segunda", "tercera", "cuarta"
+}
+
 -- Normaliza Unicode (′″‴) y comandos (^{\prime}, ^{\dprime}, ...) a
 -- comillas rectas, único formato que spintent_geo_primas reconoce.
 function spintent_geo_normalize_primes(str)
@@ -25670,7 +25676,7 @@ end
 -- cmd == "" (silent en modo school) envuelve el resultado en
 -- guiones bajos ("_...-") para que MathCAT lo trate como literal por
 -- default-text y no aplique sus reglas de mayúsculas a un <mi> suelto.
-local function spintent_geo_build_intent(cmd, puntos)
+local function spintent_geo_build_intent(cmd, puntos, primas)
     local partes = {}
     if cmd ~= "" then
         partes[#partes + 1] = cmd
@@ -25683,7 +25689,7 @@ local function spintent_geo_build_intent(cmd, puntos)
             partes[#partes + 1] = spintent_geo_num_a_texto[mod] or mod
         elseif tipo == "prima" then
             local n = #mod
-            partes[#partes + 1] = spintent_geo_prima_prefijo[n] or (n .. "-prima")
+            partes[#partes + 1] = (primas or spintent_geo_prima_prefijo)[n] or (n .. "-prima")
         end
     end
     local resultado = t_concat(partes, "-")
@@ -25697,12 +25703,12 @@ end
 -- sin concepto ni envoltorio "_...-" — usados por las funciones que ya
 -- no reciben "cmd"/"read_arg" desde expl3 (se antepone/envuelve del
 -- lado expl3, después de la llamada).
-local function spintent_geo_build_body(puntos)
-    return spintent_geo_build_intent("", puntos):match("^_(.-)-$")
+local function spintent_geo_build_body(puntos, primas)
+    return spintent_geo_build_intent("", puntos, primas):match("^_(.-)-$")
 end
 
-function spintent_geo_build_body_nombre(nombre)
-    return spintent_geo_build_body({ nombre })
+function spintent_geo_build_body_nombre(nombre, primas)
+    return spintent_geo_build_body({ nombre }, primas)
 end
 
 -- Un solo punto {letra, contenido, tipo}: usada tanto para el texto
@@ -26924,7 +26930,7 @@ end
 -- Deja el nombre en las variables compartidas. Con la inversa, el
 -- intent literal termina en "-inversa" (f-inversa, f-sub-uno-inversa).
 local function spintent_fun_set_name(nombre, inv)
-    local intent = spintent_geo_build_body_nombre(nombre)
+    local intent = spintent_geo_build_body_nombre(nombre, spintent_fun_prima_ordinal)
     local visual = spintent_geo_build_visual_nombre(nombre)
     if inv then
         intent = intent .. "-inversa"
@@ -27043,7 +27049,7 @@ local function spintent_fun_comp_funs(str)
     for i = 1, #parts do
         local nombre, inv, rest = spintent_fun_parse_name(spintent_trim(parts[i]))
         if not nombre or not s_match(rest, "^%s*$") then return nil end
-        local intent = spintent_geo_build_body_nombre(nombre)
+        local intent = spintent_geo_build_body_nombre(nombre, spintent_fun_prima_ordinal)
         local visual = spintent_geo_build_visual_nombre(nombre)
         if inv then
             intent = intent .. "-inversa"

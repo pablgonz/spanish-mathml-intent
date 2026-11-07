@@ -6,7 +6,7 @@
 % Test de regresion del contexto: cada comando junto a otros simbolos
 % (igual, suma, desigualdad, fraccion, raiz, otro comando de spintent).
 % Comprueba que la anotacion no cambia la lectura de lo que la rodea y que
-% los cierres ("fin valor absoluto") aparecen cuando corresponde. Los
+% los cierres ("fin del valor absoluto") aparecen cuando corresponde. Los
 % "doc:" son lecturas reales de NVDA 2026.3 con MathCAT 0.7.8-alpha.1,
 % tomadas de los tests 021 a 031 que este reemplaza.
 \input{regression-test}
@@ -89,22 +89,22 @@
 
 \section*{C. Valor absoluto en fórmulas}
 
-% doc: «valor absoluto de valor absoluto de x menos 3 fin valor absoluto»
+% doc: «valor absoluto de valor absoluto de x menos 3 fin del valor absoluto»
 17. Anidado: $\spabs{\spabs{x}-3}$.
 
-% doc: «valor absoluto de x menos 3 fin valor absoluto es menor que 2»
+% doc: «valor absoluto de x menos 3 fin del valor absoluto es menor que 2»
 18. Desigualdad: $\spabs{x-3} < 2$.
 
-% doc: «valor absoluto de a b fin valor absoluto es igual a valor absoluto de a valor absoluto de b»
+% doc: «valor absoluto de a b fin del valor absoluto es igual a valor absoluto de a valor absoluto de b»
 19. Propiedad del producto: $\spabs{ab} = \spabs{a}\,\spabs{b}$.
 
-% doc: «d de abrir paréntesis a coma b cerrar paréntesis es igual a valor absoluto de a menos b fin valor absoluto»
+% doc: «d de abrir paréntesis a coma b cerrar paréntesis es igual a valor absoluto de a menos b fin del valor absoluto»
 20. Distancia: $d(a,b) = \spabs{a-b}$.
 
-% doc: «valor absoluto de x fin valor absoluto más 3»
+% doc: «valor absoluto de x fin del valor absoluto más 3»
 21. Cierre forzado antes de una suma: $\spabs[close=true]{x} + 3$.
 
-% doc: «valor absoluto de x menos 3 fin valor absoluto menos 1»
+% doc: «valor absoluto de x menos 3 fin del valor absoluto menos 1»
 22. Cierre antes de una resta: $\spabs{x-3} - 1$.
 
 \section*{D. Estadística y frecuencias en fórmulas}
@@ -180,13 +180,13 @@
 
 \section*{G. Combinatoria en fórmulas}
 
-% doc: «n sobre k es igual a la fracción con numerador n factorial y denominador k factorial abrir paréntesis n menos k cerrar paréntesis factorial»
+% doc: «n sobre k es igual a la fracción con numerador factorial de n y denominador factorial de k factorial de abrir paréntesis n menos k cerrar paréntesis»
 44. Fórmula de la combinación: $\spcomb{n,k} = \dfrac{\spfact{n}}{\spfact{k}\,\spfact{(n-k)}}$.
 
 % doc: «probabilidad de a es igual a la fracción con numerador 5 sobre 2 y denominador 10 sobre 2»
 45. Probabilidad clásica con combinaciones: $\spProb{A} = \dfrac{\spcomb{5,2}}{\spcomb{10,2}}$.
 
-% doc: «permutación de n elementos es igual a n factorial»
+% doc: «permutación de n elementos es igual a factorial de n»
 46. Permutaciones y factorial: $\spcomb[kind=permutation]{n} = \spfact{n}$.
 
 \START

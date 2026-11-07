@@ -86,7 +86,7 @@
 % doc: «f prima de x»
 17. Función con prima: $\spfun{f'(x)}$.
 
-% doc: «f doble prima de x»
+% doc: «f segunda de x»
 18. Función con doble prima: $\spfun{f''(x)}$.
 
 % doc: «f de x coma y»
@@ -136,7 +136,7 @@
 % doc: «recorrido de f sub uno»
 33. Recorrido con subíndice: $\sprec{f_{1}}$.
 
-% doc: «codominio de F doble prima»
+% doc: «codominio de F segunda»
 34. Codominio con doble prima: $\spcod{F''}$.
 
 % doc: «dominio de f inversa»
@@ -176,16 +176,16 @@
 % doc: «valor absoluto de menos 5»
 45. Valor absoluto de un número negativo: $\spabs{-5}$.
 
-% doc: «valor absoluto de x menos 3 fin valor absoluto»
+% doc: «valor absoluto de x menos 3 fin del valor absoluto»
 46. Valor absoluto de una expresión: $\spabs{x-3}$.
 
-% doc: «valor absoluto de x fin valor absoluto»
+% doc: «valor absoluto de x fin del valor absoluto»
 47. Valor absoluto con cierre: $\spabs[close=true]{x}$.
 
 % doc: «valor absoluto de x menos 3»
 48. Valor absoluto sin cierre: $\spabs[close=false]{x-3}$.
 
-% doc: «valor absoluto de x partido por 2 fin valor absoluto»
+% doc: «valor absoluto de x partido por 2 fin del valor absoluto»
 49. Valor absoluto con barras grandes: $\spabs[size=Big]{\dfrac{x}{2}}$.
 
 % doc: «módulo de x»
@@ -435,10 +435,10 @@
 % doc: «(silencio)»
 128. Combinaciones silenciadas: $\spcomb[silent=true]{5,2}$.
 
-% doc: «5 factorial»
+% doc: «factorial de 5»
 129. Factorial: $\spfact{5}$.
 
-% doc: «abrir paréntesis n menos 1 cerrar paréntesis factorial»
+% doc: «factorial de abrir paréntesis n menos 1 cerrar paréntesis»
 130. Factorial de una expresión: $\spfact{(n-1)}$.
 
 % doc: «cinco factorial»

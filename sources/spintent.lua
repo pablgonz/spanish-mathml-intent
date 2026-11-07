@@ -2042,6 +2042,12 @@ local spintent_geo_prima_prefijo = {
     "prima", "doble-prima", "triple-prima", "cuádruple-prima"
 }
 
+-- En las funciones las primas son derivadas: "f segunda", como en el
+-- CMU y en MathCAT; los puntos siguen con "A doble prima".
+local spintent_fun_prima_ordinal = {
+    "prima", "segunda", "tercera", "cuarta"
+}
+
 -- Normaliza Unicode (′″‴) y comandos (^{\prime}, ^{\dprime}, ...) a
 -- comillas rectas, único formato que spintent_geo_primas reconoce.
 function spintent_geo_normalize_primes(str)
@@ -2066,7 +2072,7 @@ end
 -- cmd == "" (silent en modo school) envuelve el resultado en
 -- guiones bajos ("_...-") para que MathCAT lo trate como literal por
 -- default-text y no aplique sus reglas de mayúsculas a un <mi> suelto.
-local function spintent_geo_build_intent(cmd, puntos)
+local function spintent_geo_build_intent(cmd, puntos, primas)
     local partes = {}
     if cmd ~= "" then
         partes[#partes + 1] = cmd
@@ -2079,7 +2085,7 @@ local function spintent_geo_build_intent(cmd, puntos)
             partes[#partes + 1] = spintent_geo_num_a_texto[mod] or mod
         elseif tipo == "prima" then
             local n = #mod
-            partes[#partes + 1] = spintent_geo_prima_prefijo[n] or (n .. "-prima")
+            partes[#partes + 1] = (primas or spintent_geo_prima_prefijo)[n] or (n .. "-prima")
         end
     end
     local resultado = t_concat(partes, "-")
@@ -2093,12 +2099,12 @@ end
 -- sin concepto ni envoltorio "_...-" — usados por las funciones que ya
 -- no reciben "cmd"/"read_arg" desde expl3 (se antepone/envuelve del
 -- lado expl3, después de la llamada).
-local function spintent_geo_build_body(puntos)
-    return spintent_geo_build_intent("", puntos):match("^_(.-)-$")
+local function spintent_geo_build_body(puntos, primas)
+    return spintent_geo_build_intent("", puntos, primas):match("^_(.-)-$")
 end
 
-function spintent_geo_build_body_nombre(nombre)
-    return spintent_geo_build_body({ nombre })
+function spintent_geo_build_body_nombre(nombre, primas)
+    return spintent_geo_build_body({ nombre }, primas)
 end
 
 -- Un solo punto {letra, contenido, tipo}: usada tanto para el texto
@@ -3320,7 +3326,7 @@ end
 -- Deja el nombre en las variables compartidas. Con la inversa, el
 -- intent literal termina en "-inversa" (f-inversa, f-sub-uno-inversa).
 local function spintent_fun_set_name(nombre, inv)
-    local intent = spintent_geo_build_body_nombre(nombre)
+    local intent = spintent_geo_build_body_nombre(nombre, spintent_fun_prima_ordinal)
     local visual = spintent_geo_build_visual_nombre(nombre)
     if inv then
         intent = intent .. "-inversa"
@@ -3439,7 +3445,7 @@ local function spintent_fun_comp_funs(str)
     for i = 1, #parts do
         local nombre, inv, rest = spintent_fun_parse_name(spintent_trim(parts[i]))
         if not nombre or not s_match(rest, "^%s*$") then return nil end
-        local intent = spintent_geo_build_body_nombre(nombre)
+        local intent = spintent_geo_build_body_nombre(nombre, spintent_fun_prima_ordinal)
         local visual = spintent_geo_build_visual_nombre(nombre)
         if inv then
             intent = intent .. "-inversa"
