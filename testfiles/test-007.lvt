@@ -7,7 +7,7 @@
 % que no cubren los tests 001 a 006: tamanos de delimitadores, simbolo y
 % subindice de la circunferencia, medidas estadisticas, cifras-sep en
 % otros comandos y \setspintent con valores validos. Los "doc:" son
-% lecturas reales de NVDA 2026.2 con MathCAT.
+% lecturas reales de NVDA 2026.3 con MathCAT 0.7.8-alpha.1.
 \input{regression-test}
 
 \DocumentMetadata
@@ -150,8 +150,8 @@
 % doc: «23 metros partido por segundos cuadrado»
 35. Unidad con barra configurada: {\setspintent{\spunit}{read-slash=partido-por}$\spunit{23 m/s^{2}}$}.
 
-% doc: «23 metros por segundos cuadrado»
-% en AF: «23 metros partido por segundos cuadrado» (misma fuente que el 35)
+% doc: «23 metros por segundos al cuadrado»
+% en AF: «23 metros partido por segundos al cuadrado» (misma fuente que el 35)
 36. Unidad sin configurar, después del grupo: $\spunit{23 m/s^{2}}$.
 
 % doc: «23 negativo»

@@ -2,8 +2,8 @@
 % Pruebas de los cuatro grandes: \spnum, \spunit, \spmoney y \spshort,
 % junto con \spnewunit y \spunitalias.
 %
-% Las lecturas en los comentarios `% doc:` son las de NVDA 2026.2 con
-% MathCAT, idénticas en mathml-SE y en mathml-AF: una por cada fórmula,
+% Las lecturas en los comentarios `% doc:` son las de NVDA 2026.3 con
+% MathCAT 0.7.8-alpha.1, idénticas en mathml-SE y en mathml-AF: una por cada fórmula,
 % en el orden en que aparece. En las unidades, el plural (metros, segundos)
 % es lectura propia de MathCAT, no del paquete.
 %
@@ -65,9 +65,9 @@
   \item Unidad con número: $\spunit{23 m}$.
   % doc: «metro»
   \item Unidad sola: $\spunit{m}$.
-  % doc: «23 metros segundos cuadrado»
+  % doc: «23 metros segundos al cuadrado»
   \item Producto de unidades: $\spunit{23 m*s^{2}}$.
-  % doc: «23 metros por segundos cuadrado»
+  % doc: «23 metros por segundos al cuadrado»
   \item Unidades en fracción lineal: $\spunit{23 m/s^{2}}$.
   % doc: «90 kilómetros por horas»
   \item Velocidad: $\spunit{90 km/h}$.
@@ -75,11 +75,11 @@
   \item Temperatura: $\spunit{25 °C}$.
   % doc: «100 kilogramos»
   \item Masa: $\spunit{100 kg}$.
-  % doc: «23 metros segundos cuadrado»
+  % doc: «23 metros segundos al cuadrado»
   \item Producto con punto: $\spunit[print-cdot=true]{23 m*s^{2}}$.
-  % doc: «23 metros por segundos cuadrado»
+  % doc: «23 metros por segundos al cuadrado»
   \item Lectura del producto: $\spunit[read-cdot=true]{23 m*s^{2}}$.
-  % doc: «23 metros partido por segundos cuadrado»
+  % doc: «23 metros partido por segundos al cuadrado»
   \item Lectura de la barra: $\spunit[read-slash=partido-por]{23 m/s^{2}}$.
   % doc: «3 coma 14 por 10 al cubo metros»
   \item Llaves de \texttt{\textbackslash spnum}: $\spunit[notation-sym=times]{3,14e3 m}$.
@@ -154,11 +154,11 @@
 \subsection*{Casos adicionales de \texttt{\textbackslash spunit} y \texttt{\textbackslash spnum}}
 
 \begin{itemize}
-  % doc: «9 coma 8 kilogramos metros por segundos cuadrado»
+  % doc: «9 coma 8 kilogramos metros por segundos al cuadrado»
   \item Producto y cociente con exponente: $\spunit{9,8 kg*m/s^{2}}$.
-  % doc: «12 kilómetros cuadrado»
+  % doc: «12 kilómetros al cuadrado»
   \item Exponente en una sola unidad: $\spunit{12 km^{2}}$.
-  % doc: «1 coma 5 por 10 a la menos 3 potencia»
+  % doc: «1 coma 5 por 10 elevado a menos 3»
   \item Exponente negativo en notación científica: $\spnum{1,5e-3}$.
 \end{itemize}
 

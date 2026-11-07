@@ -991,7 +991,7 @@ end, "shekel_fallback_patch")
 % y que se ejecute bajo \hologo{LuaLaTeX}, por lo que es necesario contar con
 % una distribución moderna de \hologo{TeX} como \hologo{TeX} Live 2026. Ha sido probado con la clase estándar
 % \myclass{article} proporcionada por \hologo{LaTeX} en tamaño \mydim{10pt}, usando
-% \mynvmath{NVDA} 2026.2 y Adobe Acrobat Reader\cite{acrobat} actualizado 2026; además se utilizó
+% \mynvmath{NVDA} 2026.3 con el complemento MathCAT 0.7.8-alpha.1 y Adobe Acrobat Reader\cite{acrobat} actualizado 2026; además se utilizó
 % \href{https://daisy.github.io/MathCATDemo/}{MathCATDemo}\cite{mathcatdemo}.
 % No se ha probado con otros lectores de pantalla.
 %
@@ -1774,14 +1774,14 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % `\textcolor{red}{\texttt{\^{}}}\mymarg{exponente}'. Por ejemplo, si
 % se ejecuta |$\spunit{23 m*s^{2}}$| se imprimirá `$23\,\mathrm{m}\,\mathrm{s}^{2}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
-% \emph{«veintitrés metros segundos cuadrado»}.
+% \emph{«veintitrés metros segundos al cuadrado»}.
 %
 % Se pueden usar \emph{fracciones lineales} con las \mymarg{unidades}
 % utilizando una \emph{«única barra»} `$\mathcolor{red}{/}$' para la
 % separación entre las \mymarg{unidades} del numerador y el denominador,
 % teniendo presente que el denominador NO puede contener números de ningún
 % tipo. Por ejemplo:~|$\spunit{23 m/s^{2}}$| imprimirá `$23\,\mathrm{m}/\mathrm{s}^{2}$'
-% en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintitrés metros por segundos cuadrado»}.
+% en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintitrés metros por segundos al cuadrado»}.
 %
 % \begin{important}*
 %  Solo imprimiremos \emph{fracciones lineales}, si se requiere otra forma
@@ -3512,7 +3512,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % |$\spcoord{-3, 4}$| imprimirá `$(-3, 4)$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«menos tres coma cuatro»};
 % |$\spcoord{x_{1},y_{1}}$| imprimirá `$(x_{1}, y_{1})$' y verbalizará
-% \emph{«x subíndice uno coma y subíndice uno»}.
+% \emph{«x sub uno coma y sub uno»}.
 % La lectura del subíndice la decide \mynvmath{NVDA/MathCAT}, porque
 % |\spcoord| no tiene la llave \mykey{read-cmd}.
 %
@@ -5895,7 +5895,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % |$\spProm{x}$| imprimirá `$\bar{x}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«promedio de x»};
 % |$\spProm{x_{1}}$| imprimirá `$\bar{x_{1}}$' y verbalizará
-% \emph{«promedio de x subíndice uno»}.
+% \emph{«promedio de x sub uno»}.
 %
 % \begin{important}*
 %   El \mymarg{argumento} se tipografía directamente, sin procesamiento

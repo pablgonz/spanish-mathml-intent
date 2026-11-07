@@ -4,8 +4,8 @@
 % \sparc, \spmarc, \spPoly, \spAfig, \spPfig, \sprad, \spdiam, \spcirc,
 % \spAcirc, \spPcirc y \spVol.
 %
-% Las lecturas en los comentarios `% doc:` son las de NVDA 2026.2 con
-% MathCAT, idénticas en mathml-SE y en mathml-AF: una por cada fórmula,
+% Las lecturas en los comentarios `% doc:` son las de NVDA 2026.3 con
+% MathCAT 0.7.8-alpha.1, idénticas en mathml-SE y en mathml-AF: una por cada fórmula,
 % en el orden en que aparece.
 %
 % Compilar con: lualatex-dev spintent-04.tex
@@ -35,7 +35,7 @@
 \begin{itemize}
   % doc: «menos 3 coma 4»
   \item Coordenadas: $\spcoord{-3, 4}$.
-  % doc: «x subíndice 1 coma y subíndice 1»
+  % doc: «x sub 1 coma y sub 1»
   \item Coordenadas con subíndices: $\spcoord{x_{1},y_{1}}$.
   % doc: «(silencio)»
   \item Coordenadas silenciadas: $\spcoord[silent=true]{-3, 4}$.
@@ -51,7 +51,7 @@
   \item Punto con coordenadas decimales: $\spPoint{A}(1,5;2)$.
   % doc: «punto A sub uno»
   \item Punto con lectura \texttt{school}: $\spPoint[read-cmd=school]{A_{1}}$.
-  % doc: «punto a subíndice 1»
+  % doc: «punto a sub 1»
   \item Punto con lectura \texttt{mathcat}: $\spPoint[read-cmd=mathcat]{A_{1}}$.
   % doc: «sea punto A»
   \item Punto con prefijo: $\spPoint[prefix={sea}]{A}$.

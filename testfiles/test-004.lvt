@@ -4,7 +4,7 @@
 %             l3build check test-004
 %
 % Test de regresion de las utilidades para geometría: las formas de cada
-% comando y sus llaves. Los "doc:" son lecturas reales de NVDA 2026.2 con MathCAT.
+% comando y sus llaves. Los "doc:" son lecturas reales de NVDA 2026.3 con MathCAT 0.7.8-alpha.1.
 \input{regression-test}
 
 \DocumentMetadata
@@ -36,7 +36,7 @@
 % doc: «menos 3 coma 4»
 1. Coordenadas: $\spcoord{-3, 4}$.
 
-% doc: «x subíndice 1 coma y subíndice 1»
+% doc: «x sub 1 coma y sub 1»
 2. Coordenadas con subíndices: $\spcoord{x_{1},y_{1}}$.
 
 % doc: «(silencio)»
@@ -60,7 +60,7 @@
 % doc: «punto A sub uno»
 9. Punto con lectura \texttt{school}: $\spPoint[read-cmd=school]{A_{1}}$.
 
-% doc: «punto a subíndice 1»
+% doc: «punto a sub 1»
 10. Punto con lectura \texttt{mathcat}: $\spPoint[read-cmd=mathcat]{A_{1}}$.
 
 % doc: «sea punto A»

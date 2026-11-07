@@ -5,7 +5,7 @@
 %
 % Test de regresion de \spsiglo, \sptime, \spdate, \spnewread, \spread,
 % \spusep, \spdsym y \spmsym: las formas de cada comando y sus llaves. Los
-% "doc:" son lecturas reales de NVDA 2026.2 con MathCAT.
+% "doc:" son lecturas reales de NVDA 2026.3 con MathCAT 0.7.8-alpha.1.
 \input{regression-test}
 
 \DocumentMetadata
@@ -81,7 +81,7 @@
 
 \section*{D. Los comandos \texttt{\textbackslash spnewread} y \texttt{\textbackslash spread}}
 
-% doc: «triángulo blanco apuntando hacia arriba a b c es congruente con triángulo blanco apuntando hacia arriba d e f»
+% doc: «triángulo a b c es congruente con triángulo d e f»
 13. Símbolo registrado: $\triangle ABC \spread{\cong} \triangle DEF$.
 
 % doc: «x al cuadrado»
@@ -95,7 +95,7 @@
 
 \section*{E. El comando \texttt{\textbackslash spusep}}
 
-% doc: «se abren paréntesis a más b se cierran paréntesis»
+% doc: «abrir paréntesis a más b cerrar paréntesis»
 17. Paréntesis: $\spusep{(} a + b \spusep{)}$.
 
 % doc: «abrir corchetes a más b cerrar corchetes»
@@ -104,16 +104,16 @@
 % doc: «abrir llaves a más b cerrar llaves»
 19. Llaves: $\spusep{\{} a + b \spusep{\}}$.
 
-% doc: «se abren paréntesis a más b se cierran paréntesis»
+% doc: «abrir paréntesis a más b cerrar paréntesis»
 20. Tamaño \texttt{big}: $\spusep[size=big]{(} a + b \spusep[size=big]{)}$.
 
-% doc: «se abren paréntesis a más b se cierran paréntesis»
+% doc: «abrir paréntesis a más b cerrar paréntesis»
 21. Tamaño \texttt{Big}: $\spusep[size=Big]{(} a + b \spusep[size=Big]{)}$.
 
-% doc: «se abren paréntesis a más b se cierran paréntesis»
+% doc: «abrir paréntesis a más b cerrar paréntesis»
 22. Tamaño \texttt{bigg}: $\spusep[size=bigg]{(} a + b \spusep[size=bigg]{)}$.
 
-% doc: «se abren paréntesis a más b se cierran paréntesis»
+% doc: «abrir paréntesis a más b cerrar paréntesis»
 23. Tamaño \texttt{Bigg}: $\spusep[size=Bigg]{(} a + b \spusep[size=Bigg]{)}$.
 
 % doc: «a más b»

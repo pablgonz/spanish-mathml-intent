@@ -5,11 +5,10 @@
 % \spcuartil, \spdecil, \spPerc, \spFrec, \spcase, \spOmega, \spPval,
 % \spProb, \spcomp, \spcomb y \spfact).
 %
-% Las lecturas en los comentarios `% doc:` son las de NVDA 2026.2 con
-% MathCAT, idénticas en mathml-SE y en mathml-AF: una por cada fórmula,
+% Las lecturas en los comentarios `% doc:` son las de NVDA 2026.3 con
+% MathCAT 0.7.8-alpha.1, idénticas en mathml-SE y en mathml-AF: una por cada fórmula,
 % en el orden en que aparece. Las mayúsculas sueltas se leen en minúscula
-% («probabilidad de a») y 1/2 se lee «1 mitad»: ambas son lecturas propias
-% de MathCAT, no del paquete.
+% («probabilidad de a»): es lectura propia de MathCAT, no del paquete.
 %
 % Compilar con: lualatex-dev spintent-05.tex
 \DocumentMetadata
@@ -60,7 +59,7 @@
   \item Intervalo sin el concepto: $\spinterval[concept=false]{[1,5]}$.
   % doc: «intervalo cerrado de 1 a 5»
   \item Intervalo con delimitadores grandes: $\spinterval[size=Big]{[1,5]}$.
-  % doc: «intervalo cerrado de 1 mitad a 5»
+  % doc: «intervalo cerrado de un medio a 5»
   \item Intervalo con delimitadores automáticos: $\spinterval[size=auto]{[\frac{1}{2},5]}$.
   % doc: «(silencio)»
   \item Intervalo silenciado: $\spinterval[silent=true]{[1,5]}$.
@@ -167,7 +166,7 @@
 \begin{itemize}
   % doc: «promedio de x»
   \item Promedio: $\spProm{x}$.
-  % doc: «promedio de x subíndice 1»
+  % doc: «promedio de x sub 1»
   \item Promedio con subíndice: $\spProm{x_{1}}$.
   % doc: «media de x»
   \item Promedio con verbalización propia: $\spProm[read-arg={media de}]{x}$.
@@ -296,7 +295,7 @@
   \item Probabilidad silenciada: $\spProb[silent=true]{A}$.
   % doc: «complemento de a»
   \item Complemento: $\spcomp{A}$.
-  % doc: «complemento de se abren paréntesis a o b se cierran paréntesis»
+  % doc: «complemento de abrir paréntesis a o b cerrar paréntesis»
   \item Complemento de una unión: $\spcomp{A \cup B}$.
   % doc: «complemento de a»
   \item Complemento con barra: $\spcomp[bar=true]{A}$.
@@ -341,7 +340,7 @@
   \item Combinaciones silenciadas: $\spcomb[silent=true]{5,2}$.
   % doc: «5 factorial»
   \item Factorial: $\spfact{5}$.
-  % doc: «se abren paréntesis n menos 1 se cierran paréntesis factorial»
+  % doc: «abrir paréntesis n menos 1 cerrar paréntesis factorial»
   \item Factorial de una expresión: $\spfact{(n-1)}$.
   % doc: «cinco factorial»
   \item Factorial con verbalización propia: $\spfact[read-arg={cinco factorial}]{5}$.

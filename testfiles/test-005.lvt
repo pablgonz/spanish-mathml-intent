@@ -4,7 +4,7 @@
 %             l3build check test-005
 %
 % Test de regresion de las utilidades de álgebra y estadística: las formas de
-% cada comando y sus llaves. Los "doc:" son lecturas reales de NVDA 2026.2 con MathCAT.
+% cada comando y sus llaves. Los "doc:" son lecturas reales de NVDA 2026.3 con MathCAT 0.7.8-alpha.1.
 \input{regression-test}
 
 \DocumentMetadata
@@ -69,7 +69,7 @@
 % doc: «intervalo cerrado de 1 a 5»
 12. Intervalo con delimitadores grandes: $\spinterval[size=Big]{[1,5]}$.
 
-% doc: «intervalo cerrado de 1 mitad a 5»
+% doc: «intervalo cerrado de un medio a 5»
 13. Intervalo con delimitadores automáticos: $\spinterval[size=auto]{[\frac{1}{2},5]}$.
 
 % doc: «(silencio)»
@@ -199,7 +199,7 @@
 % doc: «promedio de x»
 52. Promedio: $\spProm{x}$.
 
-% doc: «promedio de x subíndice 1»
+% doc: «promedio de x sub 1»
 53. Promedio con subíndice: $\spProm{x_{1}}$.
 
 % doc: «media de x»
@@ -376,7 +376,7 @@
 % doc: «complemento de a»
 109. Complemento: $\spcomp{A}$.
 
-% doc: «complemento de se abren paréntesis a o b se cierran paréntesis»
+% doc: «complemento de abrir paréntesis a o b cerrar paréntesis»
 110. Complemento de una unión: $\spcomp{A \cup B}$.
 
 % doc: «complemento de a»
@@ -438,7 +438,7 @@
 % doc: «5 factorial»
 129. Factorial: $\spfact{5}$.
 
-% doc: «se abren paréntesis n menos 1 se cierran paréntesis factorial»
+% doc: «abrir paréntesis n menos 1 cerrar paréntesis factorial»
 130. Factorial de una expresión: $\spfact{(n-1)}$.
 
 % doc: «cinco factorial»

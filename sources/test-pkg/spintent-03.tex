@@ -2,8 +2,8 @@
 % Pruebas de las utilidades para números: \spdiv, \spmul, \spnD, \spnM,
 % \spmcd, \spmcm, \spnZ, \spmQ, \sprazon y \spProp.
 %
-% Las lecturas en los comentarios `% doc:` son las de NVDA 2026.2 con
-% MathCAT, idénticas en mathml-SE y en mathml-AF: una por cada fórmula,
+% Las lecturas en los comentarios `% doc:` son las de NVDA 2026.3 con
+% MathCAT 0.7.8-alpha.1, idénticas en mathml-SE y en mathml-AF: una por cada fórmula,
 % en el orden en que aparece.
 %
 % Compilar con: lualatex-dev spintent-03.tex
@@ -33,7 +33,7 @@
 \begin{itemize}
   % doc: «20 dividido 26»
   \item División: $\spdiv{20}{26}$.
-  % doc: «se abren paréntesis 20 dividido 26 se cierran paréntesis»
+  % doc: «abrir paréntesis 20 dividido 26 cerrar paréntesis»
   \item División con paréntesis: $\spdiv[wrap-parens=true]{20}{26}$.
   % doc: «20 dividido 26»
   \item División con paréntesis sin leerlos: $\spdiv[wrap-parens=true,read-parens=false]{20}{26}$.
@@ -45,7 +45,7 @@
   \item División con signo leído: $\spdiv[read-sign=clear]{-20}{5}$.
   % doc: «20 por 26»
   \item Multiplicación: $\spmul{20}{26}$.
-  % doc: «se abren paréntesis 20 por 26 se cierran paréntesis»
+  % doc: «abrir paréntesis 20 por 26 cerrar paréntesis»
   \item Multiplicación con paréntesis: $\spmul[wrap-parens=true]{20}{26}$.
   % doc: «20 por 26»
   \item Multiplicación con paréntesis sin leerlos: $\spmul[wrap-parens=true,read-parens=false]{20}{26}$.
@@ -142,7 +142,7 @@
   \item Entero positivo: $\spnZ{23}$.
   % doc: «menos 23»
   \item Entero negativo: $\spnZ{-23}$.
-  % doc: «se abren paréntesis menos 23 se cierran paréntesis»
+  % doc: «abrir paréntesis menos 23 cerrar paréntesis»
   \item Entero con paréntesis: $\spnZ[wrap-parens=true]{-23}$.
   % doc: «menos 23»
   \item Entero con paréntesis sin leerlos: $\spnZ[wrap-parens=true,read-parens=false]{-23}$.
@@ -169,7 +169,7 @@
   \item Sin semántica de entero: $\spmQ[use-spnZ=false]{2}{5}{7}$.
   % doc: «2 y 5 séptimos»
   \item Fracción en tamaño \emph{display}: $\spmQ[use-dfrac=true]{2}{5}{7}$.
-  % doc: «se abren paréntesis 2 y 5 séptimos se cierran paréntesis»
+  % doc: «abrir paréntesis 2 y 5 séptimos cerrar paréntesis»
   \item Con paréntesis: $\spmQ[wrap-parens=true]{2}{5}{7}$.
   % doc: «2 y 5 séptimos»
   \item Con paréntesis sin leerlos: $\spmQ[wrap-parens=true,read-parens=false]{2}{5}{7}$.

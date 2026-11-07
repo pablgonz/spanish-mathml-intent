@@ -6,7 +6,7 @@
 %
 % Test de prueba para \spnum, \spunit, \spnewunit, \spunitalias, \spmoney
 % y \spshort: las formas de cada comando y sus llaves. Los "doc:" son
-% lecturas reales de NVDA 2026.2 con MathCAT. En las unidades, el
+% lecturas reales de NVDA 2026.3 con MathCAT 0.7.8-alpha.1. En las unidades, el
 % plural (metros, segundos) es lectura propia de MathCAT, no del paquete.
 \DocumentMetadata
   {
@@ -74,10 +74,10 @@
 % doc: «metro»
 14. Unidad sola: $\spunit{m}$.
 
-% doc: «23 metros segundos cuadrado»
+% doc: «23 metros segundos al cuadrado»
 15. Producto de unidades: $\spunit{23 m*s^{2}}$.
 
-% doc: «23 metros por segundos cuadrado»
+% doc: «23 metros por segundos al cuadrado»
 16. Unidades en fracción lineal: $\spunit{23 m/s^{2}}$.
 
 % doc: «90 kilómetros por horas»
@@ -89,13 +89,13 @@
 % doc: «100 kilogramos»
 19. Masa: $\spunit{100 kg}$.
 
-% doc: «23 metros segundos cuadrado»
+% doc: «23 metros segundos al cuadrado»
 20. Producto con punto: $\spunit[print-cdot=true]{23 m*s^{2}}$.
 
-% doc: «23 metros por segundos cuadrado»
+% doc: «23 metros por segundos al cuadrado»
 21. Lectura del producto: $\spunit[read-cdot=true]{23 m*s^{2}}$.
 
-% doc: «23 metros partido por segundos cuadrado»
+% doc: «23 metros partido por segundos al cuadrado»
 22. Lectura de la barra: $\spunit[read-slash=partido-por]{23 m/s^{2}}$.
 
 % doc: «3 coma 14 por 10 al cubo metros»
@@ -184,13 +184,13 @@
 
 \section*{F. Casos adicionales de \texttt{\textbackslash spunit} y \texttt{\textbackslash spnum}}
 
-% doc: «9 coma 8 kilogramos metros por segundos cuadrado»
+% doc: «9 coma 8 kilogramos metros por segundos al cuadrado»
 48. Producto y cociente con exponente: $\spunit{9,8 kg*m/s^{2}}$.
 
-% doc: «12 kilómetros cuadrado»
+% doc: «12 kilómetros al cuadrado»
 49. Exponente en una sola unidad: $\spunit{12 km^{2}}$.
 
-% doc: «1 coma 5 por 10 a la menos 3 potencia»
+% doc: «1 coma 5 por 10 elevado a menos 3»
 50. Exponente negativo en notación científica: $\spnum{1,5e-3}$.
 
 \end{document}
