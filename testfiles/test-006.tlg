@@ -2404,7 +2404,7 @@ TEST 1: Show PDF Tags
         </mrow>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00358"
-           intent="_fin-valor-absoluto"
+           intent="_fin-del-valor-absoluto"
           >
          <mi xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00359"
@@ -2499,7 +2499,7 @@ TEST 1: Show PDF Tags
         </mrow>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00373"
-           intent="_fin-valor-absoluto"
+           intent="_fin-del-valor-absoluto"
           >
          <mi xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00374"
@@ -2599,7 +2599,7 @@ TEST 1: Show PDF Tags
         </mrow>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00389"
-           intent="_fin-valor-absoluto"
+           intent="_fin-del-valor-absoluto"
           >
          <mi xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00390"
@@ -2834,7 +2834,7 @@ TEST 1: Show PDF Tags
         </mrow>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00426"
-           intent="_fin-valor-absoluto"
+           intent="_fin-del-valor-absoluto"
           >
          <mi xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00427"
@@ -2917,7 +2917,7 @@ TEST 1: Show PDF Tags
         </mrow>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00439"
-           intent="_fin-valor-absoluto"
+           intent="_fin-del-valor-absoluto"
           >
          <mi xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00440"
@@ -3024,7 +3024,7 @@ TEST 1: Show PDF Tags
         </mrow>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00456"
-           intent="_fin-valor-absoluto"
+           intent="_fin-del-valor-absoluto"
           >
          <mi xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00457"
@@ -6293,7 +6293,7 @@ TEST 1: Show PDF Tags
            >
           <mrow xmlns="http://www.w3.org/1998/Math/MathML"
              id="ID.00991"
-             intent="_factorial:postfix($n)"
+             intent="_factorial-de:prefix($n)"
             >
            <mi xmlns="http://www.w3.org/1998/Math/MathML"
               id="ID.00992"
@@ -6332,7 +6332,7 @@ TEST 1: Show PDF Tags
             >
            <mrow xmlns="http://www.w3.org/1998/Math/MathML"
               id="ID.00998"
-              intent="_factorial:postfix($n)"
+              intent="_factorial-de:prefix($n)"
              >
             <mi xmlns="http://www.w3.org/1998/Math/MathML"
                id="ID.00999"
@@ -6373,7 +6373,7 @@ TEST 1: Show PDF Tags
            </mspace>
            <mrow xmlns="http://www.w3.org/1998/Math/MathML"
               id="ID.01005"
-              intent="_factorial:postfix($n)"
+              intent="_factorial-de:prefix($n)"
              >
             <mi xmlns="http://www.w3.org/1998/Math/MathML"
                id="ID.01006"
@@ -6779,7 +6779,7 @@ TEST 1: Show PDF Tags
         </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.01068"
-           intent="_factorial:postfix($n)"
+           intent="_factorial-de:prefix($n)"
           >
          <mi xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.01069"
