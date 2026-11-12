@@ -1111,7 +1111,6 @@ TEST 1: Show PDF Tags
         </mi>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00185"
-           intent="_por"
            lspace="0"
            rspace="0"
           >
@@ -1187,7 +1186,6 @@ TEST 1: Show PDF Tags
         </mi>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00197"
-           intent="_por"
            lspace="0"
            rspace="0"
           >
@@ -1782,7 +1780,6 @@ TEST 1: Show PDF Tags
         </msup>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00292"
-           intent="_por"
            lspace="0"
            rspace="0"
           >
@@ -2809,7 +2806,6 @@ TEST 1: Show PDF Tags
         </mi>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00452"
-           intent="_por"
            lspace="0"
            rspace="0"
           >

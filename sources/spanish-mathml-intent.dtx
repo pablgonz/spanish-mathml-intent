@@ -1781,7 +1781,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % separación entre las \mymarg{unidades} del numerador y el denominador,
 % teniendo presente que el denominador NO puede contener números de ningún
 % tipo. Por ejemplo:~|$\spunit{23 m/s^{2}}$| imprimirá `$23\,\mathrm{m}/\mathrm{s}^{2}$'
-% en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintitrés metros por segundos al cuadrado»}.
+% en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintitrés metros por segundo al cuadrado»}.
 %
 % \begin{important}*
 %  Solo imprimiremos \emph{fracciones lineales}, si se requiere otra forma
@@ -1822,8 +1822,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece la \emph{forma} en la que \mynvmath{NVDA/MathCAT} verbalizará la
 % \emph{«barra»} `$\mathcolor{red}{/}$' de separación entre el
 % numerador y el denominador. Si se establece en |por|, \mynvmath{NVDA/MathCAT}
-% verbalizará \emph{«por»}; si se establece en |partido-por|, \mynvmath{NVDA/MathCAT}
-% verbalizará \emph{«partido por»}.
+% verbalizará \emph{«por»} y las \mymarg{unidades} del denominador en singular;
+% si se establece en |partido-por|, \mynvmath{NVDA/MathCAT} verbalizará
+% \emph{«partido por»}.
 %
 % \subsubsection{Argumentos para \cs[no-index]{spunit}}\label{subsubsec:arg-spunit}
 %
@@ -1984,7 +1985,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mymarg{argumento} a |\spunit|. Por ejemplo:~|\spunitalias{caudal}{m^{3}/s}|
 % creará el \mymarg{alias} `|caudal|' y cuando se utilice |$\spunit{50 caudal}$|
 % se imprimirá `$50\,\mathrm{m}^{3} / \mathrm{s}$' en la salida \texttt{PDF}
-% y \mynvmath{NVDA/MathCAT} verbalizará \emph{«cincuenta metros al cubo por segundos»}.
+% y \mynvmath{NVDA/MathCAT} verbalizará \emph{«cincuenta metros al cubo por segundo»}.
 %
 % \subsection{El comando \cs[no-index]{spmoney}}\label{subsec:spmoney}
 %
@@ -7009,6 +7010,16 @@ spmmli-tool -o -p build/ ejemplo.tex
 %        turns a number followed by `$\prime$' into a superscript, does not
 %        read \emph{\enquote{superíndice}} before \emph{\enquote{minutos}}.
 %        The output in the \texttt{PDF} does not change.
+%      \item |\spunit| prints the slash without an intent when \mykey{read-slash}
+%        is |por|, so that \mynvmath{MathCAT} reads the units of the denominator
+%        in singular: \emph{\enquote{noventa kilómetros por hora}} instead of
+%        \emph{\enquote{por horas}}.
+%      \item |\spunit| reads the entries ℃ and ℉, and the compact symbols of
+%        squared and cubed units, with the reading of \mynvmath{MathCAT}, which
+%        agrees with the number: \emph{\enquote{un grado Celsius}} instead of
+%        \emph{\enquote{1 grados celsius}}. The compact symbols with a slash
+%        are aliases of the same expression written with |/|, as those of
+%        |\spunitalias|.
 %      \item The wording follows \mynvmath{MathCAT} and the \textsc{cmu} 2024:
 %        \emph{\enquote{fin del valor absoluto}}, \emph{\enquote{factorial de n}} and
 %        \emph{\enquote{f segunda}} in functions (points keep \emph{\enquote{doble prima}}).
@@ -8472,7 +8483,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \l_@@_spunit_read_slash_str,
 %   }
 % These variables are used to format the \emph{\enquote{unit}}: its exponent,
-% a copy of the one stored by Lua, and the speech text of the slash.
+% a copy of the one stored by Lua, and the speech text of the slash, which is
+% empty when the slash carries no intent.
 %    \begin{macrocode}
 \tl_new:N  \l_@@_spunit_exponent_tl
 \str_new:N \l_@@_spunit_read_slash_str
@@ -8535,7 +8547,7 @@ spmmli-tool -o -p build/ ejemplo.tex
       {
         \int_case:nn { \l_keys_choice_int }
           {
-            {1} { \str_set:Nn \l_@@_spunit_read_slash_str { _por } }
+            {1} { \str_clear:N \l_@@_spunit_read_slash_str }
             {2} { \str_set:Nn \l_@@_spunit_read_slash_str { _partido-por } }
           }
       },
@@ -8659,7 +8671,13 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   The function \myhlc|\@@_print_spunit_hierarchy:| handles the layout of inline
 %   \emph{\enquote{unit}} fractions. It first prints the \emph{\enquote{units}}
 %   before the slash. If a denominator exists, it prints the slash |/| `$\mathcolor{red}{/}$'
-%   with its corresponding speech intent, and then prints the remaining \emph{\enquote{units}}.
+%   and then prints the remaining \emph{\enquote{units}}. With \mykey{read-slash}
+%   set to |por| the slash carries no intent: \mynvmath{MathCAT} reads it as
+%   \emph{\enquote{por}} and says the \emph{\enquote{units}} of the denominator in
+%   singular, \emph{\enquote{metros por segundo}}. A literal intent would hide the
+%   fraction from \mynvmath{MathCAT}, which would then read
+%   \emph{\enquote{metros por segundos}}. With |partido-por| the slash carries
+%   the intent \myhlc|_partido-por|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_print_spunit_hierarchy:
   {
@@ -8668,7 +8686,9 @@ spmmli-tool -o -p build/ ejemplo.tex
         \@@_spunit_print_product:n { above }
         \tl_if_empty:NF \l_@@_luaset_arg_below_tl
           {
-            \MathMLintent { \l_@@_spunit_read_slash_str } { / }
+            \str_if_empty:NTF \l_@@_spunit_read_slash_str
+              { / }
+              { \MathMLintent { \l_@@_spunit_read_slash_str } { / } }
             \@@_spunit_print_product:n { below }
           }
       }
@@ -24337,24 +24357,21 @@ local spintent_units = {
     ["㎺"]   = "pW",       ["㎻"]   = "nW",       ["㎼"]   = "µW",
     ["㎍"]   = "µg",       ["㎎"]   = "mg",       ["㎏"]   = "kg",
     ["㎜"]   = "mm",       ["㎝"]   = "cm",       ["㎞"]   = "km",       ["㎛"]   = "µm",       ["㎕"]   = "µL",
-    ["㎖"]   = "mL",       ["㎗"]   = "dL",       ["㎘"]   = "kL",       ["㎧"]   = "m/s",
-    ["㎨"]   = "m/s^2",    ["㎭"]   = "rad",      ["㎮"]   = "rad/s",    ["㎯"]   = "rad/s^2"
+    ["㎖"]   = "mL",       ["㎗"]   = "dL",       ["㎘"]   = "kL",       ["㎭"]   = "rad"
 }
 
+-- Los símbolos compactos con barra son alias: la barra y el exponente pasan
+-- por el mismo camino que "m/s^{2}", así MathCAT lee el denominador en
+-- singular y el exponente queda solo en la unidad que lo lleva.
+spintent_custom_spunit_aliases["㎧"] = "m/s"
+spintent_custom_spunit_aliases["㎨"] = "m/s^2"
+spintent_custom_spunit_aliases["㎮"] = "rad/s"
+spintent_custom_spunit_aliases["㎯"] = "rad/s^2"
+
+-- Lectura propia de los símbolos sexagesimales. Las demás unidades, también
+-- las compactas (㎡, ℃…), se leen con :unit, para que MathCAT concuerde
+-- con el número («un grado Celsius», «23 metros al cuadrado»).
 local spintent_unit_compact_spoken_names = {
-    ["㎡"]     = "metro-cuadrado",
-    ["㎥"]     = "metro-cúbico",
-    ["㎢"]     = "kilómetro-cuadrado",
-    ["㎟"]     = "milímetro-cuadrado",
-    ["㎠"]     = "centímetro-cuadrado",
-    ["㎣"]     = "milímetro-cúbico",
-    ["㎤"]     = "centímetro-cúbico",
-    ["㎦"]     = "kilómetro-cúbico",
-    ["㎧"]     = "metros-por-segundo",
-    ["㎨"]     = "metros-por-segundo-al-cuadrado",
-    ["㎐"]     = "hercio",
-    ["℃"]     = "grados-celsius",
-    ["℉"]     = "grados-fahrenheit",
     ["'"]      = "minutos",
     ["''"]     = "segundos",
     ['"']      = "segundos",

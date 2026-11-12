@@ -150,7 +150,7 @@
 % doc: «23 metros partido por segundos cuadrado»
 35. Unidad con barra configurada: {\setspintent{\spunit}{read-slash=partido-por}$\spunit{23 m/s^{2}}$}.
 
-% doc: «23 metros por segundos al cuadrado»
+% doc: «23 metros por segundo al cuadrado»
 % en AF: «23 metros partido por segundos al cuadrado» (misma fuente que el 35)
 36. Unidad sin configurar, después del grupo: $\spunit{23 m/s^{2}}$.
 

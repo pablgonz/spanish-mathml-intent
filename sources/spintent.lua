@@ -745,24 +745,21 @@ local spintent_units = {
     ["㎺"]   = "pW",       ["㎻"]   = "nW",       ["㎼"]   = "µW",
     ["㎍"]   = "µg",       ["㎎"]   = "mg",       ["㎏"]   = "kg",
     ["㎜"]   = "mm",       ["㎝"]   = "cm",       ["㎞"]   = "km",       ["㎛"]   = "µm",       ["㎕"]   = "µL",
-    ["㎖"]   = "mL",       ["㎗"]   = "dL",       ["㎘"]   = "kL",       ["㎧"]   = "m/s",
-    ["㎨"]   = "m/s^2",    ["㎭"]   = "rad",      ["㎮"]   = "rad/s",    ["㎯"]   = "rad/s^2"
+    ["㎖"]   = "mL",       ["㎗"]   = "dL",       ["㎘"]   = "kL",       ["㎭"]   = "rad"
 }
 
+-- Los símbolos compactos con barra son alias: la barra y el exponente pasan
+-- por el mismo camino que "m/s^{2}", así MathCAT lee el denominador en
+-- singular y el exponente queda solo en la unidad que lo lleva.
+spintent_custom_spunit_aliases["㎧"] = "m/s"
+spintent_custom_spunit_aliases["㎨"] = "m/s^2"
+spintent_custom_spunit_aliases["㎮"] = "rad/s"
+spintent_custom_spunit_aliases["㎯"] = "rad/s^2"
+
+-- Lectura propia de los símbolos sexagesimales. Las demás unidades, también
+-- las compactas (㎡, ℃…), se leen con :unit, para que MathCAT concuerde
+-- con el número («un grado Celsius», «23 metros al cuadrado»).
 local spintent_unit_compact_spoken_names = {
-    ["㎡"]     = "metro-cuadrado",
-    ["㎥"]     = "metro-cúbico",
-    ["㎢"]     = "kilómetro-cuadrado",
-    ["㎟"]     = "milímetro-cuadrado",
-    ["㎠"]     = "centímetro-cuadrado",
-    ["㎣"]     = "milímetro-cúbico",
-    ["㎤"]     = "centímetro-cúbico",
-    ["㎦"]     = "kilómetro-cúbico",
-    ["㎧"]     = "metros-por-segundo",
-    ["㎨"]     = "metros-por-segundo-al-cuadrado",
-    ["㎐"]     = "hercio",
-    ["℃"]     = "grados-celsius",
-    ["℉"]     = "grados-fahrenheit",
     ["'"]      = "minutos",
     ["''"]     = "segundos",
     ['"']      = "segundos",
@@ -855,6 +852,21 @@ local function spintent_spunit_lookup(raw_unit_name)
                 exp         = literal_exp,
                 sexagesimal = spintent_is_sexagesimal_symbol(canonical_base),
             }
+        end
+    end
+
+    -- µ (o μ) pegada a una unidad conocida ("µm", "µg", "µs^2"): una sola
+    -- unidad con prefijo, para que MathCAT lea el prefijo junto con la
+    -- unidad y no el símbolo µ suelto. Solo si la unidad se lee con :unit
+    -- (sin lectura propia) y no es sexagesimal ni lleva otro µ delante.
+    local rest = s_match(clean_exp_format, "^µ(.+)$")
+        or s_match(clean_exp_format, "^μ(.+)$")
+    if rest then
+        local inner = spintent_spunit_lookup(rest)
+        if inner and inner.read == ":unit" and not inner.sexagesimal
+           and not s_match(inner.canonical, "^µ") then
+            inner.canonical = "µ" .. inner.canonical
+            return inner
         end
     end
     return nil

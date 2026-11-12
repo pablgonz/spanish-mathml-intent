@@ -630,7 +630,7 @@
       {
         \int_case:nn { \l_keys_choice_int }
           {
-            {1} { \str_set:Nn \l__spintent_spunit_read_slash_str { _por } }
+            {1} { \str_clear:N \l__spintent_spunit_read_slash_str }
             {2} { \str_set:Nn \l__spintent_spunit_read_slash_str { _partido-por } }
           }
       },
@@ -714,7 +714,9 @@
         \__spintent_spunit_print_product:n { above }
         \tl_if_empty:NF \l__spintent_luaset_arg_below_tl
           {
-            \MathMLintent { \l__spintent_spunit_read_slash_str } { / }
+            \str_if_empty:NTF \l__spintent_spunit_read_slash_str
+              { / }
+              { \MathMLintent { \l__spintent_spunit_read_slash_str } { / } }
             \__spintent_spunit_print_product:n { below }
           }
       }
