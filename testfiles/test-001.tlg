@@ -1712,10 +1712,10 @@ TEST 1: Show PDF Tags
         </mspace>
         <mi xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00281"
-           intent="_píxeles"
+           intent="_personas"
            mathvariant="normal"
           >
-         <?MarkedContent page="1" ?>px
+         <?MarkedContent page="1" ?>pers
         </mi>
        </math>
        <?MarkedContent page="1" ?>

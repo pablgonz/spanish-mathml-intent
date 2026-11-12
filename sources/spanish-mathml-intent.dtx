@@ -713,7 +713,7 @@ end, "shekel_fallback_patch")
                     two-dots, old-style, slash, dividido, dividido-por, dividido-entre, por,%
                     multiplicado-por, veces, cross, dot, asterisk, cifras-sep, read-cmd, %
                     osf, nomath, mono, spanish, shorthands, no-text, semibold, colorlinks, pdftitle, pdfdisplaydoctitle, %
-                    pdfstartview, FitH, pdfinfo, Title, Subject, range, StylisticSet, small-caps, read-arg, píxeles, px, caudal,%
+                    pdfstartview, FitH, pdfinfo, Title, Subject, range, StylisticSet, small-caps, read-arg, personas, pers, caudal, afluencia,%
                     read-period-sep, read-sign, notation-sym, partido-por, Numbers, Lining, OldStyle, size, read-sty, segmento,%
                     lado, trazo, mathcat,school, rayo, semirrecta, print-sym, recto, silent, math, mathml-SE, es-CL, on, off, %
                     setup, tagging, tagging-setup, lang, pdfversion, pdfstandard, arg, auto, read-sub, radio-sty, diameter, %
@@ -1930,6 +1930,78 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{longtable}
 % \endgroup
 %
+% La tabla~\ref{tab:spunit-uso} agrega las \mymarg{unidades} de uso corriente e
+% informática, sin alias. \mynvmath{NVDA/MathCAT} las conoce y concuerda su
+% nombre con el número: |$\spunit{1 kWh}$| se lee \emph{«un kilovatio hora»}
+% y |$\spunit{5 kWh}$| \emph{«5 kilovatios hora»}.
+%
+% \begingroup\small
+% \begin{longtable}{@{\extracolsep{\fill}}clcl@{}}
+%   \caption{Unidades de uso corriente e informática} \label{tab:spunit-uso} \\
+%   \toprule
+%   \textbf{Entrada} & \textbf{Magnitud} & \textbf{Salida PDF} & \multicolumn{1}{c}{\textbf{Lectura NVDA}} \\
+%   \midrule
+%   \endfirsthead
+%   %
+%   \caption[]{\emph{(Continuación: Unidades de uso corriente e informática)}} \\
+%   \toprule
+%   \textbf{Entrada} & \textbf{Magnitud} & \textbf{Salida PDF} & \multicolumn{1}{c}{\textbf{Lectura NVDA}} \\
+%   \midrule
+%   \endhead
+%   %
+%   \midrule
+%   \multicolumn{4}{r}{\emph{Continúa en la siguiente página...}} \\
+%   \endfoot
+%   %
+%   \bottomrule
+%   \endlastfoot
+%   %
+%   kcal   & Energía          & $\mathrm{kcal}$ & \emph{«kilocaloría»} \\
+%   Wh     & Energía          & $\mathrm{Wh}$ & \emph{«vatio hora»} \\
+%   kWh    & Energía          & $\mathrm{kWh}$ & \emph{«kilovatio hora»} \\
+%   MWh    & Energía          & $\mathrm{MWh}$ & \emph{«megavatio hora»} \\
+%   GWh    & Energía          & $\mathrm{GWh}$ & \emph{«gigavatio hora»} \\
+%   Ah     & Carga eléctrica  & $\mathrm{Ah}$ & \emph{«amperio hora»} \\
+%   mAh    & Carga eléctrica  & $\mathrm{mAh}$ & \emph{«miliamperio hora»} \\
+%   mmHg   & Presión          & $\mathrm{mmHg}$ & \emph{«milímetro de mercurio»} \\
+%   Torr   & Presión          & $\mathrm{Torr}$ & \emph{«torr»} \\
+%   mbar   & Presión          & $\mathrm{mbar}$ & \emph{«milibar»} \\
+%   psi    & Presión          & $\mathrm{psi}$ & \emph{«libra por pulgada cuadrada»} \\
+%   cc     & Volumen          & $\mathrm{cc}$ & \emph{«centímetro cúbico»} \\
+%   kn     & Velocidad        & $\mathrm{kn}$ & \emph{«nudo»} \\
+%   CV     & Potencia         & $\mathrm{CV}$ & \emph{«caballo de vapor»} \\
+%   kgf    & Fuerza           & $\mathrm{kgf}$ & \emph{«kilogramo fuerza»} \\
+%   ppm    & Concentración    & $\mathrm{ppm}$ & \emph{«parte por millón»} \\
+%   uma    & Masa atómica     & $\mathrm{uma}$ & \emph{«unidad de masa atómica»} \\
+%   ua     & Distancia        & $\mathrm{ua}$ & \emph{«unidad astronómica»} \\
+%   KB     & Datos            & $\mathrm{KB}$ & \emph{«kilobyte»} \\
+%   kbit   & Datos            & $\mathrm{kbit}$ & \emph{«kilobit»} \\
+%   Mbit   & Datos            & $\mathrm{Mbit}$ & \emph{«megabit»} \\
+%   Gbit   & Datos            & $\mathrm{Gbit}$ & \emph{«gigabit»} \\
+%   Tbit   & Datos            & $\mathrm{Tbit}$ & \emph{«terabit»} \\
+%   bps    & Tasa de datos    & $\mathrm{bps}$ & \emph{«bit por segundo»} \\
+%   kbps   & Tasa de datos    & $\mathrm{kbps}$ & \emph{«kilobit por segundo»} \\
+%   Mbps   & Tasa de datos    & $\mathrm{Mbps}$ & \emph{«megabit por segundo»} \\
+%   Gbps   & Tasa de datos    & $\mathrm{Gbps}$ & \emph{«gigabit por segundo»} \\
+%   Tbps   & Tasa de datos    & $\mathrm{Tbps}$ & \emph{«terabit por segundo»} \\
+%   Bps    & Tasa de datos    & $\mathrm{Bps}$ & \emph{«byte por segundo»} \\
+%   kBps   & Tasa de datos    & $\mathrm{kBps}$ & \emph{«kilobyte por segundo»} \\
+%   MBps   & Tasa de datos    & $\mathrm{MBps}$ & \emph{«megabyte por segundo»} \\
+%   GBps   & Tasa de datos    & $\mathrm{GBps}$ & \emph{«gigabyte por segundo»} \\
+%   dpi    & Resolución       & $\mathrm{dpi}$ & \emph{«punto por pulgada»} \\
+%   ppp    & Resolución       & $\mathrm{ppp}$ & \emph{«punto por pulgada»} \\
+%   px     & Resolución       & $\mathrm{px}$ & \emph{«píxel»} \\
+%   fps    & Cuadros          & $\mathrm{fps}$ & \emph{«fotograma por segundo»} \\
+%   FLOPS  & Cómputo          & $\mathrm{FLOPS}$ & \emph{«flops»} \\
+%   GFLOPS & Cómputo          & $\mathrm{GFLOPS}$ & \emph{«gigaflops»} \\
+%   TFLOPS & Cómputo          & $\mathrm{TFLOPS}$ & \emph{«teraflops»} \\
+%   PFLOPS & Cómputo          & $\mathrm{PFLOPS}$ & \emph{«petaflops»} \\
+%   MIPS   & Cómputo          & $\mathrm{MIPS}$ & \emph{«millón de instrucciones por segundo»} \\
+%   dBm    & Potencia de señal & $\mathrm{dBm}$ & \emph{«decibelio milivatio»} \\
+% \end{longtable}
+% \endgroup
+%
+%
 % Si el prefijo `$\mathrm{µ}$' (o `$\mathrm{μ}$') va pegado a una \mymarg{unidad}
 % de la tabla, como en `$10\,\mathrm{µm}$' o `$5\,\mathrm{µg}$', se imprime y se
 % trata como una sola \mymarg{unidad}, y \mynvmath{NVDA/MathCAT} aplica su
@@ -1956,10 +2028,17 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % La declaración de la \mymarg{nueva unidad} es «global» y se almacena
 % en el módulo \myluamod{} como una \mymarg{unidad} válida para pasar como
-% \mymarg{argumento} a |\spunit|. Por ejemplo:~|\spnewunit{px}{píxeles}|
-% creará la \mymarg{nueva unidad} `|px|' y cuando se utilice |$\spunit{100 px}$|
-% se imprimirá `$100\,\mathrm{px}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
-% verbalizará \emph{«cien píxeles»}.
+% \mymarg{argumento} a |\spunit|. Por ejemplo:~|\spnewunit{pers}{personas}|
+% creará la \mymarg{nueva unidad} `|pers|' y cuando se utilice |$\spunit{100 pers}$|
+% se imprimirá `$100\,\mathrm{pers}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% verbalizará \emph{«cien personas»}.
+%
+% La verbalización de una \mymarg{nueva unidad} es fija: \mynvmath{NVDA/MathCAT}
+% no la concuerda con el número, así que |$\spunit{1 pers}$| se lee
+% \emph{«1 personas»}. Las \mymarg{unidades} que \mynvmath{MathCAT} ya conoce, como
+% |px| o |kWh|, están en las tablas~\ref{tab:spunit-unidades} y~\ref{tab:spunit-uso} y no se crean con
+% |\spnewunit|, porque con ellas \mynvmath{MathCAT} sí concuerda el número
+% (\emph{«un píxel»}, \emph{«5 píxeles»}).
 %
 % \subsubsection{El comando \cs[no-index]{spunitalias}}\label{subsubsec:spunitalias}
 %
@@ -1986,6 +2065,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % creará el \mymarg{alias} `|caudal|' y cuando se utilice |$\spunit{50 caudal}$|
 % se imprimirá `$50\,\mathrm{m}^{3} / \mathrm{s}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«cincuenta metros al cubo por segundo»}.
+% La \mymarg{expresión de unidades} puede usar las \mymarg{unidades} de las
+% tablas~\ref{tab:spunit-unidades} y~\ref{tab:spunit-uso} y las creadas con |\spnewunit|, por ejemplo
+% |\spunitalias{afluencia}{pers/min}|.
 %
 % \subsection{El comando \cs[no-index]{spmoney}}\label{subsec:spmoney}
 %
@@ -7020,6 +7102,12 @@ spmmli-tool -o -p build/ ejemplo.tex
 %        \emph{\enquote{1 grados celsius}}. The compact symbols with a slash
 %        are aliases of the same expression written with |/|, as those of
 %        |\spunitalias|.
+%      \item |\spunit| accepts the units in everyday use and computing that
+%        \mynvmath{MathCAT} knows, such as |kWh|, |mAh|, |kcal|, |mmHg|, |psi|,
+%        |kn|, |CV|, |ppm|, |bps|, |dpi|, |px|, |fps|, |MIPS| and |dBm|, and
+%        \mynvmath{MathCAT} agrees their name with the number. Their symbols can no
+%        longer be defined with |\spnewunit| or used as the name of an alias, so
+%        the example of |\spnewunit| uses |pers| instead of |px|.
 %      \item The wording follows \mynvmath{MathCAT} and the \textsc{cmu} 2024:
 %        \emph{\enquote{fin del valor absoluto}}, \emph{\enquote{factorial de n}} and
 %        \emph{\enquote{f segunda}} in functions (points keep \emph{\enquote{doble prima}}).
@@ -24348,6 +24436,19 @@ local spintent_units = {
     ["degF"]     = "°F",  ["℉"]        = "°F",  ["micro"]    = "µ",
     ["minmin"]   = "′",   ["segseg"]   = "″",   ["u-masa"]   = "u",
     ["mho"]      = "℧",
+    -- Uso corriente en español e informática: MathCAT las conoce y concuerda
+    -- el número con el nombre («un kilovatio hora», «5 kilovatios hora»).
+    ["kcal"]  = "kcal",   ["Wh"]    = "Wh",     ["kWh"]   = "kWh",    ["MWh"]   = "MWh",
+    ["GWh"]   = "GWh",    ["Ah"]    = "Ah",     ["mAh"]   = "mAh",    ["mmHg"]  = "mmHg",
+    ["Torr"]  = "Torr",   ["mbar"]  = "mbar",   ["cc"]    = "cc",     ["kn"]    = "kn",
+    ["CV"]    = "CV",     ["kgf"]   = "kgf",    ["ppm"]   = "ppm",    ["uma"]   = "uma",
+    ["ua"]    = "ua",     ["psi"]   = "psi",    ["KB"]    = "KB",     ["kbit"]  = "kbit",
+    ["Mbit"]  = "Mbit",   ["Gbit"]  = "Gbit",   ["Tbit"]  = "Tbit",   ["bps"]   = "bps",
+    ["kbps"]  = "kbps",   ["Mbps"]  = "Mbps",   ["Gbps"]  = "Gbps",   ["Tbps"]  = "Tbps",
+    ["Bps"]   = "Bps",    ["kBps"]  = "kBps",   ["MBps"]  = "MBps",   ["GBps"]  = "GBps",
+    ["dpi"]   = "dpi",    ["ppp"]   = "ppp",    ["px"]    = "px",     ["fps"]   = "fps",
+    ["FLOPS"] = "FLOPS",  ["GFLOPS"]= "GFLOPS", ["TFLOPS"]= "TFLOPS", ["PFLOPS"]= "PFLOPS",
+    ["MIPS"]  = "MIPS",   ["dBm"]   = "dBm",
     ["㎡"]   = "m^2",      ["㎢"]   = "km^2",     ["㎠"]   = "cm^2",     ["㎜²"]  = "mm^2",
     ["㎥"]   = "m^3",      ["㎦"]   = "km^3",     ["㎤"]   = "cm^3",     ["㎜³"]  = "mm^3",
     ["㎐"]   = "Hz",       ["㎑"]   = "kHz",      ["㎒"]   = "MHz",      ["㎓"]   = "GHz",      ["㎔"]   = "THz",

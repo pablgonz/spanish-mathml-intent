@@ -107,11 +107,11 @@
 
 \section*{C. Los comandos \texttt{\textbackslash spnewunit} y \texttt{\textbackslash spunit}alias}
 
-\spnewunit{px}{píxeles}
+\spnewunit{pers}{personas}
 \spunitalias{caudal}{m^{3}/s}
 
-% doc: «100 píxeles»
-24. Nueva unidad: $\spunit{100 px}$.
+% doc: «100 personas»
+24. Nueva unidad: $\spunit{100 pers}$.
 
 % doc: «50 metros al cubo por segundo»
 25. Nuevo alias: $\spunit{50 caudal}$.
