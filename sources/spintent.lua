@@ -353,6 +353,33 @@ register_tex_cmd("luafun_point_sep", function()
     node.write(noad)
 end, {})
 
+-- \__spintent_pause_sep: como point_sep, pero con intent
+-- ":silent:pause-short": no lee nada y MathCAT mete una pausa corta
+-- (coma de coordenadas, para que A(1,2) no suene como "1 coma 2").
+-- Contenido real de la formula: sin marca sptmp.
+register_tex_cmd("luafun_pause_sep", function()
+    local kernel = node.new("math_char")
+    kernel.char  = 0x2063
+    kernel.fam   = 0
+    local noad   = node.new("noad")
+    noad.subtype = 0
+    noad.nucleus = kernel
+
+    local properties = node.get_properties_table()
+    local p = properties[kernel] or {}
+    p.mathml_table = {
+        [0]          = "mo",
+        "\u{2063}",
+        intent       = ":silent:pause-short",
+        mathvariant  = "normal",
+        [":nodes"]   = { kernel },
+    }
+    p.mathml_filter = function(result, core) return result, core end
+    properties[kernel] = p
+
+    node.write(noad)
+end, {})
+
 -- \__spintent_invisible_sep: (fantasma exterior, <mi intent=":silent">).
 -- Necesario cuando el resultado anotado es el único elemento de
 -- nivel superior de la fórmula: sin un segundo hermano, to_math

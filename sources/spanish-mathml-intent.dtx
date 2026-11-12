@@ -7108,6 +7108,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %        \mynvmath{MathCAT} agrees their name with the number. Their symbols can no
 %        longer be defined with |\spnewunit| or used as the name of an alias, so
 %        the example of |\spnewunit| uses |pers| instead of |px|.
+%      \item The lists of |\spmcd|, |\spmcm|, |\spnD|, |\spnM| and |\spcomb|, and
+%        the coordinates of |\spcoord|, |\spPoint| and |\spvec|, read a short
+%        pause in their commas (not before the \emph{\enquote{y}}), so that
+%        |A(1,2)| is not heard as the decimal number \emph{\enquote{1 coma 2}}.
 %      \item The wording follows \mynvmath{MathCAT} and the \textsc{cmu} 2024:
 %        \emph{\enquote{fin del valor absoluto}}, \emph{\enquote{factorial de n}} and
 %        \emph{\enquote{f segunda}} in functions (points keep \emph{\enquote{doble prima}}).
@@ -7616,6 +7620,21 @@ spmmli-tool -o -p build/ ejemplo.tex
 \cs_new_protected:Nn \@@_point_sep:
   {
     \@@_luafun_point_sep:
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_pause_sep:}
+%   Places an invisible separator (U+2063) with the intent
+%   |:silent:pause-short|, written to MathML as
+%   |<mo intent=":silent:pause-short" mathvariant="normal">|. It reads
+%   nothing but makes MathCAT insert a short pause. It is used as the
+%   first child of the second coordinate, so that |A(1,2)| is not heard as
+%   the decimal number \emph{\enquote{1 coma 2}}.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_pause_sep:
+  {
+    \@@_luafun_pause_sep:
   }
 %    \end{macrocode}
 % \end{macro}
@@ -11611,9 +11630,9 @@ spmmli-tool -o -p build/ ejemplo.tex
         % prevent "intervalo"
         \MathMLintent { :silent } { \c_@@_invisible_sep_int }
         \seq_use:Nnnn \l_@@_mc_args_seq
-          { \MathMLintent { :silent } { , } }
-          { \MathMLintent { :silent } { , } }
-          { \MathMLintent { :silent } { , } }
+          { \MathMLintent { :silent:pause-short } { , } }
+          { \MathMLintent { :silent:pause-short } { , } }
+          { \MathMLintent { :silent:pause-short } { , } }
       }
       {
         \MathMLintent { :silent } { \c_@@_invisible_sep_int } % prevent doble "de"
@@ -11632,7 +11651,7 @@ spmmli-tool -o -p build/ ejemplo.tex
             \MathMLintent { _y- } { \c_@@_invisible_sep_int } % "y" medio
           }
           {
-            \MathMLintent { :silent } { , }
+            \MathMLintent { :silent:pause-short } { , }
           }
           {
             \MathMLintent { :silent } { , }
@@ -12032,23 +12051,25 @@ spmmli-tool -o -p build/ ejemplo.tex
           \l_@@_md_out_seq { \tl_use:c { l_@@_sp #1 _luaset_result_tl } }
         \seq_use:Nnnn \l_@@_md_out_seq
           {
-            \MathMLintent { :silent } { , }
-            \str_if_eq:vnT { l_@@_sp #1 _luaset_is_truncated_str } { false }
+            \str_if_eq:vnTF { l_@@_sp #1 _luaset_is_truncated_str } { false }
               {
+                \MathMLintent { :silent } { , }
                 \MathMLintent { _y- } { \c_@@_invisible_sep_int } % "y" (solo dos)
               }
+              { \MathMLintent { :silent:pause-short } { , } }
           }
-          { \MathMLintent { :silent } { , } }
+          { \MathMLintent { :silent:pause-short } { , } }
           {
-            \MathMLintent { :silent } { , }
-            \str_if_eq:vnT { l_@@_sp #1 _luaset_is_truncated_str } { false }
+            \str_if_eq:vnTF { l_@@_sp #1 _luaset_is_truncated_str } { false }
               {
+                \MathMLintent { :silent } { , }
                 \MathMLintent { _y- } { \c_@@_invisible_sep_int } % "y" final
               }
+              { \MathMLintent { :silent:pause-short } { , } }
           }
         \str_if_eq:vnT { l_@@_sp #1 _luaset_is_truncated_str } { true }
           {
-            \MathMLintent { :silent } { , } ~ \dots
+            \MathMLintent { :silent:pause-short } { , } ~ \dots
           }
         \MathMLintent { :silent } { \} }
       }
@@ -13525,6 +13546,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   \myhlc|_punto-y-coma:infix|, according to \myhlc|\l_@@_spcoord_luaset_sep_str|,
 %   and wraps both sides, each referenced with \MathMLarg, with it. The names
 %   |$x| and |$y| stand for the output of \myhlc|\@@_spcoord_print:n|.
+%   The second side always starts with \myhlc|\@@_pause_sep:|, which adds a
+%   short pause after the comma and also keeps two children in its group.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcoord_intent_infix:
   {
@@ -13537,7 +13560,7 @@ spmmli-tool -o -p build/ ejemplo.tex
           { \@@_spcoord_inner_sep:n { x } \@@_spcoord_print:n { x } }
         \MathMLintent { :silent } { \l_@@_spcoord_luaset_sep_str }
         \MathMLarg{y}
-          { \@@_spcoord_inner_sep:n { y } \@@_spcoord_print:n { y } }
+          { \@@_pause_sep: \@@_spcoord_print:n { y } }
       }
   }
 %    \end{macrocode}
@@ -23237,6 +23260,9 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \@@_spcomb_sep:,
 %     \@@_spcomb_sep_ann:,
 %     \@@_spcomb_sep_plain:,
+%     \@@_spcomb_psep:,
+%     \@@_spcomb_psep_ann:,
+%     \@@_spcomb_psep_plain:,
 %     \@@_spcomb_last:n,
 %     \@@_spcomb_last_ann:n,
 %     \@@_spcomb_last_plain:n,
@@ -23248,6 +23274,9 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   intent \myhlc|_y-:prefix($l)| so that it reads \emph{\enquote{y 4}}, or to the plain
 %   ones, the content alone and a plain comma, so that the same function
 %   \myhlc|\@@_spcomb_symbol:| prints the symbol in both cases.
+%   The function \myhlc|\@@_spcomb_psep:| is the comma between two
+%   multiplicities that are not followed by the \emph{\enquote{y}}; its
+%   annotated version adds a short pause, \myhlc|:silent:pause-short|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcomb_arg_ann:nn
   {
@@ -23267,6 +23296,12 @@ spmmli-tool -o -p build/ ejemplo.tex
     ,
   }
 \cs_new_eq:NN \@@_spcomb_sep: \@@_spcomb_sep_plain:
+\cs_new_protected:Nn \@@_spcomb_psep_ann:
+  {
+    \MathMLintent { :silent:pause-short } { , }
+  }
+\cs_new_eq:NN \@@_spcomb_psep_plain: \@@_spcomb_sep_plain:
+\cs_new_eq:NN \@@_spcomb_psep: \@@_spcomb_psep_plain:
 \cs_new_protected:Nn \@@_spcomb_last_ann:n
   {
     \MathMLintent { _y-:prefix($l) }
@@ -23291,7 +23326,7 @@ spmmli-tool -o -p build/ ejemplo.tex
     \tl_map_inline:Nn \l_@@_spcomb_luaset_list_tl
       { \seq_put_right:Nn \l_@@_spcomb_list_seq {##1} }
     \seq_pop_right:NN \l_@@_spcomb_list_seq \l_@@_spcomb_last_tl
-    \seq_use:Nn \l_@@_spcomb_list_seq { \@@_spcomb_sep: }
+    \seq_use:Nn \l_@@_spcomb_list_seq { \@@_spcomb_psep: }
     \@@_spcomb_sep:
     \exp_args:NV \@@_spcomb_last:n \l_@@_spcomb_last_tl
   }
@@ -23388,6 +23423,7 @@ spmmli-tool -o -p build/ ejemplo.tex
       {
         \cs_set_eq:NN \@@_spcomb_arg:nn \@@_spcomb_arg_plain:nn
         \cs_set_eq:NN \@@_spcomb_sep: \@@_spcomb_sep_plain:
+        \cs_set_eq:NN \@@_spcomb_psep: \@@_spcomb_psep_plain:
         \cs_set_eq:NN \@@_spcomb_last:n \@@_spcomb_last_plain:n
         \MathMLintent { _- }
           { \@@_inner_sep: \@@_spcomb_symbol: }
@@ -23397,6 +23433,7 @@ spmmli-tool -o -p build/ ejemplo.tex
           {
             \cs_set_eq:NN \@@_spcomb_arg:nn \@@_spcomb_arg_ann:nn
             \cs_set_eq:NN \@@_spcomb_sep: \@@_spcomb_sep_ann:
+            \cs_set_eq:NN \@@_spcomb_psep: \@@_spcomb_psep_ann:
             \cs_set_eq:NN \@@_spcomb_last:n \@@_spcomb_last_ann:n
             \str_case:Vn \l_@@_spcomb_mode_str
               {
@@ -23451,6 +23488,7 @@ spmmli-tool -o -p build/ ejemplo.tex
           {
             \cs_set_eq:NN \@@_spcomb_arg:nn \@@_spcomb_arg_plain:nn
             \cs_set_eq:NN \@@_spcomb_sep: \@@_spcomb_sep_plain:
+            \cs_set_eq:NN \@@_spcomb_psep: \@@_spcomb_psep_plain:
             \cs_set_eq:NN \@@_spcomb_last:n \@@_spcomb_last_plain:n
             \MathMLintent { _ \tl_use:N \l_@@_spcomb_read_arg_tl :nofix }
               { \@@_inner_sep: \@@_spcomb_symbol: }
@@ -24044,6 +24082,33 @@ register_tex_cmd("luafun_point_sep", function()
         [0]          = "mo",
         "\u{2063}",
         intent       = ":silent",
+        mathvariant  = "normal",
+        [":nodes"]   = { kernel },
+    }
+    p.mathml_filter = function(result, core) return result, core end
+    properties[kernel] = p
+
+    node.write(noad)
+end, {})
+
+-- \__spintent_pause_sep: como point_sep, pero con intent
+-- ":silent:pause-short": no lee nada y MathCAT mete una pausa corta
+-- (coma de coordenadas, para que A(1,2) no suene como "1 coma 2").
+-- Contenido real de la formula: sin marca sptmp.
+register_tex_cmd("luafun_pause_sep", function()
+    local kernel = node.new("math_char")
+    kernel.char  = 0x2063
+    kernel.fam   = 0
+    local noad   = node.new("noad")
+    noad.subtype = 0
+    noad.nucleus = kernel
+
+    local properties = node.get_properties_table()
+    local p = properties[kernel] or {}
+    p.mathml_table = {
+        [0]          = "mo",
+        "\u{2063}",
+        intent       = ":silent:pause-short",
         mathvariant  = "normal",
         [":nodes"]   = { kernel },
     }

@@ -160,6 +160,10 @@
   {
     \__spintent_luafun_point_sep:
   }
+\cs_new_protected:Nn \__spintent_pause_sep:
+  {
+    \__spintent_luafun_pause_sep:
+  }
 \hook_gput_code:nnn { begindocument } { spintent }
   {
     \Umathchardef \c__spintent_invisible_sep_int = "0 "0 "2063
@@ -2267,9 +2271,9 @@
         % prevent "intervalo"
         \MathMLintent { :silent } { \c__spintent_invisible_sep_int }
         \seq_use:Nnnn \l__spintent_mc_args_seq
-          { \MathMLintent { :silent } { , } }
-          { \MathMLintent { :silent } { , } }
-          { \MathMLintent { :silent } { , } }
+          { \MathMLintent { :silent:pause-short } { , } }
+          { \MathMLintent { :silent:pause-short } { , } }
+          { \MathMLintent { :silent:pause-short } { , } }
       }
       {
         \MathMLintent { :silent } { \c__spintent_invisible_sep_int } % prevent doble "de"
@@ -2288,7 +2292,7 @@
             \MathMLintent { _y- } { \c__spintent_invisible_sep_int } % "y" medio
           }
           {
-            \MathMLintent { :silent } { , }
+            \MathMLintent { :silent:pause-short } { , }
           }
           {
             \MathMLintent { :silent } { , }
@@ -2495,23 +2499,25 @@
           \l__spintent_md_out_seq { \tl_use:c { l__spintent_sp #1 _luaset_result_tl } }
         \seq_use:Nnnn \l__spintent_md_out_seq
           {
-            \MathMLintent { :silent } { , }
-            \str_if_eq:vnT { l__spintent_sp #1 _luaset_is_truncated_str } { false }
+            \str_if_eq:vnTF { l__spintent_sp #1 _luaset_is_truncated_str } { false }
               {
+                \MathMLintent { :silent } { , }
                 \MathMLintent { _y- } { \c__spintent_invisible_sep_int } % "y" (solo dos)
               }
+              { \MathMLintent { :silent:pause-short } { , } }
           }
-          { \MathMLintent { :silent } { , } }
+          { \MathMLintent { :silent:pause-short } { , } }
           {
-            \MathMLintent { :silent } { , }
-            \str_if_eq:vnT { l__spintent_sp #1 _luaset_is_truncated_str } { false }
+            \str_if_eq:vnTF { l__spintent_sp #1 _luaset_is_truncated_str } { false }
               {
+                \MathMLintent { :silent } { , }
                 \MathMLintent { _y- } { \c__spintent_invisible_sep_int } % "y" final
               }
+              { \MathMLintent { :silent:pause-short } { , } }
           }
         \str_if_eq:vnT { l__spintent_sp #1 _luaset_is_truncated_str } { true }
           {
-            \MathMLintent { :silent } { , } ~ \dots
+            \MathMLintent { :silent:pause-short } { , } ~ \dots
           }
         \MathMLintent { :silent } { \} }
       }
@@ -3220,7 +3226,7 @@
           { \__spintent_spcoord_inner_sep:n { x } \__spintent_spcoord_print:n { x } }
         \MathMLintent { :silent } { \l__spintent_spcoord_luaset_sep_str }
         \MathMLarg{y}
-          { \__spintent_spcoord_inner_sep:n { y } \__spintent_spcoord_print:n { y } }
+          { \__spintent_pause_sep: \__spintent_spcoord_print:n { y } }
       }
   }
 \cs_new_protected:Nn \__spintent_spcoord_mathml:N
@@ -8820,6 +8826,12 @@
     ,
   }
 \cs_new_eq:NN \__spintent_spcomb_sep: \__spintent_spcomb_sep_plain:
+\cs_new_protected:Nn \__spintent_spcomb_psep_ann:
+  {
+    \MathMLintent { :silent:pause-short } { , }
+  }
+\cs_new_eq:NN \__spintent_spcomb_psep_plain: \__spintent_spcomb_sep_plain:
+\cs_new_eq:NN \__spintent_spcomb_psep: \__spintent_spcomb_psep_plain:
 \cs_new_protected:Nn \__spintent_spcomb_last_ann:n
   {
     \MathMLintent { _y-:prefix($l) }
@@ -8836,7 +8848,7 @@
     \tl_map_inline:Nn \l__spintent_spcomb_luaset_list_tl
       { \seq_put_right:Nn \l__spintent_spcomb_list_seq {##1} }
     \seq_pop_right:NN \l__spintent_spcomb_list_seq \l__spintent_spcomb_last_tl
-    \seq_use:Nn \l__spintent_spcomb_list_seq { \__spintent_spcomb_sep: }
+    \seq_use:Nn \l__spintent_spcomb_list_seq { \__spintent_spcomb_psep: }
     \__spintent_spcomb_sep:
     \exp_args:NV \__spintent_spcomb_last:n \l__spintent_spcomb_last_tl
   }
@@ -8903,6 +8915,7 @@
       {
         \cs_set_eq:NN \__spintent_spcomb_arg:nn \__spintent_spcomb_arg_plain:nn
         \cs_set_eq:NN \__spintent_spcomb_sep: \__spintent_spcomb_sep_plain:
+        \cs_set_eq:NN \__spintent_spcomb_psep: \__spintent_spcomb_psep_plain:
         \cs_set_eq:NN \__spintent_spcomb_last:n \__spintent_spcomb_last_plain:n
         \MathMLintent { _- }
           { \__spintent_inner_sep: \__spintent_spcomb_symbol: }
@@ -8912,6 +8925,7 @@
           {
             \cs_set_eq:NN \__spintent_spcomb_arg:nn \__spintent_spcomb_arg_ann:nn
             \cs_set_eq:NN \__spintent_spcomb_sep: \__spintent_spcomb_sep_ann:
+            \cs_set_eq:NN \__spintent_spcomb_psep: \__spintent_spcomb_psep_ann:
             \cs_set_eq:NN \__spintent_spcomb_last:n \__spintent_spcomb_last_ann:n
             \str_case:Vn \l__spintent_spcomb_mode_str
               {
@@ -8966,6 +8980,7 @@
           {
             \cs_set_eq:NN \__spintent_spcomb_arg:nn \__spintent_spcomb_arg_plain:nn
             \cs_set_eq:NN \__spintent_spcomb_sep: \__spintent_spcomb_sep_plain:
+            \cs_set_eq:NN \__spintent_spcomb_psep: \__spintent_spcomb_psep_plain:
             \cs_set_eq:NN \__spintent_spcomb_last:n \__spintent_spcomb_last_plain:n
             \MathMLintent { _ \tl_use:N \l__spintent_spcomb_read_arg_tl :nofix }
               { \__spintent_inner_sep: \__spintent_spcomb_symbol: }
