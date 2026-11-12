@@ -1,2 +1,2 @@
-Release v1.4:
+Release v1.5:
 - The geometry commands put an invisible separator between consecutive points, so that MathCAT 0.7.7 reads each point on its own.

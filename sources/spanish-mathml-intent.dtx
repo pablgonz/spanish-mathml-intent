@@ -210,8 +210,8 @@ end, "shekel_fallback_patch")
 \definecolor{mathcatgreen}{rgb}{0.165, 0.478, 0.157} % MathCAT green (#2A7A28)
 \definecolor{mathmlblue}{HTML}{1F5FBF}               % Blue for MathML "Math"
 % File info
-\def\fileversion{v1.4}
-\def\filedate{2026-11-02}
+\def\fileversion{v1.5}
+\def\filedate{2026-11-12}
 \def\fileinfo{Spanish MathML intent}
 
 % Config hyperref
@@ -7181,7 +7181,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % keys: \mykey[usepackage]{mathcal} and \mykey[usepackage]{AFghost}, which can be passed as package
 % options.
 %    \begin{macrocode}
-\ProvidesExplPackage {spanish-mathml-intent} {2026-11-02} {1.4} {Spanish MathML intent}
+\ProvidesExplPackage {spanish-mathml-intent} {2026-11-12} {1.5} {Spanish MathML intent}
 \keys_define:nn { spintent }
   {
     mathcal .usage:n = load,
@@ -23611,7 +23611,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %<*spintentlua>
 % \fi
 --[[
-     Lua module spintent.lua for spanish-mathml-intent package - v1.4 [2026-11-02]
+     Lua module spintent.lua for spanish-mathml-intent package - v1.5 [2026-11-12]
 --]]
 
 -- ÍNDICE DE SECCIONES (cada una empieza con su título en mayúsculas)
@@ -27146,7 +27146,7 @@ end
 -- are half-broken without it too.
 kpse.set_program_name("luatex")
 
-local SPITOOL_VERSION = "1.4"
+local SPITOOL_VERSION = "1.5"
 local lfs = require("lfs")
 
 -- OS detection and Quoting helper (POSIX vs Windows)
