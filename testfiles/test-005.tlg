@@ -10490,7 +10490,7 @@ TEST 1: Show PDF Tags
             </mn>
             <mo xmlns="http://www.w3.org/1998/Math/MathML"
                id="ID.01653"
-               intent=":silent"
+               intent=":silent:pause-short"
                lspace="0"
                rspace="0"
               >

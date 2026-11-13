@@ -1074,7 +1074,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00161"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -1087,7 +1087,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00163"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -1233,7 +1233,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00184"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -1246,7 +1246,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00186"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0"
           >
@@ -1802,7 +1802,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00264"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -1815,7 +1815,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00266"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -1828,7 +1828,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00268"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -1841,7 +1841,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00270"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -1854,7 +1854,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00272"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0"
           >
@@ -1982,7 +1982,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00290"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -1995,7 +1995,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00292"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -2008,7 +2008,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00294"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0"
           >
@@ -2376,7 +2376,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00346"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -2581,7 +2581,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00375"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -2708,7 +2708,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00393"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -2822,7 +2822,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00409"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -2936,7 +2936,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00425"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -3050,7 +3050,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00441"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -3176,7 +3176,7 @@ TEST 1: Show PDF Tags
         </mrow>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00459"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -3202,7 +3202,7 @@ TEST 1: Show PDF Tags
         </mrow>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00463"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -3341,7 +3341,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00483"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -3546,7 +3546,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00512"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -3673,7 +3673,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00530"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -3787,7 +3787,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00546"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -3901,7 +3901,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00562"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -4015,7 +4015,7 @@ TEST 1: Show PDF Tags
         </mn>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00578"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -4141,7 +4141,7 @@ TEST 1: Show PDF Tags
         </mrow>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00596"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
@@ -4167,7 +4167,7 @@ TEST 1: Show PDF Tags
         </mrow>
         <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00600"
-           intent=":silent"
+           intent=":silent:pause-short"
            lspace="0"
            rspace="0.167em"
           >
