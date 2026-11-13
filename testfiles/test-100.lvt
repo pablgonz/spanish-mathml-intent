@@ -243,6 +243,9 @@
 \TYPE{[math-mode-spabs]}
 \spabs{x}
 
+\TYPE{[math-mode-spnord]}
+\spnord{1.o}
+
 \TYPE{=== B. Modo de escritura: comandos de modo texto usados en modo matemático ===}
 
 \TYPE{[text-mode-spnewunit]}
@@ -478,6 +481,9 @@ $\spPval[foo]{1}{5}$
 \TYPE{[unknown-key-spcomp]}
 $\spcomp[foo]{A}$
 
+\TYPE{[unknown-key-spnord]}
+$\spnord[foo]{1.o}$
+
 \TYPE{=== D. Números, unidades, dinero, fechas y siglos ===}
 
 \TYPE{[spnum-has-units]}
@@ -533,6 +539,21 @@ $\sptime{xx}$
 
 \TYPE{[spdate-invalid]}
 $\spdate{2020-13-45}$
+
+\TYPE{[spnord-invalid-range]}
+$\spnord{100.o}$
+
+\TYPE{[spnord-invalid-er]}
+$\spnord{2.er}$
+
+\TYPE{[spnord-invalid-suffix]}
+$\spnord{1.x}$
+
+\TYPE{[spnewunit-duplicate-builtin]}
+\spnewunit{px}{píxeles}
+
+\TYPE{[spunitalias-duplicate-builtin]}
+\spunitalias{px}{m}
 
 \TYPE{=== E. Símbolos, lectura personalizada y delimitadores ===}
 
