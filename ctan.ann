@@ -1,2 +1,5 @@
 Release v1.5:
-- The geometry commands put an invisible separator between consecutive points, so that MathCAT 0.7.7 reads each point on its own.
+- New command \spnord for ordinal numbers in math mode (1.o, 21.a).
+- \spunit accepts the micro prefix glued to a unit and many everyday units.
+- Short pauses in the commas of lists and coordinates.
+- Wording aligned with MathCAT and the CMU 2024; \spang minutes fixed.
