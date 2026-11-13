@@ -24,6 +24,7 @@
 local tonumber   = tonumber
 local tostring   = tostring
 local math_floor = math.floor
+local spintent_ordinal_words  -- ordinal en palabras (se asigna en \spshort)
 local math_sqrt  = math.sqrt
 local math_min   = math.min
 local t_sort     = table.sort
@@ -1357,6 +1358,8 @@ local function spintent_get_semantic_ordinal(val, suffix)
     return result
 end
 
+spintent_ordinal_words = spintent_get_semantic_ordinal
+
 local spintent_spshort_digits       = spintent_digit^1
 local spintent_spshort_dot          = P(".")
 local spintent_spshort_raw_suffix   = C(P("er") + P("os") + P("as") + P("a") + P("o"))
@@ -1552,6 +1555,21 @@ register_tex_cmd("luafun_spsiglo_parse", function(raw_siglo_input)
     end
 end, { "string" })
 end
+
+-- \spsiglo[ordinal]: lectura ordinal (1 a 99) del numero ya validado.
+-- Entrega "true" en ord_error si el numero pasa de 99.
+register_tex_cmd("luafun_spsiglo_ordinal", function(arabic, gender)
+    local val = tonumber(arabic)
+    if not val or val < 1 or val > 99 then
+        spintent_set_macro("spsiglo_luaset_ord_error_str", "true")
+        spintent_set_macro("spsiglo_luaset_ord_words_str", "")
+        return
+    end
+    local suffix = (gender == "f") and "a" or "o"
+    spintent_set_macro("spsiglo_luaset_ord_error_str", "false")
+    spintent_set_macro("spsiglo_luaset_ord_words_str",
+        spintent_ordinal_words(val, suffix))
+end, { "string", "string" })
 
 -- FECHA Y HORA (\spdate, \sptime)
 

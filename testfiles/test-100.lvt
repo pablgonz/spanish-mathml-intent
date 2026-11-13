@@ -534,6 +534,12 @@ $\spmoney[sub-units=true]{500 CLP}$
 \TYPE{[spsiglo-invalid-math]}
 $\spsiglo{ABC}$
 
+\TYPE{[spsiglo-ordinal-range]}
+$\spsiglo[ordinal=true]{C}$
+
+\TYPE{[spsiglo-gender-needs-ordinal]}
+$\spsiglo[gender=f]{XXI}$
+
 \TYPE{[sptime-invalid]}
 $\sptime{xx}$
 

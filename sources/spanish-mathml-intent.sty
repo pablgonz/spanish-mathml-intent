@@ -112,6 +112,7 @@
 \cs_generate_variant:Nn \__spintent_luafun_spmoney_lookup_data:n   { V }
 \cs_generate_variant:Nn \__spintent_luafun_spmQ_scale_int:nn       { Vn }
 \cs_generate_variant:Nn \__spintent_luafun_spfun_parse_and_set:n   { v }
+\cs_generate_variant:Nn \__spintent_luafun_spsiglo_ordinal:nn      { VV }
 \hook_gput_code:nnn { begindocument } { spintent }
   {
     \__spintent_luafun_init_math_fallbacks:
@@ -1449,12 +1450,33 @@
 \str_new:N \l__spintent_spsiglo_luaset_arabic_str
 \str_new:N \l__spintent_spsiglo_luaset_roman_min_str
 \str_new:N \l__spintent_spsiglo_print_era_str
+\str_new:N \l__spintent_spsiglo_gender_str
+\str_new:N \l__spintent_spsiglo_luaset_ord_error_str
+\str_new:N \l__spintent_spsiglo_luaset_ord_words_str
+\str_new:N \l__spintent_spsiglo_speech_str
+\str_new:N \l__spintent_spsiglo_intent_str
+\bool_new:N \l__spintent_spsiglo_ordinal_bool
+\bool_new:N \l__spintent_spsiglo_gender_set_bool
 \msg_new:nnnn { spintent } { spsiglo-invalid-arg }
   {
     Invalid~argument~'#2'~for~'\tl_trim_spaces:n {#1}'~\msg_line_context:.
   }
   {
     The~argument~must~be~an~Arabic~or~Roman~numeral~between~'1'~and~'4000'.
+  }
+\msg_new:nnnn { spintent } { spsiglo-ordinal-range }
+  {
+    The~ordinal~reading~of~'#1'~is~not~available~\msg_line_context:.
+  }
+  {
+    The~option~'ordinal'~only~works~with~numbers~from~'1'~to~'99'.
+  }
+\msg_new:nnnn { spintent } { spsiglo-gender-needs-ordinal }
+  {
+    The~option~'gender'~needs~'ordinal=true'~\msg_line_context:.
+  }
+  {
+    Use~'ordinal=true'~with~'gender',~or~remove~'gender'.
   }
 \keys_define:nn { spintent / spsiglo }
   {
@@ -1473,6 +1495,24 @@
     print-era / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { print-era } { none, ~ac, ~dc } { \exp_not:n {#1} },
+    ordinal .bool_set:N = \l__spintent_spsiglo_ordinal_bool,
+    ordinal .initial:n = false,
+    ordinal .value_required:n = true,
+    gender .choices:nn =
+      { m , f }
+      {
+        \bool_set_true:N \l__spintent_spsiglo_gender_set_bool
+        \int_case:nn { \l_keys_choice_int }
+          {
+            {1} { \str_set:Nn \l__spintent_spsiglo_gender_str { m } }
+            {2} { \str_set:Nn \l__spintent_spsiglo_gender_str { f } }
+          }
+      },
+    gender .initial:n = m,
+    gender .value_required:n = true,
+    gender / unknown .code:n =
+      \msg_error:nneee { spintent } { unknown-choice }
+        { gender } { m, ~f } { \exp_not:n {#1} },
     unknown   .code:n =
       {
         \str_set:Nn \l__spintent_command_name_str { spsiglo }
@@ -1481,7 +1521,7 @@
   }
 \cs_new_protected:Nn \__spintent_spsiglo_render_simple:nn
   {
-    \MathMLintent { #1:number } { \text { \textsc {#2} } }
+    \MathMLintent {#1} { \text { \textsc {#2} } }
   }
 \cs_generate_variant:Nn \__spintent_spsiglo_render_simple:nn { VV }
 \cs_new_protected:Nn \__spintent_spsiglo_render_with_era:nnn
@@ -1493,7 +1533,7 @@
             \__spintent_inner_sep:
             \MathMLarg { z }
               {
-                \MathMLintent { #2:number }
+                \MathMLintent {#2}
                   {
                     \text { \textsc {#3}~a.~C. }
                   }
@@ -1506,7 +1546,7 @@
             \__spintent_inner_sep:
             \MathMLarg { z }
               {
-                \MathMLintent { #2:number }
+                \MathMLintent {#2}
                   {
                     \text { \textsc {#3}~d.~C. }
                   }
@@ -1528,6 +1568,37 @@
     \tag_mc_begin_pop:n {}
   }
 \cs_generate_variant:Nn \__spintent_spsiglo_tag_span:nn { en }
+\cs_new_protected:Nn \__spintent_spsiglo_prepare_speech:n
+  {
+    \str_set_eq:NN \l__spintent_spsiglo_speech_str \l__spintent_spsiglo_luaset_arabic_str
+    \str_set:Ne \l__spintent_spsiglo_intent_str
+      { \l__spintent_spsiglo_luaset_arabic_str : number }
+    \bool_if:NTF \l__spintent_spsiglo_ordinal_bool
+      {
+        \__spintent_luafun_spsiglo_ordinal:VV
+          \l__spintent_spsiglo_luaset_arabic_str
+          \l__spintent_spsiglo_gender_str
+        \str_if_eq:VnTF \l__spintent_spsiglo_luaset_ord_error_str { true }
+          {
+            \msg_error:nnn { spintent } { spsiglo-ordinal-range } {#1}
+          }
+          {
+            \str_set_eq:NN \l__spintent_spsiglo_speech_str
+              \l__spintent_spsiglo_luaset_ord_words_str
+            \str_set_eq:NN \l__spintent_spsiglo_intent_str
+              \l__spintent_spsiglo_luaset_ord_words_str
+            \str_replace_all:Nnn \l__spintent_spsiglo_intent_str { ~ } { - }
+            \str_set:Ne \l__spintent_spsiglo_intent_str
+              { _ \l__spintent_spsiglo_intent_str }
+          }
+      }
+      {
+        \bool_if:NT \l__spintent_spsiglo_gender_set_bool
+          {
+            \msg_error:nn { spintent } { spsiglo-gender-needs-ordinal }
+          }
+      }
+  }
 \cs_new_protected:Nn \__spintent_spsiglo_exec:n
   {
     \mode_if_math:F { \mode_leave_vertical: }
@@ -1537,6 +1608,7 @@
           { \spsiglo } {#1}
       }
       {
+        \__spintent_spsiglo_prepare_speech:n {#1}
         \mode_if_math:TF
           { \__spintent_spsiglo_mathml: }
           { \__spintent_spsiglo_text: }
@@ -1547,13 +1619,13 @@
     \str_if_eq:VnTF \l__spintent_spsiglo_print_era_str { none }
       {
         \__spintent_spsiglo_render_simple:VV
-          \l__spintent_spsiglo_luaset_arabic_str
+          \l__spintent_spsiglo_intent_str
           \l__spintent_spsiglo_luaset_roman_min_str
       }
       {
         \__spintent_spsiglo_render_with_era:VVV
           \l__spintent_spsiglo_print_era_str
-          \l__spintent_spsiglo_luaset_arabic_str
+          \l__spintent_spsiglo_intent_str
           \l__spintent_spsiglo_luaset_roman_min_str
       }
   }
@@ -1564,19 +1636,19 @@
         { none }
         {
           \__spintent_spsiglo_tag_span:en
-            { \l__spintent_spsiglo_luaset_arabic_str }
+            { \l__spintent_spsiglo_speech_str }
             { \textsc { \l__spintent_spsiglo_luaset_roman_min_str } }
         }
         { ac }
         {
           \__spintent_spsiglo_tag_span:en
-            { \l__spintent_spsiglo_luaset_arabic_str ~ antes ~ de ~ cristo }
+            { \l__spintent_spsiglo_speech_str ~ antes ~ de ~ cristo }
             { \textsc { \l__spintent_spsiglo_luaset_roman_min_str } ~ a.~C. }
         }
         { dc }
         {
           \__spintent_spsiglo_tag_span:en
-            { \l__spintent_spsiglo_luaset_arabic_str ~ después ~ de ~ cristo }
+            { \l__spintent_spsiglo_speech_str ~ después ~ de ~ cristo }
             { \textsc { \l__spintent_spsiglo_luaset_roman_min_str } ~ d.~C. }
         }
       }
@@ -1584,6 +1656,7 @@
 \NewDocumentCommand \spsiglo { O{} m }
   {
     \group_begin:
+      \bool_set_false:N \l__spintent_spsiglo_gender_set_bool
       \keys_set:nn { spintent / spsiglo } {#1}
       \__spintent_luafun_spsiglo_parse:n {#2}
       \__spintent_spsiglo_exec:n {#2}

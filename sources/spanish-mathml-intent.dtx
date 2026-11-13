@@ -758,7 +758,8 @@ end, "shekel_fallback_patch")
                     spnord-invalid-ordinal,%
                     spnewunit-duplicate, spnum-has-units, spnum-no-digits, sprayo-invalid-points,%
                     spread-empty-sym, spread-unknown-sym, sprecta-invalid-points,%
-                    spshort-unknown-abbreviation, spside-invalid-points, spsiglo-invalid-arg,%
+                    spshort-unknown-abbreviation, spside-invalid-points, spsiglo-gender-needs-ordinal, spsiglo-invalid-arg,%
+                    spsiglo-ordinal-range,%
                     sptime-invalid-arg, spunit-inline-numeric-denominator, spunit-invalid-unit,%
                     spunit-no-units, spunitalias-duplicate, spunitalias-invalid-expr,%
                     spusep-empty-arg, spusep-invalid-arg, spvec-invalid-arg, stat-pos-invalid-index,%
@@ -2595,6 +2596,27 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintiuno después de cristo»};
 % si se establece en |none|, |\spsiglo[print-era=none]{XXI}| imprimirá `\textsc{xxi}'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintiuno»}.
+%
+% \keyexampcmd{ordinal}{true \textnormal{\textcolor{lightgray}{\textbar}} false}{false}[spsiglo]
+%
+% Establece si \mynvmath{NVDA/MathCAT} verbaliza el número como \emph{ordinal}
+% en lugar de cardinal. Sirve para papas, reyes y capítulos: si se establece en
+% |true|, |$\spsiglo[ordinal=true]{X}$| imprimirá `\textsc{x}' y se verbalizará
+% \emph{«décimo»}, y |$\spsiglo[ordinal=true]{XXI}$| se verbalizará
+% \emph{«vigésimo primero»}. Con |false| se verbaliza el número, como \emph{«veintiuno»}.
+%
+% \keyexampcmd{gender}{m \textnormal{\textcolor{lightgray}{\textbar}} f}{m}[spsiglo]
+%
+% Establece el \emph{género} del ordinal. Por ejemplo,
+% |$\spsiglo[ordinal=true, gender=f]{II}$| se verbalizará \emph{«segunda»}.
+%
+% \begin{important}*
+%   El ordinal solo existe del |1| al |99|. Si se usa |ordinal=true| con un
+%   número mayor que |99| el comando devuelve un \emph{error} y el número
+%   se verbaliza como cardinal. La llave \mykey[spsiglo]{gender} solo se
+%   puede usar junto con |ordinal=true|; de lo contrario también devuelve
+%   un \emph{error}.
+% \end{important}
 %
 % \subsection*{El comando \cs[no-index]{sptime}}\label{subsec:sptime}
 %
@@ -7163,6 +7185,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %        \mynvmath{MathCAT} agrees their name with the number. Their symbols can no
 %        longer be defined with |\spnewunit| or used as the name of an alias, so
 %        the example of |\spnewunit| uses |pers| instead of |px|.
+%      \item The command |\spsiglo| has the new keys |ordinal| and |gender| to
+%        read the Roman numeral as an ordinal (\emph{\enquote{décimo}},
+%        \emph{\enquote{vigésimo primero}}) from 1 to 99; a larger number or
+%        |gender| without |ordinal| raises an error.
 %      \item New command |\spnord| writes the ordinal numbers from 1 to 99 in
 %        \emph{math mode}, such as $1.^{\text{o}}$ or $21.^{\text{a}}$, which
 %        \mynvmath{MathCAT} reads as ordinals (\emph{\enquote{primero}},
@@ -7474,17 +7500,19 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \@@_luafun_spmoney_lookup_data:V,
 %     \@@_luafun_spmQ_scale_int:Vn,
 %     \@@_luafun_spfun_parse_and_set:v,
+%     \@@_luafun_spsiglo_ordinal:VV,
 %   }
 %   Variants generated for \myhlc|\@@_luafun_spunit_parse_product:nn|,
 %   used by |\spunit|; \myhlc|\@@_luafun_spmoney_lookup_data:n|, used
 %   by |\spmoney|; \myhlc|\@@_luafun_spmQ_scale_int:nn|, used by
 %   |\spmQ|; and \myhlc|\@@_luafun_spfun_parse_and_set:n|, used by
-%   |\spfun|.
+%   |\spfun|; and \myhlc|\@@_luafun_spsiglo_ordinal:nn|, used by |\spsiglo|.
 %    \begin{macrocode}
 \cs_generate_variant:Nn \@@_luafun_spunit_parse_product:nn { nV }
 \cs_generate_variant:Nn \@@_luafun_spmoney_lookup_data:n   { V }
 \cs_generate_variant:Nn \@@_luafun_spmQ_scale_int:nn       { Vn }
 \cs_generate_variant:Nn \@@_luafun_spfun_parse_and_set:n   { v }
+\cs_generate_variant:Nn \@@_luafun_spsiglo_ordinal:nn      { VV }
 %    \end{macrocode}
 % \end{macro}
 %
@@ -10187,6 +10215,13 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \l_@@_spsiglo_luaset_arabic_str,
 %     \l_@@_spsiglo_luaset_roman_min_str,
 %     \l_@@_spsiglo_print_era_str,
+%     \l_@@_spsiglo_gender_str,
+%     \l_@@_spsiglo_luaset_ord_error_str,
+%     \l_@@_spsiglo_luaset_ord_words_str,
+%     \l_@@_spsiglo_speech_str,
+%     \l_@@_spsiglo_intent_str,
+%     \l_@@_spsiglo_ordinal_bool,
+%     \l_@@_spsiglo_gender_set_bool,
 %   }
 %   The variable \myhlc|\l_@@_spsiglo_luaset_error_str| stores |true| or
 %   |false| if the Lua module \myluamod{} could not read the \mymarg{argument}.
@@ -10195,12 +10230,30 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   \myhlc|\l_@@_spsiglo_luaset_roman_min_str| stores the number in lowercase
 %   Roman numerals, which is printed with |\textsc|. The variable
 %   \myhlc|\l_@@_spsiglo_print_era_str| stores the value set by the key
-%   \mykey[spsiglo]{print-era}.
+%   \mykey[spsiglo]{print-era}. The variables
+%   \myhlc|\l_@@_spsiglo_ordinal_bool| and \myhlc|\l_@@_spsiglo_gender_str|
+%   store the values set by the keys \mykey[spsiglo]{ordinal} and
+%   \mykey[spsiglo]{gender}; \myhlc|\l_@@_spsiglo_gender_set_bool| records
+%   that \mykey[spsiglo]{gender} was given in the current call.
+%   \myhlc|\l_@@_spsiglo_luaset_ord_error_str| and
+%   \myhlc|\l_@@_spsiglo_luaset_ord_words_str| store the answer of the Lua
+%   module \myluamod{} for the ordinal (|true| or |false| and the ordinal in
+%   words). Finally, \myhlc|\l_@@_spsiglo_speech_str| stores the speech in
+%   \emph{text mode} and \myhlc|\l_@@_spsiglo_intent_str| the
+%   \texttt{intent} in \emph{math mode}, either the Arabic numeral or the
+%   ordinal.
 %    \begin{macrocode}
 \str_new:N \l_@@_spsiglo_luaset_error_str
 \str_new:N \l_@@_spsiglo_luaset_arabic_str
 \str_new:N \l_@@_spsiglo_luaset_roman_min_str
 \str_new:N \l_@@_spsiglo_print_era_str
+\str_new:N \l_@@_spsiglo_gender_str
+\str_new:N \l_@@_spsiglo_luaset_ord_error_str
+\str_new:N \l_@@_spsiglo_luaset_ord_words_str
+\str_new:N \l_@@_spsiglo_speech_str
+\str_new:N \l_@@_spsiglo_intent_str
+\bool_new:N \l_@@_spsiglo_ordinal_bool
+\bool_new:N \l_@@_spsiglo_gender_set_bool
 %    \end{macrocode}
 % \end{variable}
 %
@@ -10222,10 +10275,36 @@ spmmli-tool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}[int]{spsiglo-ordinal-range, spsiglo-gender-needs-ordinal}
+%   The \enquote{error} |spsiglo-ordinal-range| is raised when the key
+%   \mykey[spsiglo]{ordinal} is |true| and the number is greater than |99|,
+%   since the ordinals are only available from |1| to |99|. The
+%   \enquote{error} |spsiglo-gender-needs-ordinal| is raised when the key
+%   \mykey[spsiglo]{gender} is used without \mykey[spsiglo]{ordinal}. In
+%   both cases the numeral is read as an Arabic number.
+%    \begin{macrocode}
+\msg_new:nnnn { spintent } { spsiglo-ordinal-range }
+  {
+    The~ordinal~reading~of~'#1'~is~not~available~\msg_line_context:.
+  }
+  {
+    The~option~'ordinal'~only~works~with~numbers~from~'1'~to~'99'.
+  }
+\msg_new:nnnn { spintent } { spsiglo-gender-needs-ordinal }
+  {
+    The~option~'gender'~needs~'ordinal=true'~\msg_line_context:.
+  }
+  {
+    Use~'ordinal=true'~with~'gender',~or~remove~'gender'.
+  }
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsubsection{Definition of keys for \cs[no-index]{spsiglo}}
 %
-% \begin{macro}[int]{print-era, unknown}
-%   We define the \mymeta{key} \mykey[spsiglo]{print-era}.
+% \begin{macro}[int]{print-era, ordinal, gender, unknown}
+%   We define the \mymeta{keys} \mykey[spsiglo]{print-era},
+%   \mykey[spsiglo]{ordinal} and \mykey[spsiglo]{gender}.
 %    \begin{macrocode}
 \keys_define:nn { spintent / spsiglo }
   {
@@ -10244,6 +10323,24 @@ spmmli-tool -o -p build/ ejemplo.tex
     print-era / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
         { print-era } { none, ~ac, ~dc } { \exp_not:n {#1} },
+    ordinal .bool_set:N = \l_@@_spsiglo_ordinal_bool,
+    ordinal .initial:n = false,
+    ordinal .value_required:n = true,
+    gender .choices:nn =
+      { m , f }
+      {
+        \bool_set_true:N \l_@@_spsiglo_gender_set_bool
+        \int_case:nn { \l_keys_choice_int }
+          {
+            {1} { \str_set:Nn \l_@@_spsiglo_gender_str { m } }
+            {2} { \str_set:Nn \l_@@_spsiglo_gender_str { f } }
+          }
+      },
+    gender .initial:n = m,
+    gender .value_required:n = true,
+    gender / unknown .code:n =
+      \msg_error:nneee { spintent } { unknown-choice }
+        { gender } { m, ~f } { \exp_not:n {#1} },
     unknown   .code:n =
       {
         \str_set:Nn \l_@@_command_name_str { spsiglo }
@@ -10264,14 +10361,15 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   }
 %   The functions \myhlc|\@@_spsiglo_render_simple:nn| and
 %   \myhlc|\@@_spsiglo_render_with_era:nnn| build the \mynvmath{MathML}
-%   \texttt{intent} structures in \emph{math mode}, with the Arabic numeral
-%   as the speech. \myhlc|\@@_spsiglo_render_with_era:nnn| also adds the era
+%   \texttt{intent} structures in \emph{math mode}; the argument with the
+%   \texttt{intent} is the Arabic numeral, such as |21:number|, or the
+%   ordinal, such as |_vigésimo-primero|. \myhlc|\@@_spsiglo_render_with_era:nnn| also adds the era
 %   |ac| or |dc|, with invisible spacing and postfix intents so that
 %   \mynvmath{NVDA/MathCAT} reads it correctly.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spsiglo_render_simple:nn
   {
-    \MathMLintent { #1:number } { \text { \textsc {#2} } }
+    \MathMLintent {#1} { \text { \textsc {#2} } }
   }
 \cs_generate_variant:Nn \@@_spsiglo_render_simple:nn { VV }
 \cs_new_protected:Nn \@@_spsiglo_render_with_era:nnn
@@ -10283,7 +10381,7 @@ spmmli-tool -o -p build/ ejemplo.tex
             \@@_inner_sep:
             \MathMLarg { z }
               {
-                \MathMLintent { #2:number }
+                \MathMLintent {#2}
                   {
                     \text { \textsc {#3}~a.~C. }
                   }
@@ -10296,7 +10394,7 @@ spmmli-tool -o -p build/ ejemplo.tex
             \@@_inner_sep:
             \MathMLarg { z }
               {
-                \MathMLintent { #2:number }
+                \MathMLintent {#2}
                   {
                     \text { \textsc {#3}~d.~C. }
                   }
@@ -10349,6 +10447,37 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   expand the value of the \mykey[spsiglo]{print-era} option into full text
 %   such as \enquote{antes de cristo} for \mynvmath{NVDA/MathCAT}.
 %    \begin{macrocode}
+\cs_new_protected:Nn \@@_spsiglo_prepare_speech:n
+  {
+    \str_set_eq:NN \l_@@_spsiglo_speech_str \l_@@_spsiglo_luaset_arabic_str
+    \str_set:Ne \l_@@_spsiglo_intent_str
+      { \l_@@_spsiglo_luaset_arabic_str : number }
+    \bool_if:NTF \l_@@_spsiglo_ordinal_bool
+      {
+        \@@_luafun_spsiglo_ordinal:VV
+          \l_@@_spsiglo_luaset_arabic_str
+          \l_@@_spsiglo_gender_str
+        \str_if_eq:VnTF \l_@@_spsiglo_luaset_ord_error_str { true }
+          {
+            \msg_error:nnn { spintent } { spsiglo-ordinal-range } {#1}
+          }
+          {
+            \str_set_eq:NN \l_@@_spsiglo_speech_str
+              \l_@@_spsiglo_luaset_ord_words_str
+            \str_set_eq:NN \l_@@_spsiglo_intent_str
+              \l_@@_spsiglo_luaset_ord_words_str
+            \str_replace_all:Nnn \l_@@_spsiglo_intent_str { ~ } { - }
+            \str_set:Ne \l_@@_spsiglo_intent_str
+              { _ \l_@@_spsiglo_intent_str }
+          }
+      }
+      {
+        \bool_if:NT \l_@@_spsiglo_gender_set_bool
+          {
+            \msg_error:nn { spintent } { spsiglo-gender-needs-ordinal }
+          }
+      }
+  }
 \cs_new_protected:Nn \@@_spsiglo_exec:n
   {
     \mode_if_math:F { \mode_leave_vertical: }
@@ -10358,6 +10487,7 @@ spmmli-tool -o -p build/ ejemplo.tex
           { \spsiglo } {#1}
       }
       {
+        \@@_spsiglo_prepare_speech:n {#1}
         \mode_if_math:TF
           { \@@_spsiglo_mathml: }
           { \@@_spsiglo_text: }
@@ -10368,13 +10498,13 @@ spmmli-tool -o -p build/ ejemplo.tex
     \str_if_eq:VnTF \l_@@_spsiglo_print_era_str { none }
       {
         \@@_spsiglo_render_simple:VV
-          \l_@@_spsiglo_luaset_arabic_str
+          \l_@@_spsiglo_intent_str
           \l_@@_spsiglo_luaset_roman_min_str
       }
       {
         \@@_spsiglo_render_with_era:VVV
           \l_@@_spsiglo_print_era_str
-          \l_@@_spsiglo_luaset_arabic_str
+          \l_@@_spsiglo_intent_str
           \l_@@_spsiglo_luaset_roman_min_str
       }
   }
@@ -10385,19 +10515,19 @@ spmmli-tool -o -p build/ ejemplo.tex
         { none }
         {
           \@@_spsiglo_tag_span:en
-            { \l_@@_spsiglo_luaset_arabic_str }
+            { \l_@@_spsiglo_speech_str }
             { \textsc { \l_@@_spsiglo_luaset_roman_min_str } }
         }
         { ac }
         {
           \@@_spsiglo_tag_span:en
-            { \l_@@_spsiglo_luaset_arabic_str ~ antes ~ de ~ cristo }
+            { \l_@@_spsiglo_speech_str ~ antes ~ de ~ cristo }
             { \textsc { \l_@@_spsiglo_luaset_roman_min_str } ~ a.~C. }
         }
         { dc }
         {
           \@@_spsiglo_tag_span:en
-            { \l_@@_spsiglo_luaset_arabic_str ~ después ~ de ~ cristo }
+            { \l_@@_spsiglo_speech_str ~ después ~ de ~ cristo }
             { \textsc { \l_@@_spsiglo_luaset_roman_min_str } ~ d.~C. }
         }
       }
@@ -10415,6 +10545,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 \NewDocumentCommand \spsiglo { O{} m }
   {
     \group_begin:
+      \bool_set_false:N \l_@@_spsiglo_gender_set_bool
       \keys_set:nn { spintent / spsiglo } {#1}
       \@@_luafun_spsiglo_parse:n {#2}
       \@@_spsiglo_exec:n {#2}
@@ -23968,6 +24099,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 local tonumber   = tonumber
 local tostring   = tostring
 local math_floor = math.floor
+local spintent_ordinal_words  -- ordinal en palabras (se asigna en \spshort)
 local math_sqrt  = math.sqrt
 local math_min   = math.min
 local t_sort     = table.sort
@@ -25301,6 +25433,8 @@ local function spintent_get_semantic_ordinal(val, suffix)
     return result
 end
 
+spintent_ordinal_words = spintent_get_semantic_ordinal
+
 local spintent_spshort_digits       = spintent_digit^1
 local spintent_spshort_dot          = P(".")
 local spintent_spshort_raw_suffix   = C(P("er") + P("os") + P("as") + P("a") + P("o"))
@@ -25496,6 +25630,21 @@ register_tex_cmd("luafun_spsiglo_parse", function(raw_siglo_input)
     end
 end, { "string" })
 end
+
+-- \spsiglo[ordinal]: lectura ordinal (1 a 99) del numero ya validado.
+-- Entrega "true" en ord_error si el numero pasa de 99.
+register_tex_cmd("luafun_spsiglo_ordinal", function(arabic, gender)
+    local val = tonumber(arabic)
+    if not val or val < 1 or val > 99 then
+        spintent_set_macro("spsiglo_luaset_ord_error_str", "true")
+        spintent_set_macro("spsiglo_luaset_ord_words_str", "")
+        return
+    end
+    local suffix = (gender == "f") and "a" or "o"
+    spintent_set_macro("spsiglo_luaset_ord_error_str", "false")
+    spintent_set_macro("spsiglo_luaset_ord_words_str",
+        spintent_ordinal_words(val, suffix))
+end, { "string", "string" })
 
 -- FECHA Y HORA (\spdate, \sptime)
 

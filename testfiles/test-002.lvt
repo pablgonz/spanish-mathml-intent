@@ -168,6 +168,24 @@
 % doc: «2 por x»
 39. Sin imprimir el símbolo: $2 \spmsym[print-sym=false] x$.
 
+% Los "doc:" de esta seccion son lecturas esperadas, aun sin comprobar en NVDA.
+\section*{H. El comando \texttt{\textbackslash spsiglo} con \texttt{ordinal}}
+
+% doc: «décimo»
+40. Ordinal en modo matemático: $\spsiglo[ordinal=true]{X}$.
+
+% doc: «vigésimo primero»
+41. Ordinal compuesto: $\spsiglo[ordinal=true]{XXI}$.
+
+% doc: «segunda»
+42. Ordinal femenino: $\spsiglo[ordinal=true, gender=f]{II}$.
+
+% doc: «vigésimo tercero»
+43. Ordinal en modo texto: \spsiglo[ordinal=true]{XXIII}.
+
+% doc: «quinto antes de cristo»
+44. Ordinal con \emph{a.~C.}: $\spsiglo[ordinal=true, print-era=ac]{V}$.
+
 \START
 
 \SHOWPDFTAGS
