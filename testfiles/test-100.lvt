@@ -538,7 +538,7 @@ $\spsiglo{ABC}$
 $\spsiglo[ordinal=true]{C}$
 
 \TYPE{[spsiglo-gender-needs-ordinal]}
-$\spsiglo[gender=f]{XXI}$
+$\spsiglo[gender=female]{XXI}$
 
 \TYPE{[sptime-invalid]}
 $\sptime{xx}$

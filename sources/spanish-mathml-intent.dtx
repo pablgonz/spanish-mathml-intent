@@ -708,7 +708,7 @@ end, "shekel_fallback_patch")
                         spcuartil, spdecil, spPerc, sprango, spriq, spmin, spmax, spFrec, spcase, spOmega, spPval, spProb, spcomp, spcomb, spfact, spabs, },%
 % Reserved words 8 (keyname) KEYS
     keywordstyle  = [8]{\color{keyname}},%
-    keywords      = [8]{print-era, none, ac, dc, currency, sub-units, clear, terse, times, cdot, true, false, unknown, valid, %
+    keywords      = [8]{print-era, ordinal, gender, male, female, none, ac, dc, currency, sub-units, clear, terse, times, cdot, true, false, unknown, valid, %
                     multislash, coma, punto, result, join-word, entero, enteros, y, error, periódico, postfix, infix, nofix,%
                     two-dots, old-style, slash, dividido, dividido-por, dividido-entre, por,%
                     multiplicado-por, veces, cross, dot, asterisk, cifras-sep, read-cmd, %
@@ -2606,10 +2606,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{«vigésimo primero»}. Con |false| se verbaliza el número, como
 % \emph{«veintiuno»}.
 %
-% \keyexampcmd{gender}{m \textnormal{\textcolor{lightgray}{\textbar}} f}{m}[spsiglo]
+% \keyexampcmd{gender}{male \textnormal{\textcolor{lightgray}{\textbar}} female}{male}[spsiglo]
 %
 % Establece el \emph{género} del ordinal. Por ejemplo,
-% |$\spsiglo[ordinal=true, gender=f]{II}$| se verbalizará \emph{«segunda»}.
+% |$\spsiglo[ordinal=true, gender=female]{II}$| se verbalizará \emph{«segunda»}.
 %
 % \begin{important}*
 %   El ordinal solo existe del |1| al |99|. Si se usa |ordinal=true| con un
@@ -10325,7 +10325,7 @@ spmmli-tool -o -p build/ ejemplo.tex
     ordinal .initial:n = false,
     ordinal .value_required:n = true,
     gender .choices:nn =
-      { m , f }
+      { male , female }
       {
         \bool_set_true:N \l_@@_spsiglo_gender_set_bool
         \int_case:nn { \l_keys_choice_int }
@@ -10334,11 +10334,11 @@ spmmli-tool -o -p build/ ejemplo.tex
             {2} { \str_set:Nn \l_@@_spsiglo_gender_str { f } }
           }
       },
-    gender .initial:n = m,
+    gender .initial:n = male,
     gender .value_required:n = true,
     gender / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
-        { gender } { m, ~f } { \exp_not:n {#1} },
+        { gender } { male, ~female } { \exp_not:n {#1} },
     unknown   .code:n =
       {
         \str_set:Nn \l_@@_command_name_str { spsiglo }
