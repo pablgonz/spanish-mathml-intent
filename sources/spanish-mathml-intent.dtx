@@ -10018,9 +10018,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \subsection{The command \cs{spnord}}\label{cmd:spnord}
 %
 % The user command |\spnord| writes ordinal numbers from 1 to 99 in
-% \emph{math mode}, such as $1.^{\text{o}}$ or $21.^{\text{a}}$. Unlike
-% |\spshort|, it works \emph{only in math mode} and it does not use the
-% \texttt{PDF} tagging tools: it typesets the number followed by a
+% \emph{math mode}, such as $1.^{\text{o}}$ or $21.^{\text{a}}$. It does not
+% use the \texttt{PDF} tagging tools: it typesets the number followed by a
 % superscript letter, |1.^{\text{o}}|, which \mynvmath{MathCAT} reads as an
 % ordinal (\emph{\enquote{primero}}, \emph{\enquote{vigésima primera}}).
 %
@@ -10086,21 +10085,17 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \subsubsection{Internal functions for \cs[no-index]{spnord}}
 %
-% \begin{macro}[int]{\@@_spnord_print:nn}
-%   The internal function \myhlc|\@@_spnord_print:nn| clears
+% \begin{macro}[int]{\@@_spnord_exec:nn}
+%   The function \myhlc|\@@_spnord_exec:nn| clears
 %   \myhlc|\l_@@_spnord_read_arg_str| and sets the \mymeta{keys} in `|#1|'.
 %   If that string variable is empty, it processes the \mymarg{argument} in
-%   `|#2|' with \myhlc|\@@_luafun_spnord_process:n| and, on |success|, typesets
-%   the number and the suffix as a superscript, with \textsc{small caps} if
-%   the option is active. On |error| it raises the
+%   `|#2|' with \myhlc|\@@_luafun_spnord_process:n| and, on |success|, calls
+%   \myhlc|\@@_spnord_mathml:|. On |error| it raises the
 %   \enquote{error} and prints the \mymarg{argument} as it is, so that the
-%   compilation does not stop.
-%
-%   Otherwise, it gives the reading of the key \mykey[spnord]{read-arg}
-%   to the \mymarg{argument} as an \texttt{intent}, replacing the spaces
-%   with hyphens.
+%   compilation does not stop. Otherwise, it calls
+%   \myhlc|\@@_spnord_mathml:n| with the \mymarg{argument}.
 %    \begin{macrocode}
-\cs_new_protected:Nn \@@_spnord_print:nn
+\cs_new_protected:Nn \@@_spnord_exec:nn
   {
     \str_clear:N \l_@@_spnord_read_arg_str
     \keys_set:nn { spintent / spnord } {#1}
@@ -10108,27 +10103,41 @@ spmmli-tool -o -p build/ ejemplo.tex
       {
         \@@_luafun_spnord_process:n {#2}
         \str_if_eq:VnTF \l_@@_spnord_luaset_status_str { success }
-          {
-            \l_@@_spnord_luaset_base_str
-            ^
-              {
-                \text
-                  {
-                    \bool_if:NTF \l_@@_spnord_smallcaps_bool
-                      { \textsc { \l_@@_spnord_luaset_suffix_str } }
-                      { \l_@@_spnord_luaset_suffix_str }
-                  }
-              }
-          }
+          { \@@_spnord_mathml: }
           {
             \msg_error:nnn { spintent } { spnord-invalid-ordinal } {#2}
             #2
           }
       }
+      { \@@_spnord_mathml:n {#2} }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_spnord_mathml:, \@@_spnord_mathml:n}
+%   The function \myhlc|\@@_spnord_mathml:| typesets the number and the suffix
+%   as a superscript, with \textsc{small caps} if the option is active. The
+%   function \myhlc|\@@_spnord_mathml:n| gives the reading of the key
+%   \mykey[spnord]{read-arg} to the \mymarg{argument} in `|#1|' as an
+%   \texttt{intent}, replacing the spaces with hyphens.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spnord_mathml:
+  {
+    \l_@@_spnord_luaset_base_str
+    ^
       {
-        \str_replace_all:Nnn \l_@@_spnord_read_arg_str { ~ } { - }
-        \MathMLintent { _ \l_@@_spnord_read_arg_str } {#2}
+        \text
+          {
+            \bool_if:NTF \l_@@_spnord_smallcaps_bool
+              { \textsc { \l_@@_spnord_luaset_suffix_str } }
+              { \l_@@_spnord_luaset_suffix_str }
+          }
       }
+  }
+\cs_new_protected:Nn \@@_spnord_mathml:n
+  {
+    \str_replace_all:Nnn \l_@@_spnord_read_arg_str { ~ } { - }
+    \MathMLintent { _ \l_@@_spnord_read_arg_str } {#1}
   }
 %    \end{macrocode}
 % \end{macro}
@@ -10136,14 +10145,14 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{macro}{\spnord}
 %   The public command \ics*{spnord} writes ordinal numbers in
 %   \emph{math mode}. It raises an \enquote{error} in \emph{text mode}.
-%   Otherwise, it opens a local group and calls \myhlc|\@@_spnord_print:nn|.
+%   Otherwise, it opens a local group and calls \myhlc|\@@_spnord_exec:nn|.
 %    \begin{macrocode}
 \NewDocumentCommand \spnord { O{} m }
   {
     \mode_if_math:TF
       {
         \group_begin:
-          \@@_spnord_print:nn {#1} {#2}
+          \@@_spnord_exec:nn {#1} {#2}
         \group_end:
       }
       {
