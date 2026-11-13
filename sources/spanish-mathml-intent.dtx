@@ -2509,35 +2509,41 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   (también |º| y |ª|), como en |$\spnord{1.o}$|.
 % \end{function}
 %
-% Imprime el número seguido de la letra en superíndice, |1.^{\text{o}}|, y
-% \mynvmath{NVDA/MathCAT} lo verbaliza como un ordinal sin necesidad de un
-% \texttt{intent}: |$\spnord{1.o}$| imprime $1.^{\text{o}}$ y se lee
-% \emph{«primero»}; |$\spnord{21.a}$| imprime $21.^{\text{a}}$ y se lee
-% \emph{«vigésima primera»}; |$\spnord{3.er}$| imprime $3.^{\text{er}}$ y se lee
-% \emph{«tercer»}; |$\spnord{5.as}$| imprime $5.^{\text{as}}$ y se lee
-% \emph{«quintas»}. El sufijo |er| solo se acepta con números que terminan en
-% |1| o |3|.
+% Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
+% y se ejecuta |$\spnord{1.o}$| se imprimirá `$1.^{\text{o}}$' en la salida
+% \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«primero»};
+% si se ejecuta |$\spnord{21.a}$| se imprimirá `$21.^{\text{a}}$' en la salida
+% \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«vigésima primera»};
+% si se ejecuta |$\spnord{3.er}$| se imprimirá `$3.^{\text{er}}$' en la salida
+% \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«tercer»}
+% y si se ejecuta |$\spnord{5.as}$| se imprimirá `$5.^{\text{as}}$' en la salida
+% \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«quintas»}.
+%
+% \begin{important}*
+%   El comando |\spnord| solo acepta números del |1| al |99|, y el sufijo |er|
+%   solo con los números que terminan en |1| o |3|. Cualquier otro argumento
+%   devuelve un \enquote{error} y se detiene la compilación del documento.
+%   Para escribir ordinales en \emph{modo texto} se usa |\spshort|.
+% \end{important}
 %
 % \subsubsection{Llaves para \cs[no-index]{spnord}}
 %
-% \keyexampcmd{small-caps}{true \textnormal{\textcolor{lightgray}{\textbar}} false}{false}[spnord]
-%
-% Establece si el sufijo del ordinal se imprime en versalitas. Por ejemplo:~%
-% |$\spnord[small-caps=true]{2.o}$|.
-%
 % \keyexampcmd{read-arg}{verbalización \textnormal{NVDA}}{no usado}[spnord]
 %
-% Establece la \emph{verbalización del argumento} cuando el ordinal no está
-% entre los que registra el comando, por ejemplo |$\spnord[read-arg={octavo}]{8.^{\text{avo}}}$|.
-% El valor de esta llave \emph{siempre} debe pasarse entre `|{ }|'; se
-% entrega a \mynvmath{NVDA/MathCAT} como un \texttt{intent} y el argumento
-% se imprime tal cual, en modo matemático.
+% Establece la \emph{verbalización del argumento} \mymarg{comandos \textnormal{\hologo{LaTeX}}}
+% del \mymarg{número ordinal} que el comando no acepta, para \mynvmath{NVDA/MathCAT}.
+% El valor de esta llave \emph{siempre} debe pasarse entre `|{ }|' y el argumento
+% se imprime tal cual en \emph{modo matemático}. Por ejemplo:~%
+% |$\spnord[read-arg={octavo}]{8.^{\text{avo}}}$| imprimirá `$8.^{\text{avo}}$'
+% en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«octavo»}.
 %
-% \begin{important}*
-%   El comando |\spnord| solo acepta ordinales del |1| al |99|; fuera de ese
-%   rango da un \emph{error}. Para escribir ordinales en \emph{modo texto} se
-%   usa |\spshort|.
-% \end{important}
+% \keyexampcmd{small-caps}{true \textnormal{\textcolor{lightgray}{\textbar}} false}{false}[spnord]
+%
+% Establece si la \emph{«letra volada»} del \mymarg{número ordinal} se imprime
+% en \emph{versalitas}. Si se establece en |true| se usarán \emph{versalitas}; si
+% se establece en |false|, no se aplicarán. Por ejemplo:~%
+% |$\spnord[small-caps=true]{2.o}$| imprimirá `$2.^{\text{\textsc{o}}}$'
+% en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«segundo»}.
 %
 % \section{Utilidades generales}\label{sec:utilidades}
 %
