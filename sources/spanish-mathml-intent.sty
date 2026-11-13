@@ -1455,7 +1455,6 @@
 \str_new:N \l__spintent_spsiglo_luaset_ord_words_str
 \str_new:N \l__spintent_spsiglo_speech_str
 \str_new:N \l__spintent_spsiglo_intent_str
-\bool_new:N \l__spintent_spsiglo_ordinal_bool
 \bool_new:N \l__spintent_spsiglo_gender_set_bool
 \msg_new:nnnn { spintent } { spsiglo-invalid-arg }
   {
@@ -1499,7 +1498,7 @@
     ordinal .initial:n = false,
     ordinal .value_required:n = true,
     gender .choices:nn =
-      { m , f }
+      { male , female }
       {
         \bool_set_true:N \l__spintent_spsiglo_gender_set_bool
         \int_case:nn { \l_keys_choice_int }
@@ -1508,11 +1507,11 @@
             {2} { \str_set:Nn \l__spintent_spsiglo_gender_str { f } }
           }
       },
-    gender .initial:n = m,
+    gender .initial:n = male,
     gender .value_required:n = true,
     gender / unknown .code:n =
       \msg_error:nneee { spintent } { unknown-choice }
-        { gender } { m, ~f } { \exp_not:n {#1} },
+        { gender } { male, ~female } { \exp_not:n {#1} },
     unknown   .code:n =
       {
         \str_set:Nn \l__spintent_command_name_str { spsiglo }
