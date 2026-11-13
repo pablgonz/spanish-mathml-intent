@@ -1646,11 +1646,8 @@ register_tex_cmd("luafun_spdate_parse", function(raw_date_input)
         output_str = p1 .. sep .. p2 .. sep .. p3
     end
 
-    -- Si sobrevivió a todo, pasamos las variables limpias a TeX
+    -- Si sobrevivió a todo, pasamos el resultado a TeX
     spintent_set_macro("spdate_luaset_error_str", "false")
-    spintent_set_macro("spdate_luaset_day_str", day)
-    spintent_set_macro("spdate_luaset_month_str", month)
-    spintent_set_macro("spdate_luaset_year_str", year)
     spintent_set_macro("spdate_luaset_output_str", output_str)
 end, { "string" })
 
