@@ -1436,6 +1436,28 @@ end
 register_tex_cmd("luafun_spshort_process", function(raw_input)
     spintent_spshort_execute_analysis(raw_input)
 end, { "string" })
+
+-- \spnord: solo numeros ordinales del 1 al 99, sin el diccionario de
+-- abreviaturas. Entrega el numero con su punto (base) y el sufijo tal cual
+-- lo pide la regla ordinal de MathCAT: o, a, er, os, as.
+register_tex_cmd("luafun_spnord_process", function(raw_input)
+    local clean_input = spintent_normalize_key(raw_input)
+    local num_part, suffix_part, is_illegal =
+        (spintent_spshort_ord_grammar * -P(1)):match(clean_input)
+
+    if num_part and not is_illegal and spintent_spshort_ord_suffixes[suffix_part] then
+        local val = tonumber(num_part)
+        local last_digit = val % 10
+        if val >= 1 and val <= 99
+           and (suffix_part ~= "er" or last_digit == 1 or last_digit == 3) then
+            spintent_set_macro("spnord_luaset_status_str", "success")
+            spintent_set_macro("spnord_luaset_base_str", num_part .. ".")
+            spintent_set_macro("spnord_luaset_suffix_str", suffix_part)
+            return
+        end
+    end
+    spintent_set_macro("spnord_luaset_status_str", "error")
+end, { "string" })
 end
 
 -- SIGLOS Y NÚMEROS ROMANOS (\spsiglo)

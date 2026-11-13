@@ -196,7 +196,7 @@ end, "shekel_fallback_patch")
     module  = spintent,
     provide =
       { setspintent, spnum, spunit, spnewunit, spunitalias, spmoney,
-        spshort, spsiglo, sptime, spdate, spread, spdsym, spmsym,
+        spshort, spnord, spsiglo, sptime, spdate, spread, spdsym, spmsym,
         spusep, spdiv, spmul, spnM, spnD, spmcd, spmcm, spnZ, spang,
         spmQ, spPoint, sprecta, sprayo, spside, spmside, spangle, spmangle,
         sparc, spmarc, spPoly, spAfig, spPfig, sprad, spdiam, spcirc, spAcirc,
@@ -699,7 +699,7 @@ end, "shekel_fallback_patch")
     keywords      = [6]{article, l3doc,},%
 % Reserved words 7 (spintent cmd)
     keywordstyle  = [7]{\color{module_name}},%
-    keywords      = [7]{setspintent, spnum, spunit, spnewunit, spunitalias, spmoney, spshort, spsiglo, sptime, %
+    keywords      = [7]{setspintent, spnum, spunit, spnewunit, spunitalias, spmoney, spshort, spnord, spsiglo, sptime, %
                         spdate, spread, spdsym, spmsym, spusep, spdiv, spmul, spnM, spnD, spmcd, spmcm, spnZ, %
                         spang, spmQ, spPoint, sprecta, sprayo, spside, spmside, spangle, spmangle, sparc, spmarc,%
                         spPoly, spAfig, spPfig, sprad, spdiam, spcirc, spAcirc, spPcirc, spcoord, spvec, sprazon,%
@@ -755,6 +755,7 @@ end, "shekel_fallback_patch")
                     spmQ-zero-denominator, spmangle-invalid-arg, spmarc-invalid-points,%
                     spmoney-invalid-currency, spmoney-no-subunits, spmside-invalid-points,%
                     spmul-empty-arg, spnZ-not-integer, spnewread-duplicate, spnewread-empty-args,%
+                    spnord-invalid-ordinal,%
                     spnewunit-duplicate, spnum-has-units, spnum-no-digits, sprayo-invalid-points,%
                     spread-empty-sym, spread-unknown-sym, sprecta-invalid-points,%
                     spshort-unknown-abbreviation, spside-invalid-points, spsiglo-invalid-arg,%
@@ -1353,6 +1354,7 @@ end, "shekel_fallback_patch")
 % una medida & |$\spunit{23 m}$| & \pageref{subsec:spunit} \\
 % una cantidad de dinero & |$\spmoney{500}$| & \pageref{subsec:spmoney} \\
 % una abreviatura, sigla u ordinal & |\spshort{prof.a}| & \pageref{subsec:spshort} \\
+% un ordinal en una fórmula & |$\spnord{1.o}$| & \pageref{subsec:spnord} \\
 % \midrule
 % \multicolumn{3}{c}{\textbf{Símbolos}} \\
 % \midrule
@@ -2488,6 +2490,51 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   el |99|. Desde el |100| el ordinal no se convierte en palabras y se
 %   entrega a \mynvmath{NVDA/MathCAT} tal como se imprime, por ejemplo
 %   |100.o| como \emph{«100º»}.
+% \end{important}
+%
+% \subsection{El comando \cs[no-index]{spnord}}\label{subsec:spnord}
+%
+% \begin{function}{\spnord}
+%   \begin{syntax}
+%     |\spnord|\mymarg{números ordinales}
+%     |\spnord|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{números ordinales}
+%     |\spnord|\myoarg{read-arg\textnormal{\textcolor{gray}{=}}\mymarg{verbalización \textnormal{NVDA}}}\mymarg{comandos \textnormal{\hologo{LaTeX}}}
+%   \end{syntax}
+%
+%   El comando \ics*{spnord} trabaja \emph{solo en modo matemático} y recibe
+%   \emph{un argumento obligatorio} del tipo \mymarg{números ordinales}: un
+%   número del |1| al |99|, un punto y un sufijo |o|, |a|, |er|, |os| o |as|
+%   (también |º| y |ª|), como en |$\spnord{1.o}$|.
+% \end{function}
+%
+% Imprime el número seguido de la letra en superíndice, |1.^{\text{o}}|, y
+% \mynvmath{NVDA/MathCAT} lo verbaliza como un ordinal sin necesidad de un
+% \texttt{intent}: |$\spnord{1.o}$| imprime $1.^{\text{o}}$ y se lee
+% \emph{«primero»}; |$\spnord{21.a}$| imprime $21.^{\text{a}}$ y se lee
+% \emph{«vigésima primera»}; |$\spnord{3.er}$| imprime $3.^{\text{er}}$ y se lee
+% \emph{«tercer»}; |$\spnord{5.as}$| imprime $5.^{\text{as}}$ y se lee
+% \emph{«quintas»}. El sufijo |er| solo se acepta con números que terminan en
+% |1| o |3|.
+%
+% \subsubsection{Llaves para \cs[no-index]{spnord}}
+%
+% \keyexampcmd{small-caps}{true \textnormal{\textcolor{lightgray}{\textbar}} false}{false}[spnord]
+%
+% Establece si el sufijo del ordinal se imprime en versalitas. Por ejemplo:~%
+% |$\spnord[small-caps=true]{2.o}$|.
+%
+% \keyexampcmd{read-arg}{verbalización \textnormal{NVDA}}{no usado}[spnord]
+%
+% Establece la \emph{verbalización del argumento} cuando el ordinal no está
+% entre los que registra el comando, por ejemplo |$\spnord[read-arg={octavo}]{8.^{\text{avo}}}$|.
+% El valor de esta llave \emph{siempre} debe pasarse entre `|{ }|'; se
+% entrega a \mynvmath{NVDA/MathCAT} como un \texttt{intent} y el argumento
+% se imprime tal cual, en modo matemático.
+%
+% \begin{important}*
+%   El comando |\spnord| solo acepta ordinales del |1| al |99|; fuera de ese
+%   rango da un \emph{error}. Para escribir ordinales en \emph{modo texto} se
+%   usa |\spshort|.
 % \end{important}
 %
 % \section{Utilidades generales}\label{sec:utilidades}
@@ -7108,6 +7155,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %        \mynvmath{MathCAT} agrees their name with the number. Their symbols can no
 %        longer be defined with |\spnewunit| or used as the name of an alias, so
 %        the example of |\spnewunit| uses |pers| instead of |px|.
+%      \item New command |\spnord| writes the ordinal numbers from 1 to 99 in
+%        \emph{math mode}, such as $1.^{\text{o}}$ or $21.^{\text{a}}$, which
+%        \mynvmath{MathCAT} reads as ordinals (\emph{\enquote{primero}},
+%        \emph{\enquote{vigésima primera}}).
 %      \item The lists of |\spmcd|, |\spmcm|, |\spnD|, |\spnM| and |\spcomb|, and
 %        the coordinates of |\spcoord|, |\spPoint| and |\spvec|, read a short
 %        pause in their commas (not before the \emph{\enquote{y}}), so that
@@ -9957,6 +10008,144 @@ spmmli-tool -o -p build/ ejemplo.tex
         \group_begin:
           \@@_spshort_print:nn {#1} {#2}
         \group_end:
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsection{The command \cs{spnord}}\label{cmd:spnord}
+%
+% The user command |\spnord| writes ordinal numbers from 1 to 99 in
+% \emph{math mode}, such as $1.^{\text{o}}$ or $21.^{\text{a}}$. Unlike
+% |\spshort|, it works \emph{only in math mode} and it does not use the
+% \texttt{PDF} tagging tools: it typesets the number followed by a
+% superscript letter, |1.^{\text{o}}|, which \mynvmath{MathCAT} reads as an
+% ordinal (\emph{\enquote{primero}}, \emph{\enquote{vigésima primera}}).
+%
+% \subsubsection{Definition of variables for \cs[no-index]{spnord}}
+%
+% \begin{variable}[int]
+%   {
+%     \l_@@_spnord_luaset_status_str,
+%     \l_@@_spnord_luaset_base_str,
+%     \l_@@_spnord_luaset_suffix_str,
+%   }
+% These variables store the values returned by the Lua module \myluamod{}.
+% The variable \myhlc|\l_@@_spnord_luaset_status_str| stores |success| or
+% |error|; \myhlc|\l_@@_spnord_luaset_base_str| stores the number followed by
+% a dot, and \myhlc|\l_@@_spnord_luaset_suffix_str| stores the suffix
+% |o|, |a|, |er|, |os| or |as|.
+%    \begin{macrocode}
+\str_new:N \l_@@_spnord_luaset_status_str
+\str_new:N \l_@@_spnord_luaset_base_str
+\str_new:N \l_@@_spnord_luaset_suffix_str
+%    \end{macrocode}
+% \end{variable}
+%
+% \subsubsection{Definition of error messages for \cs[no-index]{spnord}}
+%
+% \begin{macro}[int]{spnord-invalid-ordinal}
+%   The \enquote{error} |spnord-invalid-ordinal| is raised when the
+%   \mymarg{argument} is not an ordinal number from 1 to 99 with one of the
+%   suffixes |o|, |a|, |er|, |os| or |as|, or |er| is used with a number
+%   that does not end in 1 or 3.
+%    \begin{macrocode}
+\msg_new:nnnn { spintent } { spnord-invalid-ordinal }
+  {
+    The~ordinal~number~'#1'~is~invalid~or~not~recognized~\msg_line_context:.
+  }
+  {
+    Use~a~number~from~1~to~99~followed~by~a~dot~and~one~of~o,~a,~er,~os,~as.
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Definition of keys for \cs[no-index]{spnord}}
+%
+% \begin{macro}[int]{small-caps, read-arg, unknown}
+%   We define the \mymeta{keys} \mykey[spnord]{small-caps} and \mykey[spnord]{read-arg}.
+%    \begin{macrocode}
+\keys_define:nn { spintent / spnord }
+  {
+    small-caps .bool_set:N = \l_@@_spnord_smallcaps_bool,
+    small-caps .initial:n = false,
+    small-caps .value_required:n = true,
+    read-arg   .str_set:N = \l_@@_spnord_read_arg_str,
+    read-arg   .initial:n = {},
+    read-arg   .value_required:n = true,
+    unknown    .code:n =
+      {
+        \str_set:Nn \l_@@_command_name_str { spnord }
+        \@@_unknown_keys_cmd:n {#1}
+      },
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Internal functions for \cs[no-index]{spnord}}
+%
+% \begin{macro}[int]{\@@_spnord_print:nn}
+%   The internal function \myhlc|\@@_spnord_print:nn| clears
+%   \myhlc|\l_@@_spnord_read_arg_str| and sets the \mymeta{keys} in `|#1|'.
+%   If that string variable is empty, it processes the \mymarg{argument} in
+%   `|#2|' with \myhlc|\@@_luafun_spnord_process:n| and, on |success|, typesets
+%   the number and the suffix as a superscript, with \textsc{small caps} if
+%   the option is active. On |error| it raises the
+%   \enquote{error} and prints the \mymarg{argument} as it is, so that the
+%   compilation does not stop.
+%
+%   Otherwise, it gives the reading of the key \mykey[spnord]{read-arg}
+%   to the \mymarg{argument} as an \texttt{intent}, replacing the spaces
+%   with hyphens.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spnord_print:nn
+  {
+    \str_clear:N \l_@@_spnord_read_arg_str
+    \keys_set:nn { spintent / spnord } {#1}
+    \str_if_empty:NTF \l_@@_spnord_read_arg_str
+      {
+        \@@_luafun_spnord_process:n {#2}
+        \str_if_eq:VnTF \l_@@_spnord_luaset_status_str { success }
+          {
+            \l_@@_spnord_luaset_base_str
+            ^
+              {
+                \text
+                  {
+                    \bool_if:NTF \l_@@_spnord_smallcaps_bool
+                      { \textsc { \l_@@_spnord_luaset_suffix_str } }
+                      { \l_@@_spnord_luaset_suffix_str }
+                  }
+              }
+          }
+          {
+            \msg_error:nnn { spintent } { spnord-invalid-ordinal } {#2}
+            #2
+          }
+      }
+      {
+        \str_replace_all:Nnn \l_@@_spnord_read_arg_str { ~ } { - }
+        \MathMLintent { _ \l_@@_spnord_read_arg_str } {#2}
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\spnord}
+%   The public command \ics*{spnord} writes ordinal numbers in
+%   \emph{math mode}. It raises an \enquote{error} in \emph{text mode}.
+%   Otherwise, it opens a local group and calls \myhlc|\@@_spnord_print:nn|.
+%    \begin{macrocode}
+\NewDocumentCommand \spnord { O{} m }
+  {
+    \mode_if_math:TF
+      {
+        \group_begin:
+          \@@_spnord_print:nn {#1} {#2}
+        \group_end:
+      }
+      {
+        \msg_error:nnn { spintent } { need-math-mode } { \spnord }
       }
   }
 %    \end{macrocode}
@@ -25173,6 +25362,28 @@ end
 
 register_tex_cmd("luafun_spshort_process", function(raw_input)
     spintent_spshort_execute_analysis(raw_input)
+end, { "string" })
+
+-- \spnord: solo numeros ordinales del 1 al 99, sin el diccionario de
+-- abreviaturas. Entrega el numero con su punto (base) y el sufijo tal cual
+-- lo pide la regla ordinal de MathCAT: o, a, er, os, as.
+register_tex_cmd("luafun_spnord_process", function(raw_input)
+    local clean_input = spintent_normalize_key(raw_input)
+    local num_part, suffix_part, is_illegal =
+        (spintent_spshort_ord_grammar * -P(1)):match(clean_input)
+
+    if num_part and not is_illegal and spintent_spshort_ord_suffixes[suffix_part] then
+        local val = tonumber(num_part)
+        local last_digit = val % 10
+        if val >= 1 and val <= 99
+           and (suffix_part ~= "er" or last_digit == 1 or last_digit == 3) then
+            spintent_set_macro("spnord_luaset_status_str", "success")
+            spintent_set_macro("spnord_luaset_base_str", num_part .. ".")
+            spintent_set_macro("spnord_luaset_suffix_str", suffix_part)
+            return
+        end
+    end
+    spintent_set_macro("spnord_luaset_status_str", "error")
 end, { "string" })
 end
 

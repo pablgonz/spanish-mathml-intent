@@ -1,0 +1,68 @@
+% test-008.lvt -- regresion de \spnord
+%
+% Regresion:  l3build save test-008
+%             l3build check test-008
+%
+% Test de regresion de \spnord: ordinales en modo matematico, con sus
+% llaves small-caps y read-arg. Los "doc:" son las lecturas que se esperan
+% de MathCAT con la regla de ordinales (#999), aun sin comprobar en NVDA.
+\input{regression-test}
+
+\DocumentMetadata
+  {
+    lang=es-CL,
+    pdfversion=2.0,
+    pdfstandard=ua-2,
+    tagging=on,
+    tagging-setup={math/setup={mathml-SE}},
+  }
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{unicode-math}
+\ExplSyntaxOn
+\debug_on:n { check-declarations }
+\ExplSyntaxOff
+\usepackage{spanish-mathml-intent}
+\usepackage{hyperref}
+\hypersetup
+  {
+    pdfdisplaydoctitle = true,
+    pdftitle           = {test-008: ordinales con spnord},
+  }
+
+\begin{document}
+
+\section*{A. Ordinales en una fórmula}
+
+% doc: «primero»
+1. Masculino: $\spnord{1.o}$.
+
+% doc: «primera»
+2. Femenino: $\spnord{1.a}$.
+
+% doc: «tercer»
+3. Apocopado: $\spnord{3.er}$.
+
+% doc: «quintas»
+4. Femenino plural: $\spnord{5.as}$.
+
+% doc: «vigésima primera»
+5. Compuesto: $\spnord{21.a}$.
+
+% doc: «segundo»
+6. Con la letra º: $\spnord{2.º}$.
+
+% doc: «segundo»
+7. Con versalitas: $\spnord[small-caps=true]{2.o}$.
+
+% doc: «octavo»
+8. Con lectura propia: $\spnord[read-arg={octavo}]{8.^{\text{avo}}}$.
+
+
+\START
+
+\SHOWPDFTAGS
+
+\OMIT
+
+\end{document}
