@@ -1927,6 +1927,181 @@ TEST 1: Show PDF Tags
      </text-block>
     </semantic-para>
    </section>
+   <section xmlns="https://www.latex-project.org/ns/dflt"
+      id="ID.00301"
+      rolemaps-to="Sect"
+     >
+    <section-heading xmlns="https://www.latex-project.org/ns/dflt"
+       id="ID.00302"
+       title="H. El comando \textbackslash spsiglo con ordinal"
+       rolemaps-to="H1"
+      >
+     <?MarkedContent page="2" ?>H. El comando \spsiglo con ordinal
+    </section-heading>
+    <semantic-para xmlns="https://www.latex-project.org/ns/dflt"
+       id="ID.00303"
+       rolemaps-to="Part"
+      >
+     <text-block xmlns="https://www.latex-project.org/ns/dflt"
+        id="ID.00304"
+        xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+        Layout:TextAlign="Justify"
+        rolemaps-to="P"
+       >
+      <?MarkedContent page="2" ?>40. Ordinal en modo matemático: 
+      <Formula xmlns="http://iso.org/pdf2/ssn"
+         id="ID.00305"
+         title="math"
+         xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+         Layout:Placement="Inline"
+        >
+       <math xmlns="http://www.w3.org/1998/Math/MathML"
+          id="ID.00307"
+         >
+        <mtext xmlns="http://www.w3.org/1998/Math/MathML"
+           id="ID.00306"
+           intent="_décimo"
+          >
+         <?MarkedContent page="2" ?>x
+        </mtext>
+       </math>
+       <?MarkedContent page="2" ?>
+      </Formula>
+      <?MarkedContent page="2" ?>.
+     </text-block>
+    </semantic-para>
+    <semantic-para xmlns="https://www.latex-project.org/ns/dflt"
+       id="ID.00308"
+       rolemaps-to="Part"
+      >
+     <text-block xmlns="https://www.latex-project.org/ns/dflt"
+        id="ID.00309"
+        xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+        Layout:TextAlign="Justify"
+        rolemaps-to="P"
+       >
+      <?MarkedContent page="2" ?>41. Ordinal compuesto: 
+      <Formula xmlns="http://iso.org/pdf2/ssn"
+         id="ID.00310"
+         title="math"
+         xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+         Layout:Placement="Inline"
+        >
+       <math xmlns="http://www.w3.org/1998/Math/MathML"
+          id="ID.00312"
+         >
+        <mtext xmlns="http://www.w3.org/1998/Math/MathML"
+           id="ID.00311"
+           intent="_vigésimo-primero"
+          >
+         <?MarkedContent page="2" ?>xxi
+        </mtext>
+       </math>
+       <?MarkedContent page="2" ?>
+      </Formula>
+      <?MarkedContent page="2" ?>.
+     </text-block>
+    </semantic-para>
+    <semantic-para xmlns="https://www.latex-project.org/ns/dflt"
+       id="ID.00313"
+       rolemaps-to="Part"
+      >
+     <text-block xmlns="https://www.latex-project.org/ns/dflt"
+        id="ID.00314"
+        xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+        Layout:TextAlign="Justify"
+        rolemaps-to="P"
+       >
+      <?MarkedContent page="2" ?>42. Ordinal femenino: 
+      <Formula xmlns="http://iso.org/pdf2/ssn"
+         id="ID.00315"
+         title="math"
+         xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+         Layout:Placement="Inline"
+        >
+       <math xmlns="http://www.w3.org/1998/Math/MathML"
+          id="ID.00317"
+         >
+        <mtext xmlns="http://www.w3.org/1998/Math/MathML"
+           id="ID.00316"
+           intent="_segunda"
+          >
+         <?MarkedContent page="2" ?>ii
+        </mtext>
+       </math>
+       <?MarkedContent page="2" ?>
+      </Formula>
+      <?MarkedContent page="2" ?>.
+     </text-block>
+    </semantic-para>
+    <semantic-para xmlns="https://www.latex-project.org/ns/dflt"
+       id="ID.00318"
+       rolemaps-to="Part"
+      >
+     <text-block xmlns="https://www.latex-project.org/ns/dflt"
+        id="ID.00319"
+        xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+        Layout:TextAlign="Justify"
+        rolemaps-to="P"
+       >
+      <?MarkedContent page="2" ?>43. Ordinal en modo texto:
+      <Span xmlns="http://iso.org/pdf2/ssn"
+         id="ID.00320"
+         alt="vigésimo tercero"
+        >
+       <?MarkedContent page="2" ?> xxiii
+      </Span>
+      <?MarkedContent page="2" ?>.
+     </text-block>
+    </semantic-para>
+    <semantic-para xmlns="https://www.latex-project.org/ns/dflt"
+       id="ID.00321"
+       rolemaps-to="Part"
+      >
+     <text-block xmlns="https://www.latex-project.org/ns/dflt"
+        id="ID.00322"
+        xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+        Layout:TextAlign="Justify"
+        rolemaps-to="P"
+       >
+      <?MarkedContent page="2" ?>44. Ordinal con 
+      <Em xmlns="http://iso.org/pdf2/ssn"
+         id="ID.00323"
+        >
+       <?MarkedContent page="2" ?>a. C.
+      </Em>
+      <?MarkedContent page="2" ?>: 
+      <Formula xmlns="http://iso.org/pdf2/ssn"
+         id="ID.00324"
+         title="math"
+         xmlns:Layout="http://iso.org/pdf/ssn/Layout"
+         Layout:Placement="Inline"
+        >
+       <math xmlns="http://www.w3.org/1998/Math/MathML"
+          id="ID.00326"
+          intent="_antes-de-cristo:postfix($z)"
+         >
+        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+           id="ID.00327"
+           intent=":silent"
+           mathvariant="normal"
+          >
+         <?MarkedContent page="2" ?>⁣
+        </mi>
+        <mtext xmlns="http://www.w3.org/1998/Math/MathML"
+           id="ID.00325"
+           arg="z"
+           intent="_quinto"
+          >
+         <?MarkedContent page="2" ?>v a. C.
+        </mtext>
+       </math>
+       <?MarkedContent page="2" ?>
+      </Formula>
+      <?MarkedContent page="2" ?>.
+     </text-block>
+    </semantic-para>
+   </section>
   </Document>
  </StructTreeRoot>
 </PDF>

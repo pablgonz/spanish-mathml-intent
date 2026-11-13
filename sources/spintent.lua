@@ -1,5 +1,5 @@
 --[[
-     Lua module spintent.lua for spanish-mathml-intent package - v1.5 [2026-11-12]
+     Lua module spintent.lua for spanish-mathml-intent package - v1.5 [2026-11-13]
 --]]
 
 -- ÍNDICE DE SECCIONES (cada una empieza con su título en mayúsculas)
