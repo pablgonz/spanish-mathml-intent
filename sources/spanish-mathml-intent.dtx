@@ -1348,6 +1348,7 @@ end, "shekel_fallback_patch")
 % un siglo & |\spsiglo{XXI}| & \pageref{subsec:spsiglo} \\
 % una hora & |$\sptime{23:45}$| & \pageref{subsec:sptime} \\
 % una fecha & |$\spdate{1981-01-02}$| & \pageref{subsec:spdate} \\
+% un ordinal en una fórmula & |$\spnord{1.o}$| & \pageref{subsec:spnord} \\
 % \midrule
 % \multicolumn{3}{c}{\textbf{Los cuatro grandes}} \\
 % \midrule
@@ -1355,7 +1356,6 @@ end, "shekel_fallback_patch")
 % una medida & |$\spunit{23 m}$| & \pageref{subsec:spunit} \\
 % una cantidad de dinero & |$\spmoney{500}$| & \pageref{subsec:spmoney} \\
 % una abreviatura, sigla u ordinal & |\spshort{prof.a}| & \pageref{subsec:spshort} \\
-% un ordinal en una fórmula & |$\spnord{1.o}$| & \pageref{subsec:spnord} \\
 % \midrule
 % \multicolumn{3}{c}{\textbf{Símbolos}} \\
 % \midrule
@@ -2603,7 +2603,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % en lugar de cardinal. Sirve para papas, reyes y capítulos: si se establece en
 % |true|, |$\spsiglo[ordinal=true]{X}$| imprimirá `\textsc{x}' y se verbalizará
 % \emph{«décimo»}, y |$\spsiglo[ordinal=true]{XXI}$| se verbalizará
-% \emph{«vigésimo primero»}. Con |false| se verbaliza el número, como \emph{«veintiuno»}.
+% \emph{«vigésimo primero»}. Con |false| se verbaliza el número, como
+% \emph{«veintiuno»}.
 %
 % \keyexampcmd{gender}{m \textnormal{\textcolor{lightgray}{\textbar}} f}{m}[spsiglo]
 %
@@ -2612,10 +2613,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{important}*
 %   El ordinal solo existe del |1| al |99|. Si se usa |ordinal=true| con un
-%   número mayor que |99| el comando devuelve un \emph{error} y el número
-%   se verbaliza como cardinal. La llave \mykey[spsiglo]{gender} solo se
+%   número mayor que |99| el comando devuelve un \enquote{error} y se detiene
+%   la compilación del documento. La llave \mykey[spsiglo]{gender} solo se
 %   puede usar junto con |ordinal=true|; de lo contrario también devuelve
-%   un \emph{error}.
+%   un \enquote{error} y se detiene la compilación del documento.
 % \end{important}
 %
 % \subsection*{El comando \cs[no-index]{sptime}}\label{subsec:sptime}
@@ -10220,7 +10221,6 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \l_@@_spsiglo_luaset_ord_words_str,
 %     \l_@@_spsiglo_speech_str,
 %     \l_@@_spsiglo_intent_str,
-%     \l_@@_spsiglo_ordinal_bool,
 %     \l_@@_spsiglo_gender_set_bool,
 %   }
 %   The variable \myhlc|\l_@@_spsiglo_luaset_error_str| stores |true| or
@@ -10230,10 +10230,9 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   \myhlc|\l_@@_spsiglo_luaset_roman_min_str| stores the number in lowercase
 %   Roman numerals, which is printed with |\textsc|. The variable
 %   \myhlc|\l_@@_spsiglo_print_era_str| stores the value set by the key
-%   \mykey[spsiglo]{print-era}. The variables
-%   \myhlc|\l_@@_spsiglo_ordinal_bool| and \myhlc|\l_@@_spsiglo_gender_str|
-%   store the values set by the keys \mykey[spsiglo]{ordinal} and
-%   \mykey[spsiglo]{gender}; \myhlc|\l_@@_spsiglo_gender_set_bool| records
+%   \mykey[spsiglo]{print-era}. The variable
+%   \myhlc|\l_@@_spsiglo_gender_str| stores the value set by the key
+%   \mykey[spsiglo]{gender}, and \myhlc|\l_@@_spsiglo_gender_set_bool| records
 %   that \mykey[spsiglo]{gender} was given in the current call.
 %   \myhlc|\l_@@_spsiglo_luaset_ord_error_str| and
 %   \myhlc|\l_@@_spsiglo_luaset_ord_words_str| store the answer of the Lua
@@ -10252,7 +10251,6 @@ spmmli-tool -o -p build/ ejemplo.tex
 \str_new:N \l_@@_spsiglo_luaset_ord_words_str
 \str_new:N \l_@@_spsiglo_speech_str
 \str_new:N \l_@@_spsiglo_intent_str
-\bool_new:N \l_@@_spsiglo_ordinal_bool
 \bool_new:N \l_@@_spsiglo_gender_set_bool
 %    \end{macrocode}
 % \end{variable}
@@ -10363,9 +10361,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   \myhlc|\@@_spsiglo_render_with_era:nnn| build the \mynvmath{MathML}
 %   \texttt{intent} structures in \emph{math mode}; the argument with the
 %   \texttt{intent} is the Arabic numeral, such as |21:number|, or the
-%   ordinal, such as |_vigésimo-primero|. \myhlc|\@@_spsiglo_render_with_era:nnn| also adds the era
-%   |ac| or |dc|, with invisible spacing and postfix intents so that
-%   \mynvmath{NVDA/MathCAT} reads it correctly.
+%   ordinal, such as |_vigésimo-primero|.
+%   \myhlc|\@@_spsiglo_render_with_era:nnn| also adds the era |ac| or |dc|,
+%   with invisible spacing and postfix intents so that \mynvmath{NVDA/MathCAT}
+%   reads it correctly.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spsiglo_render_simple:nn
   {
@@ -10430,10 +10429,19 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]
 %   {
+%     \@@_spsiglo_prepare_speech:n,
 %     \@@_spsiglo_exec:n,
 %     \@@_spsiglo_mathml:,
 %     \@@_spsiglo_text:,
 %   }
+%   The function \myhlc|\@@_spsiglo_prepare_speech:n| stores in
+%   \myhlc|\l_@@_spsiglo_speech_str| and \myhlc|\l_@@_spsiglo_intent_str|
+%   the Arabic numeral or, if the key \mykey[spsiglo]{ordinal} is |true|, the
+%   ordinal returned by the Lua module \myluamod{}. It issues the
+%   \enquote{error} |spsiglo-ordinal-range| if the number is greater than |99|
+%   and the \enquote{error} |spsiglo-gender-needs-ordinal| if the key
+%   \mykey[spsiglo]{gender} is used without \mykey[spsiglo]{ordinal}.
+%
 %   The function \myhlc|\@@_spsiglo_exec:n| formats century designations
 %   based on the active mode. It first checks the \enquote{error} status in
 %   the variable \myhlc|\l_@@_spsiglo_luaset_error_str| returned by the Lua
