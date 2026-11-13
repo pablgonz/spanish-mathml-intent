@@ -2006,12 +2006,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \endgroup
 %
 %
-% Si el prefijo `$\mathrm{µ}$' (o `$\mathrm{μ}$') va pegado a una \mymarg{unidad}
-% de la tabla, como en `$10\,\mathrm{µm}$' o `$5\,\mathrm{µg}$', se imprime y se
-% trata como una sola \mymarg{unidad}, y \mynvmath{NVDA/MathCAT} aplica su
-% propia lectura del prefijo junto con la \mymarg{unidad}. En cambio, si el
-% prefijo se separa con un asterisco, se trata de un producto de dos
-% \mymarg{unidades} y el `$\mathrm{µ}$' se lee como una \mymarg{unidad} más.
+% Si el prefijo `$\mathrm{µ}$' va pegado a una \mymarg{unidad} de la tabla, como
+% en `$10\,\mathrm{µm}$' o `$5\,\mathrm{µg}$', se imprime y se trata como una
+% sola \mymarg{unidad}, y \mynvmath{NVDA/MathCAT} aplica su propia lectura del
+% prefijo junto con la \mymarg{unidad}. En cambio, si el prefijo se separa con
+% un asterisco, se trata de un producto de dos \mymarg{unidades} y el
+% `$\mathrm{µ}$' se lee como una \mymarg{unidad} más.
 %
 % \subsubsection{El comando \cs[no-index]{spnewunit}}\label{subsubsec:spnewunit}
 %
@@ -7138,7 +7138,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{description}[font=\small\sffamily,wide=0pt,style=multiline,leftmargin=1.1\descrwidth,nosep,noitemsep]
 %  \item [\fileversion{} (ctan), \filedate]
 %    \begin{itemize}
-%      \item |\spunit| accepts the prefix $\mathrm{µ}$ (or $\mathrm{μ}$) glued to
+%      \item |\spunit| accepts the prefix $\mathrm{µ}$ glued to
 %        a unit of the table, as in $\mathrm{µm}$, $\mathrm{µg}$ or
 %        $\mathrm{µs}$, and treats it as a single unit, so that
 %        \mynvmath{MathCAT} reads the prefix together with the unit.
