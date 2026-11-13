@@ -1399,7 +1399,7 @@
         \__spintent_unknown_keys_cmd:n {#1}
       },
   }
-\cs_new_protected:Nn \__spintent_spnord_print:nn
+\cs_new_protected:Nn \__spintent_spnord_exec:nn
   {
     \str_clear:N \l__spintent_spnord_read_arg_str
     \keys_set:nn { spintent / spnord } {#1}
@@ -1407,34 +1407,38 @@
       {
         \__spintent_luafun_spnord_process:n {#2}
         \str_if_eq:VnTF \l__spintent_spnord_luaset_status_str { success }
-          {
-            \l__spintent_spnord_luaset_base_str
-            ^
-              {
-                \text
-                  {
-                    \bool_if:NTF \l__spintent_spnord_smallcaps_bool
-                      { \textsc { \l__spintent_spnord_luaset_suffix_str } }
-                      { \l__spintent_spnord_luaset_suffix_str }
-                  }
-              }
-          }
+          { \__spintent_spnord_mathml: }
           {
             \msg_error:nnn { spintent } { spnord-invalid-ordinal } {#2}
             #2
           }
       }
+      { \__spintent_spnord_mathml:n {#2} }
+  }
+\cs_new_protected:Nn \__spintent_spnord_mathml:
+  {
+    \l__spintent_spnord_luaset_base_str
+    ^
       {
-        \str_replace_all:Nnn \l__spintent_spnord_read_arg_str { ~ } { - }
-        \MathMLintent { _ \l__spintent_spnord_read_arg_str } {#2}
+        \text
+          {
+            \bool_if:NTF \l__spintent_spnord_smallcaps_bool
+              { \textsc { \l__spintent_spnord_luaset_suffix_str } }
+              { \l__spintent_spnord_luaset_suffix_str }
+          }
       }
+  }
+\cs_new_protected:Nn \__spintent_spnord_mathml:n
+  {
+    \str_replace_all:Nnn \l__spintent_spnord_read_arg_str { ~ } { - }
+    \MathMLintent { _ \l__spintent_spnord_read_arg_str } {#1}
   }
 \NewDocumentCommand \spnord { O{} m }
   {
     \mode_if_math:TF
       {
         \group_begin:
-          \__spintent_spnord_print:nn {#1} {#2}
+          \__spintent_spnord_exec:nn {#1} {#2}
         \group_end:
       }
       {
