@@ -32,59 +32,16 @@
 %<*driver>
 \DocumentMetadata{lang=es-CL,pdfversion=2.0,pdfstandard=ua-2,tagging=on,tagging-setup={math/setup={mathml-SE}}}
 \documentclass[full]{l3doc}
-% Tagging support for l3doc as in l3in2edoc.cls, but mapping its structures
-% to standard tags (its own function/macro/... tags are unknown to the
-% LaTeX RelaxNG schemas); macro uses \UseStructureName instead of the
-% literal tag-name=macro of latex-lab-testphase-l3doc.
-\IfDocumentMetadataT
-  {
-    \RequirePackage{latex-lab-testphase-l3doc}
-    \AssignStructureRole{doc/function}{Sect}
-    \AssignStructureRole{doc/functionnames}{Caption}
-    \AssignStructureRole{doc/functionname}{Code}
-    \AssignStructureRole{doc/functionnamepart}{Span}
-    \AssignStructureRole{doc/syntax}{Div}
-    \AssignStructureRole{doc/function-description}{Div}
-    \AssignStructureRole{doc/macro}{Sect}
-    \AssignStructureRole{doc/macronames}{Caption}
-    \AssignStructureRole{doc/macroname}{Code}
-    \AssignStructureRole{doc/variable}{Sect}
-    \AssignStructureRole{doc/variablenames}{Caption}
-    \AssignStructureRole{doc/variablename}{Code}
-    \AssignStructureRole{doc/codelinenum}{Lbl}
-  }
-\ExplSyntaxOn
-\IfDocumentMetadataT
-  {
-    \cs_set_protected:Npn \__codedoc_macro_dump:
-      {
-        \int_compare:nNnF { \l__codedoc_nested_macro_int } > { 1 }
-          {
-            \begin{displayblock}
-              [ tag-name = \UseStructureName{doc/macro} , begin-vspace = \MacroTopsep ]
-            \UseTaggingSocket{doc/container/macronames}{\l__codedoc_current_names_struct_tl}
-          }
-        \noindent \llap
-          {
-            \tagmcend
-            \hbox_unpack_drop:N \l__codedoc_macro_index_box
-            \vtop to \baselineskip
-              {
-                \vbox_unpack_drop:N \l__codedoc_macro_box
-                \vss
-              }
-            \hspace{\labelsep}
-            \tagmcbegin{}
-          }
-      }
-  }
-\ExplSyntaxOff
 \usepackage[svgnames]{xcolor}
 \usepackage[sf,bf,compact,medium]{titlesec}
 \usepackage{titleps}
 \usepackage{lastpage,microtype,attachfile2,multicol,listings,titletoc,booktabs, longtable, fontawesome5}
 \usepackage{scalerel} % for \spmQ sample
-\usepackage[english]{babel} % \selectlanguage{english}
+% With \DocumentMetadata{lang=es-CL} babel-spanish is loaded and adds a dot to
+% \numberline (TOC); es-nosectiondot switches it off (unknown option otherwise).
+\IfDocumentMetadataTF
+  {\usepackage[english,es-nosectiondot]{babel}}
+  {\usepackage[english]{babel}} % \selectlanguage{english}
 \usepackage[top=0.5in,bottom=0.3in,left=1.70in,right=0.7in,footskip=0.2in,headheight=1cm,headsep=0.27cm]{geometry}
 % Set \parindent and \parskip
 \setlength{\parindent}{0pt}
@@ -178,13 +135,6 @@ end, "shekel_fallback_patch")
    RawFeature        = {+latn,+rand,+kern,+size},%
    FontFace          = {b}{n}{ffmw10.otf},% fix replace font
    ]
-% Remove `"` and `|` for short verbatim defined in l3doc, then set short |...|
-\AtBeginDocument
-  {
-    \DeleteShortVerb \"
-    \DeleteShortVerb \|
-    \lstMakeShortInline[language=spintent-doc,basicstyle=\ttfamily]\|
-  }
 % Index
 \usepackage{imakeidx}
 \indexsetup{level=\section,firstpagestyle=myheader,othercode=\pagestyle{myheader}}
@@ -252,7 +202,11 @@ end, "shekel_fallback_patch")
         spPcirc, spcoord, spvec, sprazon, spProp, spnewread, spVol, spinterval, spfun, spfuncomp, spdom, sprec, spcod, %
         spProm, spmedia, spmediana, spmoda, spdesv, spvarz, %
         spcuartil, spdecil, spPerc, sprango, spriq, spmin, spmax, spFrec, spcase, spOmega, spPval, spProb, spcomp, spcomb, spfact, spabs, %
-      }
+      },
+    shortverb         = \|,
+    shortverb-options = { language=spintent-doc, basicstyle=\ttfamily },
+    attach-color      = newlinkcolor,
+    meta/angle-font   = { \fontfamily{lmrotf}\fontshape{n}\selectfont },
   }
 % Colors
 \definecolor{rulecolor}{rgb}{0.96,0.96,0.96}
@@ -285,23 +239,6 @@ end, "shekel_fallback_patch")
       \LibertinusSansOsF{\textcolor{module_name}{spanish}\textcolor{gray}{-}\textcolor{module_name}{mathml}\textcolor{gray}{-}\textcolor{OrangeRed}{intent}}
     \group_end:
   }
-% Custom \meta[...]{...}, \marg[...]{...} and \oarg[...]{...} with color
-\NewDocumentCommand \mymeta { O{} m }
-  {
-    \__mydoc_meta_generic:Nnn \__mydoc_meta:n { #1 } { #2 }
-  }
-\NewDocumentCommand \mymarg { O{} m }
-  {
-    \__mydoc_meta_generic:Nnn \__mydoc_marg:n { #1 } { #2 }
-  }
-\NewDocumentCommand \myoarg { O{} m }
-  {
-    \__mydoc_meta_generic:Nnn \__mydoc_oarg:n { #1 } { #2 }
-  }
-\NewDocumentCommand \myparg { O{} m }
-  {
-    \__mydoc_meta_generic:Nnn \__mydoc_parg:n { #1 } { #2 }
-  }
 % Rows with two columns inside the syntax environment
 \dim_new:N \l_userdoc_col_dim
 \NewDocumentCommand \mycolrow { m }
@@ -315,81 +252,6 @@ end, "shekel_fallback_patch")
   {
     \tex_hfil:D
     \c_group_end_token
-  }
-% Variables and keys
-\tl_new:N \l_userdoc_meta_font_tl
-\keys_define:nn { userdoc / mymeta }
-  {
-    type .choice:,
-    type / tt .code:n = \tl_set:Nn \l_userdoc_meta_font_tl { \ttfamily },
-    type / rm .code:n = \tl_set:Nn \l_userdoc_meta_font_tl { \rmfamily },
-    type .initial:n = tt,
-    cf   .tl_set:N = \l_userdoc_meta_color_tl,
-    cf   .initial:n = keyname,
-    ac   .tl_set:N = \l_userdoc_meta_anglecolor_tl,
-    ac   .initial:n = lightgray,
-    sbc  .tl_set:N = \l_userdoc_meta_brackcolor_tl,
-    sbc  .initial:n = gray,
-    cbc  .tl_set:N = \l_userdoc_meta_bracecolor_tl,
-    cbc  .initial:n = gray,
-    pbc  .tl_set:N = \l_userdoc_meta_parencolor_tl,
-    pbc  .initial:n = gray,
-  }
-% Internal commands
-\cs_new_protected:Npn \__mydoc_meta_generic:Nnn #1 #2 #3
-  {
-    \group_begin:
-      \keys_set:nn { userdoc / mymeta } { #2 }
-      \color{ \l_userdoc_meta_color_tl }
-      \l_userdoc_meta_font_tl
-      #1 { #3 } % #1 is \__mydoc_meta:n, \__mydoc_marg:n or \__mydoc_oarg:n
-    \group_end:
-  }
-\cs_new_protected:Npn \__mydoc_meta:n #1
-  {
-    \__mydoc_meta_angle:n { \textlangle }
-    \__mydoc_meta_meta:n { #1 }
-    \__mydoc_meta_angle:n { \textrangle }
-  }
-\cs_new_protected:Npn \__mydoc_marg:n #1
-  {
-    \__mydoc_meta_brace:n { \textbraceleft }
-    \__mydoc_meta:n { #1 }
-    \__mydoc_meta_brace:n { \textbraceright }
-  }
-\cs_new_protected:Npn \__mydoc_oarg:n #1
-  {
-    \__mydoc_meta_brack:n { [ }
-    \__mydoc_meta:n { #1 }
-    \__mydoc_meta_brack:n { ] }
-  }
-\cs_new_protected:Npn \__mydoc_parg:n #1
-  {
-    \__mydoc_meta_brace:n { ( }
-    \__mydoc_meta:n { #1 }
-    \__mydoc_meta_brace:n { ) }
-  }
-\cs_new_protected:Npn \__mydoc_meta_meta:n #1
-  {
-    \textnormal{\textit{#1}}
-  }
-\cs_new_protected:Npn \__mydoc_meta_angle:n #1
-  {
-    \group_begin:
-      \fontfamily{lmrotf}\fontshape{n}\selectfont
-      \textcolor{\l_userdoc_meta_anglecolor_tl}{#1}
-    \group_end:
-  }
-\cs_new_protected:Npn \__mydoc_meta_brace:n #1
-  {
-    \group_begin:
-      \color{\l_userdoc_meta_bracecolor_tl}
-        #1
-    \group_end:
-  }
-\cs_new_protected:Npn \__mydoc_meta_brack:n #1
-  {
-    \textcolor{\l_userdoc_meta_brackcolor_tl}{#1}
   }
 % \keyexampcmd{s m m m o}
 \NewDocumentCommand \keyexampcmd { s m m m o }
@@ -576,65 +438,15 @@ end, "shekel_fallback_patch")
       \textcolor{filename}{ \ttfamily \tl_use:N \l_tmpa_tl }
     \group_end:
   }
-% Attached files. With \DocumentMetadata the files are embedded with the
-% pdfmanagement (\pdffile_embed_file:nnn, /AFRelationship /Supplement as
-% PDF/UA-2 requires) and the annotation goes in an Annot structure; the
-% icon is typeset with fontawesome5 and marked as artifact. Without
-% \DocumentMetadata, attachfile2 as before.
-\box_new:N \l__mydoc_attach_box
-\int_new:N \g__mydoc_attach_int
-\IfDocumentMetadataTF
-  {
-    \hook_gput_code:nnn { begindocument } { mydoc }
-      { \pdfxform_new:nnn { mydoc/attach/emptyAP } { } { \hbox_to_wd:nn { 1sp } { } } }
-    \cs_new_protected:Npn \__mydoc_attach:nn #1#2
-      {
-        \pdf_object_if_exist:nF { mydoc/attach/#1 }
-          {
-            \group_begin:
-              \pdfdict_put:nnn { l_pdffile/Filespec } { AFRelationship } { /Supplement }
-              \pdffile_embed_file:nnn {#1} {#1} { mydoc/attach/#1 }
-            \group_end:
-          }
-        \hbox_set:Nn \l__mydoc_attach_box { \textcolor { newlinkcolor } {#2} }
-        \tag_struct_begin:n { tag = Annot , alt = { Archivo~adjunto~#1 } }
-        \pdfannot_box:nnne
-          { \box_wd:N \l__mydoc_attach_box }
-          { \box_ht:N \l__mydoc_attach_box }
-          { \box_dp:N \l__mydoc_attach_box }
-          {
-            /Subtype /FileAttachment
-            /FS ~ \pdf_object_ref:n { mydoc/attach/#1 }
-            /Contents ~ (Archivo~adjunto~#1)
-            /AP ~ << /N ~ \pdfxform_ref:n { mydoc/attach/emptyAP } >>
-            \tag_if_active:T { /StructParent ~ \tag_struct_parent_int: }
-          }
-        \tag_if_active:T
-          {
-            \tag_struct_insert_annot:ee
-              { \pdfannot_box_ref_last: } { \tag_struct_parent_int: }
-          }
-        \tag_struct_end:
-        \tag_mc_end_push:
-        \tag_mc_begin:n { artifact }
-        \box_use_drop:N \l__mydoc_attach_box
-        \tag_mc_end:
-        \tag_mc_begin_pop:n { }
-      }
-  }
-  {
-    \cs_new_protected:Npn \__mydoc_attach:nn #1#2
-      { \textattachfile [ color = newlinkcolor , print = false ] {#1} {#2} }
-  }
 % \myattachfile{m}
 \NewDocumentCommand \myattachfile{ m }
   {
     \group_begin:
       \IfFileExists{#1.pdf}{Archivo~fuente~
-      \__mydoc_attach:nn {#1.tex} {\faFile*[regular]},~
+      \myattach {#1.tex} {\faFile*[regular]},~
       \emph{tagged}~\texttt{PDF}~\texttt{mathml-SE}~
-      \__mydoc_attach:nn {#1.pdf} {\faFilePdf[regular]}
-      \ y~\texttt{mathml-AF}~\__mydoc_attach:nn {#1-AF.pdf} {\faFilePdf[regular]}.}{}
+      \myattach {#1.pdf} {\faFilePdf[regular]}
+      \ y~\texttt{mathml-AF}~\myattach {#1-AF.pdf} {\faFilePdf[regular]}.}{}
     \group_end:
   }
 % Margin icons for the important environment (internal use)
