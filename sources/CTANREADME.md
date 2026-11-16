@@ -1,6 +1,6 @@
 ## spanish-mathml-intent — Spanish MathML intent for accessible (tagged) PDF with LuaLaTeX
 
-Release v1.5 \[2026-11-13\]
+Release v1.5 \[2026-11-16\]
 
 ## Description
 

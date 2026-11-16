@@ -331,7 +331,7 @@ end
 
 -- Shared cleanup: Strips ghost tags/characters from dirty HTML
 --
--- Each ghost is a <mi ... sptmp="outer|inner" ...>U+2063</mi> element. It is
+-- Each ghost is a <mo ... sptmp="outer|inner" ...>U+2063</mo> element. It is
 -- removed with a pattern over the whole file content (not line by line), so
 -- it works both for indented HTML (one element per line) and for flat HTML
 -- (a whole formula on a single line). Elements with an unknown sptmp kind
@@ -350,8 +350,8 @@ local function strip_ghosts(input_path, output_path)
     local clean = content
     for _, ghost in ipairs(ghost_forms) do
         -- optional leading newline + indentation is removed together with the tag
-        local pattern = "\n?[ \t]*<mi([^>]-)sptmp=\"(%a+)\"([^>]-)>"
-            .. ghost:gsub("%p", "%%%0") .. "</mi>"
+        local pattern = "\n?[ \t]*<mo([^>]-)sptmp=\"(%a+)\"([^>]-)>"
+            .. ghost:gsub("%p", "%%%0") .. "</mo>"
         clean = clean:gsub(pattern, function(_, kind)
             if kind == "outer" then
                 count_outer = count_outer + 1

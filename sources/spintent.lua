@@ -1,5 +1,5 @@
 --[[
-     Lua module spintent.lua for spanish-mathml-intent package - v1.5 [2026-11-13]
+     Lua module spintent.lua for spanish-mathml-intent package - v1.5 [2026-11-16]
 --]]
 
 -- ÍNDICE DE SECCIONES (cada una empieza con su título en mayúsculas)
@@ -302,16 +302,20 @@ register_tex_cmd("luafun_inner_sep", function()
     kernel.char  = 0x2063
     kernel.fam   = 0
     local noad   = node.new("noad")
-    noad.subtype = 0
+    noad.subtype = 6   -- noad_open, igual que el fantasma exterior
     noad.nucleus = kernel
 
     local properties = node.get_properties_table()
     local p = properties[kernel] or {}
-    p.mathml_filter = function(result, core)
-        result.intent = ":silent"
-        if spintent_debug_ghost then result.sptmp = "inner" end
-        return result, core
-    end
+    p.mathml_table = {
+        [0]          = "mo",
+        "\u{2063}",
+        intent       = ":silent",
+        mathvariant  = "normal",
+        sptmp        = spintent_debug_ghost and "inner" or nil,
+        [":nodes"]   = { kernel },
+    }
+    p.mathml_filter = function(result, core) return result, core end
     properties[kernel] = p
 
     node.write(noad)
@@ -323,10 +327,10 @@ end, {})
 -- <mi> seguidas en una sola palabra antes de leer el intent (heurística
 -- "c o s"), aunque tengan arg; un <mi> silencioso entre ellas cuenta
 -- como una letra más y no lo evita.
--- El noad sigue siendo ord (el PDF no cambia). Por eso no basta con
--- renombrar en mathml_filter: luamml (noad_to_table) devuelve a <mi>
--- todo <mo> de un noad ord. Con mathml_table, sin mathml_core, luamml
--- usa el elemento tal cual (como luamml-array). :nodes enlaza el glifo
+-- El noad es open: un signo que sigue al separador queda unario y no
+-- recibe espacio de operador binario. Con mathml_table, sin
+-- mathml_core, luamml usa el elemento tal cual (como luamml-array);
+-- no basta con renombrar en mathml_filter. :nodes enlaza el glifo
 -- con el elemento en el modo mathml-SE. El mathml_filter queda solo
 -- como marca de "ya reclamado" para spintent_claim_target.
 -- No se deduplica: va uno entre cada par de puntos. Sin marca sptmp: es
@@ -336,7 +340,7 @@ register_tex_cmd("luafun_point_sep", function()
     kernel.char  = 0x2063
     kernel.fam   = 0
     local noad   = node.new("noad")
-    noad.subtype = 0
+    noad.subtype = 6   -- noad_open, igual que los fantasmas
     noad.nucleus = kernel
 
     local properties = node.get_properties_table()
@@ -363,7 +367,7 @@ register_tex_cmd("luafun_pause_sep", function()
     kernel.char  = 0x2063
     kernel.fam   = 0
     local noad   = node.new("noad")
-    noad.subtype = 0
+    noad.subtype = 6   -- noad_open, igual que los fantasmas
     noad.nucleus = kernel
 
     local properties = node.get_properties_table()
@@ -381,7 +385,7 @@ register_tex_cmd("luafun_pause_sep", function()
     node.write(noad)
 end, {})
 
--- \__spintent_invisible_sep: (fantasma exterior, <mi intent=":silent">).
+-- \__spintent_invisible_sep: (fantasma exterior, <mo intent=":silent">).
 -- Necesario cuando el resultado anotado es el único elemento de
 -- nivel superior de la fórmula: sin un segundo hermano, to_math
 -- renombra el <mrow> resultante directamente a <math intent=...>
@@ -396,21 +400,23 @@ register_tex_cmd("luafun_invisible_sep", function()
     kernel.char  = 0x2063
     kernel.fam   = 0
     local noad   = node.new("noad")
-    noad.subtype = 0   -- noad_ord. Forzar op (1) da <mo> correcto
-                       -- pero agrega espaciado real de operador al
-                       -- PDF (rspace visible). Se acepta <mi> sin
-                       -- efecto lateral -- intent=':silent' hace
-                       -- que la etiqueta (mi/mo) sea irrelevante
-                       -- para cualquier lector.
+    noad.subtype = 6   -- noad_open: un signo (+, -) que sigue al fantasma
+                       -- queda unario y no recibe espacio de operador
+                       -- binario. luamml usa mathml_table tal cual, como
+                       -- <mo>, sin lspace ni rspace.
     noad.nucleus = kernel
 
     local properties = node.get_properties_table()
     local p = properties[kernel] or {}
-    p.mathml_filter = function(result, core)
-        result.intent = ":silent"
-        if spintent_debug_ghost then result.sptmp = "outer" end
-        return result, core
-    end
+    p.mathml_table = {
+        [0]          = "mo",
+        "\u{2063}",
+        intent       = ":silent",
+        mathvariant  = "normal",
+        sptmp        = spintent_debug_ghost and "outer" or nil,
+        [":nodes"]   = { kernel },
+    }
+    p.mathml_filter = function(result, core) return result, core end
     properties[kernel] = p
 
     node.write(noad)

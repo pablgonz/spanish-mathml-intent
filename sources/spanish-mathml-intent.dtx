@@ -214,7 +214,7 @@ end, "shekel_fallback_patch")
 \definecolor{mathmlblue}{HTML}{1F5FBF}               % Blue for MathML "Math"
 % File info
 \def\fileversion{v1.5}
-\def\filedate{2026-11-13}
+\def\filedate{2026-11-16}
 \def\fileinfo{Spanish MathML intent}
 
 % Config hyperref
@@ -808,6 +808,20 @@ end, "shekel_fallback_patch")
     \renewcommand\l@subsubsection{\@dottedtocline{3}{11mm}{8mm}}
   }
 \makeatother
+% The package documented here, to print the real outputs
+\usepackage{spanish-mathml-intent}
+% Definitions used by the examples of the manual
+\spnewunit{pers}{personas}
+\spunitalias{caudal}{m^{3}/s}
+\spunitalias{afluencia}{pers/min}
+\newcommand{\xcuad}{x^2}
+\spnewread{\xcuad}{x-al-cuadrado}
+% In the manual the underscore is a letter (expl3): let it be a subscript
+% inside the real outputs
+\makeatletter
+\newcommand\mysubout{\begingroup\catcode`\_=8\relax\mysubout@i}
+\newcommand\mysubout@i[1]{#1\endgroup}
+\makeatother
 \begin{document}
   \DocInput{\jobname.dtx}
 \end{document}
@@ -1390,13 +1404,13 @@ Material preparado por la \spshort{prof.a} Pérez.
 % \endfoot
 % \bottomrule
 % \endlastfoot
-% \myhlc{$\spnum{3,14}$} & $3{,}14$ & \emph{«tres coma catorce»} \\
-% \myhlc{$\spunit{23 m}$} & $23\,\mathrm{m}$ & \emph{«veintitrés metros»} \\
-% \myhlc{$\spmoney{500}$} & $\$500$ & \emph{«quinientos pesos»} \\
-% \myhlc{\spshort{prof.a}} & Prof.$^{\text{a}}$ & \emph{«profesora»} \\
-% \myhlc{$\spPoly{ABC}$} & $\triangle ABC$ & \emph{«triángulo A B C»} \\
-% \myhlc{$\spfun{f(x)}$} & $f(x)$ & \emph{«f de x»} \\
-% \myhlc{$\spProb{A \cap B}$} & $P(A \cap B)$ & \emph{«probabilidad de A y B»} \\
+% \myhlc{$\spnum{3,14}$} & $\spnum{3,14}$ & \emph{«tres coma catorce»} \\
+% \myhlc{$\spunit{23 m}$} & $\spunit{23 m}$ & \emph{«veintitrés metros»} \\
+% \myhlc{$\spmoney{500}$} & $\spmoney{500}$ & \emph{«quinientos pesos»} \\
+% \myhlc{\spshort{prof.a}} & \spshort{prof.a} & \emph{«profesora»} \\
+% \myhlc{$\spPoly{ABC}$} & $\spPoly{ABC}$ & \emph{«triángulo A B C»} \\
+% \myhlc{$\spfun{f(x)}$} & $\spfun{f(x)}$ & \emph{«f de x»} \\
+% \myhlc{$\spProb{A \cap B}$} & $\spProb{A \cap B}$ & \emph{«probabilidad de A y B»} \\
 % \end{longtable}
 % \endgroup
 %
@@ -1582,11 +1596,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
-% y se ejecuta |$\spnum{+23}$| se imprimirá `$+23$' en la salida \texttt{PDF}
+% y se ejecuta |$\spnum{+23}$| se imprimirá `$\spnum{+23}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«más veintitrés»}, si se
-% ejecuta |$\spnum{3,14}$| se imprimirá `$3{,}14$' en la salida \texttt{PDF}
+% ejecuta |$\spnum{3,14}$| se imprimirá `$\spnum{3,14}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«tres coma catorce»}, si
-% se ejecuta |$\spnum{3,1;4}$| se imprimirá `$3{,}1\overline{4}$' en la
+% se ejecuta |$\spnum{3,1;4}$| se imprimirá `$\spnum{3,1;4}$' en la
 % salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«tres coma
 % uno con cuatro periódico»}.
 %
@@ -1595,7 +1609,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % letras `\textcolor{red}{\texttt{e}}' o `\textcolor{red}{\texttt{E}}',
 % acompañadas de los signos opcionales `$\mathcolor{red}{+}$' o
 % `$\mathcolor{red}{-}$' seguidos por los dígitos del exponente.
-% Por ejemplo:~|$\spnum{3,14e3}$| imprimirá `$3{,}14\cdot 10^{3}$' en la salida \texttt{PDF}
+% Por ejemplo:~|$\spnum{3,14e3}$| imprimirá `$\spnum{3,14e3}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«tres coma catorce por diez al cubo»}.
 %
 % \begin{important}*
@@ -1618,8 +1632,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % utiliza un \emph{espacio fino} `\textcolor{blue!75}{\textbackslash}|,|'
 % entre las cifras; si se establece en |false|, se respetan los espacios
 % matemáticos introducidos en el argumento. Por ejemplo:~|$\spnum{100000}$|
-% imprimirá `$100\,000$' en la salida \texttt{PDF} y |$\spnum[cifras-sep=false]{10\,00\,00}$|
-% imprimirá `$10\,00\,00$' en la salida \texttt{PDF}.
+% imprimirá `$\spnum{100000}$' en la salida \texttt{PDF} y |$\spnum[cifras-sep=false]{10\,00\,00}$|
+% imprimirá `$\spnum[cifras-sep=false]{10\,00\,00}$' en la salida \texttt{PDF}.
 %
 % \keyexampcmd{read-sign}{terse \textnormal{\textcolor{lightgray}{\textbar}} clear}{terse}[spnum]
 %
@@ -1628,9 +1642,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Si se establece en |terse|, \mynvmath{NVDA/MathCAT} verbalizará \emph{«más»} o
 % \emph{«menos»} \textbf{antes} de leer el número; si se establece en |clear|, \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«positivo»} o \emph{«negativo»} \textbf{después} de leer el número.
-% Por ejemplo:~|$\spnum{-23}$| imprimirá `$-23$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% Por ejemplo:~|$\spnum{-23}$| imprimirá `$\spnum{-23}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«menos veintitrés»} y |$\spnum[read-sign=clear]{-23}$|
-% imprimirá `$-23$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spnum[read-sign=clear]{-23}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«veintitrés negativo»}.
 %
 % \keyexampcmd{read-period-sep}{coma \textnormal{\textcolor{lightgray}{\textbar}} punto}{coma}[spnum]
@@ -1641,9 +1655,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«coma»};
 % si se establece en |punto|, se imprimirá `\textcolor{red}{\texttt{.}}'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«punto»}.
-% Por ejemplo:~|$\spnum{3;4}$| imprimirá `$3{,}\overline{4}$' en la salida \texttt{PDF}
+% Por ejemplo:~|$\spnum{3;4}$| imprimirá `$\spnum{3;4}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«tres coma cuatro periódico»}
-% y |$\spnum[read-period-sep=punto]{3;4}$| imprimirá `$3{.}\overline{4}$'
+% y |$\spnum[read-period-sep=punto]{3;4}$| imprimirá `$\spnum[read-period-sep=punto]{3;4}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«tres punto cuatro periódico»}.
 %
@@ -1662,10 +1676,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % `$\mathcolor{red}{\times}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«por»}; si se establece en |cdot| imprimirá
 % `$\mathcolor{red}{\cdot}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
-% verbalizará \emph{«por»}. Por ejemplo:~|$\spnum{3,14e3}$| imprimirá `$3{,}14\cdot 10^{3}$'
+% verbalizará \emph{«por»}. Por ejemplo:~|$\spnum{3,14e3}$| imprimirá `$\spnum{3,14e3}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«tres coma catorce por diez al cubo»} y |$\spnum[notation-sym=times]{3,14e3}$|
-% imprimirá `$3{,}14\times 10^{3}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spnum[notation-sym=times]{3,14e3}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«tres coma catorce por diez al cubo»}.
 %
 % \begin{important}*
@@ -1692,14 +1706,14 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spunit{23 m}$| imprimirá `$23\,\mathrm{m}$' en la salida \texttt{PDF}
+% |$\spunit{23 m}$| imprimirá `$\spunit{23 m}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintitrés metros»}.
 %
 % La multiplicación entre las \mymarg{unidades} se realiza mediante un
 % \emph{asterisco} `$\mathcolor{red}{\ast}$' y las potencias de estas
 % se indican con un \emph{circunflejo seguido del exponente entre llaves}
 % `\textcolor{red}{\texttt{\^{}}}\mymarg{exponente}'. Por ejemplo, si
-% se ejecuta |$\spunit{23 m*s^{2}}$| se imprimirá `$23\,\mathrm{m}\,\mathrm{s}^{2}$'
+% se ejecuta |$\spunit{23 m*s^{2}}$| se imprimirá `$\spunit{23 m*s^{2}}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«veintitrés metros segundos al cuadrado»}.
 %
@@ -1707,7 +1721,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % utilizando una \emph{«única barra»} `$\mathcolor{red}{/}$' para la
 % separación entre las \mymarg{unidades} del numerador y el denominador,
 % teniendo presente que el denominador NO puede contener números de ningún
-% tipo. Por ejemplo:~|$\spunit{23 m/s^{2}}$| imprimirá `$23\,\mathrm{m}/\mathrm{s}^{2}$'
+% tipo. Por ejemplo:~|$\spunit{23 m/s^{2}}$| imprimirá `$\spunit{23 m/s^{2}}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintitrés metros por segundo al cuadrado»}.
 %
 % \begin{important}*
@@ -1779,83 +1793,83 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   \bottomrule
 %   \endlastfoot
 %   %
-%   m   & metro, metros             & Metro               & $\mathrm{m}$   & \emph{«metro»}               \\
-%   g   & gramo, gramos             & Gramo               & $\mathrm{g}$   & \emph{«gramo»}               \\
-%   s   & segundo, segundos         & Segundo (Tiempo)    & $\mathrm{s}$   & \emph{«segundo»}             \\
-%   l   & litro, l-litro            & Litro (minúscula)   & $\mathrm{l}$   & \emph{«litro»}               \\
-%   h   & hora, horas               & Hora                & $\mathrm{h}$   & \emph{«hora»}                \\
-%   d   & dia, dias                 & Día                 & $\mathrm{d}$   & \emph{«día»}                 \\
-%   A   & amperio, ampere           & Amperio             & $\mathrm{A}$   & \emph{«amperio»}             \\
-%   V   & voltio, volt              & Voltio              & $\mathrm{V}$   & \emph{«voltio»}              \\
-%   W   & vatio, watt               & Vatio               & $\mathrm{W}$   & \emph{«vatio»}               \\
-%   J   & julio, joule              & Julio               & $\mathrm{J}$   & \emph{«julio»}               \\
-%   N   & newton                    & Newton              & $\mathrm{N}$   & \emph{«newton»}              \\
-%   Pa  & pascal                    & Pascal              & $\mathrm{Pa}$  & \emph{«pascal»}              \\
-%   Hz  & hercio, hertz             & Hercio              & $\mathrm{Hz}$  & \emph{«hercio»}              \\
-%   Ω   & ohmio, ohm, Omega         & Ohmio               & $\mathrm{Ω}$   & \emph{«ohmio»}               \\
-%   F   & faradio                   & Faradio             & $\mathrm{F}$   & \emph{«faradio»}             \\
-%   C   & culombio                  & Culombio            & $\mathrm{C}$   & \emph{«culombio»}            \\
-%   K   & kelvin, Kelvin            & Kelvin              & $\mathrm{K}$   & \emph{«kelvin»}              \\
-%   °C  & celsius, degC, ℃          & Grados Celsius      & $\mathrm{°C}$  & \emph{«grados celsius»}      \\
-%   °F  & fahrenheit, degF, ℉       & Grados Fahrenheit   & $\mathrm{°F}$  & \emph{«grados fahrenheit»}   \\
-%   cal & caloria, calorias         & Caloría             & $\mathrm{cal}$ & \emph{«caloría»}             \\
-%   b   & bit                       & Bit                 & $\mathrm{b}$   & \emph{«bit»}                 \\
-%   B   & byte, bytes               & Byte                & $\mathrm{B}$   & \emph{«byte»}                \\
-%   in  & pulgada, pulgadas         & Pulgada             & $\mathrm{in}$  & \emph{«pulgada»}             \\
-%   ft  & pie, pies                 & Pie                 & $\mathrm{ft}$  & \emph{«pie»}                 \\
-%   yd  & yarda, yardas             & Yarda               & $\mathrm{yd}$  & \emph{«yarda»}               \\
-%   mi  & milla, millas             & Milla               & $\mathrm{mi}$  & \emph{«milla»}               \\
-%   lb  & libra, libras             & Libra               & $\mathrm{lb}$  & \emph{«libra»}               \\
-%   oz  & onza, onzas               & Onza                & $\mathrm{oz}$  & \emph{«onza»}                \\
-%   gal & galon, galones            & Galón               & $\mathrm{gal}$ & \emph{«galón»}               \\
-%   Å   & angstrom                  & Angstrom            & $\mathrm{Å}$   & \emph{«angstrom»}            \\
-%   µ   & micro                     & Micro (Prefijo)     & $\mathrm{µ}$   & \emph{«micro»}               \\
-%   ℧   & mho                       & Mho / Siemens       & $\mathrm{℧}$   & \emph{«mho / siemens»}       \\
-%   ′   & minmin                    & Minuto (Arco)       & $\mathrm{′}$   & \emph{«minuto»}              \\
-%   ″   & segseg                    & Segundo (Arco)      & $\mathrm{″}$   & \emph{«segundo»}             \\
-%   u   & u-masa                    & Unidad masa atómica & $\mathrm{u}$   & \emph{«unidad masa atómica»} \\
+%   m   & metro, metros             & Metro               & $\spunit{m}$   & \emph{«metro»}               \\
+%   g   & gramo, gramos             & Gramo               & $\spunit{g}$   & \emph{«gramo»}               \\
+%   s   & segundo, segundos         & Segundo (Tiempo)    & $\spunit{s}$   & \emph{«segundo»}             \\
+%   l   & litro, l-litro            & Litro (minúscula)   & $\spunit{l}$   & \emph{«litro»}               \\
+%   h   & hora, horas               & Hora                & $\spunit{h}$   & \emph{«hora»}                \\
+%   d   & dia, dias                 & Día                 & $\spunit{d}$   & \emph{«día»}                 \\
+%   A   & amperio, ampere           & Amperio             & $\spunit{A}$   & \emph{«amperio»}             \\
+%   V   & voltio, volt              & Voltio              & $\spunit{V}$   & \emph{«voltio»}              \\
+%   W   & vatio, watt               & Vatio               & $\spunit{W}$   & \emph{«vatio»}               \\
+%   J   & julio, joule              & Julio               & $\spunit{J}$   & \emph{«julio»}               \\
+%   N   & newton                    & Newton              & $\spunit{N}$   & \emph{«newton»}              \\
+%   Pa  & pascal                    & Pascal              & $\spunit{Pa}$  & \emph{«pascal»}              \\
+%   Hz  & hercio, hertz             & Hercio              & $\spunit{Hz}$  & \emph{«hercio»}              \\
+%   Ω   & ohmio, ohm, Omega         & Ohmio               & $\spunit{Ω}$   & \emph{«ohmio»}               \\
+%   F   & faradio                   & Faradio             & $\spunit{F}$   & \emph{«faradio»}             \\
+%   C   & culombio                  & Culombio            & $\spunit{C}$   & \emph{«culombio»}            \\
+%   K   & kelvin, Kelvin            & Kelvin              & $\spunit{K}$   & \emph{«kelvin»}              \\
+%   °C  & celsius, degC, ℃          & Grados Celsius      & $\spunit{°C}$  & \emph{«grados celsius»}      \\
+%   °F  & fahrenheit, degF, ℉       & Grados Fahrenheit   & $\spunit{°F}$  & \emph{«grados fahrenheit»}   \\
+%   cal & caloria, calorias         & Caloría             & $\spunit{cal}$ & \emph{«caloría»}             \\
+%   b   & bit                       & Bit                 & $\spunit{b}$   & \emph{«bit»}                 \\
+%   B   & byte, bytes               & Byte                & $\spunit{B}$   & \emph{«byte»}                \\
+%   in  & pulgada, pulgadas         & Pulgada             & $\spunit{in}$  & \emph{«pulgada»}             \\
+%   ft  & pie, pies                 & Pie                 & $\spunit{ft}$  & \emph{«pie»}                 \\
+%   yd  & yarda, yardas             & Yarda               & $\spunit{yd}$  & \emph{«yarda»}               \\
+%   mi  & milla, millas             & Milla               & $\spunit{mi}$  & \emph{«milla»}               \\
+%   lb  & libra, libras             & Libra               & $\spunit{lb}$  & \emph{«libra»}               \\
+%   oz  & onza, onzas               & Onza                & $\spunit{oz}$  & \emph{«onza»}                \\
+%   gal & galon, galones            & Galón               & $\spunit{gal}$ & \emph{«galón»}               \\
+%   Å   & angstrom                  & Angstrom            & $\spunit{Å}$   & \emph{«angstrom»}            \\
+%   µ   & micro                     & Micro (Prefijo)     & $\spunit{µ}$   & \emph{«micro»}               \\
+%   ℧   & mho                       & Mho / Siemens       & $\spunit{℧}$   & \emph{«mho / siemens»}       \\
+%   ′   & minmin                    & Minuto (Arco)       & $\spunit{′}$   & \emph{«minuto»}              \\
+%   ″   & segseg                    & Segundo (Arco)      & $\spunit{″}$   & \emph{«segundo»}             \\
+%   u   & u-masa                    & Unidad masa atómica & $\spunit{u}$   & \emph{«unidad masa atómica»} \\
 %   \midrule
 %   \multicolumn{5}{c}{\textbf{Unidades directas (sin alias)}} \\
 %   \midrule
-%   L   & ---                         & Litro (Mayúscula)   & $\mathrm{L}$   & \emph{«litro»}               \\
-%   ℓ   & ---                         & Litro (Cursiva)     & $\mathrm{ℓ}$   & \emph{«litro»}               \\
-%   w   & ---                         & Vatio (Minúscula)   & $\mathrm{w}$   & \emph{«vatio»}               \\
-%   °K  & ---                         & Grado Kelvin        & $\mathrm{°K}$  & \emph{«grado kelvin»}        \\
-%   Bq  & ---                         & Becquerel           & $\mathrm{Bq}$  & \emph{«becquerel»}           \\
-%   Da  & ---                         & Dalton              & $\mathrm{Da}$  & \emph{«dalton»}              \\
-%   Gy  & ---                         & Gray                & $\mathrm{Gy}$  & \emph{«gray»}                \\
-%   H   & ---                         & Henrio              & $\mathrm{H}$   & \emph{«henrio»}              \\
-%   Np  & ---                         & Néper               & $\mathrm{Np}$  & \emph{«néper»}               \\
-%   S   & ---                         & Siemens             & $\mathrm{S}$   & \emph{«siemens»}             \\
-%   Sv  & ---                         & Sievert             & $\mathrm{Sv}$  & \emph{«sievert»}             \\
-%   T   & ---                         & Tesla               & $\mathrm{T}$   & \emph{«tesla»}               \\
-%   Wb  & ---                         & Weber               & $\mathrm{Wb}$  & \emph{«weber»}               \\
-%   atm & ---                         & Atmósfera           & $\mathrm{atm}$ & \emph{«atmósfera»}           \\
-%   au  & ---                         & Unidad astronómica  & $\mathrm{au}$  & \emph{«unidad astronómica»}  \\
-%   bar & ---                         & Bar                 & $\mathrm{bar}$ & \emph{«bar»}                 \\
-%   cd  & ---                         & Candela             & $\mathrm{cd}$  & \emph{«candela»}             \\
-%   dB  & ---                         & Decibelio           & $\mathrm{dB}$  & \emph{«decibelio»}           \\
-%   dyn & ---                         & Dina                & $\mathrm{dyn}$ & \emph{«dina»}                \\
-%   eV  & ---                         & Electronvoltio      & $\mathrm{eV}$  & \emph{«electronvoltio»}      \\
-%   erg & ---                         & Ergio               & $\mathrm{erg}$ & \emph{«ergio»}               \\
-%   ha  & ---                         & Hectárea            & $\mathrm{ha}$  & \emph{«hectárea»}            \\
-%   kat & ---                         & Katal               & $\mathrm{kat}$ & \emph{«katal»}               \\
-%   kg  & ---                         & Kilogramo           & $\mathrm{kg}$  & \emph{«kilogramo»}           \\
-%   km  & ---                         & Kilómetro           & $\mathrm{km}$  & \emph{«kilómetro»}           \\
-%   lm  & ---                         & Lumen               & $\mathrm{lm}$  & \emph{«lumen»}               \\
-%   lx  & ---                         & Lux                 & $\mathrm{lx}$  & \emph{«lux»}                 \\
-%   cm  & ---                         & Centímetro          & $\mathrm{cm}$  & \emph{«centímetro»}          \\
-%   min & ---                         & Minuto (Tiempo)     & $\mathrm{min}$ & \emph{«minuto»}              \\
-%   mm  & ---                         & Milímetro           & $\mathrm{mm}$  & \emph{«milímetro»}           \\
-%   mol & ---                         & Mol                 & $\mathrm{mol}$ & \emph{«mol»}                 \\
-%   pc  & ---                         & Pársec              & $\mathrm{pc}$  & \emph{«pársec»}              \\
-%   rad & ---                         & Radián              & $\mathrm{rad}$ & \emph{«radián»}              \\
-%   rpm & ---                         & Rev. por minuto     & $\mathrm{rpm}$ & \emph{«rev. por minuto»}     \\
-%   sr  & ---                         & Estereorradián      & $\mathrm{sr}$  & \emph{«estereorradián»}      \\
-%   t   & ---                         & Tonelada            & $\mathrm{t}$   & \emph{«tonelada»}            \\
-%   a   & ---                         & Año / Área (are)    & $\mathrm{a}$   & \emph{«año / área»}          \\
-%   y   & ---                         & Año (Year)          & $\mathrm{y}$   & \emph{«año»}                 \\
-%   °   & ---                         & Grado (Arco)        & $\mathrm{°}$   & \emph{«grado»}               \\
+%   L   & ---                         & Litro (Mayúscula)   & $\spunit{L}$   & \emph{«litro»}               \\
+%   ℓ   & ---                         & Litro (Cursiva)     & $\spunit{ℓ}$   & \emph{«litro»}               \\
+%   w   & ---                         & Vatio (Minúscula)   & $\spunit{w}$   & \emph{«vatio»}               \\
+%   °K  & ---                         & Grado Kelvin        & $\spunit{°K}$  & \emph{«grado kelvin»}        \\
+%   Bq  & ---                         & Becquerel           & $\spunit{Bq}$  & \emph{«becquerel»}           \\
+%   Da  & ---                         & Dalton              & $\spunit{Da}$  & \emph{«dalton»}              \\
+%   Gy  & ---                         & Gray                & $\spunit{Gy}$  & \emph{«gray»}                \\
+%   H   & ---                         & Henrio              & $\spunit{H}$   & \emph{«henrio»}              \\
+%   Np  & ---                         & Néper               & $\spunit{Np}$  & \emph{«néper»}               \\
+%   S   & ---                         & Siemens             & $\spunit{S}$   & \emph{«siemens»}             \\
+%   Sv  & ---                         & Sievert             & $\spunit{Sv}$  & \emph{«sievert»}             \\
+%   T   & ---                         & Tesla               & $\spunit{T}$   & \emph{«tesla»}               \\
+%   Wb  & ---                         & Weber               & $\spunit{Wb}$  & \emph{«weber»}               \\
+%   atm & ---                         & Atmósfera           & $\spunit{atm}$ & \emph{«atmósfera»}           \\
+%   au  & ---                         & Unidad astronómica  & $\spunit{au}$  & \emph{«unidad astronómica»}  \\
+%   bar & ---                         & Bar                 & $\spunit{bar}$ & \emph{«bar»}                 \\
+%   cd  & ---                         & Candela             & $\spunit{cd}$  & \emph{«candela»}             \\
+%   dB  & ---                         & Decibelio           & $\spunit{dB}$  & \emph{«decibelio»}           \\
+%   dyn & ---                         & Dina                & $\spunit{dyn}$ & \emph{«dina»}                \\
+%   eV  & ---                         & Electronvoltio      & $\spunit{eV}$  & \emph{«electronvoltio»}      \\
+%   erg & ---                         & Ergio               & $\spunit{erg}$ & \emph{«ergio»}               \\
+%   ha  & ---                         & Hectárea            & $\spunit{ha}$  & \emph{«hectárea»}            \\
+%   kat & ---                         & Katal               & $\spunit{kat}$ & \emph{«katal»}               \\
+%   kg  & ---                         & Kilogramo           & $\spunit{kg}$  & \emph{«kilogramo»}           \\
+%   km  & ---                         & Kilómetro           & $\spunit{km}$  & \emph{«kilómetro»}           \\
+%   lm  & ---                         & Lumen               & $\spunit{lm}$  & \emph{«lumen»}               \\
+%   lx  & ---                         & Lux                 & $\spunit{lx}$  & \emph{«lux»}                 \\
+%   cm  & ---                         & Centímetro          & $\spunit{cm}$  & \emph{«centímetro»}          \\
+%   min & ---                         & Minuto (Tiempo)     & $\spunit{min}$ & \emph{«minuto»}              \\
+%   mm  & ---                         & Milímetro           & $\spunit{mm}$  & \emph{«milímetro»}           \\
+%   mol & ---                         & Mol                 & $\spunit{mol}$ & \emph{«mol»}                 \\
+%   pc  & ---                         & Pársec              & $\spunit{pc}$  & \emph{«pársec»}              \\
+%   rad & ---                         & Radián              & $\spunit{rad}$ & \emph{«radián»}              \\
+%   rpm & ---                         & Rev. por minuto     & $\spunit{rpm}$ & \emph{«rev. por minuto»}     \\
+%   sr  & ---                         & Estereorradián      & $\spunit{sr}$  & \emph{«estereorradián»}      \\
+%   t   & ---                         & Tonelada            & $\spunit{t}$   & \emph{«tonelada»}            \\
+%   a   & ---                         & Año / Área (are)    & $\spunit{a}$   & \emph{«año / área»}          \\
+%   y   & ---                         & Año (Year)          & $\spunit{y}$   & \emph{«año»}                 \\
+%   °   & ---                         & Grado (Arco)        & $\spunit{°}$   & \emph{«grado»}               \\
 % \end{longtable}
 % \endgroup
 %
@@ -1885,48 +1899,48 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   \bottomrule
 %   \endlastfoot
 %   %
-%   kcal   & Energía          & $\mathrm{kcal}$ & \emph{«kilocaloría»} \\
-%   Wh     & Energía          & $\mathrm{Wh}$ & \emph{«vatio hora»} \\
-%   kWh    & Energía          & $\mathrm{kWh}$ & \emph{«kilovatio hora»} \\
-%   MWh    & Energía          & $\mathrm{MWh}$ & \emph{«megavatio hora»} \\
-%   GWh    & Energía          & $\mathrm{GWh}$ & \emph{«gigavatio hora»} \\
-%   Ah     & Carga eléctrica  & $\mathrm{Ah}$ & \emph{«amperio hora»} \\
-%   mAh    & Carga eléctrica  & $\mathrm{mAh}$ & \emph{«miliamperio hora»} \\
-%   mmHg   & Presión          & $\mathrm{mmHg}$ & \emph{«milímetro de mercurio»} \\
-%   Torr   & Presión          & $\mathrm{Torr}$ & \emph{«torr»} \\
-%   mbar   & Presión          & $\mathrm{mbar}$ & \emph{«milibar»} \\
-%   psi    & Presión          & $\mathrm{psi}$ & \emph{«libra por pulgada cuadrada»} \\
-%   cc     & Volumen          & $\mathrm{cc}$ & \emph{«centímetro cúbico»} \\
-%   kn     & Velocidad        & $\mathrm{kn}$ & \emph{«nudo»} \\
-%   CV     & Potencia         & $\mathrm{CV}$ & \emph{«caballo de vapor»} \\
-%   kgf    & Fuerza           & $\mathrm{kgf}$ & \emph{«kilogramo fuerza»} \\
-%   ppm    & Concentración    & $\mathrm{ppm}$ & \emph{«parte por millón»} \\
-%   uma    & Masa atómica     & $\mathrm{uma}$ & \emph{«unidad de masa atómica»} \\
-%   ua     & Distancia        & $\mathrm{ua}$ & \emph{«unidad astronómica»} \\
-%   KB     & Datos            & $\mathrm{KB}$ & \emph{«kilobyte»} \\
-%   kbit   & Datos            & $\mathrm{kbit}$ & \emph{«kilobit»} \\
-%   Mbit   & Datos            & $\mathrm{Mbit}$ & \emph{«megabit»} \\
-%   Gbit   & Datos            & $\mathrm{Gbit}$ & \emph{«gigabit»} \\
-%   Tbit   & Datos            & $\mathrm{Tbit}$ & \emph{«terabit»} \\
-%   bps    & Tasa de datos    & $\mathrm{bps}$ & \emph{«bit por segundo»} \\
-%   kbps   & Tasa de datos    & $\mathrm{kbps}$ & \emph{«kilobit por segundo»} \\
-%   Mbps   & Tasa de datos    & $\mathrm{Mbps}$ & \emph{«megabit por segundo»} \\
-%   Gbps   & Tasa de datos    & $\mathrm{Gbps}$ & \emph{«gigabit por segundo»} \\
-%   Tbps   & Tasa de datos    & $\mathrm{Tbps}$ & \emph{«terabit por segundo»} \\
-%   Bps    & Tasa de datos    & $\mathrm{Bps}$ & \emph{«byte por segundo»} \\
-%   kBps   & Tasa de datos    & $\mathrm{kBps}$ & \emph{«kilobyte por segundo»} \\
-%   MBps   & Tasa de datos    & $\mathrm{MBps}$ & \emph{«megabyte por segundo»} \\
-%   GBps   & Tasa de datos    & $\mathrm{GBps}$ & \emph{«gigabyte por segundo»} \\
-%   dpi    & Resolución       & $\mathrm{dpi}$ & \emph{«punto por pulgada»} \\
-%   ppp    & Resolución       & $\mathrm{ppp}$ & \emph{«punto por pulgada»} \\
-%   px     & Resolución       & $\mathrm{px}$ & \emph{«píxel»} \\
-%   fps    & Cuadros          & $\mathrm{fps}$ & \emph{«fotograma por segundo»} \\
-%   FLOPS  & Cómputo          & $\mathrm{FLOPS}$ & \emph{«flops»} \\
-%   GFLOPS & Cómputo          & $\mathrm{GFLOPS}$ & \emph{«gigaflops»} \\
-%   TFLOPS & Cómputo          & $\mathrm{TFLOPS}$ & \emph{«teraflops»} \\
-%   PFLOPS & Cómputo          & $\mathrm{PFLOPS}$ & \emph{«petaflops»} \\
-%   MIPS   & Cómputo          & $\mathrm{MIPS}$ & \emph{«millón de instrucciones por segundo»} \\
-%   dBm    & Potencia de señal & $\mathrm{dBm}$ & \emph{«decibelio milivatio»} \\
+%   kcal   & Energía          & $\spunit{kcal}$ & \emph{«kilocaloría»} \\
+%   Wh     & Energía          & $\spunit{Wh}$ & \emph{«vatio hora»} \\
+%   kWh    & Energía          & $\spunit{kWh}$ & \emph{«kilovatio hora»} \\
+%   MWh    & Energía          & $\spunit{MWh}$ & \emph{«megavatio hora»} \\
+%   GWh    & Energía          & $\spunit{GWh}$ & \emph{«gigavatio hora»} \\
+%   Ah     & Carga eléctrica  & $\spunit{Ah}$ & \emph{«amperio hora»} \\
+%   mAh    & Carga eléctrica  & $\spunit{mAh}$ & \emph{«miliamperio hora»} \\
+%   mmHg   & Presión          & $\spunit{mmHg}$ & \emph{«milímetro de mercurio»} \\
+%   Torr   & Presión          & $\spunit{Torr}$ & \emph{«torr»} \\
+%   mbar   & Presión          & $\spunit{mbar}$ & \emph{«milibar»} \\
+%   psi    & Presión          & $\spunit{psi}$ & \emph{«libra por pulgada cuadrada»} \\
+%   cc     & Volumen          & $\spunit{cc}$ & \emph{«centímetro cúbico»} \\
+%   kn     & Velocidad        & $\spunit{kn}$ & \emph{«nudo»} \\
+%   CV     & Potencia         & $\spunit{CV}$ & \emph{«caballo de vapor»} \\
+%   kgf    & Fuerza           & $\spunit{kgf}$ & \emph{«kilogramo fuerza»} \\
+%   ppm    & Concentración    & $\spunit{ppm}$ & \emph{«parte por millón»} \\
+%   uma    & Masa atómica     & $\spunit{uma}$ & \emph{«unidad de masa atómica»} \\
+%   ua     & Distancia        & $\spunit{ua}$ & \emph{«unidad astronómica»} \\
+%   KB     & Datos            & $\spunit{KB}$ & \emph{«kilobyte»} \\
+%   kbit   & Datos            & $\spunit{kbit}$ & \emph{«kilobit»} \\
+%   Mbit   & Datos            & $\spunit{Mbit}$ & \emph{«megabit»} \\
+%   Gbit   & Datos            & $\spunit{Gbit}$ & \emph{«gigabit»} \\
+%   Tbit   & Datos            & $\spunit{Tbit}$ & \emph{«terabit»} \\
+%   bps    & Tasa de datos    & $\spunit{bps}$ & \emph{«bit por segundo»} \\
+%   kbps   & Tasa de datos    & $\spunit{kbps}$ & \emph{«kilobit por segundo»} \\
+%   Mbps   & Tasa de datos    & $\spunit{Mbps}$ & \emph{«megabit por segundo»} \\
+%   Gbps   & Tasa de datos    & $\spunit{Gbps}$ & \emph{«gigabit por segundo»} \\
+%   Tbps   & Tasa de datos    & $\spunit{Tbps}$ & \emph{«terabit por segundo»} \\
+%   Bps    & Tasa de datos    & $\spunit{Bps}$ & \emph{«byte por segundo»} \\
+%   kBps   & Tasa de datos    & $\spunit{kBps}$ & \emph{«kilobyte por segundo»} \\
+%   MBps   & Tasa de datos    & $\spunit{MBps}$ & \emph{«megabyte por segundo»} \\
+%   GBps   & Tasa de datos    & $\spunit{GBps}$ & \emph{«gigabyte por segundo»} \\
+%   dpi    & Resolución       & $\spunit{dpi}$ & \emph{«punto por pulgada»} \\
+%   ppp    & Resolución       & $\spunit{ppp}$ & \emph{«punto por pulgada»} \\
+%   px     & Resolución       & $\spunit{px}$ & \emph{«píxel»} \\
+%   fps    & Cuadros          & $\spunit{fps}$ & \emph{«fotograma por segundo»} \\
+%   FLOPS  & Cómputo          & $\spunit{FLOPS}$ & \emph{«flops»} \\
+%   GFLOPS & Cómputo          & $\spunit{GFLOPS}$ & \emph{«gigaflops»} \\
+%   TFLOPS & Cómputo          & $\spunit{TFLOPS}$ & \emph{«teraflops»} \\
+%   PFLOPS & Cómputo          & $\spunit{PFLOPS}$ & \emph{«petaflops»} \\
+%   MIPS   & Cómputo          & $\spunit{MIPS}$ & \emph{«millón de instrucciones por segundo»} \\
+%   dBm    & Potencia de señal & $\spunit{dBm}$ & \emph{«decibelio milivatio»} \\
 % \end{longtable}
 % \endgroup
 %
@@ -1959,7 +1973,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % en el módulo \myluamod{} como una \mymarg{unidad} válida para pasar como
 % \mymarg{argumento} a |\spunit|. Por ejemplo:~|\spnewunit{pers}{personas}|
 % creará la \mymarg{nueva unidad} `|pers|' y cuando se utilice |$\spunit{100 pers}$|
-% se imprimirá `$100\,\mathrm{pers}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% se imprimirá `$\spunit{100 pers}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«cien personas»}.
 %
 % La verbalización de una \mymarg{nueva unidad} es fija: \mynvmath{NVDA/MathCAT}
@@ -1992,7 +2006,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % en el módulo \myluamod{} como un \mymarg{alias} válido para pasar como
 % \mymarg{argumento} a |\spunit|. Por ejemplo:~|\spunitalias{caudal}{m^{3}/s}|
 % creará el \mymarg{alias} `|caudal|' y cuando se utilice |$\spunit{50 caudal}$|
-% se imprimirá `$50\,\mathrm{m}^{3} / \mathrm{s}$' en la salida \texttt{PDF}
+% se imprimirá `$\spunit{50 caudal}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«cincuenta metros al cubo por segundo»}.
 % La \mymarg{expresión de unidades} puede usar las \mymarg{unidades} de las
 % tablas~\ref{tab:spunit-unidades} y~\ref{tab:spunit-uso} y las creadas con |\spnewunit|, por ejemplo
@@ -2027,7 +2041,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Si se pasa un \emph{«alias moneda»} del tipo \texttt{ISO}, el código de divisas,
 % como |CLP| o |USD| escrito en mayúsculas, se modifica la verbalización en \mynvmath{NVDA/MathCAT}
 % agregando el país y se ajusta la salida \texttt{PDF} al estándar \texttt{ISO}. Por ejemplo:~%
-% |$\spmoney{500 CLP}$| imprimirá `$\mathrm{CLP}500$' en la salida \texttt{PDF}
+% |$\spmoney{500 CLP}$| imprimirá `$\spmoney{500 CLP}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«quinientos pesos chilenos»}.
 %
 % Si se pasa un \emph{«alias moneda»} del tipo \texttt{ISO}
@@ -2193,17 +2207,17 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
-% y se ejecuta |\spshort{dr.a}| se imprimirá `Dr.\textsuperscript{a}' en la salida
+% y se ejecuta |\spshort{dr.a}| se imprimirá `\spshort{dr.a}' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«doctora»};
-% si se ejecuta |\spshort{onu}| se imprimirá `ONU' en la salida \texttt{PDF}
+% si se ejecuta |\spshort{onu}| se imprimirá `\spshort{onu}' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«organización de las naciones unidas»}
-% y si se ejecuta |\spshort{mineduc}| se imprimirá `Mineduc' en la salida \texttt{PDF}
+% y si se ejecuta |\spshort{mineduc}| se imprimirá `\spshort{mineduc}' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«ministerio de educación»}.
 %
 % Para la escritura de \mymarg{números ordinales} se puede ejecutar
 % |\spshort{1.a}| que imprimirá `{\addfontfeatures{Numbers=Lining}1.\textsuperscript{a}}'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«primera»};
-% si se ejecuta |\spshort{1.o}| imprimirá `{\addfontfeatures{Numbers=Lining}1.\textsuperscript{o}}'
+% si se ejecuta |\spshort{1.o}| imprimirá `\spshort{1.o}'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«primero»}.
 %
 % Para crear una nueva \mymarg{abreviatura}, \mymarg{acrónimo} o \mymarg{número ordinal}
@@ -2250,7 +2264,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % las abreviaturas con mayúscula como \texttt{EE.~UU.} y los acrónimos
 % de cinco o más letras como \texttt{Unicef} no se verán afectados; si se
 % establece en |false|, no se aplicarán \emph{versalitas}. Por ejemplo:~%
-% |\spshort[small-caps=true]{dr.a}| imprimirá `Dr.\textsuperscript{\textsc{a}}'
+% |\spshort[small-caps=true]{dr.a}| imprimirá `\spshort[small-caps=true]{dr.a}'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«doctora»}.
 %
 % \subsubsection{Argumentos para \cs[no-index]{spshort}}\label{subsubsec:arg-spshort}
@@ -2276,61 +2290,61 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \endlastfoot
 % \multicolumn{4}{c}{\textbf{Abreviaturas con letras voladas}} \\
 % \midrule
-% \texttt{dr.a} & \texttt{dr.ª} & Dr.$^{\text{a}}$ & \emph{«doctora»} \\
-% \texttt{dr.as} & --- & Dr.$^{\text{as}}$ & \emph{«doctoras»} \\
-% \texttt{prof.a} & --- & Prof.$^{\text{a}}$ & \emph{«profesora»} \\
-% \texttt{d.a} & \texttt{d.ª} & D.$^{\text{a}}$ & \emph{«doña»} \\
-% \texttt{m.a} & --- & M.$^{\text{a}}$ & \emph{«maría»} \\
-% \texttt{n.o} & \texttt{n.º} & N.$^{\text{o}}$ & \emph{«número»} \\
-% \texttt{n.os} & --- & N.$^{\text{os}}$ & \emph{«números»} \\
-% \texttt{c.ia} & --- & C.$^{\text{ia}}$ & \emph{«compañía»} \\
+% \texttt{dr.a} & \texttt{dr.ª} & \spshort{dr.a} & \emph{«doctora»} \\
+% \texttt{dr.as} & --- & \spshort{dr.as} & \emph{«doctoras»} \\
+% \texttt{prof.a} & --- & \spshort{prof.a} & \emph{«profesora»} \\
+% \texttt{d.a} & \texttt{d.ª} & \spshort{d.a} & \emph{«doña»} \\
+% \texttt{m.a} & --- & \spshort{m.a} & \emph{«maría»} \\
+% \texttt{n.o} & \texttt{n.º} & \spshort{n.o} & \emph{«número»} \\
+% \texttt{n.os} & --- & \spshort{n.os} & \emph{«números»} \\
+% \texttt{c.ia} & --- & \spshort{c.ia} & \emph{«compañía»} \\
 % \midrule
 % \multicolumn{4}{c}{\textbf{Abreviaturas comunes y expresiones latinas}} \\
 % \midrule
-% \texttt{pág.} & \texttt{pag.} & pág. & \emph{«página»} \\
-% \texttt{vol.} & --- & vol. & \emph{«volumen»} \\
-% \texttt{etc.} & --- & etc. & \emph{«etcétera»} \\
-% \texttt{et al.} & \texttt{et. al.} & et~al. & \emph{«y otros»} \\
-% \texttt{ibíd.} & \texttt{ibid.} & ibíd. & \emph{«ibídem»} \\
-% \texttt{op. cit.} & \texttt{op.cit.} & op.~cit. & \emph{«obra citada»} \\
-% \texttt{loc. cit.} & \texttt{loc.cit.} & loc.~cit. & \emph{«lugar citado»} \\
-% \texttt{v. gr.} & \texttt{v.gr.} & v.~gr. & \emph{«verbigracia»} \\
-% \texttt{i. e.} & \texttt{i.e.} & i.~e. & \emph{«esto es»} \\
-% \texttt{e. g.} & \texttt{e.g.} & e.~g. & \emph{«por ejemplo»} \\
-% \texttt{p. ej.} & \texttt{p.ej.} & p.~ej. & \emph{«por ejemplo»} \\
+% \texttt{pág.} & \texttt{pag.} & \spshort{pág.} & \emph{«página»} \\
+% \texttt{vol.} & --- & \spshort{vol.} & \emph{«volumen»} \\
+% \texttt{etc.} & --- & \spshort{etc.} & \emph{«etcétera»} \\
+% \texttt{et al.} & \texttt{et. al.} & \spshort{et al.} & \emph{«y otros»} \\
+% \texttt{ibíd.} & \texttt{ibid.} & \spshort{ibíd.} & \emph{«ibídem»} \\
+% \texttt{op. cit.} & \texttt{op.cit.} & \spshort{op. cit.} & \emph{«obra citada»} \\
+% \texttt{loc. cit.} & \texttt{loc.cit.} & \spshort{loc. cit.} & \emph{«lugar citado»} \\
+% \texttt{v. gr.} & \texttt{v.gr.} & \spshort{v. gr.} & \emph{«verbigracia»} \\
+% \texttt{i. e.} & \texttt{i.e.} & \spshort{i. e.} & \emph{«esto es»} \\
+% \texttt{e. g.} & \texttt{e.g.} & \spshort{e. g.} & \emph{«por ejemplo»} \\
+% \texttt{p. ej.} & \texttt{p.ej.} & \spshort{p. ej.} & \emph{«por ejemplo»} \\
 % \midrule
 % \multicolumn{4}{c}{\textbf{Títulos, profesiones y cargos}} \\
 % \midrule
-% \texttt{sr.} & --- & Sr. & \emph{«señor»} \\
-% \texttt{sra.} & --- & Sra. & \emph{«señora»} \\
-% \texttt{srta.} & --- & Srta. & \emph{«señorita»} \\
-% \texttt{dr.} & --- & Dr. & \emph{«doctor»} \\
-% \texttt{dra.} & --- & Dra. & \emph{«doctora»} \\
-% \texttt{dres.} & --- & Dres. & \emph{«doctores»} \\
-% \texttt{dras.} & --- & Dras. & \emph{«doctoras»} \\
-% \texttt{prof.} & --- & Prof. & \emph{«profesor»} \\
-% \texttt{profa.} & --- & Profa. & \emph{«profesora»} \\
-% \texttt{profs.} & --- & Profs. & \emph{«profesores»} \\
-% \texttt{ing.} & --- & Ing. & \emph{«ingeniero»} \\
-% \texttt{ings.} & --- & Ings. & \emph{«ingenieros»} \\
-% \texttt{lic.} & --- & Lic. & \emph{«licenciado»} \\
-% \texttt{v. b.} & \texttt{v.b.} & V.~B. & \emph{«visto bueno»} \\
+% \texttt{sr.} & --- & \spshort{sr.} & \emph{«señor»} \\
+% \texttt{sra.} & --- & \spshort{sra.} & \emph{«señora»} \\
+% \texttt{srta.} & --- & \spshort{srta.} & \emph{«señorita»} \\
+% \texttt{dr.} & --- & \spshort{dr.} & \emph{«doctor»} \\
+% \texttt{dra.} & --- & \spshort{dra.} & \emph{«doctora»} \\
+% \texttt{dres.} & --- & \spshort{dres.} & \emph{«doctores»} \\
+% \texttt{dras.} & --- & \spshort{dras.} & \emph{«doctoras»} \\
+% \texttt{prof.} & --- & \spshort{prof.} & \emph{«profesor»} \\
+% \texttt{profa.} & --- & \spshort{profa.} & \emph{«profesora»} \\
+% \texttt{profs.} & --- & \spshort{profs.} & \emph{«profesores»} \\
+% \texttt{ing.} & --- & \spshort{ing.} & \emph{«ingeniero»} \\
+% \texttt{ings.} & --- & \spshort{ings.} & \emph{«ingenieros»} \\
+% \texttt{lic.} & --- & \spshort{lic.} & \emph{«licenciado»} \\
+% \texttt{v. b.} & \texttt{v.b.} & \spshort{v. b.} & \emph{«visto bueno»} \\
 % \midrule
 % \multicolumn{4}{c}{\textbf{Abreviaturas compuestas e institucionales}} \\
 % \midrule
-% \texttt{s. a.} & \texttt{s.a.} & S.~A. & \emph{«sociedad anónima»} \\
-% \texttt{ee. uu.} & \texttt{ee.uu.} & EE.~UU. & \emph{«estados unidos»} \\
-% \texttt{dd. hh.} & \texttt{dd.hh.} & DD.~HH. & \emph{«derechos humanos»} \\
-% \texttt{jj. oo.} & \texttt{jj.oo.} & JJ.~OO. & \emph{«juegos olímpicos»} \\
-% \texttt{ff. aa.} & \texttt{ff.aa.} & FF.~AA. & \emph{«fuerzas armadas»} \\
-% \texttt{rr. ee.} & \texttt{rr.ee.} & RR.~EE. & \emph{«relaciones exteriores»} \\
-% \texttt{cc. aa.} & \texttt{cc.aa.} & CC.~AA. & \emph{«comunidades autónomas»} \\
-% \texttt{p. d.} & \texttt{p.d.} & P.~D. & \emph{«posdata»} \\
-% \texttt{a. c.} & \texttt{a.c.} & a.~C. & \emph{«antes de Cristo»} \\
-% \texttt{d. c.} & \texttt{d.c.} & d.~C. & \emph{«después de Cristo»} \\
-% \texttt{d. n. i.} & \texttt{d.n.i.} & D.~N.~I. & \emph{«documento nacional de identidad»} \\
-% \texttt{r. u. t.} & \texttt{r.u.t.} & R.~U.~T. & \emph{«rol único tributario»} \\
-% \texttt{r. u. n.} & \texttt{r.u.n.} & R.~U.~N. & \emph{«rol único nacional»} \\
+% \texttt{s. a.} & \texttt{s.a.} & \spshort{s. a.} & \emph{«sociedad anónima»} \\
+% \texttt{ee. uu.} & \texttt{ee.uu.} & \spshort{ee. uu.} & \emph{«estados unidos»} \\
+% \texttt{dd. hh.} & \texttt{dd.hh.} & \spshort{dd. hh.} & \emph{«derechos humanos»} \\
+% \texttt{jj. oo.} & \texttt{jj.oo.} & \spshort{jj. oo.} & \emph{«juegos olímpicos»} \\
+% \texttt{ff. aa.} & \texttt{ff.aa.} & \spshort{ff. aa.} & \emph{«fuerzas armadas»} \\
+% \texttt{rr. ee.} & \texttt{rr.ee.} & \spshort{rr. ee.} & \emph{«relaciones exteriores»} \\
+% \texttt{cc. aa.} & \texttt{cc.aa.} & \spshort{cc. aa.} & \emph{«comunidades autónomas»} \\
+% \texttt{p. d.} & \texttt{p.d.} & \spshort{p. d.} & \emph{«posdata»} \\
+% \texttt{a. c.} & \texttt{a.c.} & \spshort{a. c.} & \emph{«antes de Cristo»} \\
+% \texttt{d. c.} & \texttt{d.c.} & \spshort{d. c.} & \emph{«después de Cristo»} \\
+% \texttt{d. n. i.} & \texttt{d.n.i.} & \spshort{d. n. i.} & \emph{«documento nacional de identidad»} \\
+% \texttt{r. u. t.} & \texttt{r.u.t.} & \spshort{r. u. t.} & \emph{«rol único tributario»} \\
+% \texttt{r. u. n.} & \texttt{r.u.n.} & \spshort{r. u. n.} & \emph{«rol único nacional»} \\
 % \end{longtable}
 %
 % La tabla~\ref{tab:spshort-siglas} resume las siglas y acrónimos registrados en el módulo Lua \myluamod{}.
@@ -2353,30 +2367,30 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \endlastfoot
 % \multicolumn{4}{c}{\textbf{Siglas (Deletreo o lectura expandida)}} \\
 % \midrule
-% \texttt{dni} & --- & DNI & \emph{«documento nacional de identidad»} \\
-% \texttt{rut} & --- & RUT & \emph{«rol único tributario»} \\
-% \texttt{run} & --- & RUN & \emph{«rol único nacional»} \\
-% \texttt{onu} & --- & ONU & \emph{«organización de las naciones unidas»} \\
-% \texttt{rae} & --- & RAE & \emph{«real academia española»} \\
-% \texttt{ong} & --- & ONG & \emph{«organización no gubernamental»} \\
-% \texttt{ongs} & --- & ONGs & \emph{«organizaciones no gubernamentales»} \\
-% \texttt{urss} & --- & URSS & \emph{«unión de repúblicas socialistas soviéticas»} \\
-% \texttt{oea} & --- & OEA & \emph{«organización de los estados americanos»} \\
-% \texttt{oms} & --- & OMS & \emph{«organización mundial de la salud»} \\
-% \texttt{fmi} & --- & FMI & \emph{«fondo monetario internacional»} \\
-% \texttt{bid} & --- & BID & \emph{«banco interamericano de desarrollo»} \\
-% \texttt{otan} & --- & OTAN & \emph{«organización del tratado del atlántico norte»} \\
-% \texttt{ue} & --- & UE & \emph{«unión europea»} \\
-% \texttt{ru} & --- & RU & \emph{«reino unido»} \\
+% \texttt{dni} & --- & \spshort{dni} & \emph{«documento nacional de identidad»} \\
+% \texttt{rut} & --- & \spshort{rut} & \emph{«rol único tributario»} \\
+% \texttt{run} & --- & \spshort{run} & \emph{«rol único nacional»} \\
+% \texttt{onu} & --- & \spshort{onu} & \emph{«organización de las naciones unidas»} \\
+% \texttt{rae} & --- & \spshort{rae} & \emph{«real academia española»} \\
+% \texttt{ong} & --- & \spshort{ong} & \emph{«organización no gubernamental»} \\
+% \texttt{ongs} & --- & \spshort{ongs} & \emph{«organizaciones no gubernamentales»} \\
+% \texttt{urss} & --- & \spshort{urss} & \emph{«unión de repúblicas socialistas soviéticas»} \\
+% \texttt{oea} & --- & \spshort{oea} & \emph{«organización de los estados americanos»} \\
+% \texttt{oms} & --- & \spshort{oms} & \emph{«organización mundial de la salud»} \\
+% \texttt{fmi} & --- & \spshort{fmi} & \emph{«fondo monetario internacional»} \\
+% \texttt{bid} & --- & \spshort{bid} & \emph{«banco interamericano de desarrollo»} \\
+% \texttt{otan} & --- & \spshort{otan} & \emph{«organización del tratado del atlántico norte»} \\
+% \texttt{ue} & --- & \spshort{ue} & \emph{«unión europea»} \\
+% \texttt{ru} & --- & \spshort{ru} & \emph{«reino unido»} \\
 % \midrule
 % \multicolumn{4}{c}{\textbf{Acrónimos silábicos}} \\
 % \midrule
-% \texttt{unicef} & --- & Unicef & \emph{«fondo de las naciones unidas para la infancia»} \\
-% \texttt{unesco} & --- & Unesco & \emph{«organización de las naciones unidas para la educación, la ciencia y la cultura»} \\
-% \texttt{mercosur} & --- & Mercosur & \emph{«mercado común del sur»} \\
-% \texttt{cepal} & --- & Cepal & \emph{«comisión económica para américa latina»} \\
-% \texttt{mineduc} & --- & Mineduc & \emph{«ministerio de educación»} \\
-% \texttt{conicet} & --- & Conicet & \emph{«consejo nacional de investigaciones»} \\
+% \texttt{unicef} & --- & \spshort{unicef} & \emph{«fondo de las naciones unidas para la infancia»} \\
+% \texttt{unesco} & --- & \spshort{unesco} & \emph{«organización de las naciones unidas para la educación, la ciencia y la cultura»} \\
+% \texttt{mercosur} & --- & \spshort{mercosur} & \emph{«mercado común del sur»} \\
+% \texttt{cepal} & --- & \spshort{cepal} & \emph{«comisión económica para américa latina»} \\
+% \texttt{mineduc} & --- & \spshort{mineduc} & \emph{«ministerio de educación»} \\
+% \texttt{conicet} & --- & \spshort{conicet} & \emph{«consejo nacional de investigaciones»} \\
 % \end{longtable}
 %
 % Según la \textsc{rae}, las siglas no cambian en plural: se escribe «las ONG».
@@ -2405,11 +2419,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \endlastfoot
 % \multicolumn{4}{c}{\textbf{Sufijos para ordinales (Ejemplos)}} \\
 % \midrule
-% \texttt{1.a} & \texttt{1.ª} & 1.$^{\text{a}}$ & \emph{«primera»} \\
-% \texttt{2.o} & \texttt{2.º} & 2.$^{\text{o}}$ & \emph{«segundo»} \\
-% \texttt{3.er} & --- & 3.$^{\text{er}}$ & \emph{«tercer»} \\
-% \texttt{4.os} & --- & 4.$^{\text{os}}$ & \emph{«cuartos»} \\
-% \texttt{5.as} & --- & 5.$^{\text{as}}$ & \emph{«quintas»} \\
+% \texttt{1.a} & \texttt{1.ª} & \spshort{1.a} & \emph{«primera»} \\
+% \texttt{2.o} & \texttt{2.º} & \spshort{2.o} & \emph{«segundo»} \\
+% \texttt{3.er} & --- & \spshort{3.er} & \emph{«tercer»} \\
+% \texttt{4.os} & --- & \spshort{4.os} & \emph{«cuartos»} \\
+% \texttt{5.as} & --- & \spshort{5.as} & \emph{«quintas»} \\
 % \end{longtable}
 %
 % \begin{important}*
@@ -2435,13 +2449,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
-% y se ejecuta |$\spnord{1.o}$| se imprimirá `$1.^{\text{o}}$' en la salida
+% y se ejecuta |$\spnord{1.o}$| se imprimirá `$\spnord{1.o}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«primero»};
-% si se ejecuta |$\spnord{21.a}$| se imprimirá `$21.^{\text{a}}$' en la salida
+% si se ejecuta |$\spnord{21.a}$| se imprimirá `$\spnord{21.a}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«vigésima primera»};
-% si se ejecuta |$\spnord{3.er}$| se imprimirá `$3.^{\text{er}}$' en la salida
+% si se ejecuta |$\spnord{3.er}$| se imprimirá `$\spnord{3.er}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«tercer»}
-% y si se ejecuta |$\spnord{5.as}$| se imprimirá `$5.^{\text{as}}$' en la salida
+% y si se ejecuta |$\spnord{5.as}$| se imprimirá `$\spnord{5.as}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«quintas»}.
 %
 % \begin{important}*
@@ -2459,7 +2473,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % del \mymarg{número ordinal} que el comando no acepta, para \mynvmath{NVDA/MathCAT}.
 % El valor de esta llave \emph{siempre} debe pasarse entre `|{ }|' y el argumento
 % se imprime tal cual en \emph{modo matemático}. Por ejemplo:~%
-% |$\spnord[read-arg={octavo}]{8.^{\text{avo}}}$| imprimirá `$8.^{\text{avo}}$'
+% |$\spnord[read-arg={octavo}]{8.^{\text{avo}}}$| imprimirá `$\spnord[read-arg={octavo}]{8.^{\text{avo}}}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«octavo»}.
 %
 % \keyexampcmd{small-caps}{true \textnormal{\textcolor{lightgray}{\textbar}} false}{false}[spnord]
@@ -2467,7 +2481,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece si la \emph{«letra volada»} del \mymarg{número ordinal} se imprime
 % en \emph{versalitas}. Si se establece en |true| se usarán \emph{versalitas}; si
 % se establece en |false|, no se aplicarán. Por ejemplo:~%
-% |$\spnord[small-caps=true]{2.o}$| imprimirá `$2.^{\text{\textsc{o}}}$'
+% |$\spnord[small-caps=true]{2.o}$| imprimirá `$\spnord[small-caps=true]{2.o}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«segundo»}.
 %
 % \section{Utilidades generales}\label{sec:utilidades}
@@ -2496,7 +2510,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
-% y se ejecuta |\spsiglo{21}| o |\spsiglo{XXI}| se imprimirá `\textsc{xxi}' en la salida
+% y se ejecuta |\spsiglo{21}| o |\spsiglo{XXI}| se imprimirá `\spsiglo{XXI}' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintiuno»}.
 %
 % \begin{important}*
@@ -2514,18 +2528,18 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \keyexampcmd{print-era}{ac \textnormal{\textcolor{lightgray}{\textbar}} dc \textnormal{\textcolor{lightgray}{\textbar}} none}{none}[spsiglo]
 %
 % Establece si se \emph{imprime} o no la abreviatura después de imprimir el argumento \mymarg{siglo}.
-% Si se establece en |ac|, |\spsiglo[print-era=ac]{XXI}| imprimirá `\textsc{xxi} a.~C.'
+% Si se establece en |ac|, |\spsiglo[print-era=ac]{XXI}| imprimirá `\spsiglo[print-era=ac]{XXI}'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintiuno antes de cristo»};
-% si se establece en |dc|, |\spsiglo[print-era=dc]{XXI}| imprimirá `\textsc{xxi} d.~C.'
+% si se establece en |dc|, |\spsiglo[print-era=dc]{XXI}| imprimirá `\spsiglo[print-era=dc]{XXI}'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintiuno después de cristo»};
-% si se establece en |none|, |\spsiglo[print-era=none]{XXI}| imprimirá `\textsc{xxi}'
+% si se establece en |none|, |\spsiglo[print-era=none]{XXI}| imprimirá `\spsiglo[print-era=none]{XXI}'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintiuno»}.
 %
 % \keyexampcmd{ordinal}{true \textnormal{\textcolor{lightgray}{\textbar}} false}{false}[spsiglo]
 %
 % Establece si \mynvmath{NVDA/MathCAT} verbaliza el número como \emph{ordinal}
 % en lugar de cardinal. Sirve para papas, reyes y capítulos: si se establece en
-% |true|, |$\spsiglo[ordinal=true]{X}$| imprimirá `\textsc{x}' y se verbalizará
+% |true|, |$\spsiglo[ordinal=true]{X}$| imprimirá `$\spsiglo[ordinal=true]{X}$' y se verbalizará
 % \emph{«décimo»}, y |$\spsiglo[ordinal=true]{XXI}$| se verbalizará
 % \emph{«vigésimo primero»}. Con |false| se verbaliza el número, como
 % \emph{«veintiuno»}.
@@ -2630,7 +2644,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   El \mymarg{símbolo} debe ser un único comando, incluso uno
 %   definido por el usuario. Por ejemplo:~|\newcommand{\xcuad}{x^2}|,
 %   |\spnewread{\xcuad}{x-al-cuadrado}| registrará `|\xcuad|' y cuando se
-%   utilice |$\spread{\xcuad}$| se imprimirá `$x^2$' en la salida
+%   utilice |$\spread{\xcuad}$| se imprimirá `$\spread{\xcuad}$' en la salida
 %   \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 %   \emph{«x al cuadrado»}.
 % \end{important}
@@ -2893,7 +2907,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spdiv{20}{26}$| imprimirá `$20:26$' en la salida \texttt{PDF}
+% |$\spdiv{20}{26}$| imprimirá `$\spdiv{20}{26}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veinte dividido veintiséis»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spdiv}}
@@ -2931,7 +2945,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spmul{20}{26}$| imprimirá `$20 \cdot 26$' en la salida \texttt{PDF}
+% |$\spmul{20}{26}$| imprimirá `$\spmul{20}{26}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«veinte por veintiséis»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spmul}}
@@ -2972,15 +2986,15 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
 % ni el \emph{argumento opcional delimitado por paréntesis}, |$\spnD$|
-% imprimirá `$\mathrm{D}(n)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spnD$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«divisores de ene»}.
 %
 % Si se usa el argumento \myparg{número}, |$\spnD(6)$| imprimirá
-% `$\mathrm{D}(6)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spnD(6)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«divisores de seis»}.
 %
 % Si se usa el argumento \myparg{letra}, |$\spnD(m)$| imprimirá
-% `$\mathrm{D}(m)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spnD(m)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«divisores de eme»}.
 %
 % \begin{important}*
@@ -3011,7 +3025,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si se \emph{imprime} el resultado de calcular los \emph{divisores}
 % del argumento \myparg{número}. Si se establece en |true|, |$\spnD[result=true](6)$|
-% imprimirá `$\mathrm{D}(6) = \{1, 2, 3, 6\}$' en la salida \texttt{PDF} y
+% imprimirá `$\spnD[result=true](6)$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«divisores de seis son uno,
 % dos, tres y seis»}; si se establece en |false|, no se imprimirá ni verbalizará
 % el resultado de calcular los \emph{divisores}.
@@ -3047,15 +3061,15 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
 % ni el \emph{argumento opcional delimitado por paréntesis}, |$\spnM$|
-% imprimirá `$\mathrm{M}(n)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spnM$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«múltiplos de ene»}.
 %
 % Si se usa el argumento \myparg{número}, |$\spnM(6)$| imprimirá
-% `$\mathrm{M}(6)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spnM(6)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«múltiplos de seis»}.
 %
 % Si se usa el argumento \myparg{letra}, |$\spnM(m)$| imprimirá
-% `$\mathrm{M}(m)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spnM(m)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«múltiplos de eme»}.
 %
 % \begin{important}*
@@ -3086,7 +3100,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si se \emph{imprime} el resultado de calcular los \emph{múltiplos}
 % del argumento \myparg{número}. Si se establece en |true|, |$\spnM[result=true](6)$|
-% imprimirá `$\mathrm{M}(6) = \{6, 12, 18, 24, 30, \dots\}$' en la salida
+% imprimirá `$\spnM[result=true](6)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«múltiplos de seis son seis,
 % doce, dieciocho, veinticuatro, treinta puntos suspensivos»}; si se
 % establece en |false|, no se imprimirá ni verbalizará el resultado de
@@ -3124,16 +3138,16 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
 % ni el \emph{argumento opcional delimitado por paréntesis}, |$\spmcd$|
-% imprimirá `$\mathrm{mcd}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spmcd$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«máximo común divisor»}.
 %
 % Si se usa el argumento \myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots},
-% |$\spmcd(2, 3, 6)$| imprimirá `$\mathrm{mcd}(2, 3, 6)$' en la salida
+% |$\spmcd(2, 3, 6)$| imprimirá `$\spmcd(2, 3, 6)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«máximo común
 % divisor entre dos, tres y seis»}.
 %
 % Si se usa el argumento \myparg{letra\textnormal{\textcolor{gray}{,}} letra\textnormal{\textcolor{gray}{,}} \dots},
-% |$\spmcd(m, n)$| imprimirá `$\mathrm{mcd}(m, n)$' en la salida
+% |$\spmcd(m, n)$| imprimirá `$\spmcd(m, n)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«máximo común
 % divisor entre eme y ene»}.
 %
@@ -3184,7 +3198,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece si se \emph{imprime} el resultado de calcular el \emph{«máximo
 % común divisor»} del argumento \myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}.
 % Si se establece en |true|: |$\spmcd[result=true](2, 3, 6)$| imprimirá
-% `$\mathrm{mcd}(2, 3, 6) = 1$' en la salida \texttt{PDF} y
+% `$\spmcd[result=true](2, 3, 6)$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«máximo común divisor entre
 % dos, tres y seis es igual a uno»}; si se establece en |false| no se
 % imprimirá ni verbalizará el resultado de calcular el
@@ -3214,16 +3228,16 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
 % ni el \emph{argumento opcional delimitado por paréntesis}, |$\spmcm$|
-% imprimirá `$\mathrm{mcm}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spmcm$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«mínimo común múltiplo»}.
 %
 % Si se usa el argumento \myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots},
-% |$\spmcm(2, 3, 6)$| imprimirá `$\mathrm{mcm}(2, 3, 6)$' en la salida
+% |$\spmcm(2, 3, 6)$| imprimirá `$\spmcm(2, 3, 6)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«mínimo común
 % múltiplo entre dos, tres y seis»}.
 %
 % Si se usa el argumento \myparg{letra\textnormal{\textcolor{gray}{,}} letra\textnormal{\textcolor{gray}{,}} \dots},
-% |$\spmcm(m, n)$| imprimirá `$\mathrm{mcm}(m, n)$' en la salida
+% |$\spmcm(m, n)$| imprimirá `$\spmcm(m, n)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«mínimo común
 % múltiplo entre eme y ene»}.
 %
@@ -3273,7 +3287,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece si se \emph{imprime} el resultado de calcular el \emph{«mínimo
 % común múltiplo»} del argumento \myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}.
 % Si se establece en |true|: |$\spmcm[result=true](2, 3, 6)$| imprimirá
-% `$\mathrm{mcm}(2, 3, 6) = 6$' en la salida \texttt{PDF} y
+% `$\spmcm[result=true](2, 3, 6)$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«mínimo común múltiplo entre
 % dos, tres y seis es igual a seis»}; si se establece en |false| no se
 % imprimirá ni verbalizará el resultado de calcular el
@@ -3303,9 +3317,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spnZ{23}$| imprimirá `$23$' en la salida \texttt{PDF} y
+% |$\spnZ{23}$| imprimirá `$\spnZ{23}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«veintitrés»}; |$\spnZ{-23}$|
-% imprimirá `$-23$' y verbalizará \emph{«menos veintitrés»}. El argumento
+% imprimirá `$\spnZ{-23}$' y verbalizará \emph{«menos veintitrés»}. El argumento
 % debe ser un entero: con un decimal o una unidad, el comando devuelve un
 % \enquote{error} y se detiene la compilación del documento.
 %
@@ -3322,7 +3336,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % establece en |true|, se imprimirán paréntesis redondos alrededor del
 % \mymarg{número entero}; si se establece en |false|, no se imprimirán
 % los paréntesis. Por ejemplo:~|$\spnZ[wrap-parens=true]{-23}$| imprimirá
-% `$(-23)$' en la salida \texttt{PDF}.
+% `$\spnZ[wrap-parens=true]{-23}$' en la salida \texttt{PDF}.
 %
 % \keyexampcmd{read-parens}{true \textnormal{%
 %   \textcolor{lightgray}{\textbar}} false}{true}[spnZ]
@@ -3351,7 +3365,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spmQ{2}{5}{7}$| imprimirá `$\scalerel{2}{\frac{5}{7}}$'
+% |$\spmQ{2}{5}{7}$| imprimirá `$\spmQ{2}{5}{7}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«dos y cinco séptimos»}.
 %
@@ -3372,15 +3386,15 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece la \emph{forma} en la que \mynvmath{NVDA/MathCAT} verbaliza la
 % conexión entre el entero y la fracción que forman el \emph{número mixto}.
 % Si se establece en |entero|, |$\spmQ[join-word=entero]{1}{5}{7}$|
-% imprimirá `$\scalerel{1}{\frac{5}{7}}$' en la salida \texttt{PDF} y
+% imprimirá `$\spmQ[join-word=entero]{1}{5}{7}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«un entero cinco séptimos»};
 % si se establece en |enteros|, |$\spmQ[join-word=enteros]{2}{5}{7}$|
-% imprimirá `$\scalerel{2}{\frac{5}{7}}$' en la salida \texttt{PDF} y
+% imprimirá `$\spmQ[join-word=enteros]{2}{5}{7}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«dos enteros cinco séptimos»};
 % si se establece en |y|, |$\spmQ[join-word=y]{2}{5}{7}$|
-% imprimirá `$\scalerel{2}{\frac{5}{7}}$' en la salida \texttt{PDF} y
+% imprimirá `$\spmQ[join-word=y]{2}{5}{7}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«dos y cinco séptimos»}.
 %
@@ -3453,7 +3467,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\sprazon{3}{4}$| imprimirá `$\frac{3}{4}$' en la salida
+% |$\sprazon{3}{4}$| imprimirá `$\sprazon{3}{4}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«tres es a cuatro»}.
 %
@@ -3488,7 +3502,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si la \emph{razón} se imprime en línea con dos puntos `|:|' en
 % lugar de una fracción. Si se establece en |true|,
-% |$\sprazon[inline=true]{3}{4}$| imprimirá `$3:4$' en la salida
+% |$\sprazon[inline=true]{3}{4}$| imprimirá `$\sprazon[inline=true]{3}{4}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«tres es a cuatro»}; si se establece en |false|, la razón se
 % imprime como una fracción.
@@ -3515,7 +3529,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val},
 % |$\spProp{3}{4}{6}{8}$| imprimirá
-% `$\frac{3}{4}=\frac{6}{8}$' en la salida \texttt{PDF} y
+% `$\spProp{3}{4}{6}{8}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«tres es a cuatro como seis es a ocho»}.
 %
@@ -3550,7 +3564,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si las \emph{razones} de la \emph{proporción} se imprimen en línea
 % con dos puntos `|:|' en lugar de fracciones. Si se establece en |true|,
-% |$\spProp[inline=true]{3}{4}{6}{8}$| imprimirá `$3:4=6:8$' en la salida
+% |$\spProp[inline=true]{3}{4}{6}{8}$| imprimirá `$\spProp[inline=true]{3}{4}{6}{8}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«tres es a cuatro como seis es a ocho»}; si se establece en |false|,
 % las razones se imprimen como fracciones.
@@ -3594,9 +3608,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spcoord{-3, 4}$| imprimirá `$(-3, 4)$' en la salida \texttt{PDF} y
+% |$\spcoord{-3, 4}$| imprimirá `$\spcoord{-3, 4}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«menos tres coma cuatro»};
-% |$\spcoord{x_{1},y_{1}}$| imprimirá `$(x_{1}, y_{1})$' y verbalizará
+% |$\spcoord{x_{1},y_{1}}$| imprimirá `\mysubout{$\spcoord{x_{1},y_{1}}$}' y verbalizará
 % \emph{«x sub uno coma y sub uno»}.
 % La lectura del subíndice la decide \mynvmath{NVDA/MathCAT}, porque
 % |\spcoord| no tiene la llave \mykey{read-cmd}.
@@ -3638,15 +3652,15 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spPoint{A}$| imprimirá `$A$' en la salida \texttt{PDF} y
+% |$\spPoint{A}$| imprimirá `$\spPoint{A}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«punto A»};
-% |$\spPoint{A_{1}}$| imprimirá `$A_1$' y verbalizará
+% |$\spPoint{A_{1}}$| imprimirá `\mysubout{$\spPoint{A_{1}}$}' y verbalizará
 % \emph{«punto A sub uno»}.
 %
 % Si se proporciona el \emph{argumento opcional delimitado por paréntesis},
-% |$\spPoint{A}(-3,4)$| imprimirá `$A(-3,4)$' en la salida \texttt{PDF} y
+% |$\spPoint{A}(-3,4)$| imprimirá `$\spPoint{A}(-3,4)$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«punto A menos tres coma cuatro»};
-% |$\spPoint{A_{1}}(-3,4)$| imprimirá `$A_{1}(-3,4)$' y verbalizará
+% |$\spPoint{A_{1}}(-3,4)$| imprimirá `\mysubout{$\spPoint{A_{1}}(-3,4)$}' y verbalizará
 % \emph{«punto A sub uno menos tres coma cuatro»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spPoint}}
@@ -3710,15 +3724,15 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spvec{a}$| imprimirá `$\vec{a}$' en la salida \texttt{PDF} y
+% |$\spvec{a}$| imprimirá `$\spvec{a}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«vector a»};
-% |$\spvec{AB}$| imprimirá `$\overrightarrow{AB}$' y verbalizará
+% |$\spvec{AB}$| imprimirá `$\spvec{AB}$' y verbalizará
 % \emph{«vector A B»}.
 %
 % Si se proporciona el \emph{argumento opcional delimitado por paréntesis},
-% |$\spvec{a}(-3,4)$| imprimirá `$\vec{a}=(-3,4)$' en la salida \texttt{PDF} y
+% |$\spvec{a}(-3,4)$| imprimirá `$\spvec{a}(-3,4)$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«vector a es igual a menos tres coma cuatro»};
-% |$\spvec{AB}(-3,4)$| imprimirá `$\overrightarrow{AB}=(-3,4)$' y verbalizará
+% |$\spvec{AB}(-3,4)$| imprimirá `$\spvec{AB}(-3,4)$' y verbalizará
 % \emph{«vector A B es igual a menos tres coma cuatro»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spvec}}
@@ -3786,9 +3800,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val}, |$\sprecta{AB}$|
-% imprimirá `$\overleftrightarrow{AB}$' en la salida \texttt{PDF} y
+% imprimirá `$\sprecta{AB}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«recta A B»}; |$\sprecta{m}$|
-% imprimirá `$m$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\sprecta{m}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«recta m»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{sprecta}}
@@ -3844,7 +3858,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\sprayo{AB}$| imprimirá `$\overrightarrow{AB}$' en la salida
+% |$\sprayo{AB}$| imprimirá `$\sprayo{AB}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«rayo A B»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{sprayo}}
@@ -3920,7 +3934,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spside{AB}$| imprimirá `$\overline{AB}$' en la salida
+% |$\spside{AB}$| imprimirá `$\spside{AB}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«lado A B»}.
 %
@@ -3972,7 +3986,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % que será verbalizado por \mynvmath{NVDA/MathCAT} al ejecutar el comando
 % sin modificar la impresión de este. El valor de esta llave \emph{siempre}
 % debe pasarse entre llaves `|{ }|'. Por ejemplo:~|$\spside[read-arg={hipotenusa}]{AB}$|
-% imprimirá `$\overline{AB}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spside[read-arg={hipotenusa}]{AB}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«hipotenusa A B»}.
 %
 % \keyexampcmd{silent}{true \textnormal{\textcolor{lightgray}{\textbar}}
@@ -4004,7 +4018,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spmside{AB}$| imprimirá `$AB$' en la salida \texttt{PDF} y
+% |$\spmside{AB}$| imprimirá `$\spmside{AB}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«medida del lado A B»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spmside}}
@@ -4060,7 +4074,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mykey{concept}.
 %
 % Por ejemplo:~|$\spmside[concept=false,read-arg={medida de la cuerda}]{AB}$|
-% imprimirá `$AB$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spmside[concept=false,read-arg={medida de la cuerda}]{AB}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«medida de la cuerda A B»}.
 %
 % \keyexampcmd{print-sym}{true \textnormal{\textcolor{lightgray}{\textbar}}
@@ -4068,7 +4082,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece \emph{si se imprime} la notación visual `$\mathrm{m}$' antes
 % de aplicar |\overline| al \mymarg{argumento}. Si se establece en |true|,
-% |$\spmside[print-sym=true]{AB}$| imprimirá `$\operatorname{m}\overline{AB}$'
+% |$\spmside[print-sym=true]{AB}$| imprimirá `$\spmside[print-sym=true]{AB}$'
 % en la salida \texttt{PDF}; si se establece en |false| imprimirá `$AB$'
 % en la salida \texttt{PDF}. En ambos casos \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«medida del lado A B»}.
@@ -4100,13 +4114,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val}, |$\spangle{A}$|
-% imprimirá `$\angle A$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spangle{A}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«ángulo en A»}; |$\spangle{\alpha}$| imprimirá
-% `$\angle\alpha$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spangle{\alpha}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«ángulo alfa»}; |$\spangle{1}$| imprimirá
-% `$\angle 1$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spangle{1}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«ángulo uno»} y |$\spangle{AOB}$| imprimirá
-% `$\angle AOB$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spangle{AOB}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«ángulo A O B»}.
 %
 % \begin{important}*
@@ -4140,9 +4154,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si se \emph{usará} |\rightanglesqr| en la impresión añadiendo
 % el término \emph{«recto»} a la verbalización en \mynvmath{NVDA/MathCAT}.
-% Si se establece en |true|, |$\spangle[recto=true]{A}$| imprimirá `$\rightanglesqr A$'
+% Si se establece en |true|, |$\spangle[recto=true]{A}$| imprimirá `$\spangle[recto=true]{A}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«ángulo recto en A»},
-% |$\spangle[recto=true]{AOB}$| imprimirá `$\rightanglesqr AOB$' en la
+% |$\spangle[recto=true]{AOB}$| imprimirá `$\spangle[recto=true]{AOB}$' en la
 % salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«ángulo recto A O B»};
 % si se establece en |false|, imprimirá usando |\angle| en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} omitirá el término \emph{«recto»}.
@@ -4184,13 +4198,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val}, |$\spmangle{A}$|
-% imprimirá `$\measuredangle A$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spmangle{A}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«medida del ángulo en A»}; |$\spmangle{\alpha}$| imprimirá
-% `$\measuredangle\alpha$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spmangle{\alpha}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«medida del ángulo alfa»}; |$\spmangle{1}$| imprimirá
-% `$\measuredangle 1$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spmangle{1}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«medida del ángulo uno»} y |$\spmangle{AOB}$| imprimirá
-% `$\measuredangle AOB$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spmangle{AOB}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«medida del ángulo A O B»}.
 %
 % \begin{important}*
@@ -4225,9 +4239,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece si se \emph{usará} |\measuredrightangle| en la impresión añadiendo
 % el término \emph{«recto»} a la verbalización en \mynvmath{NVDA/MathCAT}.
 % Si se establece en |true|, |$\spmangle[recto=true]{A}$| imprimirá
-% `$\measuredrightangle A$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spmangle[recto=true]{A}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«medida del ángulo recto en A»}, |$\spmangle[recto=true]{AOB}$|
-% imprimirá `$\measuredrightangle AOB$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spmangle[recto=true]{AOB}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«medida del ángulo recto A O B»}; si se establece en |false|,
 % imprimirá usando |\measuredangle| en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % omitirá el término \emph{«recto»}.
@@ -4238,7 +4252,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece \emph{si se imprime} la notación visual `$\mathrm{m}$' antes
 % del argumento pasado al comando sin modificar la verbalización de este.
 % Si se establece en |true|, |$\spmangle[print-sym=true]{AOB}$| imprimirá
-% `$\operatorname{m}\angle AOB$' en la salida \texttt{PDF}; si se establece
+% `$\spmangle[print-sym=true]{AOB}$' en la salida \texttt{PDF}; si se establece
 % en |false| imprimirá `$\measuredangle AOB$' en la salida \texttt{PDF}.
 % En ambos casos \mynvmath{NVDA/MathCAT} verbalizará \emph{«medida del ángulo A O B»}.
 %
@@ -4274,7 +4288,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   los comandos |\spnum| y |\spunit| para imprimir y verbalizar.
 % \end{function}
 %
-% Por ejemplo:~|$\spang{45:30:15}$| imprimirá `$45°30′15″$' en la salida \texttt{PDF}
+% Por ejemplo:~|$\spang{45:30:15}$| imprimirá `$\spang{45:30:15}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«cuarenta y cinco grados
 % treinta minutos quince segundos»}.
 %
@@ -4293,7 +4307,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\sparc{AB}$| imprimirá `$\widearc{AB}$' en la salida \texttt{PDF}
+% |$\sparc{AB}$| imprimirá `$\sparc{AB}$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«arco A B»}.
 %
 % \begin{important}*
@@ -4356,7 +4370,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spmarc{AB}$| imprimirá `$\operatorname{m}\widearc{AB}$' en la
+% |$\spmarc{AB}$| imprimirá `$\spmarc{AB}$' en la
 % salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«medida del arco A B»}.
 %
 % \begin{important}*
@@ -4430,11 +4444,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spPoly{ABC}$| imprimirá `$\triangle ABC$' en la salida
+% |$\spPoly{ABC}$| imprimirá `$\spPoly{ABC}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«triángulo A B C»}; |$\spPoly{ABCD}$| imprimirá
-% `$\mdlgwhtsquare ABCD$' y verbalizará \emph{«cuadrado A B C D»};
-% |$\spPoly{ABCDE}$| imprimirá `$ABCDE$' y verbalizará
+% `$\spPoly{ABCD}$' y verbalizará \emph{«cuadrado A B C D»};
+% |$\spPoly{ABCDE}$| imprimirá `$\spPoly{ABCDE}$' y verbalizará
 % \emph{«pentágono A B C D E»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spPoly}}
@@ -4476,9 +4490,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si se \emph{usará} |\triangle| o |\mdlgwhtsquare| en la impresión
 % sin modificar la verbalización de este. Si se establece en |true|,
-% |$\spPoly[print-sym=true]{ABC}$| imprimirá `$\triangle ABC$' en la salida
+% |$\spPoly[print-sym=true]{ABC}$| imprimirá `$\spPoly[print-sym=true]{ABC}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«triángulo A B C»};
-% |$\spPoly[print-sym=true]{ABCD}$| imprimirá `$\mdlgwhtsquare ABCD$' en
+% |$\spPoly[print-sym=true]{ABCD}$| imprimirá `$\spPoly[print-sym=true]{ABCD}$' en
 % la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«cuadrado A B C D»};
 % si se establece en |false|, solo se imprimirá el \mymarg{argumento} en
 % la salida \texttt{PDF} y la verbalización será la misma.
@@ -4518,15 +4532,15 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si se proporciona el \emph{argumento} \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
-% |$\spAfig(1)$| imprimirá `$\mathcal{A}_{1}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área uno»};
-% |$\spAfig(n)$| imprimirá `$\mathcal{A}_{n}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área ene»}.
+% |$\spAfig(1)$| imprimirá `$\spAfig(1)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área uno»};
+% |$\spAfig(n)$| imprimirá `$\spAfig(n)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área ene»}.
 %
 % Si se proporciona el \emph{argumento} \myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots},
-% |$\spAfig(ABC)$| imprimirá `$\mathcal{A}_{\triangle ABC}$' en la salida
+% |$\spAfig(ABC)$| imprimirá `$\spAfig(ABC)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área del triángulo A B C»};
-% |$\spAfig(ABCD)$| imprimirá `$\mathcal{A}_{\mdlgwhtsquare ABCD}$' en la salida
+% |$\spAfig(ABCD)$| imprimirá `$\spAfig(ABCD)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área del cuadrado A B C D»};
-% |$\spAfig(ABCDE)$| imprimirá `$\mathcal{A}_{ABCDE}$' en la salida
+% |$\spAfig(ABCDE)$| imprimirá `$\spAfig(ABCDE)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área del pentágono A B C D E»}.
 % Con cinco o más puntos no se imprime ningún símbolo y se añade a la
 % verbalización el nombre del polígono: \emph{«pentágono»}, \emph{«hexágono»},
@@ -4534,14 +4548,14 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{«polígono»} desde nueve puntos.
 %
 % Si se proporciona el \emph{argumento} \myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}},
-% |$\spAfig(F)$| imprimirá `$\mathcal{A}_{F}$' en la salida \texttt{PDF}
+% |$\spAfig(F)$| imprimirá `$\spAfig(F)$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área de la figura»};
-% |$\spAfig(F_{1})$| imprimirá `$\mathcal{A}_{F_{1}}$' en la salida
+% |$\spAfig(F_{1})$| imprimirá `\mysubout{$\spAfig(F_{1})$}' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área de la figura uno»}.
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
 % ni el \emph{argumento opcional delimitado por paréntesis}, |$\spAfig$| imprimirá
-% `$\mathcal{A}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
+% `$\spAfig$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«área»}.
 %
 % \begin{important}*
@@ -4600,7 +4614,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % de esta llave. El valor de esta llave \emph{siempre} debe pasarse entre
 % llaves `|{ }|' y se debe usar en conjunto con la llave
 % \mykey{concept}. Por ejemplo:~|$\spAfig[read-arg={trapecio}](ABCD)$| imprimirá
-% `$\mathcal{A}_{\mdlgwhtsquare ABCD}$' en la salida \texttt{PDF} y
+% `$\spAfig[read-arg={trapecio}](ABCD)$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«área del trapecio A B C D»}.
 %
 % \begin{important}*
@@ -4632,13 +4646,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % y \myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
 % para \mynvmath{NVDA/MathCAT}. Si se utiliza \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
 % y se establece en |true|, |$\spAfig[read-sub=true](1)$| imprimirá
-% `$\mathcal{A}_{1}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spAfig[read-sub=true](1)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«área sub uno»}; si se establece en |false|, la impresión
 % será la misma y se verbaliza \emph{«área uno»}.
 %
 % Si se utiliza \myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
 % y se establece en |true|, |$\spAfig[read-sub=true](F_{1})$| imprimirá
-% `$\mathcal{A}_{F_{1}}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `\mysubout{$\spAfig[read-sub=true](F_{1})$}' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«área de la figura sub uno»}; si se establece en |false|,
 % la impresión será la misma y se verbaliza \emph{«área de la figura uno»}.
 %
@@ -4655,17 +4669,17 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % se infiere el \emph{símbolo} acorde al número de puntos; si se establece en
 % \mykey{auto} se imprime y si se establece en \mykey{none} se omite:
 % |$\spAfig[print-sym=auto](ABC)$| y |$\spAfig[print-sym=none](ABC)$| imprimirán
-% `$\mathcal{A}_{\triangle ABC}$' y `$\mathcal{A}_{ABC}$' en la salida
+% `$\spAfig[print-sym=none](ABC)$' y `\mysubout{$\mathcal{A}_{ABC}$}' en la salida
 % \texttt{PDF} y en ambos casos \mynvmath{NVDA/MathCAT} verbalizará \emph{«área del triángulo A B C»}.
 %
 % Si se utiliza \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
 % los valores \mykey{auto} y \mykey{none} quedan sin efecto; si se establece en \mykey{triangle}
 % o \mykey{square} anida el argumento bajo el \emph{símbolo}:
 % \lstinline[language=spintent-doc,emph={[4]{triangle}},emphstyle={[4]\color{keyname}}]|$\spAfig[print-sym=triangle](1)$|
-% imprimirá `$\mathcal{A}_{\triangle_{1}}$' en la salida \texttt{PDF} y
+% imprimirá `$\spAfig[print-sym=triangle](1)$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«área del triángulo uno»};
 % \lstinline[language=spintent-doc,emph={[4]{square}},emphstyle={[4]\color{keyname}}]|$\spAfig[print-sym=square](1)$|
-% imprimirá `$\mathcal{A}_{\mdlgwhtsquare_{1}}$' en la salida \texttt{PDF}
+% imprimirá `$\spAfig[print-sym=square](1)$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área del cuadrado uno»}.
 %
 % \begin{important}*
@@ -4708,15 +4722,15 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si se proporciona el \emph{argumento} \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
-% |$\spPfig(1)$| imprimirá `$\mathcal{P}_{1}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro uno»};
-% |$\spPfig(n)$| imprimirá `$\mathcal{P}_{n}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro ene»}.
+% |$\spPfig(1)$| imprimirá `$\spPfig(1)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro uno»};
+% |$\spPfig(n)$| imprimirá `$\spPfig(n)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro ene»}.
 %
 % Si se proporciona el \emph{argumento} \myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots},
-% |$\spPfig(ABC)$| imprimirá `$\mathcal{P}_{\triangle ABC}$' en la salida
+% |$\spPfig(ABC)$| imprimirá `$\spPfig(ABC)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro del triángulo A B C»};
-% |$\spPfig(ABCD)$| imprimirá `$\mathcal{P}_{\mdlgwhtsquare ABCD}$' en la salida
+% |$\spPfig(ABCD)$| imprimirá `$\spPfig(ABCD)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro del cuadrado A B C D»};
-% |$\spPfig(ABCDE)$| imprimirá `$\mathcal{P}_{ABCDE}$' en la salida
+% |$\spPfig(ABCDE)$| imprimirá `$\spPfig(ABCDE)$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro del pentágono A B C D E»}.
 % Con cinco o más puntos no se imprime ningún símbolo y se añade a la
 % verbalización el nombre del polígono: \emph{«pentágono»}, \emph{«hexágono»},
@@ -4724,14 +4738,14 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{«polígono»} desde nueve puntos.
 %
 % Si se proporciona el \emph{argumento} \myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}},
-% |$\spPfig(F)$| imprimirá `$\mathcal{P}_{F}$' en la salida \texttt{PDF}
+% |$\spPfig(F)$| imprimirá `$\spPfig(F)$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro de la figura»};
-% |$\spPfig(F_{1})$| imprimirá `$\mathcal{P}_{F_{1}}$' en la salida
+% |$\spPfig(F_{1})$| imprimirá `\mysubout{$\spPfig(F_{1})$}' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro de la figura uno»}.
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
 % ni el \emph{argumento opcional delimitado por paréntesis}, |$\spPfig$| imprimirá
-% `$\mathcal{P}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
+% `$\spPfig$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«perímetro»}.
 %
 % \begin{important}*
@@ -4790,7 +4804,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % de esta llave. El valor de esta llave \emph{siempre} debe pasarse entre
 % llaves `|{ }|' y se debe usar en conjunto con la llave
 % \mykey{concept}. Por ejemplo:~|$\spPfig[read-arg={trapecio}](ABCD)$| imprimirá
-% `$\mathcal{P}_{\mdlgwhtsquare ABCD}$' en la salida \texttt{PDF} y
+% `$\spPfig[read-arg={trapecio}](ABCD)$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro del trapecio A B C D»}.
 %
 % \begin{important}*
@@ -4822,13 +4836,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % y \myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
 % para \mynvmath{NVDA/MathCAT}. Si se utiliza \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
 % y se establece en |true|, |$\spPfig[read-sub=true](1)$| imprimirá
-% `$\mathcal{P}_{1}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `$\spPfig[read-sub=true](1)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«perímetro sub uno»}; si se establece en |false|, la impresión
 % será la misma y se verbaliza \emph{«perímetro uno»}.
 %
 % Si se utiliza \myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
 % y se establece en |true|, |$\spPfig[read-sub=true](F_{1})$| imprimirá
-% `$\mathcal{P}_{F_{1}}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% `\mysubout{$\spPfig[read-sub=true](F_{1})$}' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«perímetro de la figura sub uno»}; si se establece en |false|,
 % la impresión será la misma y se verbaliza \emph{«perímetro de la figura uno»}.
 %
@@ -4845,17 +4859,17 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % se infiere el \emph{símbolo} acorde al número de puntos; si se establece en
 % \mykey{auto} se imprime y si se establece en \mykey{none} se omite:
 % |$\spPfig[print-sym=auto](ABC)$| y |$\spPfig[print-sym=none](ABC)$| imprimirán
-% `$\mathcal{P}_{\triangle ABC}$' y `$\mathcal{P}_{ABC}$' en la salida
+% `$\spPfig[print-sym=none](ABC)$' y `\mysubout{$\mathcal{P}_{ABC}$}' en la salida
 % \texttt{PDF} y en ambos casos \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro del triángulo A B C»}.
 %
 % Si se utiliza \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
 % los valores \mykey{auto} y \mykey{none} quedan sin efecto; si se establece en \mykey{triangle}
 % o \mykey{square} anida el argumento bajo el \emph{símbolo}:
 % \lstinline[language=spintent-doc,emph={[4]{triangle}},emphstyle={[4]\color{keyname}}]|$\spPfig[print-sym=triangle](1)$|
-% imprimirá `$\mathcal{P}_{\triangle_{1}}$' en la salida \texttt{PDF} y
+% imprimirá `$\spPfig[print-sym=triangle](1)$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro del triángulo uno»};
 % \lstinline[language=spintent-doc,emph={[4]{square}},emphstyle={[4]\color{keyname}}]|$\spPfig[print-sym=square](1)$|
-% imprimirá `$\mathcal{P}_{\mdlgwhtsquare_{1}}$' en la salida \texttt{PDF}
+% imprimirá `$\spPfig[print-sym=square](1)$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro del cuadrado uno»}.
 %
 % \begin{important}*
@@ -4892,8 +4906,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\sprad$| imprimirá `$r$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
-% verbalizará \emph{«radio»}; |$\spdiam$| imprimirá `$d$' en la
+% |$\sprad$| imprimirá `$\sprad$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% verbalizará \emph{«radio»}; |$\spdiam$| imprimirá `$\spdiam$' en la
 % salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«diámetro»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{sprad} y \cs[no-index]{spdiam}}
@@ -4922,7 +4936,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   false}{false}[sprad,spdiam]
 %
 % Establece si se \emph{imprime} usando mayúsculas. Si se establece en |true|,
-% |$\sprad[upper-case=true]$| y |$\spdiam[upper-case=true]$| imprimirán `$R$' y `$D$'
+% |$\sprad[upper-case=true]$| y |$\spdiam[upper-case=true]$| imprimirán `$\spdiam[upper-case=true]$' y `$D$'
 % en la salida \texttt{PDF}; si se establece en |false| se imprimirá usando
 % minúsculas.
 %
@@ -4935,7 +4949,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si se \emph{usará} |\diameter| antes de la letra `$d$' o `$D$'
 % en la impresión del comando |\spdiam|. Si se establece en |true|,
-% |$\spdiam[print-sym=true]$| imprimirá `$\diameter d$' en la salida \texttt{PDF}
+% |$\spdiam[print-sym=true]$| imprimirá `$\spdiam[print-sym=true]$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«diámetro»}.
 %
 % \begin{important}*
@@ -4946,7 +4960,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece un \emph{subíndice} sobre las letras `$r$', `$R$', `$d$' o `$D$'.
 % El valor de esta llave \emph{siempre} debe pasarse entre llaves `|{ }|'.
-% Por ejemplo:~|$\sprad[sub-index={1}]$| imprimirá `$r_{1}$' en la salida
+% Por ejemplo:~|$\sprad[sub-index={1}]$| imprimirá `$\sprad[sub-index={1}]$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«radio uno»}.
 %
 % \keyexampcmd{read-sub}{true \textnormal{\textcolor{lightgray}{\textbar}}
@@ -4967,10 +4981,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % debe pasarse entre llaves `|{ }|' y se debe usar en conjunto
 % con la llave \mykey{concept}.
 %
-% Por ejemplo:~|$\sprad[read-arg={medida exacta}]$| imprimirá `$r$' en
+% Por ejemplo:~|$\sprad[read-arg={medida exacta}]$| imprimirá `$\sprad[read-arg={medida exacta}]$' en
 % la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«radio medida exacta»}; |$\sprad[concept=false,read-arg={medida exacta}]$|
-% imprimirá `$r$' y \mynvmath{NVDA/MathCAT} verbalizará \emph{«medida
+% imprimirá `$\sprad[concept=false,read-arg={medida exacta}]$' y \mynvmath{NVDA/MathCAT} verbalizará \emph{«medida
 % exacta»}.
 %
 % \begin{important}*
@@ -5017,11 +5031,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % verbalizará \emph{«circunferencia»}.
 %
 % Si se proporciona el \emph{argumento} \myparg{centro}, |$\spcirc(O)$|
-% imprimirá `$\bigodot(O)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spcirc(O)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«circunferencia de centro en O»}.
 %
 % Si se proporciona el \emph{argumento} \myparg{centro\textnormal{\textcolor{red}{,}} radio},
-% |$\spcirc(O,3)$| imprimirá `$\bigodot(O,3)$' en la salida \texttt{PDF}
+% |$\spcirc(O,3)$| imprimirá `$\spcirc(O,3)$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«circunferencia de centro
 % en O y radio tres»}.
 %
@@ -5066,7 +5080,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mykey{usual}, |$\spcirc[print-sym=|\mykey{usual}|](O)$| imprimirá `$C(O)$'
 % en la salida \texttt{PDF}; si se establece en \mykey{odot},
 % \lstinline[language=spintent-doc,emph={[4]{odot}},emphstyle={[4]\color{keyname}}]|$\spcirc[print-sym=odot](O)$|
-% imprimirá `$\bigodot(O)$' en la salida \texttt{PDF}.
+% imprimirá `$\spcirc[print-sym=odot](O)$' en la salida \texttt{PDF}.
 %
 % \keyexampcmd{read-sty}{circun \textnormal{\textcolor{lightgray}{\textbar}}
 %   circulo}{circun}[spcirc]
@@ -5094,10 +5108,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece el \emph{comando} que procesa internamente el argumento \mymeta{radio}
 % cuando tiene la forma \mymeta{punto punto}. Si se establece en \mykey{side}
 % se usará |\spside|\mymarg{punto punto}, |$\spcirc[radio-sty=side](O, AB)$|
-% imprimirá `$\bigodot(O, \overline{AB})$' en la salida \texttt{PDF} y
+% imprimirá `$\spcirc[radio-sty=side](O, AB)$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«circunferencia de centro en O y radio lado A B»};
 % si se establece en \mykey{mside} se usará |\spmside|\mymarg{punto punto},
-% |$\spcirc[radio-sty=mside](O, AB)$| imprimirá `$\bigodot(O, AB)$' en la
+% |$\spcirc[radio-sty=mside](O, AB)$| imprimirá `$\spcirc[radio-sty=mside](O, AB)$' en la
 % salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«circunferencia
 % de centro en O y radio medida del lado A B»}.
 %
@@ -5129,7 +5143,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece un \emph{subíndice} sobre |\bigodot| o la letra `$C$' establecida
 % por la llave \mykey{print-sym}. El valor de esta llave \emph{siempre} debe pasarse
 % entre llaves `|{ }|'.\newline Por ejemplo:~|$\spcirc[sub-index={1},radio-sty=mside](O, AB)$|
-% imprimirá `$\bigodot_{1}(O, AB)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spcirc[sub-index={1},radio-sty=mside](O, AB)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«circunferencia uno de centro en O y radio medida del lado A B»}.
 %
 % \keyexampcmd{read-sub}{true \textnormal{\textcolor{lightgray}{\textbar}}
@@ -5147,7 +5161,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % que será verbalizado por \mynvmath{NVDA/MathCAT} al ejecutar el
 % comando sin modificar la impresión de este. El valor de esta llave
 % \emph{siempre} debe pasarse entre llaves `|{ }|'. Por ejemplo:~|$\spcirc[read-arg={disco}](O)$|
-% imprimirá `$\bigodot(O)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spcirc[read-arg={disco}](O)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«disco de centro en O»}.
 %
 % \keyexampcmd{silent}{true \textnormal{\textcolor{lightgray}{\textbar}}
@@ -5176,16 +5190,16 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 %   Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   ni el \emph{argumento opcional delimitado por paréntesis}, |$\spAcirc$|
-%   imprimirá `$\mathcal{A}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+%   imprimirá `$\spAcirc$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 %   verbalizará \emph{«área de la circunferencia»}.
 %
 %   Si se proporciona el \emph{argumento} \myparg{centro},
-%   |$\spAcirc(O)$| imprimirá `$\mathcal{A}_{\bigodot(O)}$' en la
+%   |$\spAcirc(O)$| imprimirá `$\spAcirc(O)$' en la
 %   salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área
 %   de la circunferencia con centro en O»}.
 %
 %   Si se proporciona el \emph{argumento} \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
-%   |$\spAcirc(1)$| imprimirá `$\mathcal{A}_{\bigodot_{1}}$' en la salida
+%   |$\spAcirc(1)$| imprimirá `$\spAcirc(1)$' en la salida
 %   \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«área de la circunferencia uno»}.
 %
 % \begin{important}*
@@ -5263,16 +5277,16 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si se \emph{usará} |\bigodot| o la letra `$C$' en la impresión
 % del comando sin modificar la verbalización de este. Si se establece en |usual|,
-% |$\spAcirc[print-sym=usual](O)$| imprimirá `$\mathcal{A}_{C(O)}$'
+% |$\spAcirc[print-sym=usual](O)$| imprimirá `$\spAcirc[print-sym=usual](O)$'
 % en la salida \texttt{PDF}; si se establece en \mykey{odot}, |$\spAcirc[print-sym=odot](O)$|
-% imprimirá `$\mathcal{A}_{\bigodot(O)}$' en la salida \texttt{PDF}.
+% imprimirá `$\spAcirc[print-sym=odot](O)$' en la salida \texttt{PDF}.
 %
 % \keyexampcmd{sub-index}{subíndice}{no usado}[spAcirc]
 %
 % Establece un \emph{subíndice} sobre |\bigodot| o la letra `$C$' establecida
 % por la llave \mykey{print-sym} cuando se utiliza el argumento \myparg{centro}.
 % El valor de esta llave \emph{siempre} debe pasarse entre llaves `|{ }|'.
-% Por ejemplo:~|$\spAcirc[sub-index={1}](O)$| imprimirá `$\mathcal{A}_{\bigodot_{1}(O)}$'
+% Por ejemplo:~|$\spAcirc[sub-index={1}](O)$| imprimirá `$\spAcirc[sub-index={1}](O)$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«área de la circunferencia uno con centro en O»}.
 %
@@ -5314,16 +5328,16 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 %   Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   ni el \emph{argumento opcional delimitado por paréntesis}, |$\spPcirc$|
-%   imprimirá `$\mathcal{P}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+%   imprimirá `$\spPcirc$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 %   verbalizará \emph{«perímetro de la circunferencia»}.
 %
 %   Si se proporciona el \emph{argumento} \myparg{centro},
-%   |$\spPcirc(O)$| imprimirá `$\mathcal{P}_{\bigodot(O)}$' en la
+%   |$\spPcirc(O)$| imprimirá `$\spPcirc(O)$' en la
 %   salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro
 %   de la circunferencia con centro en O»}.
 %
 %   Si se proporciona el \emph{argumento} \myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n},
-%   |$\spPcirc(1)$| imprimirá `$\mathcal{P}_{\bigodot_{1}}$' en la salida
+%   |$\spPcirc(1)$| imprimirá `$\spPcirc(1)$' en la salida
 %   \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«perímetro de la circunferencia uno»}.
 %
 % \begin{important}*
@@ -5403,16 +5417,16 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si se \emph{usará} |\bigodot| o la letra `$C$' en la impresión
 % del comando sin modificar la verbalización de este. Si se establece en |usual|,
-% |$\spPcirc[print-sym=usual](O)$| imprimirá `$\mathcal{P}_{C(O)}$'
+% |$\spPcirc[print-sym=usual](O)$| imprimirá `$\spPcirc[print-sym=usual](O)$'
 % en la salida \texttt{PDF}; si se establece en \mykey{odot}, |$\spPcirc[print-sym=odot](O)$|
-% imprimirá `$\mathcal{P}_{\bigodot(O)}$' en la salida \texttt{PDF}.
+% imprimirá `$\spPcirc[print-sym=odot](O)$' en la salida \texttt{PDF}.
 %
 % \keyexampcmd{sub-index}{subíndice}{no usado}[spPcirc]
 %
 % Establece un \emph{subíndice} sobre |\bigodot| o la letra `$C$' establecida
 % por la llave \mykey{print-sym} cuando se utiliza el argumento \myparg{centro}.
 % El valor de esta llave \emph{siempre} debe pasarse entre llaves `|{ }|'.
-% Por ejemplo:~|$\spPcirc[sub-index={1}](O)$| imprimirá `$\mathcal{P}_{\bigodot_{1}(O)}$'
+% Por ejemplo:~|$\spPcirc[sub-index={1}](O)$| imprimirá `$\spPcirc[sub-index={1}](O)$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«perímetro de la circunferencia uno con centro en O»}.
 %
@@ -5451,7 +5465,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spVol$| imprimirá `$\mathcal{V}$' en la salida \texttt{PDF} y
+% |$\spVol$| imprimirá `$\spVol$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«volumen»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spVol}}
@@ -5479,7 +5493,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece un \emph{subíndice} sobre `$\mathcal{V}$'. El valor de esta
 % llave \emph{siempre} debe pasarse entre llaves `|{ }|'. Por ejemplo:~%
-% |$\spVol[sub-index={1}]$| imprimirá `$\mathcal{V}_{1}$' en la salida
+% |$\spVol[sub-index={1}]$| imprimirá `$\spVol[sub-index={1}]$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«volumen uno»}.
 %
 % \keyexampcmd{read-sub}{true \textnormal{\textcolor{lightgray}{\textbar}}
@@ -5500,9 +5514,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % debe pasarse entre llaves `|{ }|' y se debe usar en conjunto
 % con la llave \mykey{concept}.
 %
-% Por ejemplo:~|$\spVol[read-arg={medida exacta}]$| imprimirá `$\mathcal{V}$'
+% Por ejemplo:~|$\spVol[read-arg={medida exacta}]$| imprimirá `$\spVol[read-arg={medida exacta}]$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«volumen medida exacta»};
-% |$\spVol[concept=false,read-arg={medida exacta}]$| imprimirá `$\mathcal{V}$'
+% |$\spVol[concept=false,read-arg={medida exacta}]$| imprimirá `$\spVol[concept=false,read-arg={medida exacta}]$'
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«medida exacta»}.
 %
 % \begin{important}*
@@ -5558,26 +5572,26 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
 % y el intervalo es abierto en sus dos extremos, |$\spinterval{(1,5)}$|
-% imprimirá `$(1,5)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spinterval{(1,5)}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«intervalo abierto de uno a cinco»}; la notación
-% chilena |$\spinterval{]1,5[}$| imprimirá `$]1,5[$' y se verbalizará igual.
+% chilena |$\spinterval{]1,5[}$| imprimirá `$\spinterval{]1,5[}$' y se verbalizará igual.
 %
 % Si el intervalo es cerrado en sus dos extremos, |$\spinterval{[1,5]}$|
-% imprimirá `$[1,5]$' y \mynvmath{NVDA/MathCAT} verbalizará
+% imprimirá `$\spinterval{[1,5]}$' y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«intervalo cerrado de uno a cinco»}.
 %
 % Si el intervalo es abierto en un extremo y cerrado en el otro,
-% |$\spinterval{]1,5]}$| imprimirá `$]1,5]$' y \mynvmath{NVDA/MathCAT}
+% |$\spinterval{]1,5]}$| imprimirá `$\spinterval{]1,5]}$' y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«intervalo abierto en uno y cerrado en cinco»};
-% |$\spinterval{[1,5[}$| imprimirá `$[1,5[$' y verbalizará
+% |$\spinterval{[1,5[}$| imprimirá `$\spinterval{[1,5[}$' y verbalizará
 % \emph{«intervalo cerrado en uno y abierto en cinco»}.
 %
 % Si un extremo es infinito, |$\spinterval{]-\infty,3]}$| imprimirá
-% `$]-\infty,3]$' y \mynvmath{NVDA/MathCAT} verbalizará
+% `$\spinterval{]-\infty,3]}$' y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«intervalo abierto en menos infinito y cerrado en tres»}.
 %
 % Si los extremos son números decimales con coma, el separador debe ser\newline
-% el punto y coma:~|$\spinterval{[3,5;4,2]}$| imprimirá `$[3{,}5;4{,}2]$' y
+% el punto y coma:~|$\spinterval{[3,5;4,2]}$| imprimirá `$\spinterval{[3,5;4,2]}$' y
 % \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«intervalo cerrado de tres coma cinco a cuatro coma dos»}.
 %
@@ -5619,7 +5633,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece el \emph{prefijo} que será verbalizado por \mynvmath{NVDA/MathCAT}
 % \emph{antes} de verbalizar el \emph{«concepto»} intervalo. El valor de esta
 % llave \emph{siempre} debe pasarse entre llaves `|{ }|'. Por ejemplo:~%
-% |$\spinterval[prefix={el}]{(1,5)}$| imprimirá `$(1,5)$' en la salida
+% |$\spinterval[prefix={el}]{(1,5)}$| imprimirá `$\spinterval[prefix={el}]{(1,5)}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«el intervalo abierto de uno a cinco»}.
 %
@@ -5629,7 +5643,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % verbalizada por \mynvmath{NVDA/MathCAT} al ejecutar el comando sin modificar
 % la impresión de este. El valor de esta llave \emph{siempre} debe pasarse
 % entre llaves `|{ }|'. Por ejemplo:~|$\spinterval[read-arg={rango}]{[1,5]}$|
-% imprimirá `$[1,5]$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spinterval[read-arg={rango}]{[1,5]}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«rango»}.
 %
 % \keyexampcmd{concept}{true \textnormal{\textcolor{lightgray}{\textbar}}
@@ -5687,23 +5701,23 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spfun{f(x)}$| imprimirá `$f(x)$' en la salida \texttt{PDF} y
+% |$\spfun{f(x)}$| imprimirá `$\spfun{f(x)}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«f de x»};
-% |$\spfun{f_{1}(x)}$| imprimirá `$f_{1}(x)$' y verbalizará
-% \emph{«f sub uno de x»}; |$\spfun{f'(x)}$| imprimirá `$f'(x)$' y
+% |$\spfun{f_{1}(x)}$| imprimirá `\mysubout{$\spfun{f_{1}(x)}$}' y verbalizará
+% \emph{«f sub uno de x»}; |$\spfun{f'(x)}$| imprimirá `$\spfun{f'(x)}$' y
 % verbalizará \emph{«f prima de x»}; |$\spfun{f''(x)}$| imprimirá
-% `$f''(x)$' y verbalizará \emph{«f segunda de x»}.
+% `$\spfun{f''(x)}$' y verbalizará \emph{«f segunda de x»}.
 %
-% Con dos o más argumentos, |$\spfun{f(x,y)}$| imprimirá `$f(x,y)$' y
+% Con dos o más argumentos, |$\spfun{f(x,y)}$| imprimirá `$\spfun{f(x,y)}$' y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«f de x coma y»}. Un argumento
-% puede ser una expresión: |$\spfun{f(x+1)}$| imprimirá `$f(x+1)$' y
+% puede ser una expresión: |$\spfun{f(x+1)}$| imprimirá `$\spfun{f(x+1)}$' y
 % verbalizará \emph{«f de x más 1»}.
 %
 % Un argumento puede ser a su vez una llamada, tantas veces como se quiera:
-% |$\spfun{f(g(x))}$| imprimirá `$f(g(x))$' y verbalizará
-% \emph{«f de g de x»}; |$\spfun{f(f^{-1}(y))}$| imprimirá `$f(f^{-1}(y))$' y
+% |$\spfun{f(g(x))}$| imprimirá `$\spfun{f(g(x))}$' y verbalizará
+% \emph{«f de g de x»}; |$\spfun{f(f^{-1}(y))}$| imprimirá `$\spfun{f(f^{-1}(y))}$' y
 % verbalizará \emph{«f de f inversa de y»}; |$\spfun{f(g(x),h(y))}$| imprimirá
-% `$f(g(x),h(y))$'. Una llamada anidada se valida igual que la exterior. Si
+% `$\spfun{f(g(x),h(y))}$'. Una llamada anidada se valida igual que la exterior. Si
 % el argumento es otra cosa, como |g(x)+1|, se imprime y se verbaliza con
 % normalidad pero sin anotar la llamada que contiene. Las llaves
 % \mykey{read-cmd} y \mykey{silent} valen para todos los niveles;
@@ -5777,21 +5791,21 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val}, |$\spdom{f}$|
-% imprimirá `$\operatorname{Dom}(f)$' en la salida \texttt{PDF} y
+% imprimirá `$\spdom{f}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«dominio de f»};
-% |$\sprec{f}$| imprimirá `$\operatorname{Rec}(f)$' y verbalizará
+% |$\sprec{f}$| imprimirá `$\sprec{f}$' y verbalizará
 % \emph{«recorrido de f»}; |$\spcod{f}$| imprimirá
-% `$\operatorname{Cod}(f)$' y verbalizará \emph{«codominio de f»}.
+% `$\spcod{f}$' y verbalizará \emph{«codominio de f»}.
 %
 % El nombre de la función admite prima(s) y subíndice, y se verbaliza sin
-% anunciar la mayúscula: |$\spdom{f'}$| imprimirá `$\operatorname{Dom}(f')$'
+% anunciar la mayúscula: |$\spdom{f'}$| imprimirá `$\spdom{f'}$'
 % y verbalizará \emph{«dominio de f prima»}; |$\sprec{f_{1}}$| imprimirá
-% `$\operatorname{Rec}(f_{1})$' y verbalizará \emph{«recorrido de f sub
-% uno»}; |$\spcod{F''}$| imprimirá `$\operatorname{Cod}(F'')$' y verbalizará
+% `\mysubout{$\sprec{f_{1}}$}' y verbalizará \emph{«recorrido de f sub
+% uno»}; |$\spcod{F''}$| imprimirá `$\spcod{F''}$' y verbalizará
 % \emph{«codominio de F segunda»}.
 %
 % Con la inversa, |$\spdom{f^{-1}}$| imprimirá
-% `$\operatorname{Dom}(f^{-1})$' y verbalizará
+% `$\spdom{f^{-1}}$' y verbalizará
 % \emph{«dominio de f inversa»};\newline |$\sprec{f^{-1}}$| verbalizará
 % \emph{«recorrido de f inversa»}.
 %
@@ -5817,7 +5831,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mynvmath{NVDA/MathCAT} de la \mymarg{función} pasada al comando sin
 % modificar la impresión de este. Si se establece en |true|,
 % \mynvmath{NVDA/MathCAT} NO verbalizará la salida del comando:
-% |$\spdom[silent=true]{f}$| imprimirá `$\operatorname{Dom}(f)$' y no se
+% |$\spdom[silent=true]{f}$| imprimirá `$\spdom[silent=true]{f}$' y no se
 % verbalizará nada; si se establece en |false|, sí verbalizará la salida del
 % comando. El argumento se valida igual en ambos casos.
 %
@@ -5840,13 +5854,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spfuncomp{f\circ g}$| imprimirá `$f\circ g$' en la salida \texttt{PDF} y
+% |$\spfuncomp{f\circ g}$| imprimirá `$\spfuncomp{f\circ g}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«f compuesta con g»};
-% |$\spfuncomp{f\circ g\circ h}$| imprimirá `$f\circ g\circ h$' y verbalizará
+% |$\spfuncomp{f\circ g\circ h}$| imprimirá `$\spfuncomp{f\circ g\circ h}$' y verbalizará
 % \emph{«f compuesta con g compuesta con h»};
-% |$\spfuncomp{(f\circ g)(x)}$| imprimirá `$(f\circ g)(x)$' y verbalizará
+% |$\spfuncomp{(f\circ g)(x)}$| imprimirá `$\spfuncomp{(f\circ g)(x)}$' y verbalizará
 % \emph{«f compuesta con g de x»}; |$\spfuncomp{(f^{-1}\circ g)(x)}$| imprimirá
-% `$(f^{-1}\circ g)(x)$' y verbalizará \emph{«f inversa compuesta con g de x»}.
+% `$\spfuncomp{(f^{-1}\circ g)(x)}$' y verbalizará \emph{«f inversa compuesta con g de x»}.
 % Un argumento puede ser una llamada: |$\spfuncomp{(f\circ g)(h(x))}$|
 % verbalizará \emph{«f compuesta con g de h de x»}.
 %
@@ -5887,10 +5901,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spabs{x}$| imprimirá `$\lvert x\rvert$' en la salida \texttt{PDF} y
+% |$\spabs{x}$| imprimirá `$\spabs{x}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«valor absoluto de x»};
-% |$\spabs{-5}$| imprimirá `$\lvert -5\rvert$' y verbalizará \emph{«valor
-% absoluto de menos 5»}; |$\spabs{x-3}$| imprimirá `$\lvert x-3\rvert$' y
+% |$\spabs{-5}$| imprimirá `$\spabs{-5}$' y verbalizará \emph{«valor
+% absoluto de menos 5»}; |$\spabs{x-3}$| imprimirá `$\spabs{x-3}$' y
 % verbalizará \emph{«valor absoluto de x menos 3 fin del valor absoluto»}.
 %
 % Cuando el argumento tiene más de un símbolo, sin contar un signo `|+|' o
@@ -5935,7 +5949,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Sobrescribe lo que verbalizará \mynvmath{NVDA/MathCAT} al ejecutar el
 % comando sin modificar la impresión de este. El valor de esta llave
 % \emph{siempre} debe pasarse entre llaves `|{ }|'. Por ejemplo:~%
-% |$\spabs[read-arg={módulo de x}]{x}$| imprimirá `$\lvert x\rvert$' en la
+% |$\spabs[read-arg={módulo de x}]{x}$| imprimirá `$\spabs[read-arg={módulo de x}]{x}$' en la
 % salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«módulo de
 % x»}.
 %
@@ -5977,9 +5991,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spProm{x}$| imprimirá `$\bar{x}$' en la salida \texttt{PDF} y
+% |$\spProm{x}$| imprimirá `$\spProm{x}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«promedio de x»};
-% |$\spProm{x_{1}}$| imprimirá `$\bar{x_{1}}$' y verbalizará
+% |$\spProm{x_{1}}$| imprimirá `\mysubout{$\spProm{x_{1}}$}' y verbalizará
 % \emph{«promedio de x sub uno»}.
 %
 % \begin{important}*
@@ -6005,7 +6019,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mynvmath{NVDA/MathCAT} antes del \mymarg{argumento}, sin modificar la
 % impresión del comando. El valor de esta llave \emph{siempre} debe pasarse
 % entre llaves `|{ }|'. Por ejemplo:~|$\spProm[read-arg={media de}]{x}$|
-% imprimirá `$\bar{x}$' en la salida \texttt{PDF} y
+% imprimirá `$\spProm[read-arg={media de}]{x}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«media de x»}.
 %
 % \subsection*{Los comandos \cs[no-index]{spmedia}, \cs[no-index]{spmediana}, \cs[no-index]{spmoda}, \cs[no-index]{spdesv} y \cs[no-index]{spvarz}}\label{subsec:spmedia}
@@ -6027,12 +6041,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional}, |$\spmedia$|
-% imprimirá `$\mathrm{MA}$' en la salida \texttt{PDF} y
+% imprimirá `$\spmedia$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«media aritmética»};
-% |$\spmediana$| imprimirá `$\mathrm{MD}$' y verbalizará
-% \emph{«mediana»}; |$\spmoda$| imprimirá `$\mathrm{MO}$' y verbalizará
-% \emph{«moda»}; |$\spdesv$| imprimirá `$s$' y verbalizará
-% \emph{«desviación estándar s»}; |$\spvarz$| imprimirá `$s^{2}$' y
+% |$\spmediana$| imprimirá `$\spmediana$' y verbalizará
+% \emph{«mediana»}; |$\spmoda$| imprimirá `$\spmoda$' y verbalizará
+% \emph{«moda»}; |$\spdesv$| imprimirá `$\spdesv$' y verbalizará
+% \emph{«desviación estándar s»}; |$\spvarz$| imprimirá `$\spvarz$' y
 % verbalizará \emph{«varianza s al cuadrado»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spmedia}, \cs[no-index]{spmediana}, \cs[no-index]{spmoda}, \cs[no-index]{spdesv} y \cs[no-index]{spvarz}}
@@ -6042,7 +6056,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si se \emph{imprime} la letra `$\sigma$' en lugar de la letra
 % `$s$'. Si se establece en |true|, |$\spdesv[sigma=true]$| imprimirá
-% `$\sigma$' y |$\spvarz[sigma=true]$| imprimirá `$\sigma^{2}$' en la
+% `$\spdesv[sigma=true]$' y |$\spvarz[sigma=true]$| imprimirá `$\spvarz[sigma=true]$' en la
 % salida \texttt{PDF}, y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«desviación estándar sigma»} y \emph{«varianza sigma al cuadrado»}.
 % Esta llave solo existe para |\spdesv| y |\spvarz|.
@@ -6054,11 +6068,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{«de»}, o \emph{«sub»} en |\spdesv| y |\spvarz| según la llave
 % \mykey{read-sub}. El valor de esta llave \emph{siempre} debe pasarse entre
 % llaves `|{ }|'. Por ejemplo:~|$\spmedia[sub-index={x}]$| imprimirá
-% `$\mathrm{MA}_{x}$' en la salida \texttt{PDF} y
+% `$\spmedia[sub-index={x}]$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«media aritmética de x»};
-% |$\spdesv[sub-index={x}]$| imprimirá `$s_{x}$' y verbalizará
+% |$\spdesv[sub-index={x}]$| imprimirá `$\spdesv[sub-index={x}]$' y verbalizará
 % \emph{«desviación estándar s sub x»}; |$\spvarz[sub-index={x}]$| imprimirá
-% `$s_{x}^{2}$' y verbalizará \emph{«varianza s sub x al cuadrado»}.
+% `$\spvarz[sub-index={x}]$' y verbalizará \emph{«varianza s sub x al cuadrado»}.
 %
 % \keyexampcmd{read-sub}{true \textnormal{\textcolor{lightgray}{\textbar}}
 %   false}{false}[spmedia,spmediana,spmoda,spdesv,spvarz]
@@ -6083,7 +6097,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % llave \emph{siempre} debe pasarse entre llaves `|{ }|'.
 %
 % Por ejemplo:~|$\spdesv[read-arg={desviación estándar poblacional}]$|
-% imprimirá `$s$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spdesv[read-arg={desviación estándar poblacional}]$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«desviación estándar poblacional»}.
 %
 % \begin{important}*
@@ -6116,11 +6130,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional}, |$\sprango$|
-% imprimirá `$R$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
-% verbalizará \emph{«rango»}; |$\spriq$| imprimirá `$\mathrm{RIQ}$' y
+% imprimirá `$\sprango$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% verbalizará \emph{«rango»}; |$\spriq$| imprimirá `$\spriq$' y
 % verbalizará \emph{«rango intercuartil»}; |$\spmin$| imprimirá
-% `$x_{\min}$' y verbalizará \emph{«mínimo»}; |$\spmax$| imprimirá
-% `$x_{\max}$' y verbalizará \emph{«máximo»}.
+% `$\spmin$' y verbalizará \emph{«mínimo»}; |$\spmax$| imprimirá
+% `$\spmax$' y verbalizará \emph{«máximo»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{sprango}, \cs[no-index]{spriq}, \cs[no-index]{spmin} y \cs[no-index]{spmax}}
 %
@@ -6146,10 +6160,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spcuartil{1}$| imprimirá `$Q_{1}$' en la salida \texttt{PDF} y
+% |$\spcuartil{1}$| imprimirá `$\spcuartil{1}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«cuartil 1»};
-% |$\spdecil{3}$| imprimirá `$D_{3}$' y verbalizará \emph{«decil 3»};
-% |$\spPerc{25}$| imprimirá `$P_{25}$' y verbalizará
+% |$\spdecil{3}$| imprimirá `$\spdecil{3}$' y verbalizará \emph{«decil 3»};
+% |$\spPerc{25}$| imprimirá `$\spPerc{25}$' y verbalizará
 % \emph{«percentil 25»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spcuartil}, \cs[no-index]{spdecil} y \cs[no-index]{spPerc}}
@@ -6170,7 +6184,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Sobrescribe lo que verbalizará \mynvmath{NVDA/MathCAT} al ejecutar el
 % comando sin modificar la impresión de este. El valor de esta llave
 % \emph{siempre} debe pasarse entre llaves `|{ }|'.\newline Por ejemplo:~%
-% |$\spcuartil[read-arg={primer cuartil}]{1}$| imprimirá `$Q_{1}$' en la
+% |$\spcuartil[read-arg={primer cuartil}]{1}$| imprimirá `$\spcuartil[read-arg={primer cuartil}]{1}$' en la
 % salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«primer cuartil»}.
 %
@@ -6190,14 +6204,14 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spFrec{f}$| imprimirá `$f$' en la salida \texttt{PDF} y
+% |$\spFrec{f}$| imprimirá `$\spFrec{f}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«frecuencia absoluta»};
-% |$\spFrec{F}$| imprimirá `$F$' y verbalizará \emph{«frecuencia absoluta
-% acumulada»}; |$\spFrec{f_{r}}$| imprimirá `$f_{r}$' y verbalizará
-% \emph{«frecuencia relativa»}; |$\spFrec{F_{r}}$| imprimirá `$F_{r}$' y
+% |$\spFrec{F}$| imprimirá `$\spFrec{F}$' y verbalizará \emph{«frecuencia absoluta
+% acumulada»}; |$\spFrec{f_{r}}$| imprimirá `\mysubout{$\spFrec{f_{r}}$}' y verbalizará
+% \emph{«frecuencia relativa»}; |$\spFrec{F_{r}}$| imprimirá `\mysubout{$\spFrec{F_{r}}$}' y
 % verbalizará \emph{«frecuencia relativa acumulada»};
-% \myhlc|$\spFrec{f_{r}\%}$| imprimirá `$f_{r}\%$' y verbalizará \emph{«frecuencia
-% porcentual»}; \myhlc|$\spFrec{F_{r}\%}$| imprimirá `$F_{r}\%$' y verbalizará
+% \myhlc|$\spFrec{f_{r}\%}$| imprimirá `\mysubout{$\spFrec{f_{r}\%}$}' y verbalizará \emph{«frecuencia
+% porcentual»}; \myhlc|$\spFrec{F_{r}\%}$| imprimirá `\mysubout{$\spFrec{F_{r}\%}$}' y verbalizará
 % \emph{«frecuencia porcentual acumulada»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spFrec}}
@@ -6208,7 +6222,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mynvmath{NVDA/MathCAT} verbaliza después del nombre de la frecuencia
 % con la palabra \emph{«sub»}. Solo es válida con los símbolos |f| y |F|.
 % El valor de esta llave \emph{siempre} debe pasarse entre llaves
-% `|{ }|'. Por ejemplo:~|$\spFrec[sub-index={i}]{f}$| imprimirá `$f_{i}$' en
+% `|{ }|'. Por ejemplo:~|$\spFrec[sub-index={i}]{f}$| imprimirá `$\spFrec[sub-index={i}]{f}$' en
 % la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«frecuencia absoluta sub i»}.
 %
@@ -6227,7 +6241,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mynvmath{NVDA/MathCAT} al ejecutar el comando sin modificar la
 % impresión de este. Es la única forma de usar un símbolo que no está en
 % la tabla anterior: |$\spFrec[read-arg={frecuencia absoluta}]{n_{i}}$|
-% imprimirá `$n_{i}$' y verbalizará \emph{«frecuencia absoluta»}. El valor
+% imprimirá `\mysubout{$\spFrec[read-arg={frecuencia absoluta}]{n_{i}}$}' y verbalizará \emph{«frecuencia absoluta»}. El valor
 % de esta llave \emph{siempre} debe pasarse entre llaves `|{ }|'.
 %
 % \begin{important}*
@@ -6259,10 +6273,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spcase{f}$| imprimirá `$C_{f}$' en la salida \texttt{PDF} y
+% |$\spcase{f}$| imprimirá `$\spcase{f}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«casos favorables»};
-% |$\spcase{p}$| imprimirá `$C_{p}$' y verbalizará \emph{«casos
-% posibles»}; |$\spcase{t}$| imprimirá `$C_{t}$' y verbalizará
+% |$\spcase{p}$| imprimirá `$\spcase{p}$' y verbalizará \emph{«casos
+% posibles»}; |$\spcase{t}$| imprimirá `$\spcase{t}$' y verbalizará
 % \emph{«casos totales»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spcase}}
@@ -6273,7 +6287,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \mynvmath{NVDA/MathCAT} al ejecutar el comando sin modificar la
 % impresión de este. El valor de esta llave \emph{siempre} debe pasarse
 % entre llaves `|{ }|'. Por ejemplo:~%
-% |$\spcase[read-arg={casos que cumplen}]{f}$| imprimirá `$C_{f}$' en la
+% |$\spcase[read-arg={casos que cumplen}]{f}$| imprimirá `$\spcase[read-arg={casos que cumplen}]{f}$' en la
 % salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«casos
 % que cumplen»}.
 %
@@ -6301,7 +6315,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional}, |$\spOmega$|
-% imprimirá `$\Omega$' en la salida \texttt{PDF} y
+% imprimirá `$\spOmega$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«espacio muestral»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spOmega}}
@@ -6311,7 +6325,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si se \emph{imprime} el símbolo `$\#$' antes de la letra, para
 % representar la cardinalidad del espacio muestral. Si se establece en |true|,
-% |$\spOmega[card=true]$| imprimirá `$\#\Omega$' en la salida \texttt{PDF}
+% |$\spOmega[card=true]$| imprimirá `$\spOmega[card=true]$' en la salida \texttt{PDF}
 % y \mynvmath{NVDA/MathCAT} verbalizará \emph{«cardinalidad del espacio
 % muestral»}.
 %
@@ -6322,9 +6336,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{«sub»}. El valor de esta llave
 % \emph{siempre} debe pasarse entre llaves `|{ }|'.
 %
-% Por ejemplo:~|$\spOmega[sub-index={1}]$| imprimirá `$\Omega_{1}$' en la salida
+% Por ejemplo:~|$\spOmega[sub-index={1}]$| imprimirá `$\spOmega[sub-index={1}]$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«espacio muestral
-% sub 1»}; |$\spOmega[card=true,sub-index={1}]$| imprimirá `$\#\Omega_{1}$'
+% sub 1»}; |$\spOmega[card=true,sub-index={1}]$| imprimirá `$\spOmega[card=true,sub-index={1}]$'
 % y verbalizará \emph{«cardinalidad del espacio muestral sub 1»}.
 %
 % \keyexampcmd{read-arg}{verbalización \textnormal{NVDA}}{no usado}[spOmega]
@@ -6332,7 +6346,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Sobrescribe el \emph{nombre} que verbalizará \mynvmath{NVDA/MathCAT} al
 % ejecutar el comando sin modificar la impresión de este. El valor de esta
 % llave \emph{siempre} debe pasarse entre llaves `|{ }|'.\newline Por ejemplo:~%
-% |$\spOmega[read-arg={universo}]$| imprimirá `$\Omega$' en la salida
+% |$\spOmega[read-arg={universo}]$| imprimirá `$\spOmega[read-arg={universo}]$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«universo»}.
 %
 % \begin{important}*
@@ -6362,7 +6376,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si no se proporciona el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spPval{1}{5}$| imprimirá `$\frac{1}{5}$' en la salida
+% |$\spPval{1}{5}$| imprimirá `$\spPval{1}{5}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«1 de 5»}.
 %
@@ -6412,11 +6426,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spProb{A}$| imprimirá `$P(A)$' en la salida \texttt{PDF} y
+% |$\spProb{A}$| imprimirá `$\spProb{A}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«probabilidad de A»};
-% |$\spProb{A \cap B}$| imprimirá `$P(A \cap B)$' y verbalizará
+% |$\spProb{A \cap B}$| imprimirá `$\spProb{A \cap B}$' y verbalizará
 % \emph{«probabilidad de A y B»}; |$\spProb{A \cup B}$| imprimirá
-% `$P(A \cup B)$' y verbalizará \emph{«probabilidad de A o B»};
+% `$\spProb{A \cup B}$' y verbalizará \emph{«probabilidad de A o B»};
 % |$\spProb{A \mid B}$|, o \myhlc+$\spProb{A | B}$+, imprimirá `$P(A \mid B)$' y
 % verbalizará \emph{«probabilidad de A dado B»}.
 %
@@ -6429,7 +6443,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{siempre} debe pasarse entre llaves `|{ }|'.
 %
 % Por ejemplo:~|$\spProb[read-arg={probabilidad del suceso}]{A}$|
-% imprimirá `$P(A)$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% imprimirá `$\spProb[read-arg={probabilidad del suceso}]{A}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
 % verbalizará \emph{«probabilidad del suceso»}.
 %
 % \keyexampcmd{silent}{true \textnormal{\textcolor{lightgray}{\textbar}}
@@ -6468,11 +6482,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spcomp{A}$| imprimirá `$A^{c}$' en la salida \texttt{PDF} y
+% |$\spcomp{A}$| imprimirá `$\spcomp{A}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«complemento de A»};
-% |$\spProb{A \cap \spcomp{B}}$| imprimirá `$P(A \cap B^{c})$' y
+% |$\spProb{A \cap \spcomp{B}}$| imprimirá `$\spProb{A \cap \spcomp{B}}$' y
 % verbalizará \emph{«probabilidad de A y complemento de B»};
-% |$\spcomp{A \cup B}$| imprimirá `$(A \cup B)^{c}$' y verbalizará
+% |$\spcomp{A \cup B}$| imprimirá `$\spcomp{A \cup B}$' y verbalizará
 % \emph{«complemento de se abren paréntesis A o B se cierran
 % paréntesis»}.
 %
@@ -6483,7 +6497,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Establece si el complemento se imprime con una \emph{barra horizontal}
 % sobre el evento en lugar del exponente `$c$'. Si se establece en |true|,
-% |$\spcomp[bar=true]{A}$| imprimirá `$\overline{A}$' en la salida
+% |$\spcomp[bar=true]{A}$| imprimirá `$\spcomp[bar=true]{A}$' en la salida
 % \texttt{PDF}; la verbalización es la misma en ambos casos.
 %
 % \keyexampcmd{wrap-parens}{auto \textnormal{\textcolor{lightgray}{\textbar}}
@@ -6506,7 +6520,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Sobrescribe lo que verbalizará \mynvmath{NVDA/MathCAT} al ejecutar el
 % comando sin modificar la impresión de este. El valor de esta llave
 % \emph{siempre} debe pasarse entre llaves `|{ }|'.\newline Por ejemplo:~%
-% |$\spcomp[read-arg={no ocurre A}]{A}$| imprimirá `$A^{c}$' en la salida
+% |$\spcomp[read-arg={no ocurre A}]{A}$| imprimirá `$\spcomp[read-arg={no ocurre A}]{A}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«no ocurre A»}.
 %
 % \keyexampcmd{silent}{true \textnormal{\textcolor{lightgray}{\textbar}}
@@ -6540,11 +6554,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % las repeticiones no sumen más de $n$.
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spcomb{5,2}$| imprimirá `$\binom{5}{2}$' en la salida \texttt{PDF} y
+% |$\spcomb{5,2}$| imprimirá `$\spcomb{5,2}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«5 sobre 2»};
-% |$\spcomb[kind=variation]{5,2}$| imprimirá `$V_{2}^{5}$' y verbalizará
+% |$\spcomb[kind=variation]{5,2}$| imprimirá `$\spcomb[kind=variation]{5,2}$' y verbalizará
 % \emph{«variación de 5 elementos tomados de a 2»};
-% |$\spcomb[kind=permutation]{n}$| imprimirá `$P_{n}$' y verbalizará
+% |$\spcomb[kind=permutation]{n}$| imprimirá `$\spcomb[kind=permutation]{n}$' y verbalizará
 % \emph{«permutación de n elementos»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spcomb}}
@@ -6568,20 +6582,20 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece si los elementos pueden \emph{repetirse}. Si se establece en
 % |true|, se agrega una \emph{R} a la letra y \emph{«con repetición»} a la
 % verbalización: |$\spcomb[kind=variation,repeat=true]{5,2}$| imprimirá
-% `$VR_{2}^{5}$' y verbalizará
+% `$\spcomb[kind=variation,repeat=true]{5,2}$' y verbalizará
 % \emph{«variación con repetición de 5 elementos tomados de a 2»}; si se
 % establece en |false|, no se agrega nada. Con \mykey{kind}|=permutation| y
 % \mykey{repeat}|=true| lo que sigue a la primera coma es la \emph{lista de repeticiones},
 % que también va separada por comas y tiene al menos dos elementos.\newline Por ejemplo:~%
 % |$\spcomb[kind=permutation,repeat=true]{10,3,3,4}$|
-% imprimirá `$PR_{10}^{3,3,4}$' y verbalizará \emph{«permutación con
+% imprimirá `$\spcomb[kind=permutation,repeat=true]{10,3,3,4}$' y verbalizará \emph{«permutación con
 % repetición de 10 elementos con repeticiones 3 3 y 4»}.
 %
 % \keyexampcmd{circular}{true \textnormal{\textcolor{lightgray}{\textbar}}
 %   false}{false}[spcomb]
 %
 % Establece si se trata de una \emph{permutación circular}. Si se establece en
-% |true|,\newline |$\spcomb[kind=permutation,circular=true]{n}$| imprimirá `$PC_{n}$'
+% |true|,\newline |$\spcomb[kind=permutation,circular=true]{n}$| imprimirá `$\spcomb[kind=permutation,circular=true]{n}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
 % \emph{«permutación circular de n elementos»}; si se establece en |false|, la
 % permutación es la usual. Solo es válida con \mykey{kind}|=permutation| y
@@ -6593,7 +6607,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Establece cómo se imprimen las combinaciones sin repetición. Si se establece
 % en |auto| o |binom|, se imprime el coeficiente binomial $\binom{n}{k}$ y
 % \mynvmath{NVDA/MathCAT} lo verbaliza \emph{«n sobre k»}; si se establece en
-% |letter|, |$\spcomb[print-sty=letter]{5,2}$| imprimirá `$C_{2}^{5}$' y
+% |letter|, |$\spcomb[print-sty=letter]{5,2}$| imprimirá `$\spcomb[print-sty=letter]{5,2}$' y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«combinación de 5 elementos
 % tomados de a 2»}. El valor |binom| solo es válido para combinaciones sin
 % repetición.
@@ -6603,7 +6617,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Sobrescribe lo que verbalizará \mynvmath{NVDA/MathCAT} al ejecutar el
 % comando sin modificar la impresión de este. El valor de esta llave
 % \emph{siempre} debe pasarse entre llaves `|{ }|'.\newline Por ejemplo:~%
-% |$\spcomb[read-arg={cinco sobre dos}]{5,2}$| imprimirá `$\binom{5}{2}$' en
+% |$\spcomb[read-arg={cinco sobre dos}]{5,2}$| imprimirá `$\spcomb[read-arg={cinco sobre dos}]{5,2}$' en
 % la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«cinco
 % sobre dos»}.
 %
@@ -6636,11 +6650,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   El comando \ics*{spfact} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{n}. Imprime
 %   el factorial de \mymarg{n}. Si \mymarg{n} es una expresión, los paréntesis
-%   se escriben en el argumento: |$\spfact{(n-1)}$| imprimirá `$(n-1)!$'.
+%   se escriben en el argumento: |$\spfact{(n-1)}$| imprimirá `$\spfact{(n-1)}$'.
 % \end{function}
 %
 % Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
-% |$\spfact{5}$| imprimirá `$5!$' en la salida \texttt{PDF} y
+% |$\spfact{5}$| imprimirá `$\spfact{5}$' en la salida \texttt{PDF} y
 % \mynvmath{NVDA/MathCAT} verbalizará \emph{«factorial de 5»}.
 %
 % El comando |\spfact| devuelve un \enquote{error} y se detiene la compilación
@@ -6653,7 +6667,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Sobrescribe lo que verbalizará \mynvmath{NVDA/MathCAT} al ejecutar el
 % comando sin modificar la impresión de este. El valor de esta llave
 % \emph{siempre} debe pasarse entre llaves `|{ }|'.\newline Por ejemplo:~%
-% |$\spfact[read-arg={cinco factorial}]{5}$| imprimirá `$5!$' en la salida
+% |$\spfact[read-arg={cinco factorial}]{5}$| imprimirá `$\spfact[read-arg={cinco factorial}]{5}$' en la salida
 % \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«cinco factorial»}.
 %
 % \keyexampcmd{silent}{true \textnormal{\textcolor{lightgray}{\textbar}}
@@ -7283,7 +7297,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % keys: \mykey[usepackage]{mathcal} and \mykey[usepackage]{AFghost}, which can be passed as package
 % options.
 %    \begin{macrocode}
-\ProvidesExplPackage {spanish-mathml-intent} {2026-11-13} {1.5} {Spanish MathML intent}
+\ProvidesExplPackage {spanish-mathml-intent} {2026-11-16} {1.5} {Spanish MathML intent}
 \keys_define:nn { spintent }
   {
     mathcal .usage:n = load,
@@ -7565,7 +7579,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %<*example>
 % \fi
 \begin{examplecode}
- <mi intent=":silent" mathvariant="normal">⁣</mi>
+ <mo intent=":silent" mathvariant="normal">⁣</mo>
 \end{examplecode}
 % \iffalse
 %</example>
@@ -7575,7 +7589,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %<*example>
 % \fi
 \begin{examplecode}
- <mi intent=":silent" mathvariant="normal" sptmp="outer">⁣</mi>
+ <mo intent=":silent" mathvariant="normal" sptmp="outer">⁣</mo>
 \end{examplecode}
 % \iffalse
 %</example>
@@ -7601,7 +7615,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %<*example>
 % \fi
 \begin{examplecode}
- <mi intent=":silent" mathvariant="normal">⁣</mi>
+ <mo intent=":silent" mathvariant="normal">⁣</mo>
 \end{examplecode}
 % \iffalse
 %</example>
@@ -7611,7 +7625,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %<*example>
 % \fi
 \begin{examplecode}
- <mi intent=":silent" mathvariant="normal" sptmp="inner">⁣</mi>
+ <mo intent=":silent" mathvariant="normal" sptmp="inner">⁣</mo>
 \end{examplecode}
 % \iffalse
 %</example>
@@ -24006,7 +24020,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %<*spintentlua>
 % \fi
 --[[
-     Lua module spintent.lua for spanish-mathml-intent package - v1.5 [2026-11-13]
+     Lua module spintent.lua for spanish-mathml-intent package - v1.5 [2026-11-16]
 --]]
 
 -- ÍNDICE DE SECCIONES (cada una empieza con su título en mayúsculas)
@@ -24309,16 +24323,20 @@ register_tex_cmd("luafun_inner_sep", function()
     kernel.char  = 0x2063
     kernel.fam   = 0
     local noad   = node.new("noad")
-    noad.subtype = 0
+    noad.subtype = 6   -- noad_open, igual que el fantasma exterior
     noad.nucleus = kernel
 
     local properties = node.get_properties_table()
     local p = properties[kernel] or {}
-    p.mathml_filter = function(result, core)
-        result.intent = ":silent"
-        if spintent_debug_ghost then result.sptmp = "inner" end
-        return result, core
-    end
+    p.mathml_table = {
+        [0]          = "mo",
+        "\u{2063}",
+        intent       = ":silent",
+        mathvariant  = "normal",
+        sptmp        = spintent_debug_ghost and "inner" or nil,
+        [":nodes"]   = { kernel },
+    }
+    p.mathml_filter = function(result, core) return result, core end
     properties[kernel] = p
 
     node.write(noad)
@@ -24330,10 +24348,10 @@ end, {})
 -- <mi> seguidas en una sola palabra antes de leer el intent (heurística
 -- "c o s"), aunque tengan arg; un <mi> silencioso entre ellas cuenta
 -- como una letra más y no lo evita.
--- El noad sigue siendo ord (el PDF no cambia). Por eso no basta con
--- renombrar en mathml_filter: luamml (noad_to_table) devuelve a <mi>
--- todo <mo> de un noad ord. Con mathml_table, sin mathml_core, luamml
--- usa el elemento tal cual (como luamml-array). :nodes enlaza el glifo
+-- El noad es open: un signo que sigue al separador queda unario y no
+-- recibe espacio de operador binario. Con mathml_table, sin
+-- mathml_core, luamml usa el elemento tal cual (como luamml-array);
+-- no basta con renombrar en mathml_filter. :nodes enlaza el glifo
 -- con el elemento en el modo mathml-SE. El mathml_filter queda solo
 -- como marca de "ya reclamado" para spintent_claim_target.
 -- No se deduplica: va uno entre cada par de puntos. Sin marca sptmp: es
@@ -24343,7 +24361,7 @@ register_tex_cmd("luafun_point_sep", function()
     kernel.char  = 0x2063
     kernel.fam   = 0
     local noad   = node.new("noad")
-    noad.subtype = 0
+    noad.subtype = 6   -- noad_open, igual que los fantasmas
     noad.nucleus = kernel
 
     local properties = node.get_properties_table()
@@ -24370,7 +24388,7 @@ register_tex_cmd("luafun_pause_sep", function()
     kernel.char  = 0x2063
     kernel.fam   = 0
     local noad   = node.new("noad")
-    noad.subtype = 0
+    noad.subtype = 6   -- noad_open, igual que los fantasmas
     noad.nucleus = kernel
 
     local properties = node.get_properties_table()
@@ -24388,7 +24406,7 @@ register_tex_cmd("luafun_pause_sep", function()
     node.write(noad)
 end, {})
 
--- \__spintent_invisible_sep: (fantasma exterior, <mi intent=":silent">).
+-- \__spintent_invisible_sep: (fantasma exterior, <mo intent=":silent">).
 -- Necesario cuando el resultado anotado es el único elemento de
 -- nivel superior de la fórmula: sin un segundo hermano, to_math
 -- renombra el <mrow> resultante directamente a <math intent=...>
@@ -24403,21 +24421,23 @@ register_tex_cmd("luafun_invisible_sep", function()
     kernel.char  = 0x2063
     kernel.fam   = 0
     local noad   = node.new("noad")
-    noad.subtype = 0   -- noad_ord. Forzar op (1) da <mo> correcto
-                       -- pero agrega espaciado real de operador al
-                       -- PDF (rspace visible). Se acepta <mi> sin
-                       -- efecto lateral -- intent=':silent' hace
-                       -- que la etiqueta (mi/mo) sea irrelevante
-                       -- para cualquier lector.
+    noad.subtype = 6   -- noad_open: un signo (+, -) que sigue al fantasma
+                       -- queda unario y no recibe espacio de operador
+                       -- binario. luamml usa mathml_table tal cual, como
+                       -- <mo>, sin lspace ni rspace.
     noad.nucleus = kernel
 
     local properties = node.get_properties_table()
     local p = properties[kernel] or {}
-    p.mathml_filter = function(result, core)
-        result.intent = ":silent"
-        if spintent_debug_ghost then result.sptmp = "outer" end
-        return result, core
-    end
+    p.mathml_table = {
+        [0]          = "mo",
+        "\u{2063}",
+        intent       = ":silent",
+        mathvariant  = "normal",
+        sptmp        = spintent_debug_ghost and "outer" or nil,
+        [":nodes"]   = { kernel },
+    }
+    p.mathml_filter = function(result, core) return result, core end
     properties[kernel] = p
 
     node.write(noad)
@@ -27944,7 +27964,7 @@ end
 
 -- Shared cleanup: Strips ghost tags/characters from dirty HTML
 --
--- Each ghost is a <mi ... sptmp="outer|inner" ...>U+2063</mi> element. It is
+-- Each ghost is a <mo ... sptmp="outer|inner" ...>U+2063</mo> element. It is
 -- removed with a pattern over the whole file content (not line by line), so
 -- it works both for indented HTML (one element per line) and for flat HTML
 -- (a whole formula on a single line). Elements with an unknown sptmp kind
@@ -27963,8 +27983,8 @@ local function strip_ghosts(input_path, output_path)
     local clean = content
     for _, ghost in ipairs(ghost_forms) do
         -- optional leading newline + indentation is removed together with the tag
-        local pattern = "\n?[ \t]*<mi([^>]-)sptmp=\"(%a+)\"([^>]-)>"
-            .. ghost:gsub("%p", "%%%0") .. "</mi>"
+        local pattern = "\n?[ \t]*<mo([^>]-)sptmp=\"(%a+)\"([^>]-)>"
+            .. ghost:gsub("%p", "%%%0") .. "</mo>"
         clean = clean:gsub(pattern, function(_, kind)
             if kind == "outer" then
                 count_outer = count_outer + 1

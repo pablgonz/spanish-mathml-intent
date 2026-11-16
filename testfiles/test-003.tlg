@@ -41,13 +41,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00011"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00012"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00013"
            intent="20:number"
@@ -103,13 +103,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>(
         </mo>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00021"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00022"
            intent="20:number"
@@ -174,13 +174,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>(
         </mo>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00031"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00032"
            intent="20:number"
@@ -237,13 +237,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00039"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00040"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00041"
            intent="20:number"
@@ -291,13 +291,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00047"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00048"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00049"
            intent="20:number"
@@ -345,13 +345,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00055"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00056"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00057"
            intent="_negativo:postfix($n)"
@@ -412,13 +412,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00065"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00066"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00067"
            intent="20:number"
@@ -474,13 +474,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>(
         </mo>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00075"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00076"
            intent="20:number"
@@ -545,13 +545,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>(
         </mo>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00085"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00086"
            intent="20:number"
@@ -608,13 +608,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00093"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00094"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00095"
            intent="20:number"
@@ -662,13 +662,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00101"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00102"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00103"
            intent="20:number"
@@ -716,13 +716,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00109"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00110"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00111"
            intent="_negativo:postfix($n)"
@@ -882,13 +882,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00134"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00135"
            intent="6:number"
@@ -1018,13 +1018,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00153"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00154"
            intent="6:number"
@@ -1177,13 +1177,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00176"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00177"
            intent="12:number"
@@ -1318,13 +1318,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00196"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00197"
            intent="6:number"
@@ -1390,13 +1390,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00206"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00207"
            intent="6:number"
@@ -1466,20 +1466,20 @@ TEST 1: Show PDF Tags
            id="ID.00216"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00217"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="1" ?>⁣
-         </mi>
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         </mo>
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00218"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="1" ?>⁣
-         </mi>
+         </mo>
          <mn xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00219"
             intent="6:number"
@@ -1610,13 +1610,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00237"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00238"
            intent="6:number"
@@ -1746,13 +1746,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00256"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00257"
            intent="6:number"
@@ -1926,13 +1926,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00282"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00283"
            intent="6:number"
@@ -2080,13 +2080,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00304"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00305"
            intent="6:number"
@@ -2152,13 +2152,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00314"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00315"
            intent="6:number"
@@ -2228,20 +2228,20 @@ TEST 1: Show PDF Tags
            id="ID.00324"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00325"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="1" ?>⁣
-         </mi>
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         </mo>
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00326"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="1" ?>⁣
-         </mi>
+         </mo>
          <mn xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00327"
             intent="6:number"
@@ -2361,13 +2361,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00344"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00345"
            intent="2:number"
@@ -2566,13 +2566,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00373"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00374"
            intent="2:number"
@@ -2693,13 +2693,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00391"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00392"
            intent="2:number"
@@ -2807,13 +2807,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00407"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00408"
            intent="2:number"
@@ -2921,13 +2921,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00423"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00424"
            intent="2:number"
@@ -3035,13 +3035,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="1" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00439"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="1" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00440"
            intent="2:number"
@@ -3153,20 +3153,20 @@ TEST 1: Show PDF Tags
            id="ID.00455"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00456"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="1" ?>⁣
-         </mi>
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         </mo>
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00457"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="1" ?>⁣
-         </mi>
+         </mo>
          <mn xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00458"
             intent="2:number"
@@ -3186,13 +3186,13 @@ TEST 1: Show PDF Tags
            id="ID.00460"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00461"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="1" ?>⁣
-         </mi>
+         </mo>
          <mn xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00462"
             intent="3:number"
@@ -3212,13 +3212,13 @@ TEST 1: Show PDF Tags
            id="ID.00464"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00465"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="1" ?>⁣
-         </mi>
+         </mo>
          <mn xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00466"
             intent="6:number"
@@ -3326,13 +3326,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="2" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00481"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00482"
            intent="2:number"
@@ -3531,13 +3531,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="2" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00510"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00511"
            intent="2:number"
@@ -3658,13 +3658,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="2" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00528"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00529"
            intent="2:number"
@@ -3772,13 +3772,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="2" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00544"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00545"
            intent="2:number"
@@ -3886,13 +3886,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="2" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00560"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00561"
            intent="2:number"
@@ -4000,13 +4000,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="2" ?>⁣
         </mi>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00576"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00577"
            intent="2:number"
@@ -4118,20 +4118,20 @@ TEST 1: Show PDF Tags
            id="ID.00592"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00593"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="2" ?>⁣
-         </mi>
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         </mo>
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00594"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="2" ?>⁣
-         </mi>
+         </mo>
          <mn xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00595"
             intent="2:number"
@@ -4151,13 +4151,13 @@ TEST 1: Show PDF Tags
            id="ID.00597"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00598"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="2" ?>⁣
-         </mi>
+         </mo>
          <mn xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00599"
             intent="3:number"
@@ -4177,13 +4177,13 @@ TEST 1: Show PDF Tags
            id="ID.00601"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00602"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="2" ?>⁣
-         </mi>
+         </mo>
          <mn xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00603"
             intent="6:number"
@@ -4239,13 +4239,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00610"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00611"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00612"
            intent="23:number"
@@ -4279,13 +4279,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00616"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00617"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00618"
            intent="_menos:prefix($n)"
@@ -4340,13 +4340,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="2" ?>(
         </mo>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00626"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00627"
            intent="_menos:prefix($n)"
@@ -4410,13 +4410,13 @@ TEST 1: Show PDF Tags
           >
          <?MarkedContent page="2" ?>(
         </mo>
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00636"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00637"
            intent="_menos:prefix($n)"
@@ -4472,13 +4472,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00644"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00645"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00646"
            intent="_negativo:postfix($n)"
@@ -4525,13 +4525,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00652"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00653"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00654"
            intent="1000000:number"
@@ -4589,13 +4589,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00663"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00664"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mn xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00665"
            intent="1000000:number"
@@ -5147,24 +5147,24 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00752"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00753"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00754"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00755"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="2" ?>⁣
-         </mi>
+         </mo>
          <mn xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00756"
            >
@@ -5232,24 +5232,24 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00766"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00767"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00768"
            intent="_es-a:infix($num,$denom)"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00769"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="2" ?>⁣
-         </mi>
+         </mo>
          <mfrac xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00770"
            >
@@ -5300,24 +5300,24 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00777"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00778"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00779"
            intent="_es-a:infix($num,$denom)"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00780"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="2" ?>⁣
-         </mi>
+         </mo>
          <mstyle xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00781"
             displaystyle="true"
@@ -5368,13 +5368,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00788"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00789"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00790"
            intent="_es-a:infix($num,$denom)"
@@ -5425,24 +5425,24 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00797"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00798"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00799"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00800"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="2" ?>⁣
-         </mi>
+         </mo>
          <mfrac xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00801"
            >
@@ -5484,24 +5484,24 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00807"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00808"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="2" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00809"
            intent="_es-a:infix($num,$denom)"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00810"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="2" ?>⁣
-         </mi>
+         </mo>
          <mfrac xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00811"
            >
@@ -5531,13 +5531,13 @@ TEST 1: Show PDF Tags
            id="ID.00815"
            intent="_es-a:infix($num,$denom)"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00816"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="2" ?>⁣
-         </mi>
+         </mo>
          <mfrac xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00817"
            >
@@ -5588,24 +5588,24 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00824"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00825"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="3" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00826"
            intent="_es-a:infix($num,$denom)"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00827"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="3" ?>⁣
-         </mi>
+         </mo>
          <mstyle xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00828"
             displaystyle="true"
@@ -5641,13 +5641,13 @@ TEST 1: Show PDF Tags
            id="ID.00833"
            intent="_es-a:infix($num,$denom)"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00834"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="3" ?>⁣
-         </mi>
+         </mo>
          <mstyle xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00835"
             displaystyle="true"
@@ -5698,13 +5698,13 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00842"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00843"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="3" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00844"
            intent="_es-a:infix($num,$denom)"
@@ -5787,24 +5787,24 @@ TEST 1: Show PDF Tags
        <math xmlns="http://www.w3.org/1998/Math/MathML"
           id="ID.00856"
          >
-        <mi xmlns="http://www.w3.org/1998/Math/MathML"
+        <mo xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00857"
            intent=":silent"
            mathvariant="normal"
           >
          <?MarkedContent page="3" ?>⁣
-        </mi>
+        </mo>
         <mrow xmlns="http://www.w3.org/1998/Math/MathML"
            id="ID.00858"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00859"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="3" ?>⁣
-         </mi>
+         </mo>
          <mfrac xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00860"
            >
@@ -5832,13 +5832,13 @@ TEST 1: Show PDF Tags
            id="ID.00864"
            intent="_-"
           >
-         <mi xmlns="http://www.w3.org/1998/Math/MathML"
+         <mo xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00865"
             intent=":silent"
             mathvariant="normal"
            >
           <?MarkedContent page="3" ?>⁣
-         </mi>
+         </mo>
          <mfrac xmlns="http://www.w3.org/1998/Math/MathML"
             id="ID.00866"
            >
