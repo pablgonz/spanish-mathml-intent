@@ -803,7 +803,7 @@ end, "shekel_fallback_patch")
 \IfDocumentMetadataT
   {
     \renewcommand\@dotsep{3}
-    \renewcommand\l@section[2]{{\bfseries\@dottedtocline{1}{0mm}{5mm}{#1}{#2}}}
+    \renewcommand\l@section[2]{\@dottedtocline{1}{0mm}{5mm}{\bfseries #1}{#2}}
     \renewcommand\l@subsection{\@dottedtocline{2}{5mm}{6mm}}
     \renewcommand\l@subsubsection{\@dottedtocline{3}{11mm}{8mm}}
   }
@@ -820,20 +820,20 @@ end, "shekel_fallback_patch")
 % \title{
 %    \scalebox{1.25}{\pkglogo}\\[-5pt]
 %    {\Large\textcolor{guard_angle}{\fetamontotf{mathml intent en español}}}\\[-5pt]
-%    \fileversion{} \quad \filedate\\[-12pt]
-% }
-% \author{
-%    \large
-%    \raisebox{-1pt}{\textcolor{guard_angle}{\textcopyright{}2026 by Pablo González L}}\thanks{
+%    \fileversion{} \quad \filedate\thanks{
 %     Este archivo describe la documentación para la versión \fileversion{}
 %     revisada por última vez el
-%    \filedate.}\thanks{
+%    \filedate.}\\[25pt]
+%    \author{
+%    \large
+%    \raisebox{-1pt}{\textcolor{guard_angle}{\textcopyright{}2026 by Pablo González L}}\thanks{
 %    E-mail: \textcolor{guard_angle}{\textsf{\guillemotleft}}\email{pablgonz@educarchile.cl}\textcolor{guard_angle}{\textsf{\guillemotright}}.
-%       }\\
+%       }%
+%    }
 % \small
 % \vspace*{-5pt}
 % \textsc{ctan}: \url{https://www.ctan.org/pkg/spanish-mathml-intent}\\
-% \small\textcolor{gray}{\scriptsize\faIcon[regular]{github}}\,\,\,\url{https://github.com/pablgonz/spanish-mathml-intent}
+% \textcolor{gray}{\scriptsize\faIcon[regular]{github}}\,\,\,\url{https://github.com/pablgonz/spanish-mathml-intent}
 % \vspace*{-2cm}
 % }
 % \date{}
