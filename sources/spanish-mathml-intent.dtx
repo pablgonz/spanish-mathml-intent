@@ -576,15 +576,65 @@ end, "shekel_fallback_patch")
       \textcolor{filename}{ \ttfamily \tl_use:N \l_tmpa_tl }
     \group_end:
   }
+% Attached files. With \DocumentMetadata the files are embedded with the
+% pdfmanagement (\pdffile_embed_file:nnn, /AFRelationship /Supplement as
+% PDF/UA-2 requires) and the annotation goes in an Annot structure; the
+% icon is typeset with fontawesome5 and marked as artifact. Without
+% \DocumentMetadata, attachfile2 as before.
+\box_new:N \l__mydoc_attach_box
+\int_new:N \g__mydoc_attach_int
+\IfDocumentMetadataTF
+  {
+    \hook_gput_code:nnn { begindocument } { mydoc }
+      { \pdfxform_new:nnn { mydoc/attach/emptyAP } { } { \hbox_to_wd:nn { 1sp } { } } }
+    \cs_new_protected:Npn \__mydoc_attach:nn #1#2
+      {
+        \pdf_object_if_exist:nF { mydoc/attach/#1 }
+          {
+            \group_begin:
+              \pdfdict_put:nnn { l_pdffile/Filespec } { AFRelationship } { /Supplement }
+              \pdffile_embed_file:nnn {#1} {#1} { mydoc/attach/#1 }
+            \group_end:
+          }
+        \hbox_set:Nn \l__mydoc_attach_box { \textcolor { newlinkcolor } {#2} }
+        \tag_struct_begin:n { tag = Annot , alt = { Archivo~adjunto~#1 } }
+        \pdfannot_box:nnne
+          { \box_wd:N \l__mydoc_attach_box }
+          { \box_ht:N \l__mydoc_attach_box }
+          { \box_dp:N \l__mydoc_attach_box }
+          {
+            /Subtype /FileAttachment
+            /FS ~ \pdf_object_ref:n { mydoc/attach/#1 }
+            /Contents ~ (Archivo~adjunto~#1)
+            /AP ~ << /N ~ \pdfxform_ref:n { mydoc/attach/emptyAP } >>
+            \tag_if_active:T { /StructParent ~ \tag_struct_parent_int: }
+          }
+        \tag_if_active:T
+          {
+            \tag_struct_insert_annot:ee
+              { \pdfannot_box_ref_last: } { \tag_struct_parent_int: }
+          }
+        \tag_struct_end:
+        \tag_mc_end_push:
+        \tag_mc_begin:n { artifact }
+        \box_use_drop:N \l__mydoc_attach_box
+        \tag_mc_end:
+        \tag_mc_begin_pop:n { }
+      }
+  }
+  {
+    \cs_new_protected:Npn \__mydoc_attach:nn #1#2
+      { \textattachfile [ color = newlinkcolor , print = false ] {#1} {#2} }
+  }
 % \myattachfile{m}
 \NewDocumentCommand \myattachfile{ m }
   {
     \group_begin:
       \IfFileExists{#1.pdf}{Archivo~fuente~
-      \textattachfile[color=newlinkcolor,print=false]{#1.tex}{\faFile*[regular]},~
+      \__mydoc_attach:nn {#1.tex} {\faFile*[regular]},~
       \emph{tagged}~\texttt{PDF}~\texttt{mathml-SE}~
-      \textattachfile[color=newlinkcolor,print=false]{#1.pdf}{\faFilePdf[regular]}
-      \ y~\texttt{mathml-AF}~\textattachfile[color=newlinkcolor,print=false]{#1-AF.pdf}{\faFilePdf[regular]}.}{}
+      \__mydoc_attach:nn {#1.pdf} {\faFilePdf[regular]}
+      \ y~\texttt{mathml-AF}~\__mydoc_attach:nn {#1-AF.pdf} {\faFilePdf[regular]}.}{}
     \group_end:
   }
 % Margin icons for the important environment (internal use)
@@ -1333,7 +1383,7 @@ end, "shekel_fallback_patch")
 % El resto de las utilidades se agrupan por eje temático, en el mismo orden en
 % que se describen en este documento:
 %
-% \begin{itemize}[labelindent=0pt,item-vspace=\parskip]
+% \begin{itemize}[labelindent=0pt,itemsep=\parskip]
 %   \item \emph{Generales} (\S\ref{sec:utilidades}): |\spsiglo| escribe
 %     siglos en números arábigos o romanos, |\sptime| horas y |\spdate| fechas.
 %   \item \emph{Símbolos} (\S\ref{sec:simbolos}): |\spnewread| y |\spread|
@@ -1619,7 +1669,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Revise, en este orden:
 %
-% \begin{enumerate}[labelindent=0pt,item-vspace=\parskip]
+% \begin{enumerate}[labelindent=0pt,itemsep=\parskip]
 %   \item \emph{El mensaje de error.} Si la compilación se detiene con un
 %     \enquote{error}, el mensaje indica el comando y el argumento que no
 %     cumple la forma documentada (\S\ref{sec:setspintent}).
@@ -6821,7 +6871,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % genere de nuevo: si agrega, borra o modifica fórmulas con frecuencia, el
 % \texttt{PDF} seguirá leyendo el contenido anterior. Por eso se recomienda:
 %
-% \begin{itemize}[nosep,item-vspace=\parskip]
+% \begin{itemize}[nosep,itemsep=\parskip]
 %   \item usar \texttt{mathml-SE} mientras el documento está en desarrollo, y
 %   \item usar \texttt{mathml-AF} solo en documentos terminados.
 % \end{itemize}
@@ -6837,7 +6887,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \subsection{De \texttt{mathml-SE} a \texttt{mathml-AF}}
 %
-% \begin{enumerate}[nosep,item-vspace=\parskip]
+% \begin{enumerate}[nosep,itemsep=\parskip]
 %   \item Escriba y revise el documento con \texttt{mathml-SE}.
 %   \item Cuando esté terminado, ejecute en una terminal |spmmli-tool archivo.tex|.
 %     Se genera el archivo \myfile{archivo-mathml.html}.
@@ -6979,7 +7029,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % están el archivo fuente y los \texttt{PDF} en \texttt{mathml-SE} y en
 % \texttt{mathml-AF}.
 %
-% \begin{itemize}[labelindent=0pt,item-vspace=\parskip]
+% \begin{itemize}[labelindent=0pt,itemsep=\parskip]
 %   \item El archivo \myfile{spintent-01.tex} contiene las pruebas de |\spnum|,
 %     |\spunit|, |\spmoney| y |\spshort|, junto con |\spnewunit| y |\spunitalias|.
 %     \myattachfile{spintent-01}
@@ -7217,10 +7267,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \section{Change history}
 % \label{sec:changes}
 %
-% \setlist[itemize,1]{label=\textendash,leftmargin=*,labelsep=0.5em,nosep,noitemsep}
+% \setlist[itemize,1]{label=\textendash,leftmargin=1em,labelsep=0.5em,nosep,itemsep=0pt}
 % \newlength\descrwidth
 % \settowidth{\descrwidth}{\textsf{v1.0, (ctan), 2026-10-20} }
-% \begin{description}[font=\small\sffamily,wide=0pt,leftmargin=1.1\descrwidth,nosep,item-vspace=0pt]
+% \begin{description}[font=\small\sffamily\bfseries,leftmargin=1.1\descrwidth,labelwidth=\dimexpr1.1\descrwidth-0.5em\relax,labelsep=0.5em,itemindent=0pt,nosep,itemsep=0pt]
 %  \item [\fileversion{} (ctan), \filedate]
 %    \begin{itemize}
 %      \item |\spunit| accepts the prefix $\mathrm{µ}$ glued to
