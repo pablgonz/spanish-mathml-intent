@@ -137,12 +137,19 @@
 
 \hook_gput_code:nnn { begindocument } { mylhmc }
   {
+    % Fuente de los números de línea: se resuelve UNA vez. \ttfamily\tiny en
+    % cada línea costaba más que todo el coloreado en Lua.
+    \group_begin:
+      \ttfamily \tiny
+      \exp_last_unbraced:NNNo \tex_global:D \tex_let:D
+        \__mylhmc_lineno_font: { \tex_the:D \tex_font:D }
+    \group_end:
     \renewcommand \theCodelineNo
       {
         \__mylhmc_luafun_actual_text_begin:
         \group_begin:
           \color_select:n { mylhmc / guard / angle }
-          \ttfamily \tiny \arabic { CodelineNo }
+          \__mylhmc_lineno_font: \arabic { CodelineNo }
         \group_end:
         \__mylhmc_luafun_actual_text_end:
       }
@@ -195,7 +202,9 @@
   {
     \tex_noindent:D
     \__mylhmc_luafun_process_line:
-    \tex_par:D
+    % \par de LaTeX (no la primitiva): dispara el hook de fin de párrafo;
+    % con tagging, \tex_par:D dejaba cada línea como un párrafo sin cerrar.
+    \par
   }
 
 \cs_generate_variant:Nn \__mylhmc_set_end_pattern:n { V }

@@ -30,9 +30,58 @@
 %
 % \iffalse
 %<*driver>
+\DocumentMetadata{lang=es-CL,pdfversion=2.0,pdfstandard=ua-2,tagging=on,tagging-setup={math/setup={mathml-SE}}}
 \documentclass[full]{l3doc}
+% Tagging support for l3doc as in l3in2edoc.cls, but mapping its structures
+% to standard tags (its own function/macro/... tags are unknown to the
+% LaTeX RelaxNG schemas); macro uses \UseStructureName instead of the
+% literal tag-name=macro of latex-lab-testphase-l3doc.
+\IfDocumentMetadataT
+  {
+    \RequirePackage{latex-lab-testphase-l3doc}
+    \AssignStructureRole{doc/function}{Sect}
+    \AssignStructureRole{doc/functionnames}{Caption}
+    \AssignStructureRole{doc/functionname}{Code}
+    \AssignStructureRole{doc/functionnamepart}{Span}
+    \AssignStructureRole{doc/syntax}{Div}
+    \AssignStructureRole{doc/function-description}{Div}
+    \AssignStructureRole{doc/macro}{Sect}
+    \AssignStructureRole{doc/macronames}{Caption}
+    \AssignStructureRole{doc/macroname}{Code}
+    \AssignStructureRole{doc/variable}{Sect}
+    \AssignStructureRole{doc/variablenames}{Caption}
+    \AssignStructureRole{doc/variablename}{Code}
+    \AssignStructureRole{doc/codelinenum}{Lbl}
+  }
+\ExplSyntaxOn
+\IfDocumentMetadataT
+  {
+    \cs_set_protected:Npn \__codedoc_macro_dump:
+      {
+        \int_compare:nNnF { \l__codedoc_nested_macro_int } > { 1 }
+          {
+            \begin{displayblock}
+              [ tag-name = \UseStructureName{doc/macro} , begin-vspace = \MacroTopsep ]
+            \UseTaggingSocket{doc/container/macronames}{\l__codedoc_current_names_struct_tl}
+          }
+        \noindent \llap
+          {
+            \tagmcend
+            \hbox_unpack_drop:N \l__codedoc_macro_index_box
+            \vtop to \baselineskip
+              {
+                \vbox_unpack_drop:N \l__codedoc_macro_box
+                \vss
+              }
+            \hspace{\labelsep}
+            \tagmcbegin{}
+          }
+      }
+  }
+\ExplSyntaxOff
 \usepackage[svgnames]{xcolor}
-\usepackage[sf,bf,compact,medium,pagestyles]{titlesec}
+\usepackage[sf,bf,compact,medium]{titlesec}
+\usepackage{titleps}
 \usepackage{lastpage,microtype,attachfile2,multicol,listings,titletoc,booktabs, longtable, fontawesome5}
 \usepackage{scalerel} % for \spmQ sample
 \usepackage[english]{babel} % \selectlanguage{english}
@@ -884,6 +933,19 @@ end, "shekel_fallback_patch")
     {\contentspush{\makebox[8mm][l]{\thecontentslabel\hfill}}}
     {\hspace*{-19mm}}% numberless
     {\hspace{0.25em}\titlerule*[6pt]{.}\contentspage}%
+% Tagging: with \DocumentMetadata, titlesec/titletoc are emulated by
+% latex-lab: \titlerule* has no leaders (no dots) and \titlecontents entries
+% get no links. Use the kernel \@dottedtocline (links via the contentsline
+% hooks) with the same indents and widths.
+\makeatletter
+\IfDocumentMetadataT
+  {
+    \renewcommand\@dotsep{3}
+    \renewcommand\l@section[2]{{\bfseries\@dottedtocline{1}{0mm}{5mm}{#1}{#2}}}
+    \renewcommand\l@subsection{\@dottedtocline{2}{5mm}{6mm}}
+    \renewcommand\l@subsubsection{\@dottedtocline{3}{11mm}{8mm}}
+  }
+\makeatother
 \begin{document}
   \DocInput{\jobname.dtx}
 \end{document}
@@ -896,20 +958,20 @@ end, "shekel_fallback_patch")
 % \title{
 %    \scalebox{1.25}{\pkglogo}\\[-5pt]
 %    {\Large\textcolor{guard_angle}{\fetamontotf{mathml intent en español}}}\\[-5pt]
-%    \fileversion{} \quad \filedate\thanks{
-%     Este archivo describe la documentación para la versión \fileversion{}
-%     revisada por última vez el
-%    \filedate.}\\[25pt]
-%    \author{
+%    \fileversion{} \quad \filedate\\[-12pt]
+% }
+% \author{
 %    \large
 %    \raisebox{-1pt}{\textcolor{guard_angle}{\textcopyright{}2026 by Pablo González L}}\thanks{
+%     Este archivo describe la documentación para la versión \fileversion{}
+%     revisada por última vez el
+%    \filedate.}\thanks{
 %    E-mail: \textcolor{guard_angle}{\textsf{\guillemotleft}}\email{pablgonz@educarchile.cl}\textcolor{guard_angle}{\textsf{\guillemotright}}.
-%       }%
-%    }
+%       }\\
 % \small
 % \vspace*{-5pt}
 % \textsc{ctan}: \url{https://www.ctan.org/pkg/spanish-mathml-intent}\\
-% \textcolor{gray}{\scriptsize\faIcon[regular]{github}}\,\,\,\url{https://github.com/pablgonz/spanish-mathml-intent}
+% \small\textcolor{gray}{\scriptsize\faIcon[regular]{github}}\,\,\,\url{https://github.com/pablgonz/spanish-mathml-intent}
 % \vspace*{-2cm}
 % }
 % \date{}
@@ -1271,7 +1333,7 @@ end, "shekel_fallback_patch")
 % El resto de las utilidades se agrupan por eje temático, en el mismo orden en
 % que se describen en este documento:
 %
-% \begin{itemize}[left=0pt,itemsep=\parskip]
+% \begin{itemize}[labelindent=0pt,item-vspace=\parskip]
 %   \item \emph{Generales} (\S\ref{sec:utilidades}): |\spsiglo| escribe
 %     siglos en números arábigos o romanos, |\sptime| horas y |\spdate| fechas.
 %   \item \emph{Símbolos} (\S\ref{sec:simbolos}): |\spnewread| y |\spread|
@@ -1345,55 +1407,55 @@ end, "shekel_fallback_patch")
 % \endlastfoot
 % \multicolumn{3}{c}{\textbf{Generales}} \\
 % \midrule
-% un siglo & |\spsiglo{XXI}| & \pageref{subsec:spsiglo} \\
-% una hora & |$\sptime{23:45}$| & \pageref{subsec:sptime} \\
-% una fecha & |$\spdate{1981-01-02}$| & \pageref{subsec:spdate} \\
-% un ordinal en una fórmula & |$\spnord{1.o}$| & \pageref{subsec:spnord} \\
+% un siglo & \myhlc{\spsiglo{XXI}} & \pageref{subsec:spsiglo} \\
+% una hora & \myhlc{$\sptime{23:45}$} & \pageref{subsec:sptime} \\
+% una fecha & \myhlc{$\spdate{1981-01-02}$} & \pageref{subsec:spdate} \\
+% un ordinal en una fórmula & \myhlc{$\spnord{1.o}$} & \pageref{subsec:spnord} \\
 % \midrule
 % \multicolumn{3}{c}{\textbf{Los cuatro grandes}} \\
 % \midrule
-% un número & |$\spnum{3,14}$| & \pageref{subsec:spnum} \\
-% una medida & |$\spunit{23 m}$| & \pageref{subsec:spunit} \\
-% una cantidad de dinero & |$\spmoney{500}$| & \pageref{subsec:spmoney} \\
-% una abreviatura, sigla u ordinal & |\spshort{prof.a}| & \pageref{subsec:spshort} \\
+% un número & \myhlc{$\spnum{3,14}$} & \pageref{subsec:spnum} \\
+% una medida & \myhlc{$\spunit{23 m}$} & \pageref{subsec:spunit} \\
+% una cantidad de dinero & \myhlc{$\spmoney{500}$} & \pageref{subsec:spmoney} \\
+% una abreviatura, sigla u ordinal & \myhlc{\spshort{prof.a}} & \pageref{subsec:spshort} \\
 % \midrule
 % \multicolumn{3}{c}{\textbf{Símbolos}} \\
 % \midrule
-% la lectura de un símbolo & |$\spread{\cong}$| & \pageref{subsec:spread} \\
+% la lectura de un símbolo & \myhlc{$\spread{\cong}$} & \pageref{subsec:spread} \\
 % \midrule
 % \multicolumn{3}{c}{\textbf{Números}} \\
 % \midrule
-% una división & |$\spdiv{20}{26}$| & \pageref{subsec:spdiv} \\
-% un máximo común divisor & |$\spmcd(2, 3, 6)$| & \pageref{subsec:spmcd} \\
-% un número entero & |$\spnZ{-23}$| & \pageref{subsec:spnZ} \\
-% una razón & |$\sprazon{3}{4}$| & \pageref{subsec:sprazon} \\
-% una proporción & |$\spProp{3}{4}{6}{8}$| & \pageref{subsec:spProp} \\
-% un número mixto & |$\spmQ{2}{5}{7}$| & \pageref{subsec:spmQ} \\
+% una división & \myhlc{$\spdiv{20}{26}$} & \pageref{subsec:spdiv} \\
+% un máximo común divisor & \myhlc{$\spmcd(2, 3, 6)$} & \pageref{subsec:spmcd} \\
+% un número entero & \myhlc{$\spnZ{-23}$} & \pageref{subsec:spnZ} \\
+% una razón & \myhlc{$\sprazon{3}{4}$} & \pageref{subsec:sprazon} \\
+% una proporción & \myhlc{$\spProp{3}{4}{6}{8}$} & \pageref{subsec:spProp} \\
+% un número mixto & \myhlc{$\spmQ{2}{5}{7}$} & \pageref{subsec:spmQ} \\
 % \midrule
 % \multicolumn{3}{c}{\textbf{Geometría}} \\
 % \midrule
-% un punto & |$\spPoint{A}$| & \pageref{subsec:spPoint} \\
-% unas coordenadas & |$\spcoord{-3, 4}$| & \pageref{subsec:spcoord} \\
-% un vector & |$\spvec{AB}$| & \pageref{subsec:spvec} \\
-% una recta & |$\sprecta{AB}$| & \pageref{subsec:sprecta} \\
-% un ángulo & |$\spangle{A}$| & \pageref{subsec:spangle} \\
-% un arco & |$\sparc{AB}$| & \pageref{subsec:sparc} \\
-% un polígono & |$\spPoly{ABC}$| & \pageref{subsec:spPoly} \\
+% un punto & \myhlc{$\spPoint{A}$} & \pageref{subsec:spPoint} \\
+% unas coordenadas & \myhlc{$\spcoord{-3, 4}$} & \pageref{subsec:spcoord} \\
+% un vector & \myhlc{$\spvec{AB}$} & \pageref{subsec:spvec} \\
+% una recta & \myhlc{$\sprecta{AB}$} & \pageref{subsec:sprecta} \\
+% un ángulo & \myhlc{$\spangle{A}$} & \pageref{subsec:spangle} \\
+% un arco & \myhlc{$\sparc{AB}$} & \pageref{subsec:sparc} \\
+% un polígono & \myhlc{$\spPoly{ABC}$} & \pageref{subsec:spPoly} \\
 % \midrule
 % \multicolumn{3}{c}{\textbf{Álgebra}} \\
 % \midrule
-% un intervalo & |$\spinterval{(1,5)}$| & \pageref{subsec:spinterval} \\
-% una función & |$\spfun{f(x)}$| & \pageref{subsec:spfun} \\
-% un dominio & |$\spdom{f}$| & \pageref{subsec:spdom} \\
-% un valor absoluto & |$\spabs{-5}$| & \pageref{subsec:spabs} \\
+% un intervalo & \myhlc{$\spinterval{(1,5)}$} & \pageref{subsec:spinterval} \\
+% una función & \myhlc{$\spfun{f(x)}$} & \pageref{subsec:spfun} \\
+% un dominio & \myhlc{$\spdom{f}$} & \pageref{subsec:spdom} \\
+% un valor absoluto & \myhlc{$\spabs{-5}$} & \pageref{subsec:spabs} \\
 % \midrule
 % \multicolumn{3}{c}{\textbf{Estadística}} \\
 % \midrule
-% un promedio & |$\spProm{x}$| & \pageref{subsec:spProm} \\
-% un cuartil & |$\spcuartil{1}$| & \pageref{subsec:spcuartil} \\
-% una probabilidad & |$\spProb{A \cap B}$| & \pageref{subsec:spProb} \\
-% una combinatoria & |$\spcomb{5,2}$| & \pageref{subsec:spcomb} \\
-% un factorial & |$\spfact{5}$| & \pageref{subsec:spfact} \\
+% un promedio & \myhlc{$\spProm{x}$} & \pageref{subsec:spProm} \\
+% un cuartil & \myhlc{$\spcuartil{1}$} & \pageref{subsec:spcuartil} \\
+% una probabilidad & \myhlc{$\spProb{A \cap B}$} & \pageref{subsec:spProb} \\
+% una combinatoria & \myhlc{$\spcomb{5,2}$} & \pageref{subsec:spcomb} \\
+% un factorial & \myhlc{$\spfact{5}$} & \pageref{subsec:spfact} \\
 % \end{longtable}
 % \endgroup
 %
@@ -1466,13 +1528,13 @@ Material preparado por la \spshort{prof.a} Pérez.
 % \endfoot
 % \bottomrule
 % \endlastfoot
-% |$\spnum{3,14}$| & $3{,}14$ & \emph{«tres coma catorce»} \\
-% |$\spunit{23 m}$| & $23\,\mathrm{m}$ & \emph{«veintitrés metros»} \\
-% |$\spmoney{500}$| & $\$500$ & \emph{«quinientos pesos»} \\
-% |\spshort{prof.a}| & Prof.$^{\text{a}}$ & \emph{«profesora»} \\
-% |$\spPoly{ABC}$| & $\triangle ABC$ & \emph{«triángulo A B C»} \\
-% |$\spfun{f(x)}$| & $f(x)$ & \emph{«f de x»} \\
-% |$\spProb{A \cap B}$| & $P(A \cap B)$ & \emph{«probabilidad de A y B»} \\
+% \myhlc{$\spnum{3,14}$} & $3{,}14$ & \emph{«tres coma catorce»} \\
+% \myhlc{$\spunit{23 m}$} & $23\,\mathrm{m}$ & \emph{«veintitrés metros»} \\
+% \myhlc{$\spmoney{500}$} & $\$500$ & \emph{«quinientos pesos»} \\
+% \myhlc{\spshort{prof.a}} & Prof.$^{\text{a}}$ & \emph{«profesora»} \\
+% \myhlc{$\spPoly{ABC}$} & $\triangle ABC$ & \emph{«triángulo A B C»} \\
+% \myhlc{$\spfun{f(x)}$} & $f(x)$ & \emph{«f de x»} \\
+% \myhlc{$\spProb{A \cap B}$} & $P(A \cap B)$ & \emph{«probabilidad de A y B»} \\
 % \end{longtable}
 % \endgroup
 %
@@ -1557,7 +1619,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Revise, en este orden:
 %
-% \begin{enumerate}[left=0pt,itemsep=\parskip]
+% \begin{enumerate}[labelindent=0pt,item-vspace=\parskip]
 %   \item \emph{El mensaje de error.} Si la compilación se detiene con un
 %     \enquote{error}, el mensaje indica el comando y el argumento que no
 %     cumple la forma documentada (\S\ref{sec:setspintent}).
@@ -1579,7 +1641,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\setspintent}
 %   \begin{syntax}
-%     |\setspintent|\mymarg{comando}\mymarg{key-uno \textnormal{\textcolor{gray}{=}} valor\textnormal{\textcolor{gray}{,}} key-dos \textnormal{\textcolor{gray}{=}} valor\textnormal{\textcolor{gray}{,}} key-tres \textnormal{\textcolor{gray}{=}} valor\textnormal{\textcolor{gray}{,}} \dots}
+%     \myhlc{\setspintent}\mymarg{comando}\mymarg{key-uno \textnormal{\textcolor{gray}{=}} valor\textnormal{\textcolor{gray}{,}} key-dos \textnormal{\textcolor{gray}{=}} valor\textnormal{\textcolor{gray}{,}} key-tres \textnormal{\textcolor{gray}{=}} valor\textnormal{\textcolor{gray}{,}} \dots}
 %   \end{syntax}
 %   El comando \ics*{setspintent} establece las llaves \mymeta{keys} de
 %   forma global para los comandos provistos por \mypkg*[no-index]{spintent}. Puede
@@ -1644,9 +1706,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spnum}
 %   \begin{syntax}
-%     |\spnum|\mymarg{número}\hfill|\spnum|\mymarg{número\textnormal{\textcolor{red}{{,}}}número}\hfill|\spnum|\mymarg{número\textnormal{\textcolor{red}{{.}}}número}\hfill|\spnum|\mymarg{número\textnormal{\textcolor{red}{{;}}}número}\par\noindent
-%     |\spnum|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número\textnormal{\textcolor{red}{{,}}}número\textnormal{\textcolor{red}{{;}}}número}\hfill|\spnum|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número\textnormal{\textcolor{red}{{,}}}número\textnormal{\textcolor{red}{{;}}}número \textnormal{\textcolor{red}{{e}}} exponente}\par\noindent
-%     |\spnum|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número\textnormal{\textcolor{red}{{.}}}número\textnormal{\textcolor{red}{{;}}}número}\hfill|\spnum|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número\textnormal{\textcolor{red}{{.}}}número\textnormal{\textcolor{red}{{;}}}número \textnormal{\textcolor{red}{{e}}} exponente}
+%     \myhlc{\spnum}\mymarg{número}\hfill\myhlc{\spnum}\mymarg{número\textnormal{\textcolor{red}{{,}}}número}\hfill\myhlc{\spnum}\mymarg{número\textnormal{\textcolor{red}{{.}}}número}\hfill\myhlc{\spnum}\mymarg{número\textnormal{\textcolor{red}{{;}}}número}\par\noindent
+%     \myhlc{\spnum}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número\textnormal{\textcolor{red}{{,}}}número\textnormal{\textcolor{red}{{;}}}número}\hfill\myhlc{\spnum}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número\textnormal{\textcolor{red}{{,}}}número\textnormal{\textcolor{red}{{;}}}número \textnormal{\textcolor{red}{{e}}} exponente}\par\noindent
+%     \myhlc{\spnum}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número\textnormal{\textcolor{red}{{.}}}número\textnormal{\textcolor{red}{{;}}}número}\hfill\myhlc{\spnum}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número\textnormal{\textcolor{red}{{.}}}número\textnormal{\textcolor{red}{{;}}}número \textnormal{\textcolor{red}{{e}}} exponente}
 %   \end{syntax}
 %   El comando \ics*{spnum} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento obligatorio} \mymarg{número}, donde la \emph{«parte entera»}
@@ -1754,9 +1816,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spunit}
 %   \begin{syntax}
-%     |\spunit|\mymarg{unidad}\hfill|\spunit|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{unidad}\hfill|\spunit|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número unidad}\par\noindent
-%     |\spunit|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número unidad\textnormal{\textcolor{red}{{\textasteriskcentered}}}unidad}\hfill|\spunit|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número unidad\textnormal{\textcolor{red}{{\textasteriskcentered}}}unidad\textnormal{\textcolor{red}{{/}}}unidad}\par\noindent
-%     |\spunit|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número unidad\textnormal{\textcolor{red}{{\textasteriskcentered}}}unidad\textnormal{\textcolor{red}{{/}}}unidad\textnormal{\textcolor{red}{{\textasteriskcentered}}}\dots}\hfill|\spunit|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número \textnormal{\textcolor{red}{{e}}} exponente unidad \dots}
+%     \myhlc{\spunit}\mymarg{unidad}\hfill\myhlc{\spunit}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{unidad}\hfill\myhlc{\spunit}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número unidad}\par\noindent
+%     \myhlc{\spunit}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número unidad\textnormal{\textcolor{red}{{\textasteriskcentered}}}unidad}\hfill\myhlc{\spunit}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número unidad\textnormal{\textcolor{red}{{\textasteriskcentered}}}unidad\textnormal{\textcolor{red}{{/}}}unidad}\par\noindent
+%     \myhlc{\spunit}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número unidad\textnormal{\textcolor{red}{{\textasteriskcentered}}}unidad\textnormal{\textcolor{red}{{/}}}unidad\textnormal{\textcolor{red}{{\textasteriskcentered}}}\dots}\hfill\myhlc{\spunit}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número \textnormal{\textcolor{red}{{e}}} exponente unidad \dots}
 %   \end{syntax}
 %   El comando \ics*{spunit} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento obligatorio} \mymarg{unidad}, el cual puede contener
@@ -2078,9 +2140,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmoney}
 %   \begin{syntax}
-%     \mycolrow{19.7em}|\spmoney|\mymarg{cifra}\mycolsep |\spmoney|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra}
-%     \mycolrow{19.7em}|\spmoney|\mymarg{cifra símbolo moneda}\mycolsep |\spmoney|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra símbolo moneda}
-%     \mycolrow{19.7em}|\spmoney|\mymarg{cifra alias moneda}\mycolsep |\spmoney|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra alias moneda}
+%     \mycolrow{19.7em}\myhlc{\spmoney}\mymarg{cifra}\mycolsep \myhlc{\spmoney}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra}
+%     \mycolrow{19.7em}\myhlc{\spmoney}\mymarg{cifra símbolo moneda}\mycolsep \myhlc{\spmoney}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra símbolo moneda}
+%     \mycolrow{19.7em}\myhlc{\spmoney}\mymarg{cifra alias moneda}\mycolsep \myhlc{\spmoney}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{cifra alias moneda}
 %   \end{syntax}
 %   El comando \ics*{spmoney} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento obligatorio} \mymarg{cifra} que contiene la
@@ -2258,9 +2320,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spshort}
 %   \begin{syntax}
-%     |\spshort|\mymarg{abreviaturas \textnormal{\textcolor{lightgray}{\textbar}} acrónimos \textnormal{\textcolor{lightgray}{\textbar}} números ordinales}
-%     |\spshort|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{abreviaturas \textnormal{\textcolor{lightgray}{\textbar}} acrónimos \textnormal{\textcolor{lightgray}{\textbar}} números ordinales}
-%     |\spshort|\myoarg{read-arg\textnormal{\textcolor{gray}{=}}\mymarg{verbalización \textnormal{NVDA}}}\mymarg{comandos \textnormal{\hologo{LaTeX}}}
+%     \myhlc{\spshort}\mymarg{abreviaturas \textnormal{\textcolor{lightgray}{\textbar}} acrónimos \textnormal{\textcolor{lightgray}{\textbar}} números ordinales}
+%     \myhlc{\spshort}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{abreviaturas \textnormal{\textcolor{lightgray}{\textbar}} acrónimos \textnormal{\textcolor{lightgray}{\textbar}} números ordinales}
+%     \myhlc{\spshort}\myoarg{read-arg\textnormal{\textcolor{gray}{=}}\mymarg{verbalización \textnormal{NVDA}}}\mymarg{comandos \textnormal{\hologo{LaTeX}}}
 %   \end{syntax}
 %
 %   El comando \ics*{spshort} trabaja \emph{solo en modo texto} y recibe
@@ -2499,9 +2561,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spnord}
 %   \begin{syntax}
-%     |\spnord|\mymarg{números ordinales}
-%     |\spnord|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{números ordinales}
-%     |\spnord|\myoarg{read-arg\textnormal{\textcolor{gray}{=}}\mymarg{verbalización \textnormal{NVDA}}}\mymarg{comandos \textnormal{\hologo{LaTeX}}}
+%     \myhlc{\spnord}\mymarg{números ordinales}
+%     \myhlc{\spnord}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{números ordinales}
+%     \myhlc{\spnord}\myoarg{read-arg\textnormal{\textcolor{gray}{=}}\mymarg{verbalización \textnormal{NVDA}}}\mymarg{comandos \textnormal{\hologo{LaTeX}}}
 %   \end{syntax}
 %
 %   El comando \ics*{spnord} trabaja \emph{solo en modo matemático} y recibe
@@ -2563,7 +2625,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spsiglo}
 %   \begin{syntax}
-%     |\spsiglo|\mymarg{siglo} \qquad\qquad |\spsiglo|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{siglo}
+%     \myhlc{\spsiglo}\mymarg{siglo} \qquad\qquad \myhlc{\spsiglo}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{siglo}
 %   \end{syntax}
 %   El comando \ics*{spsiglo} trabaja en \emph{modo texto} y en \emph{modo matemático},
 %   recibe el \emph{argumento obligatorio} \mymarg{siglo}, el cual puede
@@ -2623,7 +2685,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\sptime}
 %   \begin{syntax}
-%     |\sptime|\mymarg{horas \textnormal{\textcolor{red}{:}} minutos} \qquad\qquad |\sptime|\mymarg{horas \textnormal{\textcolor{red}{:}} minutos \textnormal{\textcolor{red}{:}} segundos}
+%     \myhlc{\sptime}\mymarg{horas \textnormal{\textcolor{red}{:}} minutos} \qquad\qquad \myhlc{\sptime}\mymarg{horas \textnormal{\textcolor{red}{:}} minutos \textnormal{\textcolor{red}{:}} segundos}
 %   \end{syntax}
 %   El comando \ics*{sptime} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento obligatorio} \mymarg{horas \textnormal{\textcolor{red}{:}} minutos}
@@ -2638,7 +2700,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spdate}
 %   \begin{syntax}
-%     |\spdate|\mymarg{\textnormal{DD\textcolor{red}{/}MM\textcolor{red}{/}YYYY}} \hfill |\spdate|\mymarg{\textnormal{YYYY\textcolor{red}{/}MM\textcolor{red}{/}DD}} \hfill |\spdate|\mymarg{\textnormal{YYYY\textcolor{red}{-}MM\textcolor{red}{-}DD}} \hfill |\spdate|\mymarg{\textnormal{DD\textcolor{red}{-}MM\textcolor{red}{-}YYYY}}
+%     \myhlc{\spdate}\mymarg{\textnormal{DD\textcolor{red}{/}MM\textcolor{red}{/}YYYY}} \hfill \myhlc{\spdate}\mymarg{\textnormal{YYYY\textcolor{red}{/}MM\textcolor{red}{/}DD}} \hfill \myhlc{\spdate}\mymarg{\textnormal{YYYY\textcolor{red}{-}MM\textcolor{red}{-}DD}} \hfill \myhlc{\spdate}\mymarg{\textnormal{DD\textcolor{red}{-}MM\textcolor{red}{-}YYYY}}
 %   \end{syntax}
 %   El comando \ics*{spdate} trabaja en \emph{modo matemático}
 %   y recibe el \emph{argumento} obligatorio
@@ -2685,7 +2747,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spnewread}
 %   \begin{syntax}
-%     |\spnewread|\mymarg{símbolo}\mymarg{verbalización \textnormal{NVDA}}
+%     \myhlc{\spnewread}\mymarg{símbolo}\mymarg{verbalización \textnormal{NVDA}}
 %   \end{syntax}
 %   El comando \ics*{spnewread} trabaja en \emph{modo texto} y recibe
 %   dos \emph{argumentos obligatorios}: \mymarg{símbolo} y \mymarg{verbalización \textnormal{NVDA}},
@@ -2724,8 +2786,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spread}
 %   \begin{syntax}
-%     |\spread|\mymarg{símbolo} \qquad\qquad |\spread|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{símbolo}
-%     |\spread|\myoarg{read-arg\textnormal{\textcolor{gray}{=}}\mymarg{verbalización \textnormal{NVDA}}}\mymarg{comandos \textnormal{\hologo{LaTeX}}}
+%     \myhlc{\spread}\mymarg{símbolo} \qquad\qquad \myhlc{\spread}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{símbolo}
+%     \myhlc{\spread}\myoarg{read-arg\textnormal{\textcolor{gray}{=}}\mymarg{verbalización \textnormal{NVDA}}}\mymarg{comandos \textnormal{\hologo{LaTeX}}}
 %   \end{syntax}
 %   El comando \ics*{spread} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento obligatorio} de la forma \mymarg{símbolo} previamente
@@ -2775,7 +2837,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spusep}
 %   \begin{syntax}
-%     |\spusep|\mymarg{\normalfont\ttfamily\textbackslash\{\textcolor{lightgray}{\textbar}[\textcolor{lightgray}{\textbar}(\textcolor{lightgray}{\textbar})\textcolor{lightgray}{\textbar}]\textcolor{lightgray}{\textbar}\textbackslash\}} \qquad\qquad  |\spusep|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{\normalfont\ttfamily\textbackslash\{\textcolor{lightgray}{\textbar}[\textcolor{lightgray}{\textbar}(\textcolor{lightgray}{\textbar})\textcolor{lightgray}{\textbar}]\textcolor{lightgray}{\textbar}\textbackslash\}}
+%     \myhlc{\spusep}\mymarg{\normalfont\ttfamily\textbackslash\{\textcolor{lightgray}{\textbar}[\textcolor{lightgray}{\textbar}(\textcolor{lightgray}{\textbar})\textcolor{lightgray}{\textbar}]\textcolor{lightgray}{\textbar}\textbackslash\}} \qquad\qquad  \myhlc{\spusep}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{\normalfont\ttfamily\textbackslash\{\textcolor{lightgray}{\textbar}[\textcolor{lightgray}{\textbar}(\textcolor{lightgray}{\textbar})\textcolor{lightgray}{\textbar}]\textcolor{lightgray}{\textbar}\textbackslash\}}
 %   \end{syntax}
 %   El comando \ics*{spusep} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{\normalfont\ttfamily\textbackslash\{\textcolor{lightgray}{\textbar}[\textcolor{lightgray}{\textbar}(\textcolor{lightgray}{\textbar})\textcolor{lightgray}{\textbar}]\textcolor{lightgray}{\textbar}\textbackslash\}},
@@ -2842,7 +2904,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spdsym}
 %   \begin{syntax}
-%    |\spdsym| \qquad\qquad |\spdsym|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%    \myhlc{\spdsym} \qquad\qquad \myhlc{\spdsym}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   \end{syntax}
 %   El comando \ics*{spdsym} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
@@ -2890,7 +2952,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmsym}
 %   \begin{syntax}
-%     |\spmsym| \qquad\qquad |\spmsym|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spmsym} \qquad\qquad \myhlc{\spmsym}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   \end{syntax}
 %   El comando \ics*{spmsym} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
@@ -2962,7 +3024,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spdiv}
 %   \begin{syntax}
-%     |\spdiv|\mymarg{dividendo}\mymarg{divisor} \qquad\qquad |\spdiv|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{dividendo}\mymarg{divisor}
+%     \myhlc{\spdiv}\mymarg{dividendo}\mymarg{divisor} \qquad\qquad \myhlc{\spdiv}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{dividendo}\mymarg{divisor}
 %   \end{syntax}
 %   El comando \ics*{spdiv} trabaja en \emph{modo matemático} y recibe
 %   dos \emph{argumentos obligatorios} \mymarg{dividendo} y \mymarg{divisor}.
@@ -3000,7 +3062,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmul}
 %   \begin{syntax}
-%     |\spmul|\mymarg{factor}\mymarg{factor} \qquad\qquad |\spmul|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{factor}\mymarg{factor}
+%     \myhlc{\spmul}\mymarg{factor}\mymarg{factor} \qquad\qquad \myhlc{\spmul}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{factor}\mymarg{factor}
 %   \end{syntax}
 %   El comando \ics*{spmul} trabaja en \emph{modo matemático} y recibe
 %   dos \emph{argumentos obligatorios} \mymarg{factor} y \mymarg{factor}.
@@ -3038,7 +3100,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spnD}
 %   \begin{syntax}
-%     |\spnD| \hfill |\spnD|\myparg{número} \hfill |\spnD|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número} \hfill |\spnD|\myparg{letra} \hfill |\spnD|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{letra}
+%     \myhlc{\spnD} \hfill \myhlc{\spnD}\myparg{número} \hfill \myhlc{\spnD}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número} \hfill \myhlc{\spnD}\myparg{letra} \hfill \myhlc{\spnD}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{letra}
 %   \end{syntax}
 %   El comando \ics*{spnD} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -3113,7 +3175,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spnM}
 %   \begin{syntax}
-%     |\spnM| \hfill |\spnM|\myparg{número} \hfill |\spnM|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número} \hfill |\spnM|\myparg{letra} \hfill |\spnM|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{letra}
+%     \myhlc{\spnM} \hfill \myhlc{\spnM}\myparg{número} \hfill \myhlc{\spnM}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número} \hfill \myhlc{\spnM}\myparg{letra} \hfill \myhlc{\spnM}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{letra}
 %   \end{syntax}
 %   El comando \ics*{spnM} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -3189,7 +3251,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmcd}
 %   \begin{syntax}
-%     |\spmcd| \hfill |\spmcd|\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots} \hfill |\spmcd|\myparg{letra\textnormal{\textcolor{gray}{,}} letra\textnormal{\textcolor{gray}{,}} \dots} \hfill |\spmcd|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}
+%     \myhlc{\spmcd} \hfill \myhlc{\spmcd}\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots} \hfill \myhlc{\spmcd}\myparg{letra\textnormal{\textcolor{gray}{,}} letra\textnormal{\textcolor{gray}{,}} \dots} \hfill \myhlc{\spmcd}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}
 %   \end{syntax}
 %   El comando \ics*{spmcd} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -3279,7 +3341,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmcm}
 %   \begin{syntax}
-%     |\spmcm| \hfill |\spmcm|\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots} \hfill |\spmcm|\myparg{letra\textnormal{\textcolor{gray}{,}} letra\textnormal{\textcolor{gray}{,}} \dots} \hfill |\spmcm|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}
+%     \myhlc{\spmcm} \hfill \myhlc{\spmcm}\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots} \hfill \myhlc{\spmcm}\myparg{letra\textnormal{\textcolor{gray}{,}} letra\textnormal{\textcolor{gray}{,}} \dots} \hfill \myhlc{\spmcm}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{número\textnormal{\textcolor{gray}{,}} número\textnormal{\textcolor{gray}{,}} \dots}
 %   \end{syntax}
 %   El comando \ics*{spmcm} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -3368,7 +3430,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spnZ}
 %   \begin{syntax}
-%     |\spnZ|\mymarg{número entero} \qquad\qquad |\spnZ|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número entero}
+%     \myhlc{\spnZ}\mymarg{número entero} \qquad\qquad \myhlc{\spnZ}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{número entero}
 %   \end{syntax}
 %   El comando \ics*{spnZ} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento} obligatorio \mymarg{número entero}, el cual se procesa
@@ -3414,7 +3476,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmQ}
 %   \begin{syntax}
-%     |\spmQ|\mymarg{entero}\mymarg{numerador}\mymarg{denominador} \hfill |\spmQ|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{entero}\mymarg{numerador}\mymarg{denominador}
+%     \myhlc{\spmQ}\mymarg{entero}\mymarg{numerador}\mymarg{denominador} \hfill \myhlc{\spmQ}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{entero}\mymarg{numerador}\mymarg{denominador}
 %   \end{syntax}
 %   El comando \ics*{spmQ} trabaja en \emph{modo matemático} y recibe
 %   \emph{tres argumentos obligatorios}: \mymarg{número entero},
@@ -3519,7 +3581,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\sprazon}
 %   \begin{syntax}
-%     |\sprazon|\mymarg{antecedente}\mymarg{consecuente} \quad\quad |\sprazon|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{antecedente}\mymarg{consecuente}
+%     \myhlc{\sprazon}\mymarg{antecedente}\mymarg{consecuente} \quad\quad \myhlc{\sprazon}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{antecedente}\mymarg{consecuente}
 %   \end{syntax}
 %   El comando \ics*{sprazon} trabaja en \emph{modo matemático} y recibe
 %   \emph{dos argumentos obligatorios}: \mymarg{antecedente} y
@@ -3579,7 +3641,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spProp}
 %   \begin{syntax}
-%     |\spProp|\mymarg{a}\mymarg{b}\mymarg{c}\mymarg{d} \quad\quad |\spProp|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{a}\mymarg{b}\mymarg{c}\mymarg{d}
+%     \myhlc{\spProp}\mymarg{a}\mymarg{b}\mymarg{c}\mymarg{d} \quad\quad \myhlc{\spProp}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{a}\mymarg{b}\mymarg{c}\mymarg{d}
 %   \end{syntax}
 %   El comando \ics*{spProp} trabaja en \emph{modo matemático} y recibe
 %   \emph{cuatro argumentos obligatorios}: \mymarg{a} y \mymarg{b} forman
@@ -3659,8 +3721,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spcoord}
 %   \begin{syntax}
-%     \mycolrow{17.9em}|\spcoord|\mymarg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep |\spcoord|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
-%     \mycolrow{17.9em}|\spcoord|\mymarg{abscisa\textnormal{\textcolor{red}{;}} ordenada}\mycolsep |\spcoord|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{abscisa\textnormal{\textcolor{red}{;}} ordenada}
+%     \mycolrow{17.9em}\myhlc{\spcoord}\mymarg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep \myhlc{\spcoord}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
+%     \mycolrow{17.9em}\myhlc{\spcoord}\mymarg{abscisa\textnormal{\textcolor{red}{;}} ordenada}\mycolsep \myhlc{\spcoord}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{abscisa\textnormal{\textcolor{red}{;}} ordenada}
 %   \end{syntax}
 %   El comando \ics*{spcoord} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento obligatorio} \mymarg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
@@ -3700,9 +3762,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spPoint}
 %   \begin{syntax}
-%     \mycolrow{22.9em}|\spPoint|\mymarg{punto}\mycolsep |\spPoint|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}
-%     \mycolrow{22.9em}|\spPoint|\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep |\spPoint|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
-%     \mycolrow{22.9em}|\spPoint|\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{;}} ordenada}\mycolsep |\spPoint|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{;}} ordenada}
+%     \mycolrow{22.9em}\myhlc{\spPoint}\mymarg{punto}\mycolsep \myhlc{\spPoint}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}
+%     \mycolrow{22.9em}\myhlc{\spPoint}\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep \myhlc{\spPoint}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
+%     \mycolrow{22.9em}\myhlc{\spPoint}\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{;}} ordenada}\mycolsep \myhlc{\spPoint}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto}\myparg{abscisa\textnormal{\textcolor{red}{;}} ordenada}
 %   \end{syntax}
 %   El comando \ics*{spPoint} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento obligatorio} \mymarg{punto}, el cual es una
@@ -3767,9 +3829,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spvec}
 %   \begin{syntax}
-%     \mycolrow{27.3em}|\spvec|\mymarg{letra}\mycolsep |\spvec|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
-%     \mycolrow{27.3em}|\spvec|\mymarg{letra}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep |\spvec|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
-%     \mycolrow{27.3em}|\spvec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{letra}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep |\spvec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
+%     \mycolrow{27.3em}\myhlc{\spvec}\mymarg{letra}\mycolsep \myhlc{\spvec}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{27.3em}\myhlc{\spvec}\mymarg{letra}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep \myhlc{\spvec}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
+%     \mycolrow{27.3em}\myhlc{\spvec}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{letra}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}\mycolsep \myhlc{\spvec}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\myparg{abscisa\textnormal{\textcolor{red}{,}} ordenada}
 %   \end{syntax}
 %   El comando \ics*{spvec} trabaja en \emph{modo matemático} y recibe un
 %   \emph{argumento obligatorio} de la forma \mymarg{letra} minúscula
@@ -3847,8 +3909,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\sprecta}
 %   \begin{syntax}
-%     \mycolrow{14.9em}|\sprecta|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep |\sprecta|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
-%     \mycolrow{14.9em}|\sprecta|\mymarg{letra}\mycolsep |\sprecta|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{letra}
+%     \mycolrow{14.9em}\myhlc{\sprecta}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep \myhlc{\sprecta}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{14.9em}\myhlc{\sprecta}\mymarg{letra}\mycolsep \myhlc{\sprecta}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{letra}
 %   \end{syntax}
 %   El comando \ics*{sprecta} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{letra} o
@@ -3909,7 +3971,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\sprayo}
 %   \begin{syntax}
-%     |\sprayo|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto} \quad\quad |\sprayo|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
+%     \myhlc{\sprayo}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto} \quad\quad \myhlc{\sprayo}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{syntax}
 %   El comando \ics*{sprayo} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento obligatorio} \mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
@@ -3984,7 +4046,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spside}
 %   \begin{syntax}
-%     |\spside|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto} \quad\quad |\spside|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
+%     \myhlc{\spside}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto} \quad\quad \myhlc{\spside}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{syntax}
 %
 %   El comando \ics*{spside} trabaja en \emph{modo matemático} y
@@ -4065,7 +4127,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmside}
 %   \begin{syntax}
-%     |\spmside|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto} \quad\quad |\spmside|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
+%     \myhlc{\spmside}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto} \quad\quad \myhlc{\spmside}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{syntax}
 %
 %   El comando \ics*{spmside} trabaja en \emph{modo matemático} y
@@ -4163,8 +4225,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spangle}
 %   \begin{syntax}
-%     \mycolrow{32.5em}|\spangle|\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}\mycolsep |\spangle|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
-%     \mycolrow{32.5em}|\spangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}\mycolsep |\spangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{32.5em}\myhlc{\spangle}\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}\mycolsep \myhlc{\spangle}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{32.5em}\myhlc{\spangle}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}\mycolsep \myhlc{\spangle}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{syntax}
 %   El comando \ics*{spangle} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}
@@ -4246,9 +4308,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmangle}
 %   \begin{syntax}
-%     \mycolrow{26.4em}|\spmangle|\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}\mycolsep |\spmangle|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
-%     |\spmangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}
-%     |\spmangle|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{26.4em}\myhlc{\spmangle}\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}\mycolsep \myhlc{\spmangle}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%     \myhlc{\spmangle}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}
+%     \myhlc{\spmangle}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{syntax}
 %   El comando \ics*{spmangle} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{punto \textnormal{\textcolor{lightgray}{\textbar}} letra griega \textnormal{\textcolor{lightgray}{\textbar}} número}
@@ -4341,7 +4403,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spang}
 %   \begin{syntax}
-%     |\spang|\mymarg{grados} \hfill |\spang|\mymarg{grados \textnormal{\textcolor{red}{:}} minutos} \hfill |\spang|\mymarg{grados \textnormal{\textcolor{red}{:}} minutos \textnormal{\textcolor{red}{:}} segundos}
+%     \myhlc{\spang}\mymarg{grados} \hfill \myhlc{\spang}\mymarg{grados \textnormal{\textcolor{red}{:}} minutos} \hfill \myhlc{\spang}\mymarg{grados \textnormal{\textcolor{red}{:}} minutos \textnormal{\textcolor{red}{:}} segundos}
 %   \end{syntax}
 %   El comando \ics*{spang} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{grados}, \mymarg{grados \textnormal{\textcolor{red}{:}} minutos}
@@ -4358,8 +4420,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\sparc}
 %   \begin{syntax}
-%     \mycolrow{21.1em}|\sparc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep |\sparc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
-%     \mycolrow{21.1em}|\sparc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep |\sparc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{21.1em}\myhlc{\sparc}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep \myhlc{\sparc}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{21.1em}\myhlc{\sparc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep \myhlc{\sparc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{syntax}
 %   El comando \ics*{sparc} trabaja en \emph{modo matemático} y recibe un
 %   \emph{argumento obligatorio} de la forma \mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
@@ -4421,8 +4483,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmarc}
 %   \begin{syntax}
-%     \mycolrow{21.7em}|\spmarc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep |\spmarc|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
-%     \mycolrow{21.7em}|\spmarc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep |\spmarc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{21.7em}\myhlc{\spmarc}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep \myhlc{\spmarc}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
+%     \mycolrow{21.7em}\myhlc{\spmarc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto}\mycolsep \myhlc{\spmarc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto}
 %   \end{syntax}
 %   El comando \ics*{spmarc} trabaja en \emph{modo matemático} y
 %   recibe un \emph{argumento obligatorio} de la forma \mymarg{punto\textnormal{\textcolor{gray}{,}} punto}
@@ -4485,7 +4547,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spPoly}
 %   \begin{syntax}
-%     |\spPoly|\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots} \quad\quad |\spPoly|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
+%     \myhlc{\spPoly}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots} \quad\quad \myhlc{\spPoly}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
 %   \end{syntax}
 %   El comando \ics*{spPoly} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento obligatorio} \mymarg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots},
@@ -4577,10 +4639,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spAfig}
 %   \begin{syntax}
-%     \mycolrow{24.9em}|\spAfig|\mycolsep |\spAfig|\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
-%     \mycolrow{24.9em}|\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mycolsep |\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
-%     \mycolrow{24.9em}|\spAfig|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spAfig|\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
-%     \mycolrow{24.9em}|\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spAfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
+%     \mycolrow{24.9em}\myhlc{\spAfig}\mycolsep \myhlc{\spAfig}\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
+%     \mycolrow{24.9em}\myhlc{\spAfig}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mycolsep \myhlc{\spAfig}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
+%     \mycolrow{24.9em}\myhlc{\spAfig}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep \myhlc{\spAfig}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
+%     \mycolrow{24.9em}\myhlc{\spAfig}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep \myhlc{\spAfig}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
 %   \end{syntax}
 %   El comando \ics*{spAfig} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -4767,10 +4829,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spPfig}
 %   \begin{syntax}
-%     \mycolrow{24.9em}|\spPfig|\mycolsep |\spPfig|\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
-%     \mycolrow{24.9em}|\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mycolsep |\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
-%     \mycolrow{24.9em}|\spPfig|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spPfig|\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
-%     \mycolrow{24.9em}|\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spPfig|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
+%     \mycolrow{24.9em}\myhlc{\spPfig}\mycolsep \myhlc{\spPfig}\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
+%     \mycolrow{24.9em}\myhlc{\spPfig}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mycolsep \myhlc{\spPfig}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} punto\textnormal{\textcolor{gray}{,}} \ldots}
+%     \mycolrow{24.9em}\myhlc{\spPfig}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep \myhlc{\spPfig}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
+%     \mycolrow{24.9em}\myhlc{\spPfig}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep \myhlc{\spPfig}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{\textnormal{F} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{P} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{B} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{L} \textnormal{\textcolor{lightgray}{\textbar}} \textnormal{T}}
 %   \end{syntax}
 %   El comando \ics*{spPfig} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -4957,8 +5019,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\sprad, \spdiam}
 %   \begin{syntax}
-%     |\sprad|  \quad\quad |\sprad|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%     |\spdiam| \quad\quad |\spdiam|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\sprad}  \quad\quad \myhlc{\sprad}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spdiam} \quad\quad \myhlc{\spdiam}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   \end{syntax}
 %   Los comandos \ics*{sprad} y \ics*{spdiam} trabajan en \emph{modo
 %   matemático} y reciben el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
@@ -5067,9 +5129,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spcirc}
 %   \begin{syntax}
-%     \mycolrow{14.9em}|\spcirc|\mycolsep |\spcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%     \mycolrow{14.9em}|\spcirc|\myparg{centro}\mycolsep |\spcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}
-%     \mycolrow{14.9em}|\spcirc|\myparg{centro\textnormal{\textcolor{red}{,}} radio}\mycolsep |\spcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro\textnormal{\textcolor{red}{,}} radio}
+%     \mycolrow{14.9em}\myhlc{\spcirc}\mycolsep \myhlc{\spcirc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \mycolrow{14.9em}\myhlc{\spcirc}\myparg{centro}\mycolsep \myhlc{\spcirc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}
+%     \mycolrow{14.9em}\myhlc{\spcirc}\myparg{centro\textnormal{\textcolor{red}{,}} radio}\mycolsep \myhlc{\spcirc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro\textnormal{\textcolor{red}{,}} radio}
 %   \end{syntax}
 %   El comando \ics*{spcirc} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional delimitado por paréntesis} de la forma
@@ -5240,9 +5302,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spAcirc}
 %   \begin{syntax}
-%     \mycolrow{18.2em}|\spAcirc|\mycolsep |\spAcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%     \mycolrow{18.2em}|\spAcirc|\myparg{centro}\mycolsep |\spAcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}
-%     \mycolrow{18.2em}|\spAcirc|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spAcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
+%     \mycolrow{18.2em}\myhlc{\spAcirc}\mycolsep \myhlc{\spAcirc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \mycolrow{18.2em}\myhlc{\spAcirc}\myparg{centro}\mycolsep \myhlc{\spAcirc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}
+%     \mycolrow{18.2em}\myhlc{\spAcirc}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep \myhlc{\spAcirc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
 %   \end{syntax}
 %   El comando \ics*{spAcirc} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento opcional delimitado por paréntesis} de la
@@ -5378,9 +5440,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spPcirc}
 %   \begin{syntax}
-%     \mycolrow{18.2em}|\spPcirc|\mycolsep |\spPcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%     \mycolrow{18.2em}|\spPcirc|\myparg{centro}\mycolsep |\spPcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}
-%     \mycolrow{18.2em}|\spPcirc|\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep |\spPcirc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
+%     \mycolrow{18.2em}\myhlc{\spPcirc}\mycolsep \myhlc{\spPcirc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \mycolrow{18.2em}\myhlc{\spPcirc}\myparg{centro}\mycolsep \myhlc{\spPcirc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{centro}
+%     \mycolrow{18.2em}\myhlc{\spPcirc}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}\mycolsep \myhlc{\spPcirc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\myparg{1 \textnormal{\textcolor{lightgray}{\textbar}} 2 \textnormal{\textcolor{lightgray}{\textbar}} 3 \textnormal{\textcolor{lightgray}{\textbar}} \ldots \textnormal{\textcolor{lightgray}{\textbar}} n}
 %   \end{syntax}
 %   El comando \ics*{spPcirc} trabaja en \emph{modo matemático} y
 %   recibe el \emph{argumento opcional delimitado por paréntesis} de la
@@ -5518,7 +5580,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spVol}
 %   \begin{syntax}
-%     |\spVol| \qquad\qquad |\spVol|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spVol} \qquad\qquad \myhlc{\spVol}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   \end{syntax}
 %   El comando \ics*{spVol} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
@@ -5613,7 +5675,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spinterval}
 %   \begin{syntax}
-%     |\spinterval|\mymarg{intervalo} \qquad\qquad |\spinterval|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{intervalo}
+%     \myhlc{\spinterval}\mymarg{intervalo} \qquad\qquad \myhlc{\spinterval}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{intervalo}
 %   \end{syntax}
 %   El comando \ics*{spinterval} trabaja en \emph{modo matemático} y recibe
 %   el \emph{argumento} obligatorio \mymarg{intervalo} de la forma
@@ -5750,7 +5812,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spfun}
 %   \begin{syntax}
-%     |\spfun|\mymarg{función} \qquad\qquad |\spfun|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
+%     \myhlc{\spfun}\mymarg{función} \qquad\qquad \myhlc{\spfun}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
 %   \end{syntax}
 %   El comando \ics*{spfun} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento} obligatorio \mymarg{función} de la forma
@@ -5838,9 +5900,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spdom, \sprec, \spcod}
 %   \begin{syntax}
-%     |\spdom|\mymarg{función} \quad\quad |\spdom|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
-%     |\sprec|\mymarg{función} \quad\quad |\sprec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
-%     |\spcod|\mymarg{función} \quad\quad |\spcod|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
+%     \myhlc{\spdom}\mymarg{función} \quad\quad \myhlc{\spdom}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
+%     \myhlc{\sprec}\mymarg{función} \quad\quad \myhlc{\sprec}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
+%     \myhlc{\spcod}\mymarg{función} \quad\quad \myhlc{\spcod}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{función}
 %   \end{syntax}
 %   Los comandos \ics*{spdom}, \ics*{sprec} y \ics*{spcod} trabajan en
 %   \emph{modo matemático} y reciben el \emph{argumento} obligatorio
@@ -5901,7 +5963,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spfuncomp}
 %   \begin{syntax}
-%     |\spfuncomp|\mymarg{composición} \qquad\qquad |\spfuncomp|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{composición}
+%     \myhlc{\spfuncomp}\mymarg{composición} \qquad\qquad \myhlc{\spfuncomp}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{composición}
 %   \end{syntax}
 %   El comando \ics*{spfuncomp} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento} obligatorio \mymarg{composición}: dos o más
@@ -5954,7 +6016,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spabs}
 %   \begin{syntax}
-%     |\spabs|\mymarg{x} \qquad\qquad |\spabs|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{x}
+%     \myhlc{\spabs}\mymarg{x} \qquad\qquad \myhlc{\spabs}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{x}
 %   \end{syntax}
 %   El comando \ics*{spabs} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{x}: cualquier expresión matemática.
@@ -6043,7 +6105,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spProm}
 %   \begin{syntax}
-%     |\spProm|\mymarg{argumento} \qquad\qquad |\spProm|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{argumento}
+%     \myhlc{\spProm}\mymarg{argumento} \qquad\qquad \myhlc{\spProm}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{argumento}
 %   \end{syntax}
 %   El comando \ics*{spProm} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento} obligatorio \mymarg{argumento}: cualquier expresión
@@ -6088,11 +6150,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spmedia, \spmediana, \spmoda, \spdesv, \spvarz}
 %   \begin{syntax}
-%     |\spmedia|   \quad\quad |\spmedia|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%     |\spmediana| \quad\quad |\spmediana|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%     |\spmoda|    \quad\quad |\spmoda|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%     |\spdesv|    \quad\quad |\spdesv|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%     |\spvarz|    \quad\quad |\spvarz|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spmedia}   \quad\quad \myhlc{\spmedia}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spmediana} \quad\quad \myhlc{\spmediana}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spmoda}    \quad\quad \myhlc{\spmoda}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spdesv}    \quad\quad \myhlc{\spdesv}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spvarz}    \quad\quad \myhlc{\spvarz}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   \end{syntax}
 %   Los comandos \ics*{spmedia}, \ics*{spmediana}, \ics*{spmoda},
 %   \ics*{spdesv} y \ics*{spvarz} trabajan en \emph{modo matemático} y
@@ -6179,10 +6241,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\sprango, \spriq, \spmin, \spmax}
 %   \begin{syntax}
-%     |\sprango| \quad\quad |\sprango|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%     |\spriq|   \quad\quad |\spriq|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%     |\spmin|   \quad\quad |\spmin|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
-%     |\spmax|   \quad\quad |\spmax|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\sprango} \quad\quad \myhlc{\sprango}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spriq}   \quad\quad \myhlc{\spriq}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spmin}   \quad\quad \myhlc{\spmin}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spmax}   \quad\quad \myhlc{\spmax}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   \end{syntax}
 %   Los comandos \ics*{sprango}, \ics*{spriq}, \ics*{spmin} y \ics*{spmax}
 %   trabajan en \emph{modo matemático} y reciben el \emph{argumento opcional}
@@ -6210,9 +6272,9 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spcuartil, \spdecil, \spPerc}
 %   \begin{syntax}
-%     |\spcuartil|\mymarg{k} \quad\quad |\spcuartil|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}
-%     |\spdecil|\mymarg{k}   \quad\quad |\spdecil|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}
-%     |\spPerc|\mymarg{k}    \quad\quad |\spPerc|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}
+%     \myhlc{\spcuartil}\mymarg{k} \quad\quad \myhlc{\spcuartil}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}
+%     \myhlc{\spdecil}\mymarg{k}   \quad\quad \myhlc{\spdecil}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}
+%     \myhlc{\spPerc}\mymarg{k}    \quad\quad \myhlc{\spPerc}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{k}
 %   \end{syntax}
 %   Los comandos \ics*{spcuartil}, \ics*{spdecil} y \ics*{spPerc} trabajan
 %   en \emph{modo matemático} y reciben el \emph{argumento obligatorio}
@@ -6254,7 +6316,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spFrec}
 %   \begin{syntax}
-%     |\spFrec|\mymarg{símbolo} \qquad\qquad |\spFrec|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{símbolo}
+%     \myhlc{\spFrec}\mymarg{símbolo} \qquad\qquad \myhlc{\spFrec}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{símbolo}
 %   \end{syntax}
 %   El comando \ics*{spFrec} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{símbolo}: el símbolo de una
@@ -6325,7 +6387,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spcase}
 %   \begin{syntax}
-%     |\spcase|\mymarg{letra} \qquad\qquad |\spcase|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{letra}
+%     \myhlc{\spcase}\mymarg{letra} \qquad\qquad \myhlc{\spcase}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{letra}
 %   \end{syntax}
 %   El comando \ics*{spcase} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{letra}: la letra que acompaña a los
@@ -6368,7 +6430,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spOmega}
 %   \begin{syntax}
-%     |\spOmega| \qquad\qquad |\spOmega|\myoarg{key \textnormal{\textcolor{gray}{=}} val}
+%     \myhlc{\spOmega} \qquad\qquad \myhlc{\spOmega}\myoarg{key \textnormal{\textcolor{gray}{=}} val}
 %   \end{syntax}
 %   El comando \ics*{spOmega} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val}
@@ -6428,7 +6490,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spPval}
 %   \begin{syntax}
-%     |\spPval|\mymarg{casos}\mymarg{total} \qquad\qquad |\spPval|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{casos}\mymarg{total}
+%     \myhlc{\spPval}\mymarg{casos}\mymarg{total} \qquad\qquad \myhlc{\spPval}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{casos}\mymarg{total}
 %   \end{syntax}
 %   El comando \ics*{spPval} trabaja en \emph{modo matemático} y recibe
 %   \emph{dos argumentos obligatorios}: \mymarg{casos} y \mymarg{total}, los
@@ -6472,7 +6534,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spProb}
 %   \begin{syntax}
-%     |\spProb|\mymarg{evento} \qquad\qquad |\spProb|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{evento}
+%     \myhlc{\spProb}\mymarg{evento} \qquad\qquad \myhlc{\spProb}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{evento}
 %   \end{syntax}
 %   El comando \ics*{spProb} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{evento}: un evento, o dos eventos
@@ -6531,7 +6593,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spcomp}
 %   \begin{syntax}
-%     |\spcomp|\mymarg{evento} \qquad\qquad |\spcomp|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{evento}
+%     \myhlc{\spcomp}\mymarg{evento} \qquad\qquad \myhlc{\spcomp}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{evento}
 %   \end{syntax}
 %   El comando \ics*{spcomp} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{evento}: el evento del que se
@@ -6598,7 +6660,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spcomb}
 %   \begin{syntax}
-%     |\spcomb|\mymarg{n\textnormal{\textcolor{gray}{,}} k} \qquad\qquad |\spcomb|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{n\textnormal{\textcolor{gray}{,}} k}
+%     \myhlc{\spcomb}\mymarg{n\textnormal{\textcolor{gray}{,}} k} \qquad\qquad \myhlc{\spcomb}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{n\textnormal{\textcolor{gray}{,}} k}
 %   \end{syntax}
 %   El comando \ics*{spcomb} trabaja en \emph{modo matemático} y escribe los
 %   símbolos de conteo: combinaciones, variaciones, arreglos y permutaciones,
@@ -6707,7 +6769,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \begin{function}{\spfact}
 %   \begin{syntax}
-%     |\spfact|\mymarg{n} \qquad\qquad |\spfact|\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{n}
+%     \myhlc{\spfact}\mymarg{n} \qquad\qquad \myhlc{\spfact}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{n}
 %   \end{syntax}
 %   El comando \ics*{spfact} trabaja en \emph{modo matemático} y recibe el
 %   \emph{argumento obligatorio} \mymarg{n}. Imprime
@@ -6759,7 +6821,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % genere de nuevo: si agrega, borra o modifica fórmulas con frecuencia, el
 % \texttt{PDF} seguirá leyendo el contenido anterior. Por eso se recomienda:
 %
-% \begin{itemize}[nosep,itemsep=\parskip]
+% \begin{itemize}[nosep,item-vspace=\parskip]
 %   \item usar \texttt{mathml-SE} mientras el documento está en desarrollo, y
 %   \item usar \texttt{mathml-AF} solo en documentos terminados.
 % \end{itemize}
@@ -6775,7 +6837,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % \subsection{De \texttt{mathml-SE} a \texttt{mathml-AF}}
 %
-% \begin{enumerate}[nosep,itemsep=\parskip]
+% \begin{enumerate}[nosep,item-vspace=\parskip]
 %   \item Escriba y revise el documento con \texttt{mathml-SE}.
 %   \item Cuando esté terminado, ejecute en una terminal |spmmli-tool archivo.tex|.
 %     Se genera el archivo \myfile{archivo-mathml.html}.
@@ -6832,7 +6894,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \bottomrule
 % \endlastfoot
 % \texttt{archivo.tex} & Compila una vez en un directorio temporal con
-%   |AFghost=true|, obtiene el archivo de \mynvmath{MathML} de \mypkg{luamml},
+%   \myhlc{AFghost=true}, obtiene el archivo de \mynvmath{MathML} de \mypkg{luamml},
 %   lo limpia y escribe \myfile{archivo-mathml.html}. El \texttt{PDF} temporal se
 %   descarta y no se valida. \\
 % \texttt{archivo-luamml-mathml.html} & Solo limpia un archivo ya generado. \\
@@ -6860,13 +6922,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \endfoot
 % \bottomrule
 % \endlastfoot
-% |-c|, |--check-only| & Solo valida; el archivo debe ser un \texttt{PDF}. \\
-% |-o|, |--overwrite| & Reemplaza los archivos |-mathml.html| existentes. \\
-% |-p|, |--path=|\myparg{carpeta} & Carpeta donde se escriben los archivos, que se crea si no existe. \\
-% |-e|, |--engine=|\myparg{motor} & Motor con que se compila; por defecto \texttt{lualatex-dev} si existe y, si no, |lualatex|. \\
-% |-s|, |--strict| & Se detiene en la primera falla; sin ella procesa todos los archivos. \\
-% |-h|, |--help| & Muestra la ayuda. \\
-% |-v|, |--version| & Muestra la versión. \\
+% \myhlc{-c}, \myhlc{--check-only} & Solo valida; el archivo debe ser un \texttt{PDF}. \\
+% \myhlc{-o}, \myhlc{--overwrite} & Reemplaza los archivos \myhlc{-mathml.html} existentes. \\
+% \myhlc{-p}, \myhlc{--path=}\myparg{carpeta} & Carpeta donde se escriben los archivos, que se crea si no existe. \\
+% \myhlc{-e}, \myhlc{--engine=}\myparg{motor} & Motor con que se compila; por defecto \texttt{lualatex-dev} si existe y, si no, \myhlc{lualatex}. \\
+% \myhlc{-s}, \myhlc{--strict} & Se detiene en la primera falla; sin ella procesa todos los archivos. \\
+% \myhlc{-h}, \myhlc{--help} & Muestra la ayuda. \\
+% \myhlc{-v}, \myhlc{--version} & Muestra la versión. \\
 % \end{longtable}
 % \endgroup
 %
@@ -6917,7 +6979,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % están el archivo fuente y los \texttt{PDF} en \texttt{mathml-SE} y en
 % \texttt{mathml-AF}.
 %
-% \begin{itemize}[left=0pt,itemsep=\parskip]
+% \begin{itemize}[labelindent=0pt,item-vspace=\parskip]
 %   \item El archivo \myfile{spintent-01.tex} contiene las pruebas de |\spnum|,
 %     |\spunit|, |\spmoney| y |\spshort|, junto con |\spnewunit| y |\spunitalias|.
 %     \myattachfile{spintent-01}
@@ -7158,7 +7220,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \setlist[itemize,1]{label=\textendash,leftmargin=*,labelsep=0.5em,nosep,noitemsep}
 % \newlength\descrwidth
 % \settowidth{\descrwidth}{\textsf{v1.0, (ctan), 2026-10-20} }
-% \begin{description}[font=\small\sffamily,wide=0pt,style=multiline,leftmargin=1.1\descrwidth,nosep,noitemsep]
+% \begin{description}[font=\small\sffamily,wide=0pt,leftmargin=1.1\descrwidth,nosep,item-vspace=0pt]
 %  \item [\fileversion{} (ctan), \filedate]
 %    \begin{itemize}
 %      \item |\spunit| accepts the prefix $\mathrm{µ}$ glued to
