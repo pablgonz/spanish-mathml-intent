@@ -601,7 +601,7 @@ end, "shekel_fallback_patch")
                     rightanglesqr, operatorname, angle, measuredangle, measuredrightangle,alpha, mathcal, pi, %
                     attribute, vec, vphantom, widearc, cong, bigl, bigr, Bigl, Bigr, biggl, biggr,Biggl, Biggr, %
                     cup, cap, mid, setminus, infty, lvert, rvert, xcuad, Omega, %
-                    chardef, mathchardef, ell, lparen, rparen, textsc, mathexclam, },%
+                    chardef, mathchardef, ell, lparen, rparen, lbrace, rbrace, textsc, mathexclam, },%
 % Other words 5
     keywordstyle  = [5]{\bfseries\color{pkgname}},%
     keywords      = [5]{babel,spanish-mathml-intent,libertinus-otf,sourcecodepro,fourier-otf,Erewhon-Math,hyperref,},%
@@ -616,7 +616,7 @@ end, "shekel_fallback_patch")
                         spPoly, spAfig, spPfig, sprad, spdiam, spcirc, spAcirc, spPcirc, spcoord, spvec, sprazon,%
                         spProp, spnewread, spVol, spinterval, spfun, spfuncomp, spdom, sprec, spcod, %
                         spProm, spmedia, spmediana, spmoda, spdesv, spvarz, %
-                        spcuartil, spdecil, spPerc, sprango, spriq, spmin, spmax, spFrec, spcase, spOmega, spPval, spProb, spcomp, spcomb, spfact, spabs, },%
+                        spcuartil, spdecil, spPerc, sprango, spriq, spmin, spmax, spFrec, spcase, spOmega, spPval, spProb, spcomp, spcomb, spfact, spabs, spdist, },%
 % Reserved words 8 (keyname) KEYS
     keywordstyle  = [8]{\color{keyname}},%
     keywords      = [8]{print-era, ordinal, gender, male, female, none, ac, dc, currency, sub-units, clear, terse, times, cdot, true, false, unknown, valid, %
@@ -631,7 +631,8 @@ end, "shekel_fallback_patch")
                     circun, circulo, side, mside, usual, sub-index, odot, concept, upper-case, prefix, big, Big, bigg, Bigg, sigma, %
                     use-dfrac, use-spnZ, wrap-parens, read-parens, read-cdot, read-slash, read-sym, set-sym, print-cdot, %
                     money-math, autofit, suffix, result-num, alt, tag, AFghost, kind, repeat, circular, print-sty, close, card, bar, %
-                    inline, square, permutation, combination, variation, arrangement, binom, letter, mathml-AF, },%
+                    inline, square, permutation, combination, variation, arrangement, binom, letter, mathml-AF, %
+                    read-verb, read-std, read-exp, read-uniform, read-gamma, distribute, follow, parameter, parameters, rate, mean, continuous, discrete, scale, },%
 % Reserved words 9 (intent values)
     keywordstyle  = [9]{\color{ltcmd_arg}},%
     keywords      = [9]{number,intent,above,below, E, cal,bfcal, silent, %
@@ -660,7 +661,8 @@ end, "shekel_fallback_patch")
                     spProb-invalid-arg, spabs-empty-arg, spang-invalid-arg, spangle-invalid-arg,%
                     sparc-invalid-points, spcase-invalid-letter, spcirc-invalid-arg,%
                     spcomb-extra-arg, spcomb-invalid-arg, spcomb-invalid-keys, spcomb-missing-arg,%
-                    spcomp-empty-arg, spcoord-invalid-arg, spdate-invalid-arg, spdiv-empty-arg,%
+                    spcomp-empty-arg, spcoord-invalid-arg, spdate-invalid-arg, spdist-invalid-arg,%
+                    spdist-invalid-family, spdiv-empty-arg,%
                     spdom-invalid-arg, spfact-empty-arg, spfun-invalid-arg, spfuncomp-invalid-arg,%
                     spinterval-invalid-arg, spmQ-not-integer, spmQ-signed-part,%
                     spmQ-zero-denominator, spmangle-invalid-arg, spmarc-invalid-points,%
@@ -1237,8 +1239,8 @@ end, "shekel_fallback_patch")
 %     |\spmediana|, |\spmoda|, |\spdesv|, |\spvarz|, |\sprango|, |\spriq|,
 %     |\spmin| y |\spmax|, cuartiles, deciles y percentiles con |\spcuartil|,
 %     |\spdecil| y |\spPerc|, frecuencias con |\spFrec|, probabilidad con
-%     |\spcase|, |\spOmega|, |\spPval|, |\spProb| y |\spcomp|, y conteo con
-%     |\spcomb| y |\spfact|.
+%     |\spcase|, |\spOmega|, |\spPval|, |\spProb| y |\spcomp|, distribuciones
+%     con |\spdist| y conteo con |\spcomb| y |\spfact|.
 % \end{itemize}
 %
 % \subsubsection{Reglas para argumentos}\label{subsubsec:reglas-args}
@@ -1330,6 +1332,7 @@ end, "shekel_fallback_patch")
 % un promedio & \myhlc{$\spProm{x}$} & \pageref{subsec:spProm} \\
 % un cuartil & \myhlc{$\spcuartil{1}$} & \pageref{subsec:spcuartil} \\
 % una probabilidad & \myhlc{$\spProb{A \cap B}$} & \pageref{subsec:spProb} \\
+% una distribución & \myhlc{$\spdist{X \sim B(n,p)}$} & \pageref{subsec:spdist} \\
 % una combinatoria & \myhlc{$\spcomb{5,2}$} & \pageref{subsec:spcomb} \\
 % un factorial & \myhlc{$\spfact{5}$} & \pageref{subsec:spfact} \\
 % \end{longtable}
@@ -5973,8 +5976,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % reciben argumento obligatorio, solo el \emph{argumento opcional}
 % \myoarg{key \textnormal{\textcolor{gray}{=}} val} que establece cómo se
 % verbaliza. Los demás, que son |\spProm|, |\spcuartil|, |\spdecil|, |\spPerc|,
-% |\spFrec|, |\spcase|, |\spPval|, |\spProb|, |\spcomp|, |\spcomb| y |\spfact|,
-% reciben \emph{argumentos obligatorios}; si no cumplen la forma documentada
+% |\spFrec|, |\spcase|, |\spPval|, |\spProb|, |\spcomp|, |\spcomb|, |\spfact| y
+% |\spdist|, reciben \emph{argumentos obligatorios}; si no cumplen la forma documentada
 % devuelven un \enquote{error} y se detiene la compilación del documento.
 %
 % \subsection*{El comando \cs[no-index]{spProm}}\label{subsec:spProm}
@@ -6678,6 +6681,137 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % la impresión de este. Si se establece en |true|, \mynvmath{NVDA/MathCAT} NO
 % verbalizará la salida del comando; si se establece en |false|, sí
 % verbalizará la salida del comando.
+%
+% \subsection*{El comando \cs[no-index]{spdist}}\label{subsec:spdist}
+%
+% \begin{function}{\spdist}
+%   \begin{syntax}
+%     \myhlc{\spdist}\mymarg{variable $\sim$ distribución} \qquad\qquad \myhlc{\spdist}\myoarg{key \textnormal{\textcolor{gray}{=}} val}\mymarg{variable $\sim$ distribución}
+%   \end{syntax}
+%   El comando \ics*{spdist} trabaja en \emph{modo matemático} y recibe el
+%   \emph{argumento obligatorio} \mymarg{variable $\sim$ distribución}: una
+%   variable aleatoria, el símbolo |\sim| y una distribución, escritos tal como
+%   se imprimen. La distribución es el nombre de una familia con sus
+%   parámetros entre paréntesis, como |N(\mu,\sigma^2)|, o con un solo
+%   parámetro en el subíndice, como |t_n|. El comando imprime el argumento sin
+%   cambios. Un argumento sin |\sim|, con un número de parámetros distinto del
+%   de la familia o con una familia que no está en la lista siguiente devuelve
+%   un \enquote{error} y se detiene la compilación del documento.
+% \end{function}
+%
+% Si no se proporciona el \emph{argumento opcional} \myoarg{key \textnormal{\textcolor{gray}{=}} val},
+% |$\spdist{X \sim N(\mu,\sigma^2)}$| imprimirá
+% `$\spdist{X \sim N(\mu,\sigma^2)}$' en la salida \texttt{PDF} y
+% \mynvmath{NVDA/MathCAT} verbalizará \emph{«X distribuye normal con media mu y
+% varianza sigma al cuadrado»}; |$\spdist{X \sim B(n,p)}$| imprimirá
+% `$\spdist{X \sim B(n,p)}$' y verbalizará \emph{«X distribuye binomial con
+% parámetros n y p»}; |$\spdist{X \sim t_n}$| imprimirá
+% `\mysubout{$\spdist{X \sim t_n}$}' y verbalizará \emph{«X distribuye t de
+% student con n grados de libertad»}.
+%
+% Las familias disponibles, con el nombre con que se escriben, son estas:
+%
+% \begin{itemize}
+%   \item Normal: |N(\mu,\sigma^2)| o |N(\mu,\sigma)|. Se verbaliza
+%     \emph{«normal con media mu y varianza sigma al cuadrado»} en el primer
+%     caso y \emph{«normal con media mu y desviación estándar sigma»} en el
+%     segundo; el comando decide por el exponente del segundo parámetro.
+%     Con |N(0,1)| se verbaliza \emph{«normal estándar»}.
+%   \item Binomial: |B(n,p)|, también |Bin|. Se verbaliza \emph{«binomial con
+%     parámetros n y p»}.
+%   \item Bernoulli: |Ber(p)|, también |Be|. Se verbaliza \emph{«bernoulli con
+%     parámetro p»}.
+%   \item Poisson: |P(\lambda)|, también |Po| y |Poisson|. Se verbaliza
+%     \emph{«poisson con parámetro lambda»}.
+%   \item Uniforme: |U(a,b)|. Se verbaliza \emph{«uniforme entre a y b»}. Con
+%     un conjunto, |U\{1,2,\dots,n\}|, se verbaliza \emph{«uniforme discreta
+%     en el conjunto»} seguido de los elementos.
+%   \item Exponencial: |Exp(\lambda)|. Se verbaliza \emph{«exponencial con
+%     parámetro lambda»}.
+%   \item Geométrica: |G(p)|, también |Geo|. Se verbaliza \emph{«geométrica con
+%     parámetro p»}.
+%   \item Hipergeométrica: |H(N,K,n)|, también |Hip|. Se verbaliza
+%     \emph{«hipergeométrica con parámetros N, K y n»}.
+%   \item Gamma: |Gamma(\alpha,\beta)| o |\Gamma(\alpha,\beta)|. Se verbaliza
+%     \emph{«gamma con parámetros alfa y beta»}.
+%   \item Beta: |Beta(\alpha,\beta)|. Se verbaliza \emph{«beta con parámetros
+%     alfa y beta»}.
+%   \item t de Student: |t_n| o |t(n)|, también |T|. Se verbaliza \emph{«t de
+%     student con n grados de libertad»}.
+%   \item Chi cuadrado: |\chi^2_n| o |\chi^2(n)|. Se verbaliza \emph{«ji
+%     cuadrado con n grados de libertad»}.
+%   \item F de Snedecor: |F_{m,n}| o |F(m,n)|, también |Fisher| y |Snedecor|.
+%     Se verbaliza \emph{«f de snedecor con m y n grados de libertad»}.
+% \end{itemize}
+%
+% La variable aleatoria y los parámetros pueden ser cualquier expresión, como
+% |$\spdist{X_{1} \sim B(10,0{,}5)}$|.
+%
+% \subsubsection*{Llaves para \cs[no-index]{spdist}}
+%
+% \keyexampcmd{read-verb}{distribute \textnormal{\textcolor{lightgray}{\textbar}}
+%   follow}{distribute}[spdist]
+%
+% Establece el verbo con que se une la variable con la distribución. Con
+% |distribute|, \mynvmath{NVDA/MathCAT} verbaliza \emph{«X distribuye normal
+% con media mu y varianza sigma al cuadrado»}; con |follow|, verbaliza
+% \emph{«X sigue una distribución normal con media mu y varianza sigma al
+% cuadrado»}.
+%
+% Por ejemplo:~|$\spdist[read-verb=follow]{X \sim P(\lambda)}$| imprimirá
+% `$\spdist[read-verb=follow]{X \sim P(\lambda)}$' en la salida \texttt{PDF} y
+% \mynvmath{NVDA/MathCAT} verbalizará \emph{«X sigue una distribución poisson
+% con parámetro lambda»}.
+%
+% \keyexampcmd{read-std}{true \textnormal{\textcolor{lightgray}{\textbar}}
+%   false}{true}[spdist]
+%
+% Establece si |N(0,1)| se verbaliza como la distribución normal estándar. Si
+% se establece en |true|, \mynvmath{NVDA/MathCAT} verbaliza \emph{«Z distribuye
+% normal estándar»}; si se establece en |false|, verbaliza \emph{«Z distribuye
+% normal con media 0 y desviación estándar 1»}. El segundo parámetro se
+% verbaliza como desviación estándar cuando no lleva exponente.
+%
+% \keyexampcmd{read-exp}{parameter \textnormal{\textcolor{lightgray}{\textbar}}
+%   rate \textnormal{\textcolor{lightgray}{\textbar}} mean}{parameter}[spdist]
+%
+% Establece cómo se verbaliza el parámetro de la distribución exponencial, que
+% algunos textos usan como tasa y otros como media. Con |parameter|,
+% \mynvmath{NVDA/MathCAT} verbaliza \emph{«exponencial con parámetro lambda»};
+% con |rate|, \emph{«exponencial con tasa lambda»}; con |mean|,
+% \emph{«exponencial con media lambda»}.
+%
+% Por ejemplo:~|$\spdist[read-exp=rate]{X \sim Exp(\lambda)}$| imprimirá
+% `$\spdist[read-exp=rate]{X \sim Exp(\lambda)}$' en la salida \texttt{PDF} y
+% \mynvmath{NVDA/MathCAT} verbalizará \emph{«X distribuye exponencial con tasa
+% lambda»}.
+%
+% \keyexampcmd{read-uniform}{continuous \textnormal{\textcolor{lightgray}{\textbar}}
+%   discrete}{continuous}[spdist]
+%
+% Establece si |U(a,b)| es la distribución uniforme continua o la discreta.
+% Con |continuous|, \mynvmath{NVDA/MathCAT} verbaliza \emph{«uniforme entre a y
+% b»}; con |discrete|, \emph{«uniforme discreta entre a y b»}. Esta llave no
+% afecta a la forma con conjunto, que siempre es discreta.
+%
+% \keyexampcmd{read-gamma}{parameters \textnormal{\textcolor{lightgray}{\textbar}}
+%   rate \textnormal{\textcolor{lightgray}{\textbar}} scale}{parameters}[spdist]
+%
+% Establece cómo se verbaliza el segundo parámetro de la distribución gamma.
+% Con |parameters|, \mynvmath{NVDA/MathCAT} verbaliza \emph{«gamma con
+% parámetros alfa y beta»}; con |rate|, \emph{«gamma con forma alfa y tasa
+% beta»}; con |scale|, \emph{«gamma con forma alfa y escala beta»}.
+%
+% \keyexampcmd{silent}{true \textnormal{\textcolor{lightgray}{\textbar}}
+%   false}{false}[spdist]
+%
+% Establece si se \emph{silencia} la verbalización en
+% \mynvmath{NVDA/MathCAT} de la distribución al ejecutar el comando sin
+% modificar la impresión de este. Si se establece en |true|,
+% \mynvmath{NVDA/MathCAT} NO verbalizará la salida del comando; si se
+% establece en |false|, sí verbalizará la salida del comando. Un argumento
+% inválido devuelve siempre un \enquote{error} y se detiene la compilación del
+% documento, también con \mykey{silent}|=true|.
 %
 % \section{Modo \texttt{mathml-AF} y \texttt{spmmli-tool}}\label{sec:af}
 %
@@ -22378,6 +22512,534 @@ spmmli-tool -o -p build/ ejemplo.tex
 %    \end{macrocode}
 % \end{macro}
 %
+% \subsection{The command \cs{spdist}}\label{cmd:spdist}
+%
+% The user command |\spdist| typesets the statement that a random variable
+% has a given distribution, |X \sim N(\mu,\sigma^2)|. The \mymarg{argument} is
+% written exactly as it is printed, and it is read with the name of the
+% distribution and its parameters, for example, \emph{«X distribuye normal con
+% media mu y varianza sigma cuadrado»}.
+%
+% \subsubsection{Definition of variables for \cs[no-index]{spdist}}
+%
+% \begin{variable}[int]
+%   {
+%     \l_@@_spdist_luaset_error_str,
+%     \l_@@_spdist_luaset_kind_str,
+%     \l_@@_spdist_luaset_nparam_str,
+%     \l_@@_spdist_luaset_std_str,
+%   }
+%   These variables are set by the function
+%   \myhlc|\@@_luafun_spdist_parse_and_set:n|. The variable
+%   \myhlc|\l_@@_spdist_luaset_error_str| stores |false|, |form| when the
+%   \mymarg{argument} does not have the form |X \sim distribution|, or
+%   |family| when the distribution is not in the table. The variable
+%   \myhlc|\l_@@_spdist_luaset_kind_str| stores |paren| when the parameters
+%   go between parentheses, |sub| when the parameter is a subscript or |set|
+%   when they are the elements of a set between |\{| and |\}|, the
+%   variable \myhlc|\l_@@_spdist_luaset_nparam_str| stores the number of
+%   parameters and the variable \myhlc|\l_@@_spdist_luaset_std_str| stores
+%   |true| for the standard normal distribution |N(0,1)|.
+%    \begin{macrocode}
+\str_new:N \l_@@_spdist_luaset_error_str
+\str_new:N \l_@@_spdist_luaset_kind_str
+\str_new:N \l_@@_spdist_luaset_nparam_str
+\str_new:N \l_@@_spdist_luaset_std_str
+%    \end{macrocode}
+% \end{variable}
+%
+% \begin{variable}[int]
+%   {
+%     \l_@@_spdist_luaset_lhs_str,
+%     \l_@@_spdist_luaset_lhs_composite_str,
+%     \l_@@_spdist_luaset_family_str,
+%     \l_@@_spdist_luaset_df_str,
+%     \l_@@_spdist_luaset_name_str,
+%     \l_@@_spdist_luaset_head_str,
+%     \l_@@_spdist_luaset_mid_str,
+%   }
+%   The variable \myhlc|\l_@@_spdist_luaset_lhs_str| stores the random
+%   variable and \myhlc|\l_@@_spdist_luaset_lhs_composite_str| stores |true|
+%   when it is a sole subscripted, superscripted or radical node. The
+%   variable \myhlc|\l_@@_spdist_luaset_family_str| stores the key of the
+%   family, the same for all its spellings, for example |B| for |Bin|, and
+%   \myhlc|\l_@@_spdist_luaset_df_str| stores |true| when the parameters
+%   are degrees of freedom. The variable
+%   \myhlc|\l_@@_spdist_luaset_name_str| stores the name of the
+%   distribution as it was written. The variables
+%   \myhlc|\l_@@_spdist_luaset_head_str| and \myhlc|\l_@@_spdist_luaset_mid_str|
+%   store the words of the reading before the parameters and between them.
+%    \begin{macrocode}
+\str_new:N \l_@@_spdist_luaset_lhs_str
+\str_new:N \l_@@_spdist_luaset_lhs_composite_str
+\str_new:N \l_@@_spdist_luaset_family_str
+\str_new:N \l_@@_spdist_luaset_df_str
+\str_new:N \l_@@_spdist_luaset_name_str
+\str_new:N \l_@@_spdist_luaset_head_str
+\str_new:N \l_@@_spdist_luaset_mid_str
+%    \end{macrocode}
+% \end{variable}
+%
+% \begin{variable}[int]
+%   {
+%     \l_@@_spdist_luaset_first_str,
+%     \l_@@_spdist_luaset_first_composite_str,
+%     \l_@@_spdist_luaset_second_str,
+%     \l_@@_spdist_luaset_second_composite_str,
+%     \l_@@_spdist_luaset_third_str,
+%     \l_@@_spdist_luaset_third_composite_str,
+%   }
+%   The variables \myhlc|\l_@@_spdist_luaset_first_str|,
+%   \myhlc|\l_@@_spdist_luaset_second_str| and
+%   \myhlc|\l_@@_spdist_luaset_third_str| store the first, the second and
+%   the third parameter, and their |_composite_str| variables store |true| when the
+%   parameter is a sole subscripted, superscripted or radical node.
+%    \begin{macrocode}
+\str_new:N \l_@@_spdist_luaset_first_str
+\str_new:N \l_@@_spdist_luaset_first_composite_str
+\str_new:N \l_@@_spdist_luaset_second_str
+\str_new:N \l_@@_spdist_luaset_second_composite_str
+\str_new:N \l_@@_spdist_luaset_third_str
+\str_new:N \l_@@_spdist_luaset_third_composite_str
+%    \end{macrocode}
+% \end{variable}
+%
+% \begin{variable}[int]
+%   {
+%     \l_@@_spdist_raw_arg_tl,
+%     \l_@@_spdist_read_verb_str,
+%     \l_@@_spdist_read_exp_str,
+%     \l_@@_spdist_read_uniform_str,
+%     \l_@@_spdist_read_gamma_str,
+%     \l_@@_spdist_intent_tl,
+%   }
+%   The token list variable \myhlc|\l_@@_spdist_raw_arg_tl| holds the
+%   \mymarg{argument} exactly as given, the string variable
+%   \myhlc|\l_@@_spdist_read_verb_str| the value of the key
+%   \mykey[spdist]{read-verb}, the string variable
+%   \myhlc|\l_@@_spdist_read_exp_str| the value of the key
+%   \mykey[spdist]{read-exp}, the string variables
+%   \myhlc|\l_@@_spdist_read_uniform_str| and
+%   \myhlc|\l_@@_spdist_read_gamma_str| the values of the keys
+%   \mykey[spdist]{read-uniform} and \mykey[spdist]{read-gamma}, and the token list variable
+%   \myhlc|\l_@@_spdist_intent_tl| the intent of the distribution.
+%    \begin{macrocode}
+\tl_new:N  \l_@@_spdist_raw_arg_tl
+\str_new:N \l_@@_spdist_read_verb_str
+\str_new:N \l_@@_spdist_read_exp_str
+\str_new:N \l_@@_spdist_read_uniform_str
+\str_new:N \l_@@_spdist_read_gamma_str
+\tl_new:N  \l_@@_spdist_intent_tl
+%    \end{macrocode}
+% \end{variable}
+%
+% \subsubsection{Definition of error messages for \cs[no-index]{spdist}}
+%
+% \begin{macro}[int]{spdist-invalid-arg, spdist-invalid-family}
+%   The \enquote{error} |spdist-invalid-arg| is raised when the
+%   \mymarg{argument} does not have the form |X \sim distribution| with the
+%   right number of parameters. The \enquote{error} |spdist-invalid-family|
+%   is raised when the distribution is not in the table.
+%    \begin{macrocode}
+\msg_new:nnnn { spintent } { spdist-invalid-arg }
+  {
+    Invalid~argument~'#1'~for~'\token_to_str:N \spdist'~\msg_line_context:.
+  }
+  {
+    The~argument~must~have~the~form~'X~\token_to_str:N \sim\c_space_tl distribution(parameters)'~or~'X~\token_to_str:N \sim\c_space_tl t_n'.
+  }
+\msg_new:nnnn { spintent } { spdist-invalid-family }
+  {
+    Invalid~distribution~'#1'~for~'\token_to_str:N \spdist'~\msg_line_context:.
+  }
+  {
+    Use~'N',~'B',~'Ber',~'P',~'U',~'Exp',~'G',~'H',~'Gam',~'Beta',~'t',~'\token_to_str:N \chi^2'~or~'F'.
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Definition of keys for \cs[no-index]{spdist}}
+%
+% \begin{macro}[int]{silent, read-verb, read-std, read-exp, read-uniform, read-gamma, unknown}
+%   We define the \mymeta{keys} \mykey[spdist]{silent},
+%   \mykey[spdist]{read-verb}, \mykey[spdist]{read-std},
+%   \mykey[spdist]{read-exp}, \mykey[spdist]{read-uniform} and
+%   \mykey[spdist]{read-gamma}. The key \mykey[spdist]{read-std} starts in
+%   |true|. The key \mykey[spdist]{read-exp} chooses how the parameter of the
+%   exponential distribution is read: |parameter|, |rate| or |mean|. The key
+%   \mykey[spdist]{read-uniform} chooses between |continuous| and |discrete|,
+%   and the key \mykey[spdist]{read-gamma} how the second parameter of the
+%   gamma distribution is read: |parameters|, |rate| or |scale|.
+%    \begin{macrocode}
+\keys_define:nn { spintent / spdist }
+  {
+    silent    .bool_set:N = \l_@@_spdist_silent_bool,
+    silent    .initial:n = false,
+    silent    .value_required:n = true,
+    read-verb .choices:nn = { distribute , follow }
+      {
+        \int_case:nn { \l_keys_choice_int }
+          {
+            { 1 } { \str_set:Nn \l_@@_spdist_read_verb_str { distribute } }
+            { 2 } { \str_set:Nn \l_@@_spdist_read_verb_str { follow } }
+          }
+      },
+    read-verb .initial:n = distribute,
+    read-verb .value_required:n = true,
+    read-std  .bool_set:N = \l_@@_spdist_read_std_bool,
+    read-std  .initial:n = true,
+    read-std  .value_required:n = true,
+    read-exp  .choices:nn = { parameter , rate , mean }
+      {
+        \int_case:nn { \l_keys_choice_int }
+          {
+            { 1 } { \str_set:Nn \l_@@_spdist_read_exp_str { parameter } }
+            { 2 } { \str_set:Nn \l_@@_spdist_read_exp_str { rate } }
+            { 3 } { \str_set:Nn \l_@@_spdist_read_exp_str { mean } }
+          }
+      },
+    read-exp  .initial:n = parameter,
+    read-exp  .value_required:n = true,
+    read-uniform .choices:nn = { continuous , discrete }
+      {
+        \int_case:nn { \l_keys_choice_int }
+          {
+            { 1 } { \str_set:Nn \l_@@_spdist_read_uniform_str { continuous } }
+            { 2 } { \str_set:Nn \l_@@_spdist_read_uniform_str { discrete } }
+          }
+      },
+    read-uniform .initial:n = continuous,
+    read-uniform .value_required:n = true,
+    read-gamma .choices:nn = { parameters , rate , scale }
+      {
+        \int_case:nn { \l_keys_choice_int }
+          {
+            { 1 } { \str_set:Nn \l_@@_spdist_read_gamma_str { parameters } }
+            { 2 } { \str_set:Nn \l_@@_spdist_read_gamma_str { rate } }
+            { 3 } { \str_set:Nn \l_@@_spdist_read_gamma_str { scale } }
+          }
+      },
+    read-gamma .initial:n = parameters,
+    read-gamma .value_required:n = true,
+    unknown   .code:n =
+      {
+        \str_set:Nn \l_@@_command_name_str { spdist }
+        \@@_unknown_keys_cmd:n {#1}
+      },
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \subsubsection{Internal functions for \cs[no-index]{spdist}}
+%
+% \begin{macro}[int]{\@@_spdist_value:n}
+%   The function \myhlc|\@@_spdist_value:n| receives |lhs|, |first| or |second| in
+%   `|#1|'. It typesets the stored value, preceded by
+%   \myhlc|\@@_inner_sep:| when its |_composite_str| variable is |true|, so that
+%   the group |\MathMLarg| wraps holds two children and keeps its |arg|.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spdist_value:n
+  {
+    \str_if_eq:eeT
+      { \str_use:c { l_@@_spdist_luaset_ #1 _composite_str } } { true }
+      { \@@_inner_sep: }
+    \str_use:c { l_@@_spdist_luaset_ #1 _str }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_spdist_params:n}
+%   The function \myhlc|\@@_spdist_params:n| wraps the parameters with an
+%   \MathMLarg named `|#1|'. With one parameter, the \MathMLarg holds it. With
+%   two or three, it holds an |:infix| intent whose word is stored in
+%   \myhlc|\l_@@_spdist_luaset_mid_str|, the commas being silent and each
+%   parameter after the first preceded by \myhlc|\@@_pause_sep:|. With
+%   three, the first two go together under a literal intent, so the word
+%   goes only before the last one, as in \emph{«N, K y n»}.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spdist_params:n
+  {
+    \str_case:VnF \l_@@_spdist_luaset_nparam_str
+      {
+        { 1 }
+          { \MathMLarg {#1} { \@@_spdist_value:n { first } } }
+        { 2 }
+          {
+            \MathMLarg {#1}
+              {
+                \MathMLintent { _ \l_@@_spdist_luaset_mid_str :infix($a,$b) }
+                  {
+                    \MathMLarg { a } { \@@_spdist_value:n { first } }
+                    \MathMLintent { :silent } { , }
+                    \MathMLarg { b } { \@@_pause_sep: \@@_spdist_value:n { second } }
+                  }
+              }
+          }
+      }
+      {
+        \MathMLarg {#1}
+          {
+            \MathMLintent { _ \l_@@_spdist_luaset_mid_str :infix($ab,$c) }
+              {
+                \MathMLarg { ab }
+                  {
+                    \MathMLintent { _- }
+                      {
+                        \MathMLarg { a } { \@@_spdist_value:n { first } }
+                        \MathMLintent { :silent } { , }
+                        \MathMLarg { b } { \@@_pause_sep: \@@_spdist_value:n { second } }
+                      }
+                  }
+                \MathMLintent { :silent } { , }
+                \MathMLarg { c } { \@@_pause_sep: \@@_spdist_value:n { third } }
+              }
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_spdist_set_intent:}
+%   The function \myhlc|\@@_spdist_set_intent:| sets
+%   \myhlc|\l_@@_spdist_intent_tl| to the words before the parameters. With
+%   the standard normal distribution and \mykey[spdist]{read-std}|=true|
+%   it is |normal-estándar|. With \mykey[spdist]{read-verb}|=follow| the word
+%   |distribución-| goes first. The words of the families with more than one
+%   reading are set before by \myhlc|\@@_spdist_set_words:|.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spdist_set_intent:
+  {
+    \@@_spdist_set_words:
+    \str_if_eq:VnTF \l_@@_spdist_read_verb_str { follow }
+      { \tl_set:Nn \l_@@_spdist_intent_tl { distribución- } }
+      { \tl_clear:N \l_@@_spdist_intent_tl }
+    \bool_lazy_and:nnTF
+      { \str_if_eq_p:Vn \l_@@_spdist_luaset_std_str { true } }
+      { \l_@@_spdist_read_std_bool }
+      { \tl_put_right:Nn \l_@@_spdist_intent_tl { normal-estándar } }
+      {
+        \tl_put_right:Ne \l_@@_spdist_intent_tl
+          { \l_@@_spdist_luaset_head_str }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_spdist_set_words:}
+%   The function \myhlc|\@@_spdist_set_words:| changes the words that the
+%   table gives for the families with more than one reading. The exponential
+%   distribution reads its parameter as |parameter|, |rate| or |mean|, the
+%   uniform one as |continuous| or |discrete|, and the gamma one reads its
+%   second parameter as |rate| or |scale|.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spdist_set_words:
+  {
+    \str_case:Vn \l_@@_spdist_luaset_family_str
+      {
+        { Exp }
+          {
+            \str_case:Vn \l_@@_spdist_read_exp_str
+              {
+                { rate }
+                  { \str_set:Nn \l_@@_spdist_luaset_head_str { exponencial-con-tasa } }
+                { mean }
+                  { \str_set:Nn \l_@@_spdist_luaset_head_str { exponencial-con-media } }
+              }
+          }
+        { U }
+          {
+            \bool_lazy_and:nnT
+              { \str_if_eq_p:Vn \l_@@_spdist_read_uniform_str { discrete } }
+              { \str_if_eq_p:Vn \l_@@_spdist_luaset_kind_str { paren } }
+              { \str_set:Nn \l_@@_spdist_luaset_head_str { uniforme-discreta-entre } }
+          }
+        { Gam }
+          {
+            \str_case:Vn \l_@@_spdist_read_gamma_str
+              {
+                { rate }
+                  {
+                    \str_set:Nn \l_@@_spdist_luaset_head_str { gamma-con-forma }
+                    \str_set:Nn \l_@@_spdist_luaset_mid_str { y-tasa }
+                  }
+                { scale }
+                  {
+                    \str_set:Nn \l_@@_spdist_luaset_head_str { gamma-con-forma }
+                    \str_set:Nn \l_@@_spdist_luaset_mid_str { y-escala }
+                  }
+              }
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_spdist_distribution:}
+%   The function \myhlc|\@@_spdist_distribution:| typesets the distribution.
+%   With the standard normal distribution and \mykey[spdist]{read-std}|=true|
+%   the whole distribution has a literal intent. Otherwise the intent is
+%   |:prefix| with the words before the parameters, which are an |\MathMLarg|
+%   either between the parentheses or in the subscript, as they were written.
+%   With a set, as in |U\{1,2,\dots,n\}|, the braces are silent and the
+%   elements are read as they are, after the words
+%   |uniforme-discreta-en-el-conjunto|.
+%   When the parameters are degrees of freedom, they are read with the words
+%   |grados-de-libertad| after them. In the subscript,
+%   \myhlc|\@@_inner_sep:| goes first, because luamml drops the intent
+%   from a sole node that carries a subscript.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spdist_distribution:
+  {
+    \@@_spdist_set_intent:
+    \bool_lazy_and:nnTF
+      { \str_if_eq_p:Vn \l_@@_spdist_luaset_std_str { true } }
+      { \l_@@_spdist_read_std_bool }
+      {
+        \MathMLintent { _ \l_@@_spdist_intent_tl }
+          {
+            \str_use:N \l_@@_spdist_luaset_name_str
+            \lparen \l_@@_spdist_luaset_first_str ,
+            \l_@@_spdist_luaset_second_str \rparen
+          }
+      }
+      {
+        \str_if_eq:VnTF \l_@@_spdist_luaset_kind_str { set }
+          {
+            \MathMLintent { _ \l_@@_spdist_intent_tl :prefix($s) }
+              {
+                \str_use:N \l_@@_spdist_luaset_name_str
+                \MathMLintent { :silent } { \lbrace }
+                \MathMLarg { s } { \@@_spdist_value:n { first } }
+                \MathMLintent { :silent } { \rbrace }
+              }
+          }
+          {
+        \str_if_eq:VnTF \l_@@_spdist_luaset_df_str { true }
+          {
+            \MathMLintent { _ \l_@@_spdist_intent_tl :prefix($gl) }
+              {
+                \str_if_eq:VnTF \l_@@_spdist_luaset_kind_str { paren }
+                  {
+                    \str_use:N \l_@@_spdist_luaset_name_str
+                    \lparen
+                    \@@_spdist_df_arg:
+                    \rparen
+                  }
+                  {
+                    \@@_inner_sep:
+                    \str_use:N \l_@@_spdist_luaset_name_str
+                    \c_math_subscript_token { \@@_spdist_df_arg: }
+                  }
+              }
+          }
+          {
+            \MathMLintent { _ \l_@@_spdist_intent_tl :prefix($p) }
+              {
+                \str_use:N \l_@@_spdist_luaset_name_str
+                \lparen
+                \@@_spdist_params:n { p }
+                \rparen
+              }
+          }
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_spdist_df_arg:}
+%   The function \myhlc|\@@_spdist_df_arg:| typesets the degrees of freedom
+%   as an |\MathMLarg| named |gl| that holds a |:postfix| intent with the
+%   words |grados-de-libertad|. The function \myhlc|\@@_inner_sep:| goes
+%   first in it, so that the intent is kept when the parameter is a sole node.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spdist_df_arg:
+  {
+    \MathMLarg { gl }
+      {
+        \MathMLintent { _grados-de-libertad:postfix($z) }
+          {
+            \@@_inner_sep:
+            \@@_spdist_params:n { z }
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_spdist_mathml:}
+%   The function \myhlc|\@@_spdist_mathml:| builds the structure. With
+%   \mykey[spdist]{silent}|=true|, the \mymarg{argument} is wrapped in a single
+%   `\myhlc|_-|' intent and typeset as given. Otherwise the random variable
+%   and the distribution are wrapped with an |:infix| intent whose word is
+%   |distribuye| or |sigue-una|, according to \mykey[spdist]{read-verb},
+%   and the relation is silent.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spdist_mathml:
+  {
+    \bool_if:NTF \l_@@_spdist_silent_bool
+      { \MathMLintent { _- } { \l_@@_spdist_raw_arg_tl } }
+      {
+        \str_if_eq:VnTF \l_@@_spdist_read_verb_str { follow }
+          { \tl_set:Nn \l_@@_spdist_intent_tl { _sigue-una:infix($x,$d) } }
+          { \tl_set:Nn \l_@@_spdist_intent_tl { _distribuye:infix($x,$d) } }
+        \MathMLintent { \l_@@_spdist_intent_tl }
+          {
+            \MathMLarg { x } { \@@_spdist_value:n { lhs } }
+            \mathrel { \MathMLintent { :silent } { \sim } }
+            \MathMLarg { d } { \@@_spdist_distribution: }
+          }
+      }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}[int]{\@@_spdist_exec:nn}
+%   The function \myhlc|\@@_spdist_exec:nn| sets the \mymeta{keys} in `|#1|'
+%   and \myhlc|\l_@@_spdist_raw_arg_tl| to `|#2|'. Calls
+%   \myhlc|\@@_luafun_spdist_parse_and_set:n| and reports
+%   |spdist-invalid-arg| or |spdist-invalid-family| on error, whatever the
+%   value of \mykey{silent}. If there was no error, it calls
+%   \myhlc|\@@_spdist_mathml:| preceded by an invisible separator.
+%    \begin{macrocode}
+\cs_new_protected:Nn \@@_spdist_exec:nn
+  {
+    \keys_set:nn { spintent / spdist } {#1}
+    \tl_set:Nn \l_@@_spdist_raw_arg_tl {#2}
+    \@@_luafun_spdist_parse_and_set:n { \exp_not:n {#2} }
+    \str_case:VnF \l_@@_spdist_luaset_error_str
+      {
+        { false }
+          {
+            \@@_invisible_sep:
+            \@@_spdist_mathml:
+          }
+        { form }
+          { \msg_error:nne { spintent } { spdist-invalid-arg } { \exp_not:n {#2} } }
+      }
+      { \msg_error:nne { spintent } { spdist-invalid-family } { \exp_not:n {#2} } }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\spdist}
+%   The public command \ics*{spdist} enforces \emph{math mode}, opens a local
+%   group and delegates execution to \myhlc|\@@_spdist_exec:nn|.
+%    \begin{macrocode}
+\NewDocumentCommand \spdist { O{} m }
+  {
+    \mode_if_math:TF
+      {
+        \group_begin:
+          \attribute \l_@@_scope_attr_int = 1
+          \@@_spdist_exec:nn {#1} {#2}
+        \group_end:
+      }
+      { \msg_error:nnn { spintent } { need-math-mode } { \spdist } }
+  }
+%    \end{macrocode}
+% \end{macro}
+%
 % \subsection{The command \cs{spcase}}\label{cmd:spcase}
 %
 % The user command |\spcase| typesets the symbols of the cases of a
@@ -26864,6 +27526,240 @@ register_tex_cmd("luafun_spcoord_parse_and_set", function(raw_content)
     spintent_set_macro("spcoord_luaset_y_has_frac_str", y_has_frac)
     spintent_set_macro("spcoord_luaset_y_composite_str", y_comp)
 end, { "string" })
+
+-- Distribuciones de probabilidad
+
+-- \spdist: "X \sim Familia(parámetros)" o "X \sim Familia_{parámetros}". La
+-- tabla es cerrada: cada familia dice las formas que acepta, su número de
+-- parámetros y las palabras de su lectura. Con df = true los parámetros son
+-- grados de libertad y se leen con "grados de libertad", en las dos formas.
+do
+    local spdist_families = {
+        N   = { forms = { paren = true }, n = 2, word = "normal",         head = "con-media" },
+        B   = { forms = { paren = true }, n = 2, word = "binomial",       head = "con-parámetros", mid = "y-" },
+        Ber = { forms = { paren = true }, n = 1, word = "bernoulli",      head = "con-parámetro" },
+        P   = { forms = { paren = true }, n = 1, word = "poisson",        head = "con-parámetro" },
+        U   = { forms = { paren = true, set = true }, n = 2, word = "uniforme", head = "entre", mid = "y-",
+                set = "uniforme-discreta-en-el-conjunto" },
+        Exp = { forms = { paren = true }, n = 1, word = "exponencial",    head = "con-parámetro" },
+        G   = { forms = { paren = true }, n = 1, word = "geométrica",     head = "con-parámetro" },
+        H   = { forms = { paren = true }, n = 3, word = "hipergeométrica", head = "con-parámetros", mid = "y-" },
+        t   = { forms = { paren = true, sub = true }, n = 1, df = true, word = "t-de-student", head = "con" },
+        chi = { forms = { paren = true, sub = true }, n = 1, df = true, word = "chi-cuadrado", head = "con" },
+        F   = { forms = { paren = true, sub = true }, n = 2, df = true, word = "f-de-snedecor", head = "con", mid = "y-" },
+        Gam = { forms = { paren = true }, n = 2, word = "gamma",          head = "con-parámetros", mid = "y-" },
+        Beta = { forms = { paren = true }, n = 2, word = "beta",          head = "con-parámetros", mid = "y-" },
+    }
+
+    -- otros nombres con los que se escribe cada familia
+    local spdist_alias = {
+        Bin = "B", Binom = "B", Po = "P", Poisson = "P", Be = "Ber", Bernoulli = "Ber",
+        Geo = "G", Ge = "G", Hip = "H", Hipergeom = "H", T = "t", Student = "t",
+        Uniform = "U", Unif = "U", Fisher = "F", Snedecor = "F", Gamma = "Gam",
+    }
+
+    local spdist_fields = {
+        "lhs", "lhs_composite", "kind", "family", "df", "name", "head", "mid",
+        "std", "nparam", "first", "first_composite", "second",
+        "second_composite", "third", "third_composite",
+    }
+
+    local function spdist_error(code)
+        spintent_set_macro("spdist_luaset_error_str", code)
+        for _, k in ipairs(spdist_fields) do
+            spintent_set_macro("spdist_luaset_" .. k .. "_str", "")
+        end
+    end
+
+    local function spdist_composite(v)
+        if s_match(v, "[_^]") or s_match(v, "\\sqrt") then
+            return "true"
+        end
+        return "false"
+    end
+
+    -- posición del primer \sim a profundidad de llaves 0
+    local function spdist_find_sim(s)
+        local depth, i, n = 0, 1, #s
+        while i <= n do
+            local c = s_sub(s, i, i)
+            if c == "\\" then
+                if depth == 0 and s_sub(s, i, i + 3) == "\\sim"
+                    and not s_match(s_sub(s, i + 4, i + 4), "%a") then
+                    return i
+                end
+                i = i + 2
+            else
+                if c == "{" then
+                    depth = depth + 1
+                elseif c == "}" then
+                    depth = depth - 1
+                end
+                i = i + 1
+            end
+        end
+    end
+
+    -- "Nombre(parámetros)": devuelve el nombre y lo que hay entre los
+    -- paréntesis, si el último ")" cierra el primer "(" a profundidad 0
+    local function spdist_paren(rhs)
+        local bd, pd, open, close = 0, 0, nil, nil
+        for i = 1, #rhs do
+            local c = s_sub(rhs, i, i)
+            if c == "{" then
+                bd = bd + 1
+            elseif c == "}" then
+                bd = bd - 1
+            elseif bd == 0 and c == "(" then
+                open = open or i
+                pd = pd + 1
+            elseif bd == 0 and c == ")" then
+                pd = pd - 1
+                if pd == 0 and not close then
+                    close = i
+                end
+            end
+        end
+        if open and close == #rhs and pd == 0 then
+            return spintent_trim(s_sub(rhs, 1, open - 1)),
+                spintent_trim(s_sub(rhs, open + 1, close - 1))
+        end
+    end
+
+    -- "Nombre\{elementos\}": devuelve el nombre y lo que hay entre las llaves
+    local function spdist_set(rhs)
+        local name, inner = s_match(rhs, "^([^{}\\]-)%s*\\{(.*)\\}$")
+        if name and spintent_trim(inner) ~= "" then
+            return spintent_trim(name), spintent_trim(inner)
+        end
+    end
+
+    -- "base_{sub}": parte en el primer "_" a profundidad de llaves 0
+    local function spdist_sub(rhs)
+        local bd = 0
+        for i = 1, #rhs do
+            local c = s_sub(rhs, i, i)
+            if c == "{" then
+                bd = bd + 1
+            elseif c == "}" then
+                bd = bd - 1
+            elseif bd == 0 and c == "_" then
+                local sub = spintent_trim(s_sub(rhs, i + 1))
+                sub = s_match(sub, "^{(.*)}$") or sub
+                return spintent_trim(s_sub(rhs, 1, i - 1)), sub
+            end
+        end
+    end
+
+    -- clave de la familia a partir del nombre escrito
+    local function spdist_key(name)
+        local s = s_gsub(name, "%s+", "")
+        if s == "\\chi^2" or s == "\\chi^{2}" then
+            return "chi"
+        elseif s == "\\Gamma" then
+            return "Gam"
+        end
+        s = s_match(s, "^\\math%a+{(.*)}$")
+            or s_match(s, "^\\operatorname{(.*)}$")
+            or s_match(s, "^\\text{(.*)}$")
+            or s
+        return spdist_alias[s] or s
+    end
+
+    register_tex_cmd("luafun_spdist_parse_and_set", function(raw_content)
+        local raw = spintent_trim(raw_content)
+        local pos = spdist_find_sim(raw)
+        if not pos then
+            spdist_error("form")
+            return
+        end
+        local lhs = spintent_trim(s_sub(raw, 1, pos - 1))
+        local rhs = spintent_trim(s_sub(raw, pos + 4))
+        if lhs == "" or rhs == "" then
+            spdist_error("form")
+            return
+        end
+
+        local name, inner = spdist_set(rhs)
+        local kind = "set"
+        if not name then
+            name, inner = spdist_paren(rhs)
+            kind = "paren"
+        end
+        if not name then
+            name, inner = spdist_sub(rhs)
+            kind = "sub"
+        end
+        if not name or inner == "" then
+            spdist_error("form")
+            return
+        end
+
+        local key = spdist_key(name)
+        local fam = spdist_families[key]
+        if not fam or not fam.forms[kind] then
+            spdist_error("family")
+            return
+        end
+
+        local params
+        if kind == "set" or (kind == "sub" and fam.n == 1) then
+            params = { inner }
+        else
+            local depth, semis, commas = spintent_interval_scan(inner)
+            if depth ~= 0 or #semis > 0 or #commas ~= fam.n - 1 then
+                spdist_error("form")
+                return
+            end
+            params = {}
+            local from = 1
+            for _, c in ipairs(commas) do
+                params[#params + 1] = spintent_trim(s_sub(inner, from, c - 1))
+                from = c + 1
+            end
+            params[#params + 1] = spintent_trim(s_sub(inner, from))
+        end
+        for _, p in ipairs(params) do
+            if p == "" then
+                spdist_error("form")
+                return
+            end
+        end
+
+        local mid = fam.mid or ""
+        local std = "false"
+        if key == "N" then
+            local second = s_gsub(params[2], "%s+", "")
+            if s_match(second, "%^{?2}?$") then
+                mid = "y-varianza"
+            else
+                mid = "y-desviación-estándar"
+            end
+            if params[1] == "0" and params[2] == "1" then
+                std = "true"
+            end
+        end
+
+        spintent_set_macro("spdist_luaset_error_str", "false")
+        spintent_set_macro("spdist_luaset_lhs_str", lhs)
+        spintent_set_macro("spdist_luaset_lhs_composite_str", spdist_composite(lhs))
+        spintent_set_macro("spdist_luaset_kind_str", kind)
+        spintent_set_macro("spdist_luaset_family_str", key)
+        spintent_set_macro("spdist_luaset_df_str", fam.df and "true" or "false")
+        spintent_set_macro("spdist_luaset_name_str", name)
+        spintent_set_macro("spdist_luaset_head_str",
+            kind == "set" and fam.set or (fam.word .. "-" .. fam.head))
+        spintent_set_macro("spdist_luaset_mid_str", mid)
+        spintent_set_macro("spdist_luaset_std_str", std)
+        spintent_set_macro("spdist_luaset_nparam_str", tostring(#params))
+        for i, field in ipairs({ "first", "second", "third" }) do
+            local p = params[i] or ""
+            spintent_set_macro("spdist_luaset_" .. field .. "_str", p)
+            spintent_set_macro("spdist_luaset_" .. field .. "_composite_str",
+                p == "" and "" or spdist_composite(p))
+        end
+    end, { "string" })
+end
 
 -- Intervalos
 

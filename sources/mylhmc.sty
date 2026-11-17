@@ -340,17 +340,17 @@
     shortverb-options .tl_set:N = \l__mylhmc_shortverb_options_tl ,
     shortverb-options .initial:n = { basicstyle = \ttfamily } ,
   }
+\cs_new_protected:Npn \__mylhmc_shortverb_make:nn #1 #2
+  { \lstMakeShortInline [ #1 ] #2 }
+\cs_generate_variant:Nn \__mylhmc_shortverb_make:nn { VV }
 \cs_new_protected:Npn \__mylhmc_shortverb_setup:
   {
     \tl_if_empty:NF \l__mylhmc_shortverb_tl
       {
         \DeleteShortVerb \"
         \exp_last_unbraced:NV \DeleteShortVerb \l__mylhmc_shortverb_tl
-        \tl_set:Nn \l_tmpa_tl { \lstMakeShortInline [ }
-        \tl_put_right:NV \l_tmpa_tl \l__mylhmc_shortverb_options_tl
-        \tl_put_right:Nn \l_tmpa_tl { ] }
-        \tl_put_right:NV \l_tmpa_tl \l__mylhmc_shortverb_tl
-        \l_tmpa_tl
+        \__mylhmc_shortverb_make:VV
+          \l__mylhmc_shortverb_options_tl \l__mylhmc_shortverb_tl
       }
   }
 \hook_gput_code:nnn { begindocument } { mylhmc } { \__mylhmc_shortverb_setup: }

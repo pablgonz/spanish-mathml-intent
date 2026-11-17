@@ -127,6 +127,12 @@ For immediate help type H <return>.
  ...                                              
 l. ...\spcoord{1,2}
 Use the command inside '$...$' or in a math environment.
+[math-mode-spdist]
+! Package spintent Error: Math mode required for '\spdist' on line ....
+For immediate help type H <return>.
+ ...                                              
+l. ...\spdist{X \sim N(\mu,\sigma^2)}
+Use the command inside '$...$' or in a math environment.
 [math-mode-spinterval]
 ! Package spintent Error: Math mode required for '\spinterval' on line ....
 For immediate help type H <return>.
@@ -625,6 +631,12 @@ Check the spelling of the key name.
 For immediate help type H <return>.
  ...                                              
 l. ...$\spcoord[foo]{1,2}$
+Check the spelling of the key name.
+[unknown-key-spdist]
+! Package spintent Error: The key 'foo' is unknown by command '\spdist' and is being ignored on line ....
+For immediate help type H <return>.
+ ...                                              
+l. ...$\spdist[foo]{X \sim N(\mu,\sigma^2)}$
 Check the spelling of the key name.
 [unknown-key-spinterval]
 ! Package spintent Error: The key 'foo' is unknown by command '\spinterval' and is being ignored on line ....
@@ -1523,3 +1535,63 @@ For immediate help type H <return>.
  ...                                              
 l. ...$\spabs{}$
 The expression inside the absolute value is required.
+[spdist-invalid-arg]
+! Package spintent Error: Invalid argument 'X' for '\spdist' on line ....
+For immediate help type H <return>.
+ ...                                              
+l. ...$\spdist{X}$
+The argument must have the form 'X \sim distribution(parameters)' or 'X \sim t_n'.
+[spdist-invalid-parameters]
+! Package spintent Error: Invalid argument 'X \sim N(\mu )' for '\spdist' on line ....
+For immediate help type H <return>.
+ ...                                              
+l. ...$\spdist{X \sim N(\mu)}$
+The argument must have the form 'X \sim distribution(parameters)' or 'X \sim t_n'.
+[spdist-invalid-family]
+! Package spintent Error: Invalid distribution 'X \sim Z(1)' for '\spdist' on line ....
+For immediate help type H <return>.
+ ...                                              
+l. ...$\spdist{X \sim Z(1)}$
+Use 'N', 'B', 'Ber', 'P', 'U', 'Exp', 'G', 'H', 'Gam', 'Beta', 't', '\chi^2' or 'F'.
+[spdist-silent-invalid]
+! Package spintent Error: Invalid distribution 'X \sim Z(1)' for '\spdist' on line ....
+For immediate help type H <return>.
+ ...                                              
+l. ...$\spdist[silent=true]{X \sim Z(1)}$
+Use 'N', 'B', 'Ber', 'P', 'U', 'Exp', 'G', 'H', 'Gam', 'Beta', 't', '\chi^2' or 'F'.
+[spdist-invalid-parameters-three]
+! Package spintent Error: Invalid argument 'X \sim H(N,K)' for '\spdist' on line ....
+For immediate help type H <return>.
+ ...                                              
+l. ...$\spdist{X \sim H(N,K)}$
+The argument must have the form 'X \sim distribution(parameters)' or 'X \sim t_n'.
+[spdist-invalid-parameters-df]
+! Package spintent Error: Invalid argument 'X \sim F_{m}' for '\spdist' on line ....
+For immediate help type H <return>.
+ ...                                              
+l. ...$\spdist{X \sim F_{m}}$
+The argument must have the form 'X \sim distribution(parameters)' or 'X \sim t_n'.
+[spdist-paren-only-family]
+! Package spintent Error: Invalid distribution 'X \sim B_{n}' for '\spdist' on line ....
+For immediate help type H <return>.
+ ...                                              
+l. ...$\spdist{X \sim B_{n}}$
+Use 'N', 'B', 'Ber', 'P', 'U', 'Exp', 'G', 'H', 'Gam', 'Beta', 't', '\chi^2' or 'F'.
+[spdist-invalid-read-exp]
+! LaTeX Error: Key 'spintent/spdist/read-exp' accepts only a fixed set of choices.
+For immediate help type H <return>.
+ ...                                              
+l. ...$\spdist[read-exp=foo]{X \sim Exp(\lambda)}$
+The key 'spintent/spdist/read-exp' only accepts predefined values, and 'foo' is not one of these.
+[spdist-invalid-read-gamma]
+! LaTeX Error: Key 'spintent/spdist/read-gamma' accepts only a fixed set of choices.
+For immediate help type H <return>.
+ ...                                              
+l. ...$\spdist[read-gamma=foo]{X \sim Gamma(1,2)}$
+The key 'spintent/spdist/read-gamma' only accepts predefined values, and 'foo' is not one of these.
+[spdist-set-wrong-family]
+! Package spintent Error: Invalid distribution 'X \sim N\{1,2\}' for '\spdist' on line ....
+For immediate help type H <return>.
+ ...                                              
+l. ...$\spdist{X \sim N\{1,2\}}$
+Use 'N', 'B', 'Ber', 'P', 'U', 'Exp', 'G', 'H', 'Gam', 'Beta', 't', '\chi^2' or 'F'.

@@ -102,6 +102,9 @@
 \TYPE{[math-mode-spcoord]}
 \spcoord{1,2}
 
+\TYPE{[math-mode-spdist]}
+\spdist{X \sim N(\mu,\sigma^2)}
+
 \TYPE{[math-mode-spinterval]}
 \spinterval{[0,1]}
 
@@ -351,6 +354,9 @@ $\spmQ[foo]{1}{2}{3}$
 
 \TYPE{[unknown-key-spcoord]}
 $\spcoord[foo]{1,2}$
+
+\TYPE{[unknown-key-spdist]}
+$\spdist[foo]{X \sim N(\mu,\sigma^2)}$
 
 \TYPE{[unknown-key-spinterval]}
 $\spinterval[foo]{[1,2]}$
@@ -819,6 +825,36 @@ $\spfact{}$
 
 \TYPE{[spabs-empty]}
 $\spabs{}$
+
+\TYPE{[spdist-invalid-arg]}
+$\spdist{X}$
+
+\TYPE{[spdist-invalid-parameters]}
+$\spdist{X \sim N(\mu)}$
+
+\TYPE{[spdist-invalid-family]}
+$\spdist{X \sim Z(1)}$
+
+\TYPE{[spdist-silent-invalid]}
+$\spdist[silent=true]{X \sim Z(1)}$
+
+\TYPE{[spdist-invalid-parameters-three]}
+$\spdist{X \sim H(N,K)}$
+
+\TYPE{[spdist-invalid-parameters-df]}
+$\spdist{X \sim F_{m}}$
+
+\TYPE{[spdist-paren-only-family]}
+$\spdist{X \sim B_{n}}$
+
+\TYPE{[spdist-invalid-read-exp]}
+$\spdist[read-exp=foo]{X \sim Exp(\lambda)}$
+
+\TYPE{[spdist-invalid-read-gamma]}
+$\spdist[read-gamma=foo]{X \sim Gamma(1,2)}$
+
+\TYPE{[spdist-set-wrong-family]}
+$\spdist{X \sim N\{1,2\}}$
 
 \OMIT
 
