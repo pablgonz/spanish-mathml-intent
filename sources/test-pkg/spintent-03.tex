@@ -1,6 +1,6 @@
 % spintent-03.tex
 % Pruebas de las utilidades para números: \spdiv, \spmul, \spnD, \spnM,
-% \spmcd, \spmcm, \spnZ, \spmQ, \sprazon y \spProp.
+% \spmcd, \spmcm, \spnZ, \spmQ, \sprazon, \spProp y \spnord.
 %
 % Las lecturas en los comentarios `% doc:` son las de NVDA 2026.3 con
 % MathCAT 0.7.8-alpha.1, idénticas en mathml-SE y en mathml-AF: una por cada fórmula,
@@ -196,6 +196,27 @@
   \item Proporción en línea: $\spProp[inline=true]{3}{4}{6}{8}$.
   % doc: «(silencio)»
   \item Proporción silenciada: $\spProp[silent=true]{3}{4}{6}{8}$.
+\end{itemize}
+
+\subsection*{El comando \texttt{\textbackslash spnord}}
+
+\begin{itemize}
+  % doc: (por escuchar)
+  \item Masculino: $\spnord{1.o}$.
+  % doc: (por escuchar)
+  \item Femenino: $\spnord{1.a}$.
+  % doc: (por escuchar)
+  \item Apocopado: $\spnord{3.er}$.
+  % doc: (por escuchar)
+  \item Femenino plural: $\spnord{5.as}$.
+  % doc: (por escuchar)
+  \item Compuesto: $\spnord{21.a}$.
+  % doc: (por escuchar)
+  \item Con la letra º: $\spnord{2.º}$.
+  % doc: (por escuchar)
+  \item Con versalitas: $\spnord[small-caps=true]{2.o}$.
+  % doc: (por escuchar)
+  \item Con verbalización propia: $\spnord[read-arg={octavo}]{8.^{\text{avo}}}$.
 \end{itemize}
 
 \end{document}

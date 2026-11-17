@@ -3,7 +3,7 @@
 % \sprec, \spcod, \spfuncomp, \spabs) y para estadística (\spProm, \spmedia,
 % \spmediana, \spmoda, \spdesv, \spvarz, \sprango, \spriq, \spmin, \spmax,
 % \spcuartil, \spdecil, \spPerc, \spFrec, \spcase, \spOmega, \spPval,
-% \spProb, \spcomp, \spcomb y \spfact).
+% \spProb, \spcomp, \spcomb, \spfact y \spdist).
 %
 % Las lecturas en los comentarios `% doc:` son las de NVDA 2026.3 con
 % MathCAT 0.7.8-alpha.1, idénticas en mathml-SE y en mathml-AF: una por cada fórmula,
@@ -346,6 +346,75 @@
   \item Factorial con verbalización propia: $\spfact[read-arg={cinco factorial}]{5}$.
   % doc: «(silencio)»
   \item Factorial silenciado: $\spfact[silent=true]{5}$.
+\end{itemize}
+
+\subsection*{El comando \texttt{\textbackslash spdist}}
+
+\begin{itemize}
+  % doc: (por escuchar)
+  \item Normal con varianza: $\spdist[var=X,dist=N]{\mu,\sigma^2}$.
+  % doc: (por escuchar)
+  \item Normal con desviación estándar: $\spdist[var=X,dist=N]{\mu,\sigma}$.
+  % doc: (por escuchar)
+  \item Normal estándar: $\spdist[var=Z,dist=N]{0,1}$.
+  % doc: (por escuchar)
+  \item Normal con la letra s: $\spdist[var=X,dist=N]{\bar{x},s}$.
+  % doc: (por escuchar)
+  \item Normal con desviación y exponente: $\spdist[var=X,dist=N,read-sty=std]{\mu,s^2}$.
+  % doc: (por escuchar)
+  \item Normal con varianza numérica: $\spdist[var=X,dist=N,read-sty=variance]{5,4}$.
+  % doc: (por escuchar)
+  \item Normal sin variable: $\spdist[dist=N]{0,1}$.
+  % doc: (por escuchar)
+  \item Binomial: $\spdist[var=X,dist=B]{n,p}$.
+  % doc: (por escuchar)
+  \item Binomial con decimales: $\spdist[var=X,dist=B]{10;0,5}$.
+  % doc: (por escuchar)
+  \item Poisson: $\spdist[var=X,dist=P]{\lambda}$.
+  % doc: (por escuchar)
+  \item Bernoulli: $\spdist[var=X,dist=Be]{p}$.
+  % doc: (por escuchar)
+  \item Geométrica: $\spdist[var=X,dist=Ge]{p}$.
+  % doc: (por escuchar)
+  \item Hipergeométrica: $\spdist[var=X,dist=H]{N,n,p}$.
+  % doc: (por escuchar)
+  \item Uniforme: $\spdist[var=X,dist=U]{a,b}$.
+  % doc: (por escuchar)
+  \item Uniforme con corchetes: $\spdist[var=X,dist=U,print-sty=brack]{a,b}$.
+  % doc: (por escuchar)
+  \item Uniforme discreta: $\spdist[var=X,dist=U,read-sty=discrete]{1,n}$.
+  % doc: (por escuchar)
+  \item Uniforme en un conjunto: $\spdist[var=X,dist=U,print-sty=set]{1,2,\dots,n}$.
+  % doc: (por escuchar)
+  \item Exponencial: $\spdist[var=X,dist=Exp]{\lambda}$.
+  % doc: (por escuchar)
+  \item Exponencial con tasa: $\spdist[var=X,dist=Exp,read-sty=rate]{\lambda}$.
+  % doc: (por escuchar)
+  \item Exponencial con media: $\spdist[var=X,dist=Exp,read-sty=mean]{\lambda}$.
+  % doc: (por escuchar)
+  \item Gamma: $\spdist[var=X,dist=Gamma]{\alpha,\beta}$.
+  % doc: (por escuchar)
+  \item Gamma con escala: $\spdist[var=X,dist=Gamma,read-sty=scale]{k,\theta}$.
+  % doc: (por escuchar)
+  \item Beta: $\spdist[var=X,dist=Beta]{\alpha,\beta}$.
+  % doc: (por escuchar)
+  \item $t$ de Student: $\spdist[var=X,dist=t]{n}$.
+  % doc: (por escuchar)
+  \item $t$ de Student entre paréntesis: $\spdist[var=X,dist=t,print-sty=paren]{n}$.
+  % doc: (por escuchar)
+  \item Chi cuadrado: $\spdist[var=X,dist=chi]{n}$.
+  % doc: (por escuchar)
+  \item $F$ de Snedecor: $\spdist[var=X,dist=F]{m,n}$.
+  % doc: (por escuchar)
+  \item Varias variables: $\spdist[var={X_1,\dots,X_n},dist=N]{\mu,\sigma^2}$.
+  % doc: (por escuchar)
+  \item Variable con subíndice: $\spdist[var=X_{1},dist=B]{n,p}$.
+  % doc: (por escuchar)
+  \item Variable con subíndice leída por MathCAT: $\spdist[var=X_{1},dist=B,read-cmd=mathcat]{n,p}$.
+  % doc: (por escuchar)
+  \item Con verbalización propia: $\spdist[var=X,dist=N,read-arg={X sigue una distribución normal}]{\mu,\sigma^2}$.
+  % doc: (por escuchar)
+  \item Silenciada: $\spdist[var=X,dist=N,silent=true]{\mu,\sigma^2}$.
 \end{itemize}
 
 \end{document}

@@ -1,0 +1,161 @@
+% test-009.tex -- tagged-PDF test del comando \spdist
+%
+% Compilar:  lualatex-dev test-009.tex
+% Validar:   show-pdf-tags --xml test-009.pdf | rnv-wrapp
+%            verapdf --flavour ua2 --format text test-009.pdf
+%
+% Cada caso es un parrafo numerado. Las lecturas "doc:" estan por escuchar
+% con NVDA y MathCAT.
+\DocumentMetadata
+  {
+    lang=es-CL,
+    pdfversion=2.0,
+    pdfstandard=ua-2,
+    tagging=on,
+    tagging-setup={math/setup={mathml-SE}},
+  }
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{unicode-math}
+\usepackage{spanish-mathml-intent}
+\usepackage{hyperref}
+\hypersetup
+  {
+    pdfdisplaydoctitle = true,
+    pdftitle           = {test-009: el comando spdist},
+  }
+
+\begin{document}
+
+\section*{A. El comando \texttt{\textbackslash spdist}}
+
+% doc: (por escuchar)
+1. Normal: $\spdist[var=X,dist=N]{\mu,\sigma^2}$.
+
+% doc: (por escuchar)
+2. Normal con desviación: $\spdist[var=X,dist=N]{\mu,\sigma}$.
+
+% doc: (por escuchar)
+3. Normal estándar: $\spdist[var=Z,dist=N]{0,1}$.
+
+% doc: (por escuchar)
+4. Normal con s: $\spdist[var=X,dist=N]{\bar{x},s}$.
+
+% doc: (por escuchar)
+5. Normal con s al cuadrado: $\spdist[var=X,dist=N]{\mu,s^2}$.
+
+% doc: (por escuchar)
+6. Normal con varianza numérica: $\spdist[var=X,dist=N,read-sty=variance]{5,4}$.
+
+% doc: (por escuchar)
+7. Normal sin variable: $\spdist[dist=N]{0,1}$.
+
+% doc: (por escuchar)
+8. Binomial: $\spdist[var=X,dist=B]{n,p}$.
+
+% doc: (por escuchar)
+9. Binomial con decimal: $\spdist[var=X,dist=B]{10;0,5}$.
+
+% doc: (por escuchar)
+10. Poisson: $\spdist[var=X,dist=P]{\lambda}$.
+
+% doc: (por escuchar)
+11. Bernoulli: $\spdist[var=X,dist=Be]{p}$.
+
+% doc: (por escuchar)
+12. Uniforme: $\spdist[var=X,dist=U]{a,b}$.
+
+% doc: (por escuchar)
+13. Uniforme con corchetes: $\spdist[var=X,dist=U,print-sty=brack]{a,b}$.
+
+% doc: (por escuchar)
+14. Uniforme discreta: $\spdist[var=X,dist=U,read-sty=discrete]{1,n}$.
+
+% doc: (por escuchar)
+15. Uniforme en un conjunto: $\spdist[var=X,dist=U,print-sty=set]{1,2,\dots,n}$.
+
+% doc: (por escuchar)
+16. Exponencial: $\spdist[var=X,dist=Exp]{\lambda}$.
+
+% doc: (por escuchar)
+17. Exponencial con tasa: $\spdist[var=X,dist=Exp,read-sty=rate]{\lambda}$.
+
+% doc: (por escuchar)
+18. Exponencial con media: $\spdist[var=X,dist=Exp,read-sty=mean]{\lambda}$.
+
+% doc: (por escuchar)
+19. Geométrica: $\spdist[var=X,dist=Ge]{p}$.
+
+% doc: (por escuchar)
+20. Hipergeométrica: $\spdist[var=X,dist=H]{N,n,p}$.
+
+% doc: (por escuchar)
+21. Gamma: $\spdist[var=X,dist=Gamma]{\alpha,\beta}$.
+
+% doc: (por escuchar)
+22. Gamma con tasa: $\spdist[var=X,dist=Gamma,read-sty=rate]{\alpha,\beta}$.
+
+% doc: (por escuchar)
+23. Gamma con escala: $\spdist[var=X,dist=Gamma,read-sty=scale]{k,\theta}$.
+
+% doc: (por escuchar)
+24. Beta: $\spdist[var=X,dist=Beta]{\alpha,\beta}$.
+
+% doc: (por escuchar)
+25. t de Student: $\spdist[var=X,dist=t]{n}$.
+
+% doc: (por escuchar)
+26. t de Student entre paréntesis: $\spdist[var=X,dist=t,print-sty=paren]{n}$.
+
+% doc: (por escuchar)
+27. Chi cuadrado: $\spdist[var=X,dist=chi]{n}$.
+
+% doc: (por escuchar)
+28. Chi cuadrado sin variable: $\spdist[dist=chi]{n}$.
+
+% doc: (por escuchar)
+29. F de Snedecor: $\spdist[var=X,dist=F]{m,n}$.
+
+% doc: (por escuchar)
+30. F de Snedecor entre paréntesis: $\spdist[var=X,dist=F,print-sty=paren]{m,n}$.
+
+% doc: (por escuchar)
+31. Alias Bi: $\spdist[var=X,dist=Bi]{n,p}$.
+
+% doc: (por escuchar)
+32. Alias Bin: $\spdist[var=X,dist=Bin]{n,p}$.
+
+% doc: (por escuchar)
+33. Alias Ber: $\spdist[var=X,dist=Ber]{p}$.
+
+% doc: (por escuchar)
+34. Alias Po: $\spdist[var=X,dist=Po]{\lambda}$.
+
+% doc: (por escuchar)
+35. Alias Geo: $\spdist[var=X,dist=Geo]{p}$.
+
+% doc: (por escuchar)
+36. Variable con subíndice: $\spdist[var=X_{1},dist=B]{n,p}$.
+
+% doc: (por escuchar)
+37. Varias variables: $\spdist[var={X_1,\dots,X_n},dist=N]{\mu,\sigma^2}$.
+
+% doc: (por escuchar)
+38. Lectura mathcat: $\spdist[var=X_1,dist=N,read-cmd=mathcat]{\mu,\sigma}$.
+
+% doc: (por escuchar)
+39. Silenciado: $\spdist[var=X,dist=N,silent=true]{\mu,\sigma^2}$.
+
+% doc: (por escuchar)
+40. Con read-arg: $\spdist[var=X,dist=N,read-arg={X sigue una distribución normal}]{\mu,\sigma^2}$.
+
+% doc: (por escuchar)
+41. Silenciado y read-arg: $\spdist[var=X,dist=N,silent=true,read-arg={nada}]{\mu,\sigma^2}$.
+
+% doc: (por escuchar)
+42. read-sty que no corresponde: $\spdist[var=Z,dist=N,read-sty=rate]{0,1}$.
+
+% doc: (por escuchar)
+43. Normal con desviación y exponente: $\spdist[var=X,dist=N,read-sty=std]{\mu,s^2}$.
+
+\end{document}

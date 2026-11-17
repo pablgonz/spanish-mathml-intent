@@ -103,7 +103,7 @@
 \spcoord{1,2}
 
 \TYPE{[math-mode-spdist]}
-\spdist{X \sim N(\mu,\sigma^2)}
+\spdist[dist=N]{\mu,\sigma^2}
 
 \TYPE{[math-mode-spinterval]}
 \spinterval{[0,1]}
@@ -356,7 +356,7 @@ $\spmQ[foo]{1}{2}{3}$
 $\spcoord[foo]{1,2}$
 
 \TYPE{[unknown-key-spdist]}
-$\spdist[foo]{X \sim N(\mu,\sigma^2)}$
+$\spdist[foo,dist=N]{\mu,\sigma^2}$
 
 \TYPE{[unknown-key-spinterval]}
 $\spinterval[foo]{[1,2]}$
@@ -826,35 +826,50 @@ $\spfact{}$
 \TYPE{[spabs-empty]}
 $\spabs{}$
 
-\TYPE{[spdist-invalid-arg]}
-$\spdist{X}$
-
-\TYPE{[spdist-invalid-parameters]}
-$\spdist{X \sim N(\mu)}$
+\TYPE{[spdist-missing-dist]}
+$\spdist[var=X]{\mu,\sigma}$
 
 \TYPE{[spdist-invalid-family]}
-$\spdist{X \sim Z(1)}$
+$\spdist[var=X,dist=Z]{1}$
 
-\TYPE{[spdist-silent-invalid]}
-$\spdist[silent=true]{X \sim Z(1)}$
+\TYPE{[spdist-silent-invalid-family]}
+$\spdist[var=X,dist=Z,silent=true]{1}$
 
-\TYPE{[spdist-invalid-parameters-three]}
-$\spdist{X \sim H(N,K)}$
+\TYPE{[spdist-invalid-arg-count]}
+$\spdist[var=X,dist=N]{\mu}$
 
-\TYPE{[spdist-invalid-parameters-df]}
-$\spdist{X \sim F_{m}}$
+\TYPE{[spdist-invalid-arg-count-three]}
+$\spdist[var=X,dist=H]{N,K}$
 
-\TYPE{[spdist-paren-only-family]}
-$\spdist{X \sim B_{n}}$
+\TYPE{[spdist-invalid-arg-count-df]}
+$\spdist[var=X,dist=F]{m}$
 
-\TYPE{[spdist-invalid-read-exp]}
-$\spdist[read-exp=foo]{X \sim Exp(\lambda)}$
+\TYPE{[spdist-invalid-arg-empty]}
+$\spdist[var=X,dist=N]{\mu,}$
 
-\TYPE{[spdist-invalid-read-gamma]}
-$\spdist[read-gamma=foo]{X \sim Gamma(1,2)}$
+\TYPE{[spdist-invalid-arg-unbalanced]}
+$\spdist[var=X,dist=B]{(n,p}$
 
-\TYPE{[spdist-set-wrong-family]}
-$\spdist{X \sim N\{1,2\}}$
+\TYPE{[spdist-invalid-arg-closing]}
+$\spdist[var=X,dist=B]{n),(p}$
+
+\TYPE{[spdist-invalid-print-sty-sub]}
+$\spdist[var=X,dist=B,print-sty=sub]{n,p}$
+
+\TYPE{[spdist-invalid-print-sty-brack]}
+$\spdist[var=X,dist=N,print-sty=brack]{0,1}$
+
+\TYPE{[spdist-invalid-print-sty-set]}
+$\spdist[var=X,dist=N,print-sty=set]{0,1}$
+
+\TYPE{[spdist-unknown-print-sty]}
+$\spdist[var=X,dist=N,print-sty=foo]{0,1}$
+
+\TYPE{[spdist-unknown-read-sty]}
+$\spdist[var=X,dist=Exp,read-sty=foo]{\lambda}$
+
+\TYPE{[spdist-unknown-read-cmd]}
+$\spdist[var=X,dist=N,read-cmd=foo]{0,1}$
 
 \OMIT
 
