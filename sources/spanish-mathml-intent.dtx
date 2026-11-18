@@ -7335,6 +7335,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 %      \item A decimal with a comma inside a |\spfun| argument, as in
 %        |f(1{,}5)|, is now passed to |\spnum|, so that \mynvmath{MathCAT} reads
 %        \emph{\enquote{1 coma 5}} and not \emph{\enquote{15}}.
+%      \item The closing of |\spabs| is a single node, since \mynvmath{MathCAT}
+%        0.7.9-alpha.1 crashes on an |<mrow>| made of two invisible characters.
 %      \item The wording follows \mynvmath{MathCAT} and the \textsc{cmu} 2024:
 %        \emph{\enquote{fin del valor absoluto}}, \emph{\enquote{factorial de n}}
 %        and \emph{\enquote{f segunda}}.
@@ -16045,9 +16047,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   \myhlc|_|\mymeta{read-arg}|:nofix|; otherwise it is \myhlc|_valor-absoluto($x)|. In this
 %   last case, when \myhlc|\@@_spabs_set_close:n| sets the closing, a native
 %   |\MathMLintent| with the literal intent \myhlc|_fin-del-valor-absoluto| follows the bars
-%   as a sibling, holding \myhlc|\@@_inner_sep:| and an invisible character, and
-%   the outer ghost is omitted because the formula already has two top-level
-%   nodes.
+%   as a sibling, holding only an invisible character, and the outer ghost is
+%   omitted because the formula already has two top-level nodes. The closing
+%   is a single node because \mynvmath{MathCAT} crashes when an |<mrow>| holds
+%   an invisible |<mo>| followed by an invisible |<mi>|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spabs_mathml:n
   {
@@ -16074,7 +16077,7 @@ spmmli-tool -o -p build/ ejemplo.tex
             \bool_if:NT \l_@@_spabs_close_bool
               {
                 \MathMLintent { _fin-del-valor-absoluto }
-                  { \@@_inner_sep: \c_@@_invisible_sep_int }
+                  { \c_@@_invisible_sep_int }
               }
           }
           {
