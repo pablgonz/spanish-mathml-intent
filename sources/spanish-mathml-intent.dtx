@@ -22883,7 +22883,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   two or three, it holds an |:infix| intent whose word is stored in
 %   \myhlc|\l_@@_spdist_luaset_mid_str|, the separators being silent and each
 %   parameter after the first preceded by \myhlc|\@@_pause_sep:|. With
-%   three, the first two go together under a literal intent, so the word
+%   three, the first two go together in a group without intent, so the word
 %   goes only before the last one, as in \emph{«N, n y p»}.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spdist_params:n
@@ -22913,13 +22913,9 @@ spmmli-tool -o -p build/ ejemplo.tex
               {
                 \MathMLarg { ab }
                   {
-                    \MathMLintent { _- }
-                      {
-                        \MathMLarg { a } { \@@_spdist_value:n { first } }
-                        \@@_spdist_sep:
-                        \MathMLarg { b }
-                          { \@@_pause_sep: \@@_spdist_value:n { second } }
-                      }
+                    \@@_spdist_value:n { first }
+                    \@@_spdist_sep:
+                    \@@_pause_sep: \@@_spdist_value:n { second }
                   }
                 \@@_spdist_sep:
                 \MathMLarg { c } { \@@_pause_sep: \@@_spdist_value:n { third } }
@@ -27794,9 +27790,21 @@ local function spintent_dist_error(code)
     end
 end
 
+local spintent_dist_structured = {
+    sqrt = true, frac = true, dfrac = true, tfrac = true, binom = true,
+    bar = true, hat = true, tilde = true, vec = true, dot = true,
+    ddot = true, overline = true, underline = true, widehat = true,
+    widetilde = true,
+}
+
 local function spintent_dist_composite(v)
-    if s_match(v, "[_^]") or s_match(v, "\\sqrt") then
+    if s_match(v, "[_^]") then
         return "true"
+    end
+    for name in s_gmatch(v, "\\(%a+)") do
+        if spintent_dist_structured[name] then
+            return "true"
+        end
     end
     return "false"
 end
