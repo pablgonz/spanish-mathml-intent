@@ -1719,7 +1719,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % `\textcolor{red}{\texttt{\^{}}}\mymarg{exponente}'. Por ejemplo, si
 % se ejecuta |$\spunit{23 m*s^{2}}$| se imprimirá `$\spunit{23 m*s^{2}}$'
 % en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará
-% \emph{«veintitrés metros segundos al cuadrado»}.
+% \emph{«veintitrés metros segundo al cuadrado»}.
 %
 % Se pueden usar \emph{fracciones lineales} con las \mymarg{unidades}
 % utilizando una \emph{«única barra»} `$\mathcolor{red}{/}$' para la
@@ -1762,6 +1762,16 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % establece en |false|, \mynvmath{NVDA/MathCAT} no verbalizará nada entre las
 % \mymarg{unidades}.
 %
+% \begin{important}*
+%  Con |read-cdot=true| \mynvmath{NVDA/MathCAT} deja de reconocer el producto
+%  como una sola unidad compuesta y pone en plural cada una de las
+%  \mymarg{unidades}, no solo la primera: |$\spunit[read-cdot=true]{23 m*s^{2}}$|
+%  se lee \emph{«veintitrés metros por segundos al cuadrado»}. Además, en español
+%  el producto de unidades se nombra por yuxtaposición (\emph{«newton metro»}) y
+%  el \emph{«por»} se reserva para el cociente (\emph{«metro por segundo»}), por
+%  lo que esta llave conviene solo con fines didácticos.
+% \end{important}
+%
 % \keyexampcmd{read-slash}{por \textnormal{\textcolor{lightgray}{\textbar}} partido-por}{por}[spunit]
 %
 % Establece la \emph{forma} en la que \mynvmath{NVDA/MathCAT} verbalizará la
@@ -1797,83 +1807,83 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   \bottomrule
 %   \endlastfoot
 %   %
-%   m   & metro, metros             & Metro               & $\spunit{m}$   & \emph{«metro»}               \\
-%   g   & gramo, gramos             & Gramo               & $\spunit{g}$   & \emph{«gramo»}               \\
-%   s   & segundo, segundos         & Segundo (Tiempo)    & $\spunit{s}$   & \emph{«segundo»}             \\
-%   l   & litro, l-litro            & Litro (minúscula)   & $\spunit{l}$   & \emph{«litro»}               \\
-%   h   & hora, horas               & Hora                & $\spunit{h}$   & \emph{«hora»}                \\
-%   d   & dia, dias                 & Día                 & $\spunit{d}$   & \emph{«día»}                 \\
-%   A   & amperio, ampere           & Amperio             & $\spunit{A}$   & \emph{«amperio»}             \\
-%   V   & voltio, volt              & Voltio              & $\spunit{V}$   & \emph{«voltio»}              \\
-%   W   & vatio, watt               & Vatio               & $\spunit{W}$   & \emph{«vatio»}               \\
-%   J   & julio, joule              & Julio               & $\spunit{J}$   & \emph{«julio»}               \\
-%   N   & newton                    & Newton              & $\spunit{N}$   & \emph{«newton»}              \\
-%   Pa  & pascal                    & Pascal              & $\spunit{Pa}$  & \emph{«pascal»}              \\
-%   Hz  & hercio, hertz             & Hercio              & $\spunit{Hz}$  & \emph{«hercio»}              \\
-%   Ω   & ohmio, ohm, Omega         & Ohmio               & $\spunit{Ω}$   & \emph{«ohmio»}               \\
-%   F   & faradio                   & Faradio             & $\spunit{F}$   & \emph{«faradio»}             \\
-%   C   & culombio                  & Culombio            & $\spunit{C}$   & \emph{«culombio»}            \\
-%   K   & kelvin, Kelvin            & Kelvin              & $\spunit{K}$   & \emph{«kelvin»}              \\
-%   °C  & celsius, degC, ℃          & Grados Celsius      & $\spunit{°C}$  & \emph{«grados celsius»}      \\
-%   °F  & fahrenheit, degF, ℉       & Grados Fahrenheit   & $\spunit{°F}$  & \emph{«grados fahrenheit»}   \\
-%   cal & caloria, calorias         & Caloría             & $\spunit{cal}$ & \emph{«caloría»}             \\
-%   b   & bit                       & Bit                 & $\spunit{b}$   & \emph{«bit»}                 \\
-%   B   & byte, bytes               & Byte                & $\spunit{B}$   & \emph{«byte»}                \\
-%   in  & pulgada, pulgadas         & Pulgada             & $\spunit{in}$  & \emph{«pulgada»}             \\
-%   ft  & pie, pies                 & Pie                 & $\spunit{ft}$  & \emph{«pie»}                 \\
-%   yd  & yarda, yardas             & Yarda               & $\spunit{yd}$  & \emph{«yarda»}               \\
-%   mi  & milla, millas             & Milla               & $\spunit{mi}$  & \emph{«milla»}               \\
-%   lb  & libra, libras             & Libra               & $\spunit{lb}$  & \emph{«libra»}               \\
-%   oz  & onza, onzas               & Onza                & $\spunit{oz}$  & \emph{«onza»}                \\
-%   gal & galon, galones            & Galón               & $\spunit{gal}$ & \emph{«galón»}               \\
-%   Å   & angstrom                  & Angstrom            & $\spunit{Å}$   & \emph{«angstrom»}            \\
-%   µ   & micro                     & Micro (Prefijo)     & $\spunit{µ}$   & \emph{«micro»}               \\
-%   ℧   & mho                       & Mho / Siemens       & $\spunit{℧}$   & \emph{«mho / siemens»}       \\
-%   ′   & minmin                    & Minuto (Arco)       & $\spunit{′}$   & \emph{«minuto»}              \\
-%   ″   & segseg                    & Segundo (Arco)      & $\spunit{″}$   & \emph{«segundo»}             \\
-%   u   & u-masa                    & Unidad masa atómica & $\spunit{u}$   & \emph{«unidad masa atómica»} \\
+%   m   & metro, metros             & Metro               & $\spunit{m}$   & \emph{«metros»}                   \\
+%   g   & gramo, gramos             & Gramo               & $\spunit{g}$   & \emph{«gramos»}                   \\
+%   s   & segundo, segundos         & Segundo (Tiempo)    & $\spunit{s}$   & \emph{«segundos»}                 \\
+%   l   & litro, l-litro            & Litro (minúscula)   & $\spunit{l}$   & \emph{«litros»}                   \\
+%   h   & hora, horas               & Hora                & $\spunit{h}$   & \emph{«horas»}                    \\
+%   d   & dia, dias                 & Día                 & $\spunit{d}$   & \emph{«días»}                     \\
+%   A   & amperio, ampere           & Amperio             & $\spunit{A}$   & \emph{«amperios»}                 \\
+%   V   & voltio, volt              & Voltio              & $\spunit{V}$   & \emph{«voltios»}                  \\
+%   W   & vatio, watt               & Vatio               & $\spunit{W}$   & \emph{«vatios»}                   \\
+%   J   & julio, joule              & Julio               & $\spunit{J}$   & \emph{«julios»}                   \\
+%   N   & newton                    & Newton              & $\spunit{N}$   & \emph{«newtons»}                  \\
+%   Pa  & pascal                    & Pascal              & $\spunit{Pa}$  & \emph{«pascales»}                 \\
+%   Hz  & hercio, hertz             & Hercio              & $\spunit{Hz}$  & \emph{«hercios»}                  \\
+%   Ω   & ohmio, ohm, Omega         & Ohmio               & $\spunit{Ω}$   & \emph{«ohmios»}                   \\
+%   F   & faradio                   & Faradio             & $\spunit{F}$   & \emph{«faradios»}                 \\
+%   C   & culombio                  & Culombio            & $\spunit{C}$   & \emph{«culombios»}                \\
+%   K   & kelvin, Kelvin            & Kelvin              & $\spunit{K}$   & \emph{«kelvins»}                  \\
+%   °C  & celsius, degC, ℃          & Grados Celsius      & $\spunit{°C}$  & \emph{«grados celsius»}           \\
+%   °F  & fahrenheit, degF, ℉       & Grados Fahrenheit   & $\spunit{°F}$  & \emph{«grados fahrenheit»}        \\
+%   cal & caloria, calorias         & Caloría             & $\spunit{cal}$ & \emph{«calorías»}                 \\
+%   b   & bit                       & Bit                 & $\spunit{b}$   & \emph{«bits»}                     \\
+%   B   & byte, bytes               & Byte                & $\spunit{B}$   & \emph{«bytes»}                    \\
+%   in  & pulgada, pulgadas         & Pulgada             & $\spunit{in}$  & \emph{«pulgadas»}                 \\
+%   ft  & pie, pies                 & Pie                 & $\spunit{ft}$  & \emph{«pies»}                     \\
+%   yd  & yarda, yardas             & Yarda               & $\spunit{yd}$  & \emph{«yardas»}                   \\
+%   mi  & milla, millas             & Milla               & $\spunit{mi}$  & \emph{«millas»}                   \\
+%   lb  & libra, libras             & Libra               & $\spunit{lb}$  & \emph{«libras»}                   \\
+%   oz  & onza, onzas               & Onza                & $\spunit{oz}$  & \emph{«onzas»}                    \\
+%   gal & galon, galones            & Galón               & $\spunit{gal}$ & \emph{«galones»}                  \\
+%   Å   & angstrom                  & Angstrom            & $\spunit{Å}$   & \emph{«ángstroms»}                \\
+%   µ   & micro                     & Micro (Prefijo)     & $\spunit{µ}$   & \emph{«micro»}                    \\
+%   ℧   & mho                       & Mho / Siemens       & $\spunit{℧}$   & \emph{«mhos»}                     \\
+%   ′   & minmin                    & Minuto (Arco)       & $\spunit{′}$   & \emph{«minutos»}                  \\
+%   ″   & segseg                    & Segundo (Arco)      & $\spunit{″}$   & \emph{«segundos»}                 \\
+%   u   & u-masa                    & Unidad masa atómica & $\spunit{u}$   & \emph{«unidades de masa atómica»} \\
 %   \midrule
 %   \multicolumn{5}{c}{\textbf{Unidades directas (sin alias)}} \\
 %   \midrule
-%   L   & ---                         & Litro (Mayúscula)   & $\spunit{L}$   & \emph{«litro»}               \\
-%   ℓ   & ---                         & Litro (Cursiva)     & $\spunit{ℓ}$   & \emph{«litro»}               \\
-%   w   & ---                         & Vatio (Minúscula)   & $\spunit{w}$   & \emph{«vatio»}               \\
-%   °K  & ---                         & Grado Kelvin        & $\spunit{°K}$  & \emph{«grado kelvin»}        \\
-%   Bq  & ---                         & Becquerel           & $\spunit{Bq}$  & \emph{«becquerel»}           \\
-%   Da  & ---                         & Dalton              & $\spunit{Da}$  & \emph{«dalton»}              \\
-%   Gy  & ---                         & Gray                & $\spunit{Gy}$  & \emph{«gray»}                \\
-%   H   & ---                         & Henrio              & $\spunit{H}$   & \emph{«henrio»}              \\
-%   Np  & ---                         & Néper               & $\spunit{Np}$  & \emph{«néper»}               \\
-%   S   & ---                         & Siemens             & $\spunit{S}$   & \emph{«siemens»}             \\
-%   Sv  & ---                         & Sievert             & $\spunit{Sv}$  & \emph{«sievert»}             \\
-%   T   & ---                         & Tesla               & $\spunit{T}$   & \emph{«tesla»}               \\
-%   Wb  & ---                         & Weber               & $\spunit{Wb}$  & \emph{«weber»}               \\
-%   atm & ---                         & Atmósfera           & $\spunit{atm}$ & \emph{«atmósfera»}           \\
-%   au  & ---                         & Unidad astronómica  & $\spunit{au}$  & \emph{«unidad astronómica»}  \\
-%   bar & ---                         & Bar                 & $\spunit{bar}$ & \emph{«bar»}                 \\
-%   cd  & ---                         & Candela             & $\spunit{cd}$  & \emph{«candela»}             \\
-%   dB  & ---                         & Decibelio           & $\spunit{dB}$  & \emph{«decibelio»}           \\
-%   dyn & ---                         & Dina                & $\spunit{dyn}$ & \emph{«dina»}                \\
-%   eV  & ---                         & Electronvoltio      & $\spunit{eV}$  & \emph{«electronvoltio»}      \\
-%   erg & ---                         & Ergio               & $\spunit{erg}$ & \emph{«ergio»}               \\
-%   ha  & ---                         & Hectárea            & $\spunit{ha}$  & \emph{«hectárea»}            \\
-%   kat & ---                         & Katal               & $\spunit{kat}$ & \emph{«katal»}               \\
-%   kg  & ---                         & Kilogramo           & $\spunit{kg}$  & \emph{«kilogramo»}           \\
-%   km  & ---                         & Kilómetro           & $\spunit{km}$  & \emph{«kilómetro»}           \\
-%   lm  & ---                         & Lumen               & $\spunit{lm}$  & \emph{«lumen»}               \\
-%   lx  & ---                         & Lux                 & $\spunit{lx}$  & \emph{«lux»}                 \\
-%   cm  & ---                         & Centímetro          & $\spunit{cm}$  & \emph{«centímetro»}          \\
-%   min & ---                         & Minuto (Tiempo)     & $\spunit{min}$ & \emph{«minuto»}              \\
-%   mm  & ---                         & Milímetro           & $\spunit{mm}$  & \emph{«milímetro»}           \\
-%   mol & ---                         & Mol                 & $\spunit{mol}$ & \emph{«mol»}                 \\
-%   pc  & ---                         & Pársec              & $\spunit{pc}$  & \emph{«pársec»}              \\
-%   rad & ---                         & Radián              & $\spunit{rad}$ & \emph{«radián»}              \\
-%   rpm & ---                         & Rev. por minuto     & $\spunit{rpm}$ & \emph{«rev. por minuto»}     \\
-%   sr  & ---                         & Estereorradián      & $\spunit{sr}$  & \emph{«estereorradián»}      \\
-%   t   & ---                         & Tonelada            & $\spunit{t}$   & \emph{«tonelada»}            \\
-%   a   & ---                         & Año / Área (are)    & $\spunit{a}$   & \emph{«año / área»}          \\
-%   y   & ---                         & Año (Year)          & $\spunit{y}$   & \emph{«año»}                 \\
-%   °   & ---                         & Grado (Arco)        & $\spunit{°}$   & \emph{«grado»}               \\
+%   L   & ---                         & Litro (Mayúscula)   & $\spunit{L}$   & \emph{«litros»}                  \\
+%   ℓ   & ---                         & Litro (Cursiva)     & $\spunit{ℓ}$   & \emph{«litros»}                  \\
+%   w   & ---                         & Vatio (alias de W)  & $\spunit{w}$   & \emph{«vatios»}                  \\
+%   °K  & ---                         & Grado Kelvin        & $\spunit{°K}$  & \emph{«grados kelvin»}           \\
+%   Bq  & ---                         & Becquerel           & $\spunit{Bq}$  & \emph{«becquereles»}             \\
+%   Da  & ---                         & Dalton              & $\spunit{Da}$  & \emph{«daltons»}                 \\
+%   Gy  & ---                         & Gray                & $\spunit{Gy}$  & \emph{«grays»}                   \\
+%   H   & ---                         & Henrio              & $\spunit{H}$   & \emph{«henrios»}                 \\
+%   Np  & ---                         & Néper               & $\spunit{Np}$  & \emph{«néperes»}                 \\
+%   S   & ---                         & Siemens             & $\spunit{S}$   & \emph{«siemens»}                 \\
+%   Sv  & ---                         & Sievert             & $\spunit{Sv}$  & \emph{«sieverts»}                \\
+%   T   & ---                         & Tesla               & $\spunit{T}$   & \emph{«teslas»}                  \\
+%   Wb  & ---                         & Weber               & $\spunit{Wb}$  & \emph{«weberes»}                 \\
+%   atm & ---                         & Atmósfera           & $\spunit{atm}$ & \emph{«atmósferas»}              \\
+%   au  & ---                         & Unidad astronómica  & $\spunit{au}$  & \emph{«unidades astronómicas»}   \\
+%   bar & ---                         & Bar                 & $\spunit{bar}$ & \emph{«bares»}                   \\
+%   cd  & ---                         & Candela             & $\spunit{cd}$  & \emph{«candelas»}                \\
+%   dB  & ---                         & Decibelio           & $\spunit{dB}$  & \emph{«decibelios»}              \\
+%   dyn & ---                         & Dina                & $\spunit{dyn}$ & \emph{«dinas»}                   \\
+%   eV  & ---                         & Electronvoltio      & $\spunit{eV}$  & \emph{«electronvoltios»}         \\
+%   erg & ---                         & Ergio               & $\spunit{erg}$ & \emph{«ergios»}                  \\
+%   ha  & ---                         & Hectárea            & $\spunit{ha}$  & \emph{«hectáreas»}               \\
+%   kat & ---                         & Katal               & $\spunit{kat}$ & \emph{«katales»}                 \\
+%   kg  & ---                         & Kilogramo           & $\spunit{kg}$  & \emph{«kilogramos»}              \\
+%   km  & ---                         & Kilómetro           & $\spunit{km}$  & \emph{«kilómetros»}              \\
+%   lm  & ---                         & Lumen               & $\spunit{lm}$  & \emph{«lúmenes»}                 \\
+%   lx  & ---                         & Lux                 & $\spunit{lx}$  & \emph{«lux»}                     \\
+%   cm  & ---                         & Centímetro          & $\spunit{cm}$  & \emph{«centímetros»}             \\
+%   min & ---                         & Minuto (Tiempo)     & $\spunit{min}$ & \emph{«minutos»}                 \\
+%   mm  & ---                         & Milímetro           & $\spunit{mm}$  & \emph{«milímetros»}              \\
+%   mol & ---                         & Mol                 & $\spunit{mol}$ & \emph{«moles»}                   \\
+%   pc  & ---                         & Pársec              & $\spunit{pc}$  & \emph{«parsecs»}                 \\
+%   rad & ---                         & Radián              & $\spunit{rad}$ & \emph{«radianes»}                \\
+%   rpm & ---                         & Rev. por minuto     & $\spunit{rpm}$ & \emph{«revoluciones por minuto»} \\
+%   sr  & ---                         & Estereorradián      & $\spunit{sr}$  & \emph{«estereorradianes»}        \\
+%   t   & ---                         & Tonelada            & $\spunit{t}$   & \emph{«toneladas»}               \\
+%   a   & ---                         & Año / Área (are)    & $\spunit{a}$   & \emph{«años»}                    \\
+%   y   & ---                         & Año (Year)          & $\spunit{y}$   & \emph{«años»}                    \\
+%   °   & ---                         & Grado (Arco)        & $\spunit{°}$   & \emph{«grados»}                  \\
 % \end{longtable}
 % \endgroup
 %
@@ -1903,48 +1913,48 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   \bottomrule
 %   \endlastfoot
 %   %
-%   kcal   & Energía          & $\spunit{kcal}$ & \emph{«kilocaloría»} \\
-%   Wh     & Energía          & $\spunit{Wh}$ & \emph{«vatio hora»} \\
-%   kWh    & Energía          & $\spunit{kWh}$ & \emph{«kilovatio hora»} \\
-%   MWh    & Energía          & $\spunit{MWh}$ & \emph{«megavatio hora»} \\
-%   GWh    & Energía          & $\spunit{GWh}$ & \emph{«gigavatio hora»} \\
-%   Ah     & Carga eléctrica  & $\spunit{Ah}$ & \emph{«amperio hora»} \\
-%   mAh    & Carga eléctrica  & $\spunit{mAh}$ & \emph{«miliamperio hora»} \\
-%   mmHg   & Presión          & $\spunit{mmHg}$ & \emph{«milímetro de mercurio»} \\
-%   Torr   & Presión          & $\spunit{Torr}$ & \emph{«torr»} \\
-%   mbar   & Presión          & $\spunit{mbar}$ & \emph{«milibar»} \\
-%   psi    & Presión          & $\spunit{psi}$ & \emph{«libra por pulgada cuadrada»} \\
-%   cc     & Volumen          & $\spunit{cc}$ & \emph{«centímetro cúbico»} \\
-%   kn     & Velocidad        & $\spunit{kn}$ & \emph{«nudo»} \\
-%   CV     & Potencia         & $\spunit{CV}$ & \emph{«caballo de vapor»} \\
-%   kgf    & Fuerza           & $\spunit{kgf}$ & \emph{«kilogramo fuerza»} \\
-%   ppm    & Concentración    & $\spunit{ppm}$ & \emph{«parte por millón»} \\
-%   uma    & Masa atómica     & $\spunit{uma}$ & \emph{«unidad de masa atómica»} \\
-%   ua     & Distancia        & $\spunit{ua}$ & \emph{«unidad astronómica»} \\
-%   KB     & Datos            & $\spunit{KB}$ & \emph{«kilobyte»} \\
-%   kbit   & Datos            & $\spunit{kbit}$ & \emph{«kilobit»} \\
-%   Mbit   & Datos            & $\spunit{Mbit}$ & \emph{«megabit»} \\
-%   Gbit   & Datos            & $\spunit{Gbit}$ & \emph{«gigabit»} \\
-%   Tbit   & Datos            & $\spunit{Tbit}$ & \emph{«terabit»} \\
-%   bps    & Tasa de datos    & $\spunit{bps}$ & \emph{«bit por segundo»} \\
-%   kbps   & Tasa de datos    & $\spunit{kbps}$ & \emph{«kilobit por segundo»} \\
-%   Mbps   & Tasa de datos    & $\spunit{Mbps}$ & \emph{«megabit por segundo»} \\
-%   Gbps   & Tasa de datos    & $\spunit{Gbps}$ & \emph{«gigabit por segundo»} \\
-%   Tbps   & Tasa de datos    & $\spunit{Tbps}$ & \emph{«terabit por segundo»} \\
-%   Bps    & Tasa de datos    & $\spunit{Bps}$ & \emph{«byte por segundo»} \\
-%   kBps   & Tasa de datos    & $\spunit{kBps}$ & \emph{«kilobyte por segundo»} \\
-%   MBps   & Tasa de datos    & $\spunit{MBps}$ & \emph{«megabyte por segundo»} \\
-%   GBps   & Tasa de datos    & $\spunit{GBps}$ & \emph{«gigabyte por segundo»} \\
-%   dpi    & Resolución       & $\spunit{dpi}$ & \emph{«punto por pulgada»} \\
-%   ppp    & Resolución       & $\spunit{ppp}$ & \emph{«punto por pulgada»} \\
-%   px     & Resolución       & $\spunit{px}$ & \emph{«píxel»} \\
-%   fps    & Cuadros          & $\spunit{fps}$ & \emph{«fotograma por segundo»} \\
-%   FLOPS  & Cómputo          & $\spunit{FLOPS}$ & \emph{«flops»} \\
-%   GFLOPS & Cómputo          & $\spunit{GFLOPS}$ & \emph{«gigaflops»} \\
-%   TFLOPS & Cómputo          & $\spunit{TFLOPS}$ & \emph{«teraflops»} \\
-%   PFLOPS & Cómputo          & $\spunit{PFLOPS}$ & \emph{«petaflops»} \\
-%   MIPS   & Cómputo          & $\spunit{MIPS}$ & \emph{«millón de instrucciones por segundo»} \\
-%   dBm    & Potencia de señal & $\spunit{dBm}$ & \emph{«decibelio milivatio»} \\
+%   kcal   & Energía          & $\spunit{kcal}$ & \emph{«kilocalorías»}                          \\
+%   Wh     & Energía          & $\spunit{Wh}$ & \emph{«vatios hora»}                             \\
+%   kWh    & Energía          & $\spunit{kWh}$ & \emph{«kilovatios hora»}                        \\
+%   MWh    & Energía          & $\spunit{MWh}$ & \emph{«megavatios hora»}                        \\
+%   GWh    & Energía          & $\spunit{GWh}$ & \emph{«gigavatios hora»}                        \\
+%   Ah     & Carga eléctrica  & $\spunit{Ah}$ & \emph{«amperios hora»}                           \\
+%   mAh    & Carga eléctrica  & $\spunit{mAh}$ & \emph{«miliamperios hora»}                      \\
+%   mmHg   & Presión          & $\spunit{mmHg}$ & \emph{«milímetros de mercurio»}                \\
+%   Torr   & Presión          & $\spunit{Torr}$ & \emph{«torr»}                                  \\
+%   mbar   & Presión          & $\spunit{mbar}$ & \emph{«milibares»}                             \\
+%   psi    & Presión          & $\spunit{psi}$ & \emph{«libras por pulgada cuadrada»}            \\
+%   cc     & Volumen          & $\spunit{cc}$ & \emph{«centímetros cúbicos»}                     \\
+%   kn     & Velocidad        & $\spunit{kn}$ & \emph{«nudos»}                                   \\
+%   CV     & Potencia         & $\spunit{CV}$ & \emph{«caballos de vapor»}                       \\
+%   kgf    & Fuerza           & $\spunit{kgf}$ & \emph{«kilogramos fuerza»}                      \\
+%   ppm    & Concentración    & $\spunit{ppm}$ & \emph{«partes por millón»}                      \\
+%   uma    & Masa atómica     & $\spunit{uma}$ & \emph{«unidades de masa atómica»}               \\
+%   ua     & Distancia        & $\spunit{ua}$ & \emph{«unidades astronómicas»}                   \\
+%   KB     & Datos            & $\spunit{KB}$ & \emph{«kilobytes»}                               \\
+%   kbit   & Datos            & $\spunit{kbit}$ & \emph{«kilobits»}                              \\
+%   Mbit   & Datos            & $\spunit{Mbit}$ & \emph{«megabits»}                              \\
+%   Gbit   & Datos            & $\spunit{Gbit}$ & \emph{«gigabits»}                              \\
+%   Tbit   & Datos            & $\spunit{Tbit}$ & \emph{«terabits»}                              \\
+%   bps    & Tasa de datos    & $\spunit{bps}$ & \emph{«bits por segundo»}                       \\
+%   kbps   & Tasa de datos    & $\spunit{kbps}$ & \emph{«kilobits por segundo»}                  \\
+%   Mbps   & Tasa de datos    & $\spunit{Mbps}$ & \emph{«megabits por segundo»}                  \\
+%   Gbps   & Tasa de datos    & $\spunit{Gbps}$ & \emph{«gigabits por segundo»}                  \\
+%   Tbps   & Tasa de datos    & $\spunit{Tbps}$ & \emph{«terabits por segundo»}                  \\
+%   Bps    & Tasa de datos    & $\spunit{Bps}$ & \emph{«bytes por segundo»}                      \\
+%   kBps   & Tasa de datos    & $\spunit{kBps}$ & \emph{«kilobytes por segundo»}                 \\
+%   MBps   & Tasa de datos    & $\spunit{MBps}$ & \emph{«megabytes por segundo»}                 \\
+%   GBps   & Tasa de datos    & $\spunit{GBps}$ & \emph{«gigabytes por segundo»}                 \\
+%   dpi    & Resolución       & $\spunit{dpi}$ & \emph{«puntos por pulgada»}                     \\
+%   ppp    & Resolución       & $\spunit{ppp}$ & \emph{«puntos por pulgada»}                     \\
+%   px     & Resolución       & $\spunit{px}$ & \emph{«píxeles»}                                 \\
+%   fps    & Cuadros          & $\spunit{fps}$ & \emph{«fotogramas por segundo»}                 \\
+%   FLOPS  & Cómputo          & $\spunit{FLOPS}$ & \emph{«flops»}                                \\
+%   GFLOPS & Cómputo          & $\spunit{GFLOPS}$ & \emph{«gigaflops»}                           \\
+%   TFLOPS & Cómputo          & $\spunit{TFLOPS}$ & \emph{«teraflops»}                           \\
+%   PFLOPS & Cómputo          & $\spunit{PFLOPS}$ & \emph{«petaflops»}                           \\
+%   MIPS   & Cómputo          & $\spunit{MIPS}$ & \emph{«millones de instrucciones por segundo»} \\
+%   dBm    & Potencia de señal & $\spunit{dBm}$ & \emph{«decibelios milivatio»}                  \\
 % \end{longtable}
 % \endgroup
 %
@@ -3378,8 +3388,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   mixtos»}, no se pueden manejar muchas cosas desde el lado de
 %   \mypkg*[no-index]{spintent}. Por ejemplo, la entrada |$3\frac{5}{7}$|
 %   con \emph{tagged} \texttt{PDF} se verbaliza por \mynvmath{NVDA/MathCAT}
-%   como \emph{«tres más cinco séptimos»}, lo cual no está mal, pero
-%   pedagógicamente hablando no es del todo correcto.
+%   como \emph{«tres enteros y cinco séptimos»}, sin que el paquete
+%   intervenga en esa lectura.
 % \end{important}
 %
 % \subsubsection*{Llaves para \cs[no-index]{spmQ}}
@@ -5630,7 +5640,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \emph{«intervalo abierto de menos dos a más cuatro»}; si se establece en
 % |mathcat|, \mynvmath{NVDA/MathCAT} aplica sus propias reglas y\newline
 % |$\spinterval[read-cmd=mathcat]{]-2,+4[}$| se verbalizará
-% \emph{«intervalo abierto de menos dos a positivo cuatro»}.
+% \emph{«intervalo abierto de menos dos a más cuatro»}.
 %
 % \keyexampcmd{prefix}{prefijo}{no usado}[spinterval]
 %
@@ -6494,8 +6504,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % |$\spProb{A \cap \spcomp{B}}$| imprimirá `$\spProb{A \cap \spcomp{B}}$' y
 % verbalizará \emph{«probabilidad de A y complemento de B»};
 % |$\spcomp{A \cup B}$| imprimirá `$\spcomp{A \cup B}$' y verbalizará
-% \emph{«complemento de se abren paréntesis A o B se cierran
-% paréntesis»}.
+% \emph{«complemento de abrir paréntesis A o B cerrar paréntesis»}.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spcomp}}
 %
@@ -6963,12 +6972,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \caption{Modos de \texttt{spmmli-tool}} \label{tab:spmmli-tool-modos} \\
 % \toprule
 % \textbf{Archivo} & \textbf{Qué hace} \\
-% \midrule
+% \midru                               \\
 % \endfirsthead
 % \caption[]{\emph{(Continuación: Modos de \texttt{spmmli-tool})}} \\
 % \toprule
 % \textbf{Archivo} & \textbf{Qué hace} \\
-% \midrule
+% \midru                               \\
 % \endhead
 % \midrule
 % \multicolumn{2}{r}{\emph{Continúa en la siguiente página...}} \\
@@ -6980,7 +6989,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   lo limpia y escribe \myfile{archivo-mathml.html}. El \texttt{PDF} temporal se
 %   descarta y no se valida. \\
 % \texttt{archivo-luamml-mathml.html} & Solo limpia un archivo ya generado. \\
-% \texttt{archivo.pdf} & Solo valida el \texttt{PDF} con \texttt{rnv-wrapp} y
+% \texttt{archivo.pdf} & Solo valida el \texttt{PDF} con \texttt{rnv-wrapp} \\
 %   \texttt{veraPDF} para \texttt{PDF/UA-2}, si están en el \texttt{PATH}. \\
 % \end{longtable}
 % \endgroup
@@ -6992,26 +7001,26 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \caption{Opciones de \texttt{spmmli-tool}} \label{tab:spmmli-tool-opciones} \\
 % \toprule
 % \textbf{Opción} & \textbf{Efecto} \\
-% \midrule
+% \midru                            \\
 % \endfirsthead
 % \caption[]{\emph{(Continuación: Opciones de \texttt{spmmli-tool})}} \\
 % \toprule
 % \textbf{Opción} & \textbf{Efecto} \\
-% \midrule
+% \midru                            \\
 % \endhead
 % \midrule
 % \multicolumn{2}{r}{\emph{Continúa en la siguiente página...}} \\
 % \endfoot
 % \bottomrule
 % \endlastfoot
-% \myhlc{-c}, \myhlc{--check-only} & Solo valida; el archivo debe ser un \texttt{PDF}. \\
-% \myhlc{-o}, \myhlc{--overwrite} & Reemplaza los archivos \myhlc{-mathml.html} existentes. \\
-% \myhlc{-p}, \myhlc{--path=}\myparg{carpeta} & Carpeta donde se escriben los archivos, que se crea si no existe. \\
+% \myhlc{-c}, \myhlc{--check-only} & Solo valida; el archivo debe ser un \texttt{PDF}.                                                            \\
+% \myhlc{-o}, \myhlc{--overwrite} & Reemplaza los archivos \myhlc{-mathml.html} existentes.                                                       \\
+% \myhlc{-p}, \myhlc{--path=}\myparg{carpeta} & Carpeta donde se escriben los archivos, que se crea si no existe.                                 \\
 % \myhlc{-e}, \myhlc{--engine=}\myparg{motor} & Motor con que se compila; por defecto \texttt{lualatex-dev} si existe y, si no, \myhlc{lualatex}. \\
-% \myhlc{-s}, \myhlc{--strict} & Se detiene en la primera falla; sin ella procesa todos los archivos. \\
-% \myhlc{-h}, \myhlc{--help} & Muestra la ayuda. \\
-% \myhlc{-v}, \myhlc{--version} & Muestra la versión. \\
-% \end{longtable}
+% \myhlc{-s}, \myhlc{--strict} & Se detiene en la primera falla; sin ella procesa todos los archivos.                                             \\
+% \myhlc{-h}, \myhlc{--help} & Muestra la ayuda.                                                                                                  \\
+% \myhlc{-v}, \myhlc{--version} & Muestra la versión.                                                                                             \\
+% \end{longtabl                                       \\
 % \endgroup
 %
 % Si algún paso falla, el código de salida de \myspitool[no-index]{} es distinto de
@@ -7318,6 +7327,12 @@ spmmli-tool -o -p build/ ejemplo.tex
 %        |dpi|\ldots), and agrees their name with the number, as in
 %        \emph{\enquote{un grado Celsius}}. Their symbols can no longer be
 %        defined with |\spnewunit|.
+%      \item |\spunit| reads \emph{\enquote{vatios}} for |w| (printed as |W|),
+%        \emph{\enquote{micro}} for the lone prefix |µ| and
+%        \emph{\enquote{grados kelvin}} for |°K|, which \mynvmath{MathCAT}
+%        spelled out letter by letter.
+%      \item |\spunit| accepts the Unicode kelvin sign (U+212A), alone or after
+%        |°|, and the ohm sign (U+2126) as input.
 %      \item |\spunit| prints the slash without an intent when \mykey{read-slash}
 %        is |por|, so that the units of the denominator are read in singular.
 %      \item |\spsiglo| has the new keys |ordinal| and |gender| to read the
@@ -7335,6 +7350,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %      \item A decimal with a comma inside a |\spfun| argument, as in
 %        |f(1{,}5)|, is now passed to |\spnum|, so that \mynvmath{MathCAT} reads
 %        \emph{\enquote{1 coma 5}} and not \emph{\enquote{15}}.
+%      \item The primes of a function name in |\spfun|, |\spdom|, |\sprec| and
+%        |\spcod| are read as \emph{\enquote{segunda}}, \emph{\enquote{tercera}}, \dots{}
+%        as documented, since the table with these names was not visible from the
+%        function code and \emph{\enquote{doble prima}} was read instead.
 %      \item The closing of |\spabs| is a single node, since \mynvmath{MathCAT}
 %        0.7.9-alpha.1 crashes on an |<mrow>| made of two invisible characters.
 %      \item The wording follows \mynvmath{MathCAT} and the \textsc{cmu} 2024:
@@ -8903,6 +8922,13 @@ spmmli-tool -o -p build/ ejemplo.tex
     \str_case:VnF \l_@@_spunit_luaset_canonical_str
       {
         { ℓ } { \ell }
+        { °K }
+          {
+            {
+              \MathMLintent { :unit } { \mathrm { ° } }
+              \MathMLintent { :unit } { \mathrm { K } }
+            }
+          }
       }
       { \mathrm { \l_@@_spunit_luaset_canonical_str } }
   }
@@ -25632,7 +25658,7 @@ local spintent_units = {
     ["km"]   = "km",   ["lm"]   = "lm",    ["lx"]   = "lx",   ["m"]    = "m",
     ["cm"]   = "cm",   ["min"]  = "min",   ["mm"]   = "mm",   ["mol"]  = "mol",
     ["pc"]   = "pc",   ["rad"]  = "rad",   ["rpm"]  = "rpm",  ["s"]    = "s",
-    ["sr"]   = "sr",   ["t"]    = "t",     ["u"]    = "u",    ["w"]    = "w",
+    ["sr"]   = "sr",   ["t"]    = "t",     ["u"]    = "u",    ["w"]    = "W",
     ["y"]    = "y",    ["°"]    = "°",     ["°C"]   = "°C",   ["°F"]   = "°F",
     ["Ω"]    = "Ω",    ["℧"]    = "℧",     ["′"]    = "′",    ["″"]    = "″",
     ["Å"]    = "Å",    ["µ"]    = "µ",
@@ -25711,12 +25737,16 @@ local spintent_unit_compact_spoken_names = {
     ["segseg"] = "segundos",
     ["′"]      = "minutos",
     ["″"]      = "segundos",
+    -- µ suelta: con :unit MathCAT la deletrea («µs»); como literal se lee
+    -- «micro». Pegada a una unidad se trata aparte (prefijo, ver abajo).
+    ["µ"]      = "_micro",
 }
 
 local spintent_custom_spunit_spoken_names = {}
 
 local spintent_normalizations = {
-    ["K"] = "K", ["Ω"] = "Ω", ["ℓ"] = "\\ell", ["μ"] = "µ", ["°K"] = "°K",
+    ["\u{212A}"] = "K", ["\u{2126}"] = "Ω", ["ℓ"] = "\\ell", ["μ"] = "µ",
+    ["°\u{212A}"] = "°K",
     ["'"]  = "′", ["''"] = "″", ['"']  = "″", ["minmin"] = "′", ["segseg"] = "″"
 }
 
@@ -26969,6 +26999,7 @@ end
 
 -- Locales compartidos con la sección FUNCIONES; se asignan dentro del bloque de GEOMETRÍA PLANA
 local spintent_geo_primas, spintent_geo_normalize_primes, spintent_geo_build_body_nombre, spintent_geo_build_visual_nombre
+local spintent_fun_prima_ordinal
 
 -- GEOMETRÍA PLANA
 
@@ -27036,7 +27067,7 @@ local spintent_geo_prima_prefijo = {
 
 -- En las funciones las primas son derivadas: "f segunda", como en el
 -- CMU y en MathCAT; los puntos siguen con "A doble prima".
-local spintent_fun_prima_ordinal = {
+spintent_fun_prima_ordinal = {
     "prima", "segunda", "tercera", "cuarta"
 }
 

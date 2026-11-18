@@ -2007,7 +2007,7 @@ TEST 1: Show PDF Tags
           <mi xmlns="http://www.w3.org/1998/Math/MathML"
              id="ID.00315"
              arg="f"
-             intent="_f-doble-prima-"
+             intent="_f-segunda-"
             >
            <?MarkedContent page="1" ?>𝑓
           </mi>
@@ -3597,7 +3597,7 @@ TEST 1: Show PDF Tags
           </mo>
           <mrow xmlns="http://www.w3.org/1998/Math/MathML"
              id="ID.00551"
-             intent="_F-doble-prima-"
+             intent="_F-segunda-"
             >
            <mo xmlns="http://www.w3.org/1998/Math/MathML"
               id="ID.00552"
