@@ -5729,7 +5729,8 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Las comas que quedan dentro de llaves, de paréntesis o de corchetes no
 % separan argumentos. Por eso, un número decimal con coma debe escribirse
-% entre llaves: |$\spfun{f(1{,}5)}$| tiene un solo argumento.
+% entre llaves: |$\spfun{f(1{,}5)}$| tiene un solo argumento, que se imprime y se
+% verbaliza como lo haría |\spnum| y se lee \emph{«f de 1 coma 5»}.
 %
 % El comando |\spfun| devuelve un \enquote{error} y se detiene la compilación
 % del documento cuando el \mymarg{función} no comienza con un nombre válido,
@@ -7331,6 +7332,9 @@ spmmli-tool -o -p build/ ejemplo.tex
 %      \item The geometry commands no longer put an invisible separator between
 %        consecutive points, since \mynvmath{MathCAT} now reads each point on its
 %        own.
+%      \item A decimal with a comma inside a |\spfun| argument, as in
+%        |f(1{,}5)|, is now passed to |\spnum|, so that \mynvmath{MathCAT} reads
+%        \emph{\enquote{1 coma 5}} and not \emph{\enquote{15}}.
 %      \item The wording follows \mynvmath{MathCAT} and the \textsc{cmu} 2024:
 %        \emph{\enquote{fin del valor absoluto}}, \emph{\enquote{factorial de n}}
 %        and \emph{\enquote{f segunda}}.
@@ -28511,13 +28515,18 @@ local spintent_fun_analyze
 -- Clasifica una lista de argumentos en crudo: devuelve { texto, tipo }
 -- por argumento ("true" un solo nodo, "false" expresión, "call" otra
 -- llamada ya validada de forma recursiva) o nil si alguno es inválido.
+-- Un decimal con coma entre llaves (1{,}5) se entrega a \spnum.
 local function spintent_fun_classify_args(args)
     for i = 1, #args do
         local a = spintent_trim(args[i])
         if a == "" then return nil end
         local kind
+        local ent, dec = s_match(a, "^([+-]?%d+){,}(%d+)$")
         if spintent_fun_is_simple(a) then
             kind = "true"
+        elseif ent then
+            a = "\\spnum{" .. ent .. "," .. dec .. "}"
+            kind = "false"
         elseif spintent_fun_is_call(a) then
             if not spintent_fun_analyze(a) then return nil end
             kind = "call"
