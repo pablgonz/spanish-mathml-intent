@@ -1836,7 +1836,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   lb  & libra, libras             & Libra               & $\spunit{lb}$  & \emph{«libras»}                   \\
 %   oz  & onza, onzas               & Onza                & $\spunit{oz}$  & \emph{«onzas»}                    \\
 %   gal & galon, galones            & Galón               & $\spunit{gal}$ & \emph{«galones»}                  \\
-%   Å   & angstrom                  & Angstrom            & $\spunit{Å}$   & \emph{«ángstroms»}                \\
+%   Å   & angstrom, ángstrom        & Ángstrom            & $\spunit{Å}$   & \emph{«ángstroms»}                \\
 %   µ   & micro                     & Micro (Prefijo)     & $\spunit{µ}$   & \emph{«micro»}                    \\
 %   ℧   & mho                       & Mho / Siemens       & $\spunit{℧}$   & \emph{«mhos»}                     \\
 %   ′   & minmin                    & Minuto (Arco)       & $\spunit{′}$   & \emph{«minutos»}                  \\
@@ -1886,6 +1886,14 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %   °   & ---                         & Grado (Arco)        & $\spunit{°}$   & \emph{«grados»}                  \\
 % \end{longtable}
 % \endgroup
+%
+% El símbolo |°K| (\emph{«grados kelvin»}) se mantiene como forma histórica, la
+% unidad actual es el \emph{kelvin} (|K|). Las unidades legales que
+% \mynvmath{NVDA/MathCAT} no conoce se escriben por su nombre: |belio|, |area|
+% (|a| es el año), |barn| (|b| es el bit), |milla-nautica|, |tex|, |gon|,
+% |dioptria|, |quilate| y |vuelta|. Se leen con un nombre fijo y no concuerdan
+% con el número: |$\spunit{5 barn}$| se lee \emph{«5 barn»}. El símbolo |B|
+% sigue siendo el byte.
 %
 % La tabla~\ref{tab:spunit-uso} agrega las \mymarg{unidades} de uso corriente e
 % informática, sin alias. \mynvmath{NVDA/MathCAT} las conoce y concuerda su
@@ -6972,12 +6980,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \caption{Modos de \texttt{spmmli-tool}} \label{tab:spmmli-tool-modos} \\
 % \toprule
 % \textbf{Archivo} & \textbf{Qué hace} \\
-% \midru                               \\
+% \midrule
 % \endfirsthead
 % \caption[]{\emph{(Continuación: Modos de \texttt{spmmli-tool})}} \\
 % \toprule
 % \textbf{Archivo} & \textbf{Qué hace} \\
-% \midru                               \\
+% \midrule
 % \endhead
 % \midrule
 % \multicolumn{2}{r}{\emph{Continúa en la siguiente página...}} \\
@@ -7001,12 +7009,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \caption{Opciones de \texttt{spmmli-tool}} \label{tab:spmmli-tool-opciones} \\
 % \toprule
 % \textbf{Opción} & \textbf{Efecto} \\
-% \midru                            \\
+% \midrule
 % \endfirsthead
 % \caption[]{\emph{(Continuación: Opciones de \texttt{spmmli-tool})}} \\
 % \toprule
 % \textbf{Opción} & \textbf{Efecto} \\
-% \midru                            \\
+% \midrule
 % \endhead
 % \midrule
 % \multicolumn{2}{r}{\emph{Continúa en la siguiente página...}} \\
@@ -7020,7 +7028,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % \myhlc{-s}, \myhlc{--strict} & Se detiene en la primera falla; sin ella procesa todos los archivos.                                             \\
 % \myhlc{-h}, \myhlc{--help} & Muestra la ayuda.                                                                                                  \\
 % \myhlc{-v}, \myhlc{--version} & Muestra la versión.                                                                                             \\
-% \end{longtabl                                       \\
+% \end{longtable}
 % \endgroup
 %
 % Si algún paso falla, el código de salida de \myspitool[no-index]{} es distinto de
@@ -7331,8 +7339,17 @@ spmmli-tool -o -p build/ ejemplo.tex
 %        \emph{\enquote{micro}} for the lone prefix |µ| and
 %        \emph{\enquote{grados kelvin}} for |°K|, which \mynvmath{MathCAT}
 %        spelled out letter by letter.
-%      \item |\spunit| accepts the Unicode kelvin sign (U+212A), alone or after
-%        |°|, and the ohm sign (U+2126) as input.
+%      \item |\spunit| accepts more Unicode input: the kelvin, ohm and
+%        angstrom signs, the ordinal indicator and the ring above as the degree
+%        symbol, the Unicode minus sign in exponents, the middle dot and the dot
+%        operator as product, the division slash, exponents in superscript
+%        and the square compatibility symbols for units. The compatibility
+%        symbols for picovolt and nanovolt were read as volt and kilovolt.
+%      \item |\spunit| reads |w| as watt, the lone prefix |µ| as \emph{\enquote{micro}}
+%        and |°K| as \emph{\enquote{grados kelvin}}. It accepts the legal units belio,
+%        área, barn, milla náutica, tex, gon, dioptría, quilate and vuelta by their
+%        name, the spellings ángstrom and ångström, and \myhlc{’} and \myhlc{”} as
+%        minute and second.
 %      \item |\spunit| prints the slash without an intent when \mykey{read-slash}
 %        is |por|, so that the units of the denominator are read in singular.
 %      \item |\spsiglo| has the new keys |ordinal| and |gender| to read the
@@ -25528,6 +25545,25 @@ end
 
 local spintent_strip_math_spaces = Cs((spintent_discard_space + P(1)) ^ 0)
 
+-- Entrada Unicode de las unidades: el signo menos (U+2212), el punto medio
+-- (·, ⋅, ∙) como producto, la barra de división (∕, ⁄), los exponentes en
+-- superíndice (m², s⁻¹) y º, ˚, ∘ como el símbolo de grado.
+local spintent_sup_digit =
+      P("⁰") / "0" + P("¹") / "1" + P("²") / "2" + P("³") / "3"
+    + P("⁴") / "4" + P("⁵") / "5" + P("⁶") / "6" + P("⁷") / "7"
+    + P("⁸") / "8" + P("⁹") / "9"
+local spintent_sup_exp =
+    Cs((P("⁻") / "-") ^ -1 * spintent_sup_digit ^ 1)
+    / function(e) return "^{" .. e .. "}" end
+local spintent_unit_input_unicode = Cs((
+      spintent_sup_exp
+    + P("−") / "-"
+    + (P("·") + P("⋅") + P("∙")) / "*"
+    + (P("∕") + P("⁄")) / "/"
+    + (P("º") + P("˚") + P("∘")) / "°"
+    + P(1)
+) ^ 0)
+
 register_tex_cmd("luafun_clean_split_and_set", function(raw_string)
     raw_string = spintent_trim(raw_string)
 
@@ -25554,7 +25590,7 @@ register_tex_cmd("luafun_clean_split_and_set", function(raw_string)
     local denom_has_numeric = "false"
 
     if r_extra then
-        local extra = spintent_trim(r_extra)
+        local extra = spintent_unit_input_unicode:match(spintent_trim(r_extra))
 
         if spintent_custom_spunit_aliases[extra] then
             extra = spintent_custom_spunit_aliases[extra]
@@ -25688,11 +25724,18 @@ local spintent_units = {
     ["segundo"]  = "s",   ["segundos"] = "s",
     ["litro"]    = "l",   ["l-litro"]  = "l",
     ["gramo"]    = "g",   ["gramos"]   = "g",
-    ["angstrom"] = "Å",
+    ["angstrom"] = "Å",   ["ángstrom"] = "Å",   ["ångström"] = "Å",
     ["celsius"]  = "°C",  ["degC"]     = "°C",  ["℃"]        = "°C",
     ["degF"]     = "°F",  ["℉"]        = "°F",  ["micro"]    = "µ",
     ["minmin"]   = "′",   ["segseg"]   = "″",   ["u-masa"]   = "u",
     ["mho"]      = "℧",
+    -- Unidades legales (Real Decreto 2032/2009) que MathCAT no conoce: se
+    -- escriben por el nombre y se leen con un nombre propio (ver abajo).
+    ["belio"]    = "B",    ["area"]     = "a",    ["área"]     = "a",
+    ["barn"]     = "b",    ["tex"]      = "tex",  ["gon"]      = "gon",
+    ["milla-nautica"] = "M",   ["milla-náutica"] = "M",
+    ["dioptria"] = "dioptría", ["dioptría"] = "dioptría",
+    ["quilate"]  = "quilate",  ["vuelta"]   = "vuelta",
     -- Uso corriente en español e informática: MathCAT las conoce y concuerda
     -- el número con el nombre («un kilovatio hora», «5 kilovatios hora»).
     ["kcal"]  = "kcal",   ["Wh"]    = "Wh",     ["kWh"]   = "kWh",    ["MWh"]   = "MWh",
@@ -25709,13 +25752,21 @@ local spintent_units = {
     ["㎡"]   = "m^2",      ["㎢"]   = "km^2",     ["㎠"]   = "cm^2",     ["㎜²"]  = "mm^2",
     ["㎥"]   = "m^3",      ["㎦"]   = "km^3",     ["㎤"]   = "cm^3",     ["㎜³"]  = "mm^3",
     ["㎐"]   = "Hz",       ["㎑"]   = "kHz",      ["㎒"]   = "MHz",      ["㎓"]   = "GHz",      ["㎔"]   = "THz",
-    ["㎽"]   = "mW",       ["㎾"]   = "kW",       ["㎿"]   = "MW",       ["㎴"]   = "V",        ["㎵"]   = "kV",
+    ["㎽"]   = "mW",       ["㎾"]   = "kW",       ["㎿"]   = "MW",       ["㎴"]   = "pV",       ["㎵"]   = "nV",
     ["㎶"]   = "µV",       ["㎷"]   = "mV",       ["㎸"]   = "kV",       ["㎀"]   = "pA",       ["㎁"]   = "nA",
     ["㎂"]   = "µA",       ["㎃"]   = "mA",       ["㎄"]   = "kA",       ["㎫"]   = "MPa",      ["㎬"]   = "GPa",
     ["㎺"]   = "pW",       ["㎻"]   = "nW",       ["㎼"]   = "µW",
     ["㎍"]   = "µg",       ["㎎"]   = "mg",       ["㎏"]   = "kg",
     ["㎜"]   = "mm",       ["㎝"]   = "cm",       ["㎞"]   = "km",       ["㎛"]   = "µm",       ["㎕"]   = "µL",
-    ["㎖"]   = "mL",       ["㎗"]   = "dL",       ["㎘"]   = "kL",       ["㎭"]   = "rad"
+    ["㎖"]   = "mL",       ["㎗"]   = "dL",       ["㎘"]   = "kL",       ["㎭"]   = "rad",
+    ["㎅"]   = "KB",       ["㎆"]   = "MB",       ["㎇"]   = "GB",       ["㎈"]   = "cal",      ["㎉"]   = "kcal",
+    ["㎊"]   = "pF",       ["㎋"]   = "nF",       ["㎌"]   = "µF",       ["㎙"]   = "fm",       ["㎚"]   = "nm",
+    ["㎟"]   = "mm^2",     ["㎣"]   = "mm^3",     ["㎩"]   = "Pa",       ["㎪"]   = "kPa",      ["㎰"]   = "ps",
+    ["㎱"]   = "ns",       ["㎲"]   = "µs",       ["㎳"]   = "ms",       ["㎹"]   = "MV",       ["㏀"]   = "kΩ",
+    ["㏁"]   = "MΩ",       ["㏃"]   = "Bq",       ["㏄"]   = "cc",       ["㏅"]   = "cd",       ["㏈"]   = "dB",
+    ["㏉"]   = "Gy",       ["㏊"]   = "ha",       ["㏌"]   = "in",       ["㏐"]   = "lm",       ["㏓"]   = "lx",
+    ["㏖"]   = "mol",      ["㏛"]   = "sr",       ["㏜"]   = "Sv",       ["㏝"]   = "Wb",       ["㍱"]   = "hPa",
+    ["㍴"]   = "bar",      ["㍶"]   = "pc",       ["㍷"]   = "dm",       ["㍸"]   = "dm^2",     ["㍹"]   = "dm^3"
 }
 
 -- Los símbolos compactos con barra son alias: la barra y el exponente pasan
@@ -25723,6 +25774,9 @@ local spintent_units = {
 -- singular y el exponente queda solo en la unidad que lo lleva.
 spintent_custom_spunit_aliases["㎧"] = "m/s"
 spintent_custom_spunit_aliases["㎨"] = "m/s^2"
+spintent_custom_spunit_aliases["㏆"] = "C/kg"
+spintent_custom_spunit_aliases["㏞"] = "V/m"
+spintent_custom_spunit_aliases["㏟"] = "A/m"
 spintent_custom_spunit_aliases["㎮"] = "rad/s"
 spintent_custom_spunit_aliases["㎯"] = "rad/s^2"
 
@@ -25740,6 +25794,12 @@ local spintent_unit_compact_spoken_names = {
     -- µ suelta: con :unit MathCAT la deletrea («µs»); como literal se lee
     -- «micro». Pegada a una unidad se trata aparte (prefijo, ver abajo).
     ["µ"]      = "_micro",
+    -- Nombre fijo, sin concordar con el número (MathCAT no las conoce).
+    ["belio"]  = "_belio",   ["area"]   = "_área",    ["área"]   = "_área",
+    ["barn"]   = "_barn",    ["tex"]    = "_tex",     ["gon"]    = "_gon",
+    ["milla-nautica"] = "_milla-náutica", ["milla-náutica"] = "_milla-náutica",
+    ["dioptria"] = "_dioptría", ["dioptría"] = "_dioptría",
+    ["quilate"] = "_quilate", ["vuelta"] = "_vuelta",
 }
 
 local spintent_custom_spunit_spoken_names = {}
@@ -25747,7 +25807,9 @@ local spintent_custom_spunit_spoken_names = {}
 local spintent_normalizations = {
     ["\u{212A}"] = "K", ["\u{2126}"] = "Ω", ["ℓ"] = "\\ell", ["μ"] = "µ",
     ["°\u{212A}"] = "°K",
-    ["'"]  = "′", ["''"] = "″", ['"']  = "″", ["minmin"] = "′", ["segseg"] = "″"
+    ["\u{212B}"] = "Å",
+    ["'"]  = "′", ["''"] = "″", ['"']  = "″", ["minmin"] = "′", ["segseg"] = "″",
+    ["\u{2019}"] = "′", ["\u{201D}"] = "″"
 }
 
 local spintent_tex_accents = {
