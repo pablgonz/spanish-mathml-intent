@@ -1889,11 +1889,12 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % El símbolo |°K| (\emph{«grados kelvin»}) se mantiene como forma histórica, la
 % unidad actual es el \emph{kelvin} (|K|). Las unidades legales que
-% \mynvmath{NVDA/MathCAT} no conoce se escriben por su nombre: |belio|, |area|
-% (|a| es el año), |barn| (|b| es el bit), |milla-nautica|, |tex|, |gon|,
-% |dioptria|, |quilate| y |vuelta|. Se leen con un nombre fijo y no concuerdan
-% con el número: |$\spunit{5 barn}$| se lee \emph{«5 barn»}. El símbolo |B|
-% sigue siendo el byte.
+% no tienen símbolo propio, o lo tienen ocupado, se escriben por su nombre:
+% |belio| (|B| es el byte), |area| (|a| es el año), |barn| (|b| es el bit),
+% |milla-nautica|, |tex|, |gon|, |dioptria|, |quilate| y |vuelta|.
+% \mynvmath{NVDA/MathCAT} concuerda la unidad con el número (\emph{«un gon»},
+% \emph{«5 gones»}). Solo |belio|, |area| y |milla-nautica| se leen con un
+% nombre fijo: |$\spunit{5 area}$| se lee \emph{«5 área»}.
 %
 % La tabla~\ref{tab:spunit-uso} agrega las \mymarg{unidades} de uso corriente e
 % informática, sin alias. \mynvmath{NVDA/MathCAT} las conoce y concuerda su
@@ -25732,7 +25733,7 @@ local spintent_units = {
     -- Unidades legales (Real Decreto 2032/2009) que MathCAT no conoce: se
     -- escriben por el nombre y se leen con un nombre propio (ver abajo).
     ["belio"]    = "B",    ["area"]     = "a",    ["área"]     = "a",
-    ["barn"]     = "b",    ["tex"]      = "tex",  ["gon"]      = "gon",
+    ["barn"]     = "barn", ["tex"]      = "tex",  ["gon"]      = "gon",
     ["milla-nautica"] = "M",   ["milla-náutica"] = "M",
     ["dioptria"] = "dioptría", ["dioptría"] = "dioptría",
     ["quilate"]  = "quilate",  ["vuelta"]   = "vuelta",
@@ -25794,12 +25795,10 @@ local spintent_unit_compact_spoken_names = {
     -- µ suelta: con :unit MathCAT la deletrea («µs»); como literal se lee
     -- «micro». Pegada a una unidad se trata aparte (prefijo, ver abajo).
     ["µ"]      = "_micro",
-    -- Nombre fijo, sin concordar con el número (MathCAT no las conoce).
+    -- Nombre fijo, sin concordar con el número: su símbolo lo usa otra unidad
+    -- en MathCAT (B, a, M).
     ["belio"]  = "_belio",   ["area"]   = "_área",    ["área"]   = "_área",
-    ["barn"]   = "_barn",    ["tex"]    = "_tex",     ["gon"]    = "_gon",
     ["milla-nautica"] = "_milla-náutica", ["milla-náutica"] = "_milla-náutica",
-    ["dioptria"] = "_dioptría", ["dioptría"] = "_dioptría",
-    ["quilate"] = "_quilate", ["vuelta"] = "_vuelta",
 }
 
 local spintent_custom_spunit_spoken_names = {}
