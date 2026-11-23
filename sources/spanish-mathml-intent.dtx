@@ -1504,16 +1504,16 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %     \enquote{error}, el mensaje indica el comando y el argumento que no
 %     cumple la forma documentada (\S\ref{sec:setspintent}).
 %   \item \emph{La llave} \mykey{read-cmd}. Varios comandos ofrecen más de una
-%     lectura; |$\spPoint[read-cmd=school]{A_{1}}$| verbaliza
-%     «sub uno». Los valores posibles se describen en la sección de cada comando.
-%   \item \emph{La llave} \mykey{read-arg}. Reemplaza la lectura del argumento,
-%     |$\spread[read-arg={es-paralela-a}]{\parallel}$|; su valor siempre
-%     va entre llaves.
+%     lectura y los valores posibles se describen en la sección de cada comando.
+%     Por ejemplo, |$\spPoint[read-cmd=school]{A_{1}}$| verbaliza «sub uno».
+%   \item \emph{La llave} \mykey{read-arg}. Reemplaza la lectura del argumento.
+%     Su valor siempre va entre llaves,
+%     |$\spread[read-arg={es-paralela-a}]{\parallel}$|.
 %   \item \emph{La llave} \mykey{silent}. Con \mykey{silent}|=true| se silencia la lectura
 %     sin cambiar lo que se imprime; la validación del argumento se mantiene.
-%   \item \emph{La configuración global.} Se puede fijar para todo
-%     el documento, |\setspintent{spPoint}{read-cmd=school}|; la llave dada
-%     en el argumento opcional de un comando tiene prioridad sobre
+%   \item \emph{La configuración global.} Se puede fijar en un solo lugar para todo
+%     el documento, por ejemplo con |\setspintent{spPoint}{read-cmd=school}|; la
+%     llave dada en el argumento opcional de un comando tiene prioridad sobre
 %     ella (\S\ref{sec:setspintent}).
 % \end{enumerate}
 %
@@ -6736,41 +6736,42 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si la distribución es discreta, |$\spdist[var=X,dist=B]{n,p}$| imprimirá
 % `$\spdist[var=X,dist=B]{n,p}$' y \mynvmath{NVDA/MathCAT} verbalizará \emph{«X
-% se distribuye binomial con parámetros n y p»}; |$\spdist[var=X,dist=Be]{p}$|
-% imprimirá `$\spdist[var=X,dist=Be]{p}$' y verbalizará \emph{«X se distribuye
-% bernoulli con parámetro p»}; |$\spdist[var=X,dist=P]{\lambda}$| imprimirá
-% `$\spdist[var=X,dist=P]{\lambda}$' y verbalizará \emph{«X se distribuye poisson
-% con parámetro lambda»}; |$\spdist[var=X,dist=Ge]{p}$| imprimirá
-% `$\spdist[var=X,dist=Ge]{p}$' y verbalizará \emph{«X se distribuye geométrica con
-% parámetro p»}; |$\spdist[var=X,dist=H]{N,n,p}$| imprimirá
-% `$\spdist[var=X,dist=H]{N,n,p}$' y verbalizará \emph{«X se distribuye
+% se distribuye binomial con parámetros n y p»}. Con
+% |$\spdist[var=X,dist=Be]{p}$| se imprime `$\spdist[var=X,dist=Be]{p}$' y se
+% verbaliza \emph{«X se distribuye bernoulli con parámetro p»}. Con
+% |$\spdist[var=X,dist=P]{\lambda}$| se imprime
+% `$\spdist[var=X,dist=P]{\lambda}$' y se verbaliza \emph{«X se distribuye
+% poisson con parámetro lambda»}. Con |$\spdist[var=X,dist=Ge]{p}$| se imprime
+% `$\spdist[var=X,dist=Ge]{p}$' y se verbaliza \emph{«X se distribuye geométrica
+% con parámetro p»}. Con |$\spdist[var=X,dist=H]{N,n,p}$| se imprime
+% `$\spdist[var=X,dist=H]{N,n,p}$' y se verbaliza \emph{«X se distribuye
 % hipergeométrica con parámetros N, n y p»}. Los nombres de más de una letra se
 % imprimen en redonda. La binomial también se pide con |Bi| o |Bin|, la de
-% Bernoulli con |Ber|, la de Poisson con |Po| y la geométrica con |G| o |Geo|,
-% y el comando imprime el nombre que se pidió.
+% Bernoulli con |Ber|, la de Poisson con |Po| y la geométrica con |G| o |Geo|, y
+% el comando imprime el nombre que se pidió.
 %
 % Si la distribución es continua, |$\spdist[var=X,dist=U]{a,b}$| imprimirá
-% `$\spdist[var=X,dist=U]{a,b}$' y \mynvmath{NVDA/MathCAT} verbalizará \emph{«X se
-% distribuye uniforme entre a y b»};
-% |$\spdist[var=X,dist=Exp]{\lambda}$| imprimirá
-% `$\spdist[var=X,dist=Exp]{\lambda}$' y verbalizará \emph{«X se distribuye
-% exponencial con parámetro lambda»}; |$\spdist[var=X,dist=Gamma]{\alpha,\beta}$|
-% imprimirá `$\spdist[var=X,dist=Gamma]{\alpha,\beta}$' y verbalizará \emph{«X se
-% distribuye gamma con parámetros alfa y beta»};
+% `$\spdist[var=X,dist=U]{a,b}$' y \mynvmath{NVDA/MathCAT} verbalizará \emph{«X
+% se distribuye uniforme entre a y b»}; con |$\spdist[var=X,dist=Exp]{\lambda}$|
+% imprimirá `$\spdist[var=X,dist=Exp]{\lambda}$' y verbalizará \emph{«X se
+% distribuye exponencial con parámetro lambda»}; con
+% |$\spdist[var=X,dist=Gamma]{\alpha,\beta}$| imprimirá
+% `$\spdist[var=X,dist=Gamma]{\alpha,\beta}$' y verbalizará \emph{«X se
+% distribuye gamma con parámetros alfa y beta»}; con
 % |$\spdist[var=X,dist=Beta]{\alpha,\beta}$| imprimirá
 % `$\spdist[var=X,dist=Beta]{\alpha,\beta}$' y verbalizará \emph{«X se
 % distribuye beta con parámetros alfa y beta»}.
 %
 % Si el parámetro son los grados de libertad, |$\spdist[var=X,dist=t]{n}$|
-% imprimirá `\mysubout{$\spdist[var=X,dist=t]{n}$}' y
-% \mynvmath{NVDA/MathCAT} verbalizará \emph{«X se distribuye t de student con n
-% grados de libertad»}; |$\spdist[var=X,dist=chi]{n}$| imprimirá
+% imprimirá `\mysubout{$\spdist[var=X,dist=t]{n}$}' y verbalizará, con
+% \mynvmath{NVDA/MathCAT}, \emph{«X se distribuye t de student con n grados de
+% libertad»}; |$\spdist[var=X,dist=chi]{n}$| imprimirá
 % `\mysubout{$\spdist[var=X,dist=chi]{n}$}' y verbalizará \emph{«X se distribuye
-% chi cuadrado con n grados de libertad»}; |$\spdist[var=X,dist=F]{m,n}$| imprimirá
-% `\mysubout{$\spdist[var=X,dist=F]{m,n}$}' y verbalizará \emph{«X se distribuye
-% f de snedecor con m y n grados de libertad»}.
+% chi cuadrado con n grados de libertad»}; |$\spdist[var=X,dist=F]{m,n}$|
+% imprimirá `\mysubout{$\spdist[var=X,dist=F]{m,n}$}' y verbalizará \emph{«X se
+% distribuye f de snedecor con m y n grados de libertad»}.
 %
-% Si los parámetros tienen una coma decimal, se separan con punto y coma:
+% Si los parámetros tienen coma decimal, se separan con punto y coma:
 % |$\spdist[var=X,dist=B]{10;0,5}$| imprimirá `$\spdist[var=X,dist=B]{10;0,5}$'
 % y verbalizará \emph{«X se distribuye binomial con parámetros 10 y 0,5»}.
 %
@@ -6780,13 +6781,13 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % con media mu y varianza sigma al cuadrado»}. El valor de la llave \mykey{var}
 % con comas debe pasarse entre llaves `|{ }|'.
 %
-% La variable aleatoria y los parámetros pueden ser cualquier expresión:
+% La variable aleatoria y los parámetros admiten cualquier expresión:
 % |$\spdist[var=X_{1},dist=B]{10,p}$| imprimirá
 % `\mysubout{$\spdist[var=X_{1},dist=B]{10,p}$}'. El comando devuelve un
 % \enquote{error} y se detiene la compilación del documento cuando falta la
-% llave \mykey{dist}, cuando su valor no es una familia, cuando los
-% parámetros no son los de la familia o alguno está vacío y cuando las llaves
-% o los paréntesis no están balanceados.
+% llave \mykey{dist}, cuando su valor no es una familia, cuando los parámetros
+% no son los de la familia o alguno está vacío y cuando las llaves o los
+% paréntesis no están balanceados.
 %
 % \subsubsection*{Llaves para \cs[no-index]{spdist}}
 %
@@ -7476,10 +7477,11 @@ spmmli-tool -o -p build/ ejemplo.tex
 % are created in the Lua module \myluamod{} and only their variants
 % are declared in \mypkg[no-index]{expl3}.
 %
-% In the same way, variables of the form \myhlc|\l_@@_luaset_some_tl|,
-% \myhlc|\l_@@_luaset_some_str| or \myhlc|\l_@@_luaset_some_clist|, also
-% with the prefix of a command, such as \myhlc|\l_@@_spcomb_luaset_n_str|, are only
-% declared in \mypkg[no-index]{expl3}; their values are set from Lua.
+% In the same way, the variables \myhlc|\l_@@_luaset_some_tl|,
+% \myhlc|\l_@@_luaset_some_str| and \myhlc|\l_@@_luaset_some_clist| are only
+% declared in \mypkg[no-index]{expl3}, with their values set from Lua. A
+% variable with the prefix of a command, such as
+% \myhlc|\l_@@_spcomb_luaset_n_str|, is treated in the same way.
 %
 % \begin{important}*
 %  All variables and functions defined in this package are private and
@@ -8208,12 +8210,12 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \l_@@_luaset_format_part_int_str,
 %     \l_@@_luaset_format_part_dec_str,
 %   }
-%   The literal entries of the numbers that we will pass to |\MathMLintent|
-%   with the \emph{intent} \emph{property} |:number| are \emph{stored}
-%   in \myhlc|\l_@@_luaset_only_part_int_str| for the
-%   \emph{\enquote{integer part}}, in \myhlc|\l_@@_luaset_only_part_dec_str| for the
-%   \emph{\enquote{finite decimal part}}, and in \myhlc|\l_@@_luaset_only_part_period_str|
-%   for the \emph{\enquote{infinite periodic decimal part}}.
+%   The literal entries of the numbers that we will pass to |\MathMLintent| with the \emph{intent}
+%   \emph{property} |:number| are \emph{stored} in three variables. The variable
+%   \myhlc|\l_@@_luaset_only_part_int_str| holds the \emph{\enquote{integer part}}, the variable
+%   \myhlc|\l_@@_luaset_only_part_dec_str| holds the \emph{\enquote{finite decimal part}} and the
+%   variable \myhlc|\l_@@_luaset_only_part_period_str| holds the \emph{\enquote{infinite periodic
+%   decimal part}}.
 %
 %   Formatted versions, \mykey[spnum]{cifras-sep}|=true|, are \emph{stored}
 %   in \myhlc|\l_@@_luaset_format_part_int_str| for the
@@ -8239,13 +8241,14 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \l_@@_luaset_exponent_tl,
 %   }
 %
-%   The flag variable \myhlc|\l_@@_luaset_millons_str| indicates whether the
-%   integer part translates exactly to a multiple of one million when
-%   passed to |\MathMLintent|. To properly structure the reading and writing of numbers in
-%   \mynvmath{MathML}, we use the flag variables \myhlc|\l_@@_luaset_decimal_period_str|,
-%   \myhlc|\l_@@_luaset_not_decimal_period_str|, and \myhlc|\l_@@_luaset_not_decimal_not_period_str|.
-%   The flag variable \myhlc|\l_@@_luaset_dec_is_all_zeros_str| monitors whether the \emph{\enquote{finite
-%   decimal part}} is completely zero, useful for \emph{\enquote{pure periodic decimals}}.
+%   The flag variable \myhlc|\l_@@_luaset_millons_str| indicates whether the integer part translates
+%   exactly to a multiple of one million when passed to |\MathMLintent|. The flag variable
+%   \myhlc|\l_@@_luaset_dec_is_all_zeros_str| monitors whether the \emph{\enquote{finite decimal
+%   part}} is completely zero, useful for \emph{\enquote{pure periodic decimals}}. To properly
+%   structure the reading and writing of numbers in \mynvmath{MathML}, we use the flag variable
+%   \myhlc|\l_@@_luaset_decimal_period_str|, the flag variable
+%   \myhlc|\l_@@_luaset_not_decimal_period_str| and the flag variable
+%   \myhlc|\l_@@_luaset_not_decimal_not_period_str|.
 %
 %   The flag variable \myhlc|\l_@@_luaset_has_exponent_str| indicates
 %   whether active \emph{\enquote{scientific notation}} was detected at the end of the
@@ -10602,13 +10605,12 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \@@_spsiglo_mathml:,
 %     \@@_spsiglo_text:,
 %   }
-%   The function \myhlc|\@@_spsiglo_prepare_speech:n| stores in
-%   \myhlc|\l_@@_spsiglo_speech_str| and \myhlc|\l_@@_spsiglo_intent_str|
-%   the Arabic numeral or, if the key \mykey[spsiglo]{ordinal} is |true|, the
-%   ordinal returned by the Lua module \myluamod{}. It issues the
-%   \enquote{error} |spsiglo-ordinal-range| if the number is greater than |99|
-%   and the \enquote{error} |spsiglo-gender-needs-ordinal| if the key
-%   \mykey[spsiglo]{gender} is used without \mykey[spsiglo]{ordinal}.
+%   The function \myhlc|\@@_spsiglo_prepare_speech:n| stores the Arabic numeral or, if the key
+%   \mykey[spsiglo]{ordinal} is |true|, the ordinal returned by the Lua module \myluamod{} in
+%   \myhlc|\l_@@_spsiglo_speech_str| and \myhlc|\l_@@_spsiglo_intent_str|. It issues the
+%   \enquote{error} |spsiglo-ordinal-range| if the number is greater than |99| and the
+%   \enquote{error} |spsiglo-gender-needs-ordinal| if the key \mykey[spsiglo]{gender} is used
+%   without \mykey[spsiglo]{ordinal}.
 %
 %   The function \myhlc|\@@_spsiglo_exec:n| formats century designations
 %   based on the active mode. It first checks the \enquote{error} status in
@@ -13157,12 +13159,12 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \subsection{The command \cs{spmQ}}\label{cmd:spmQ}
 %
 % The command |\spmQ| typesets \emph{\enquote{mixed numbers}} within Spanish
-% mathematical contexts such as $3\frac{1}{2}$. It sends the scaling
-% of the integer part to the Lua module \myluamod{} via
-% \myhlc|\@@_luafun_spmQ_scale_int:Vn|, which measures both the integer
-% glyph and the fraction box at the node level and computes a scaling factor
-% to align their heights visually. Finally, it constructs the correct
-% intent for \mynvmath{MathCAT}.
+% mathematical contexts such as $3\frac{1}{2}$. It sends the scaling of the
+% integer part to the Lua module \myluamod{} by means of
+% \myhlc|\@@_luafun_spmQ_scale_int:Vn|, which measures both the integer glyph
+% and the fraction box at the node level and computes a scaling factor to align
+% their heights visually. Finally, it constructs the correct intent for
+% \mynvmath{MathCAT}.
 %
 % \subsubsection{Definition of variables for \cs[no-index]{spmQ}}
 %
@@ -13696,11 +13698,13 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % The commands described in this section provide a semantic interface for
 % geometric objects in Spanish mathematical contexts. They delegate the parsing
-% to \myluamod{} and share the variables \myhlc{\l_@@_geo_luaset_error_str},
-% \myhlc{\l_@@_geo_luaset_intent_str}, \myhlc{\l_@@_geo_luaset_print_tl},
-% \myhlc{\l_@@_geo_luaset_letra_str}, \myhlc{\l_@@_geo_luaset_sub_str} and
-% \myhlc{\l_@@_geo_luaset_tipo_str}, with which the intent is
-% built. A single point is always annotated with
+% to \myluamod{} and share six variables, with which the intent is built. The
+% first is \myhlc{\l_@@_geo_luaset_error_str}, the second is
+% \myhlc{\l_@@_geo_luaset_intent_str} and the third is
+% \myhlc{\l_@@_geo_luaset_print_tl}. The fourth is
+% \myhlc{\l_@@_geo_luaset_letra_str}, the fifth is
+% \myhlc{\l_@@_geo_luaset_sub_str} and the last is
+% \myhlc{\l_@@_geo_luaset_tipo_str}. A single point is always annotated with
 % \myhlc|\@@_mathmlarg_point:nnn|. Every command activates
 % \myhlc|\l_@@_scope_attr_int| inside its own group, so that the shared queue
 % only claims content typeset by a \texttt{geo} command.
@@ -14853,25 +14857,23 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \subsection{The command \cs{spfun}}\label{cmd:spfun}
 %
-% The user command |\spfun| typesets a function call such as |f(x)|,
-% |f_{1}(x)|, |f''(x,y)|. The Lua function
-% \myhlc|\@@_luafun_spfun_parse_and_set:n| splits the \mymarg{argument}
-% into the function name, which is a letter with an optional subscript or primes
-% left in the shared \myhlc|\l_@@_geo_luaset_*| variables, and the list of
-% arguments, cut at the top-level commas, each one stored in
-% \myhlc|\l_@@_spfun_luaset_arg_<i>_tl| together with a flag
-% \myhlc|\l_@@_spfun_luaset_simple_<i>_str| telling whether it is a single
-% node. The whole call is tagged with a native |\MathMLintent| whose
-% |intent| is |$f($a1,$a2,...)|; the name is tagged |arg="f"| and each
-% argument |arg="a<i>"|, while the parentheses and the commas are silenced.
-% The name may carry the inverse exponent |^{-1}|, which sets the flag
+% The user command |\spfun| typesets a function call such as |f(x)|, |f_{1}(x)|,
+% |f''(x,y)|. The Lua function \myhlc|\@@_luafun_spfun_parse_and_set:n| splits
+% the \mymarg{argument} into the function name and the list of arguments. The
+% name is a letter with an optional subscript or primes and is left in the
+% shared \myhlc|\l_@@_geo_luaset_*| variables. The arguments are cut at the
+% top-level commas. Each one is stored in \myhlc|\l_@@_spfun_luaset_arg_<i>_tl|
+% together with a flag \myhlc|\l_@@_spfun_luaset_simple_<i>_str| telling whether
+% it is a single node. The whole call is tagged with a native |\MathMLintent|
+% whose |intent| is |$f($a1,$a2,...)|; the name is tagged |arg="f"| and each
+% argument |arg="a<i>"|, while the parentheses and the commas are silenced. The
+% name may carry the inverse exponent |^{-1}|, which sets the flag
 % \myhlc|\l_@@_spfun_luaset_inv_str|; in that case the literal |intent| of the
-% name ends in |-inversa|, the exponent is typeset silenced and the
-% parentheses may be omitted, with no arguments and |$f| as the whole |intent|.
-% An argument that is itself a call, |f(g(x))| or |f(g^{-1}(y))|, is analysed
-% recursively by Lua, kind |call|, and typeset by
-% \myhlc|\@@_spfun_nested:n|, which runs the same code in a group, one level
-% deeper; the |arg| names carry the depth.
+% name ends in |-inversa|, the exponent is typeset silenced and the parentheses
+% may be omitted, with no arguments and |$f| as the whole |intent|. An argument
+% that is itself a call, |f(g(x))| or |f(g^{-1}(y))|, is analysed recursively by
+% Lua, kind |call|, and typeset by \myhlc|\@@_spfun_nested:n|, which runs the
+% same code in a group, one level deeper; the |arg| names carry the depth.
 %
 % \subsubsection{Definition of variables for \cs[no-index]{spfun}}
 %
@@ -15345,22 +15347,21 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \subsection{The command \cs{spfuncomp}}\label{cmd:spfuncomp}
 %
-% The user command |\spfuncomp| typesets the linear composition of
-% functions: |f\circ g|, |f\circ g\circ h|, |(f\circ g)| and the
-% composition applied to arguments, |(f\circ g)(x)|. The Lua function
-% \myhlc|\@@_luafun_spfuncomp_parse_and_set:n| splits the \mymarg{argument}
-% at the top-level |\circ|, or the Unicode character U+2218; every function is a name as in
-% |\spfun| and gets its literal |intent|, so
-% \mynvmath{MathCAT} neither announces a capital letter nor reads the letter h, U+210E, as
-% Planck's constant. The arguments of the application, if any, are left in
-% the |\spfun| variables and typeset with its own functions, so an
-% argument may be a call. The whole is tagged with a native
-% |\MathMLintent| whose |intent| is \myhlc|_compuesta-con:infix($k1,$k2,...)|; the
-% application adds |$c($a1,...)| around it, with the composition tagged
-% |arg="c"|. With two or more arguments they are grouped under their own
-% |intent|, \myhlc|_coma:infix($a1,$a2,...)|, tagged |arg="l"|, because
-% \mynvmath{MathCAT} drops the commas of a call whose head is not a single
-% letter. The |\circ| and the parentheses are silenced.
+% The user command |\spfuncomp| typesets the linear composition of functions,
+% such as |f\circ g|, |f\circ g\circ h| and |(f\circ g)|, and the composition
+% applied to arguments, |(f\circ g)(x)|. The Lua function
+% \myhlc|\@@_luafun_spfuncomp_parse_and_set:n| splits the \mymarg{argument} at
+% the top-level |\circ|, or the Unicode character U+2218; every function is a
+% name as in |\spfun| and gets its literal |intent|, so \mynvmath{MathCAT}
+% neither announces a capital letter nor reads the letter h, U+210E, as Planck's
+% constant. The arguments of the application, if any, are left in the |\spfun|
+% variables and typeset with its own functions, so an argument may be a call.
+% The whole is tagged with a native |\MathMLintent| whose |intent| is
+% \myhlc|_compuesta-con:infix($k1,$k2,...)|; the application adds |$c($a1,...)|
+% around it, with the composition tagged |arg="c"|. With two or more arguments
+% they are grouped under their own |intent|, \myhlc|_coma:infix($a1,$a2,...)|,
+% tagged |arg="l"|, because \mynvmath{MathCAT} drops the commas of a call whose
+% head is not a single letter. The |\circ| and the parentheses are silenced.
 %
 % \subsubsection{Definition of variables for \cs[no-index]{spfuncomp}}
 %
@@ -17566,11 +17567,12 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \l_@@_spside_read_arg_tl,
 %     \l_@@_spmside_read_arg_tl,
 %   }
-%   Each pair of variables is declared once for both |\spside| and
-%   |\spmside| via \myhlc|\clist_map_inline:nn|. The variables \myhlc|\l_@@_spside_mode_str|
-%   and \myhlc|\l_@@_spmside_mode_str| store the values set by the key \mykey[spside,spmside]{read-cmd};
-%   the variables \myhlc|\l_@@_spside_prefix_tl| and \myhlc|\l_@@_spmside_prefix_tl|
-%   store the values set by the key \mykey[spside,spmside]{prefix}.
+%   Each pair of variables is declared once for both |\spside| and |\spmside| via
+%   \myhlc|\clist_map_inline:nn|. The variable \myhlc|\l_@@_spside_mode_str| stores the value set by
+%   the key \mykey[spside,spmside]{read-cmd} for |\spside|, and \myhlc|\l_@@_spmside_mode_str|
+%   stores the one for |\spmside|. The variable \myhlc|\l_@@_spside_prefix_tl| stores the value set
+%   by the key \mykey[spside,spmside]{prefix} for |\spside|, and \myhlc|\l_@@_spmside_prefix_tl|
+%   stores the one for |\spmside|.
 %
 %   The variables \myhlc|\l_@@_spside_read_sty_str| and \myhlc|\l_@@_spmside_read_sty_str|
 %   store the value set by the key \mykey[spside,spmside]{read-sty}.
@@ -17963,11 +17965,11 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \l_@@_spangle_prefix_tl,
 %     \l_@@_spmangle_prefix_tl,
 %   }
-%   Each pair of variables is declared once for both |\spangle| and
-%   |\spmangle| via \myhlc|\clist_map_inline:nn|. The variables \myhlc|\l_@@_spangle_mode_str|
-%   and \myhlc|\l_@@_spmangle_mode_str| store the values set by the key
-%   \mykey[spangle,spmangle]{read-cmd}; the variables \myhlc|\l_@@_spangle_prefix_tl|
-%   and \myhlc|\l_@@_spmangle_prefix_tl| store the values set by the key
+%   Each pair of variables is declared once for both |\spangle| and |\spmangle| via
+%   \myhlc|\clist_map_inline:nn|. The variables \myhlc|\l_@@_spangle_mode_str| and
+%   \myhlc|\l_@@_spmangle_mode_str| store the values set by the key
+%   \mykey[spangle,spmangle]{read-cmd}, and the variables \myhlc|\l_@@_spangle_prefix_tl| and
+%   \myhlc|\l_@@_spmangle_prefix_tl| store the values set by the key
 %   \mykey[spangle,spmangle]{prefix}.
 %
 %   \begin{important}*
@@ -18151,16 +18153,15 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spangle_exec:nnn}
-%   The internal function \myhlc|\@@_spangle_exec:nnn| receives the short name
-%   of the command, |angle| or |mangle|, in `|#1|' and the \mymarg{argument} in
-%   `|#3|'. It calls \myhlc|\@@_luafun_geo_angulo_parse_and_set:n|, reporting
-%   |spangle-invalid-arg| or |spmangle-invalid-arg| on error. For a proper name
-%   that is a single letter, not numeric, it reports the same error if the
-%   letter is lowercase, since an angle name takes an uppercase letter, a number
-%   or a Greek letter; the length check excludes a Greek letter command such as
-%   |\alpha| from this comparison. Then it sets \myhlc|\l_@@_spangle_intent_tl|
-%   to |ángulo|, or |medida-del-ángulo| for |\spmangle|, suffixed with |-recto|
-%   when \mykey{recto} is |true|, and calls \myhlc|\@@_spangle_mathml:n|.
+%   The internal function \myhlc|\@@_spangle_exec:nnn| receives the short name of the command,
+%   |angle| or |mangle|, in `|#1|' and the \mymarg{argument} in `|#3|'. It calls the Lua function
+%   \myhlc|\@@_luafun_geo_angulo_parse_and_set:n| and reports |spangle-invalid-arg| or
+%   |spmangle-invalid-arg| on error. For a proper name that is a single letter, not numeric, it
+%   reports the same error if the letter is lowercase, since an angle name takes an uppercase
+%   letter, a number or a Greek letter; the length check excludes a Greek letter command such as
+%   |\alpha| from this comparison. Then it sets the variable \myhlc|\l_@@_spangle_intent_tl| to
+%   |ángulo|, or |medida-del-ángulo| for |\spmangle|, suffixed with |-recto| when \mykey{recto} is
+%   |true|, and calls \myhlc|\@@_spangle_mathml:n|.
 %
 %   Before processing the \mymarg{argument}, it sets the optional \mymeta{keys} passed in `|#2|'.
 %    \begin{macrocode}
@@ -18205,8 +18206,7 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spangle_mathml:n}
-%   The function \myhlc|\@@_spangle_mathml:n| branches on
-%   \myhlc|\l_@@_geo_luaset_angulo_case_str|.
+%   This function branches on the value of \myhlc|\l_@@_geo_luaset_angulo_case_str|.
 %
 %   For |nombre|, the symbol \myhlc|\@@_spangle_sym:n| is tagged with
 %   \myhlc|\@@_luafun_mrow_intent_arg:nn| on its own, with
@@ -19312,13 +19312,11 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spfig_exec:nnn}
-%   Receives the short command name, |Afig| or |Pfig|, in `|#1|' and
-%   the \mymarg{argument} in `|#3|'. Calls
-%   \myhlc|\@@_luafun_geo_afig_parse_and_set:n| or
-%   \myhlc|\@@_luafun_geo_pfig_parse_and_set:n|, reports
-%   |spAfig-invalid-arg| or |spPfig-invalid-arg| on failure, and warns with
-%   |spAfig-read-arg-key| or |spPfig-read-arg-key| when
-%   \mykey[spAfig,spPfig]{read-arg} is given for a bare number/letter
+%   Receives the short command name, |Afig| or |Pfig|, in `|#1|' and the \mymarg{argument} in
+%   `|#3|'. It calls the Lua function \myhlc|\@@_luafun_geo_afig_parse_and_set:n| for |Afig|, or the
+%   Lua function \myhlc|\@@_luafun_geo_pfig_parse_and_set:n| for |Pfig|, and reports
+%   |spAfig-invalid-arg| or |spPfig-invalid-arg| on failure. It warns with |spAfig-read-arg-key| or
+%   |spPfig-read-arg-key| when \mykey[spAfig,spPfig]{read-arg} is given for a bare number/letter
 %   argument that has no vertices, where it has no effect and is ignored. Sets
 %   \myhlc|\l_@@_spfig_op_tl| to \emph{«área»}/\emph{«perímetro»}, then delegates to
 %   \myhlc|\@@_spfig_mathml:n|.
@@ -19691,23 +19689,21 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spfig_mathml:n}
-%   Receives the short command name in `|#1|'. Branches on whether
+%   Receives the short command name in `|#1|' and checks whether
 %   \myhlc|\l_@@_geo_luaset_points_clist| is empty.
 %
 %   Without vertices, \myhlc|\@@_spfig_build_simple:n| builds the content. A
 %   |\MathMLintent| wraps it only when \mykey{concept} is |true|; with
 %   \mykey{concept}|=false| the content is typeset with no |intent|.
 %
-%   With vertices, \myhlc|\@@_spfig_build_refs:| builds the reference list and
-%   \myhlc|\@@_spfig_build_concept_vertices:n| builds the concept |intent|,
-%   applied with a single native |\MathMLintent|. Inside,
-%   \myhlc|\@@_mathcal:n|\mymarg{A \textnormal{\textcolor{lightgray}{\textbar}} P}
-%   is silenced with \myhlc|\@@_luafun_mrow_intent_arg:nn|; the same is done
-%   with \myhlc|\l_@@_spfig_symbol_tl| when it is non-empty; the
-%   sequence is then walked by \myhlc|\@@_spfig_points_loop:n|. All of this is
-%   nested inside a subscript, \myhlc|\c_math_subscript_token|, which the
-%   recursive lookup of the shared |mathml_filter| callback reaches through the
-%   |sub| field of the noad.
+%   With vertices, the reference list is built by \myhlc|\@@_spfig_build_refs:| and the concept
+%   |intent| by \myhlc|\@@_spfig_build_concept_vertices:n|, applied with a single native
+%   |\MathMLintent|. Inside, \myhlc|\@@_mathcal:n|\mymarg{A
+%   \textnormal{\textcolor{lightgray}{\textbar}} P} is silenced with
+%   \myhlc|\@@_luafun_mrow_intent_arg:nn|. The same is done with \myhlc|\l_@@_spfig_symbol_tl| when
+%   it is non-empty. The sequence is then walked by \myhlc|\@@_spfig_points_loop:n|. All of this is
+%   nested inside a subscript, \myhlc|\c_math_subscript_token|, which the recursive lookup of the
+%   shared |mathml_filter| callback reaches through the |sub| field of the noad.
 %
 %   The function \myhlc|\@@_invisible_sep:| precedes both branches.
 %   It adds a second sibling so that the sole |<mrow>| does not collapse into
@@ -20589,13 +20585,11 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spcirc_exec:nn}
-%   Receives the |d()| argument in `|#2|', which is an explicit empty group when omitted
-%   because |\spcirc| converts |-NoValue-| to |{ }| before calling
-%   \myhlc|\@@_spcirc_exec:nn|. When the group is empty, the function sets
-%   \myhlc|\l_@@_spcirc_has_arg_bool| to |false| and does not call
-%   \myhlc|\@@_luafun_geo_circ_parse_and_set:n|. Otherwise it calls that
-%   function, reports |spcirc-invalid-arg| on failure and delegates to
-%   \myhlc|\@@_spcirc_mathml:|, which calls
+%   Receives the |d()| argument in `|#2|', which is an explicit empty group when omitted because
+%   |\spcirc| converts |-NoValue-| to |{ }| before calling \myhlc|\@@_spcirc_exec:nn|. When the
+%   group is empty, the function sets \myhlc|\l_@@_spcirc_has_arg_bool| to |false| and does not call
+%   \myhlc|\@@_luafun_geo_circ_parse_and_set:n|. Otherwise it calls that function and reports
+%   |spcirc-invalid-arg| on failure. Then it delegates to \myhlc|\@@_spcirc_mathml:|, which calls
 %   \myhlc|\@@_spcirc_build_concept:|.
 %
 %   Before processing the \mymarg{argument}, it sets the optional \mymeta{keys} passed in `|#1|'.
@@ -20621,10 +20615,9 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spcirc_mathml:}
-%   Calls \myhlc|\@@_spcirc_build_concept:| and wraps the symbol
-%   \myhlc|\l_@@_spcirc_intent_arg_tl| in its own native |\MathMLintent|. This
-%   is the whole result when \myhlc|\l_@@_spcirc_has_arg_bool| is |false|,
-%   that is, for |\spcirc| with no |(...)|.
+%   Calls \myhlc|\@@_spcirc_build_concept:|. The symbol \myhlc|\l_@@_spcirc_intent_arg_tl| is
+%   wrapped in its own native |\MathMLintent|. When \myhlc|\l_@@_spcirc_has_arg_bool| is |false|,
+%   that is, for |\spcirc| with no |(...)|, this is the whole result.
 %
 %   Otherwise, the group |(|center|)|, held in
 %   \myhlc|\l_@@_spcirc_connector_arg_tl|, follows as a separate sibling, outside the |\MathMLintent| of the symbol.
@@ -21112,18 +21105,15 @@ spmmli-tool -o -p build/ ejemplo.tex
 %
 % \begin{macro}[int]{\@@_spcircfig_exec:nnn}
 %   Receives the short command name in `|#1|' and the argument in `|#3|'. Sets
-%   \myhlc|\l_@@_spcircfig_op_tl| to \emph{«área»} or \emph{«perímetro»}. With |#3| empty, it
-%   sets \myhlc|\l_@@_spcircfig_short_bool| to |false| and parses nothing else.
-%   With a comma in |#3|, it reports |spAcirc-invalid-arg| or
-%   |spPcirc-invalid-arg|. Without a comma, it calls
-%   \myhlc|\@@_luafun_geo_circ_parse_and_set:n|; on error, it tries
-%   \myhlc|\@@_luafun_geo_afig_parse_and_set:n| or
-%   \myhlc|\@@_luafun_geo_pfig_parse_and_set:n| for the short number or letter
-%   form, and a table-letter match is an error. It reports |spAcirc-invalid-arg|
-%   or |spPcirc-invalid-arg| on failure, and then delegates to
-%   \myhlc|\@@_spcircfig_build_short:n| or
-%   \myhlc|\@@_spcircfig_build_concept:nn| and to
-%   \myhlc|\@@_spcircfig_mathml:nn|.
+%   \myhlc|\l_@@_spcircfig_op_tl| to \emph{«área»} or \emph{«perímetro»}. With |#3| empty, it sets
+%   \myhlc|\l_@@_spcircfig_short_bool| to |false| and parses nothing else. With a comma in |#3|, it
+%   reports |spAcirc-invalid-arg| or |spPcirc-invalid-arg|. Without a comma, it calls the function
+%   \myhlc|\@@_luafun_geo_circ_parse_and_set:n|. On error, it tries the short number or letter form
+%   with the function \myhlc|\@@_luafun_geo_afig_parse_and_set:n| or with the function
+%   \myhlc|\@@_luafun_geo_pfig_parse_and_set:n|, and a table-letter match is an error. It reports
+%   |spAcirc-invalid-arg| or |spPcirc-invalid-arg| on failure. Then it delegates to the function
+%   \myhlc|\@@_spcircfig_build_short:n| or to the function \myhlc|\@@_spcircfig_build_concept:nn|,
+%   and to \myhlc|\@@_spcircfig_mathml:nn|.
 %
 %   \begin{important}*
 %     The commands |\spAcirc| and |\spPcirc| take no radius or diameter: the
@@ -22508,12 +22498,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \subsubsection{Internal functions for \cs[no-index]{spFrec}}
 %
 % \begin{macro}[int]{\@@_spFrec_exec:n}
-%   The function \myhlc|\@@_spFrec_exec:n| receives the symbol in `|#1|'.
-%   It removes the spaces and looks the result up in the table, setting
-%   \myhlc|\l_@@_spFrec_concept_tl| to |frecuencia-absoluta|,
-%   |frecuencia-absoluta-acumulada|, |frecuencia-relativa|,
-%   |frecuencia-relativa-acumulada|, |frecuencia-porcentual| or
-%   |frecuencia-porcentual-acumulada|.
+%   The function \myhlc|\@@_spFrec_exec:n| receives the symbol in `|#1|'. It removes the spaces and
+%   looks the result up in the table, setting \myhlc|\l_@@_spFrec_concept_tl| to
+%   |frecuencia-absoluta|, |frecuencia-relativa| or |frecuencia-porcentual|, or to one of them with
+%   the suffix |-acumulada|.
 %
 %   If the symbol is not in the table, it is rejected with
 %   |spFrec-invalid-symbol|, unless the key \mykey[spFrec]{read-arg} was
@@ -23817,9 +23805,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spProb_mathml:}
-%   The function \myhlc|\@@_spProb_mathml:| prints |P(|\mymeta{content}|)|
-%   inside one native |\MathMLintent|, preceded by the outer ghost
-%   \myhlc|\@@_invisible_sep:| and by the inner ghost
+%   The function \myhlc|\@@_spProb_mathml:| prints |P(|\mymeta{content}|)| inside one native
+%   |\MathMLintent|, preceded by the outer ghost \myhlc|\@@_invisible_sep:| and the inner ghost
 %   \myhlc|\@@_inner_sep:|.
 %
 %   With \mykey{silent}|=true|, the intent is `\myhlc|_-|'. With \mykey{read-arg}
