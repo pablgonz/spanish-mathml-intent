@@ -6736,19 +6736,23 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 %
 % Si la distribución es discreta, |$\spdist[var=X,dist=B]{n,p}$| imprimirá
 % `$\spdist[var=X,dist=B]{n,p}$' y \mynvmath{NVDA/MathCAT} verbalizará \emph{«X
-% se distribuye binomial con parámetros n y p»}. Con
-% |$\spdist[var=X,dist=Be]{p}$| se imprime `$\spdist[var=X,dist=Be]{p}$' y se
-% verbaliza \emph{«X se distribuye bernoulli con parámetro p»}. Con
-% |$\spdist[var=X,dist=P]{\lambda}$| se imprime
-% `$\spdist[var=X,dist=P]{\lambda}$' y se verbaliza \emph{«X se distribuye
-% poisson con parámetro lambda»}. Con |$\spdist[var=X,dist=Ge]{p}$| se imprime
-% `$\spdist[var=X,dist=Ge]{p}$' y se verbaliza \emph{«X se distribuye geométrica
-% con parámetro p»}. Con |$\spdist[var=X,dist=H]{N,n,p}$| se imprime
-% `$\spdist[var=X,dist=H]{N,n,p}$' y se verbaliza \emph{«X se distribuye
-% hipergeométrica con parámetros N, n y p»}. Los nombres de más de una letra se
-% imprimen en redonda. La binomial también se pide con |Bi| o |Bin|, la de
-% Bernoulli con |Ber|, la de Poisson con |Po| y la geométrica con |G| o |Geo|, y
-% el comando imprime el nombre que se pidió.
+% se distribuye binomial con parámetros n y p»}. Con las demás distribuciones
+% discretas se obtiene lo siguiente:
+% \begin{itemize}
+% \item |$\spdist[var=X,dist=Be]{p}$| imprime `$\spdist[var=X,dist=Be]{p}$' y
+% verbaliza \emph{«X se distribuye bernoulli con parámetro p»}.
+% \item |$\spdist[var=X,dist=P]{\lambda}$| imprime
+% `$\spdist[var=X,dist=P]{\lambda}$' y verbaliza \emph{«X se distribuye poisson
+% con parámetro lambda»}.
+% \item |$\spdist[var=X,dist=Ge]{p}$| imprime `$\spdist[var=X,dist=Ge]{p}$' y
+% verbaliza \emph{«X se distribuye geométrica con parámetro p»}.
+% \item |$\spdist[var=X,dist=H]{N,n,p}$| imprime
+% `$\spdist[var=X,dist=H]{N,n,p}$' y verbaliza \emph{«X se distribuye
+% hipergeométrica con parámetros N, n y p»}.
+% \end{itemize}
+% Los nombres de más de una letra se imprimen en redonda. La binomial también se
+% pide con |Bi| o |Bin|, la de Bernoulli con |Ber|, la de Poisson con |Po| y la
+% geométrica con |G| o |Geo|, y el comando imprime el nombre que se pidió.
 %
 % Si la distribución es continua, |$\spdist[var=X,dist=U]{a,b}$| imprimirá
 % `$\spdist[var=X,dist=U]{a,b}$' y \mynvmath{NVDA/MathCAT} verbalizará \emph{«X
@@ -6765,10 +6769,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % Si el parámetro son los grados de libertad, |$\spdist[var=X,dist=t]{n}$|
 % imprimirá `\mysubout{$\spdist[var=X,dist=t]{n}$}' y verbalizará, con
 % \mynvmath{NVDA/MathCAT}, \emph{«X se distribuye t de student con n grados de
-% libertad»}; |$\spdist[var=X,dist=chi]{n}$| imprimirá
-% `\mysubout{$\spdist[var=X,dist=chi]{n}$}' y verbalizará \emph{«X se distribuye
-% chi cuadrado con n grados de libertad»}; |$\spdist[var=X,dist=F]{m,n}$|
-% imprimirá `\mysubout{$\spdist[var=X,dist=F]{m,n}$}' y verbalizará \emph{«X se
+% libertad»}. Con |$\spdist[var=X,dist=chi]{n}$| se imprime
+% `\mysubout{$\spdist[var=X,dist=chi]{n}$}' y se verbaliza \emph{«X se
+% distribuye chi cuadrado con n grados de libertad»}. Con
+% |$\spdist[var=X,dist=F]{m,n}$| se imprime
+% `\mysubout{$\spdist[var=X,dist=F]{m,n}$}' y se verbaliza \emph{«X se
 % distribuye f de snedecor con m y n grados de libertad»}.
 %
 % Si los parámetros tienen coma decimal, se separan con punto y coma:
@@ -6888,10 +6893,11 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/pablgonz/rnv-vera-pdf-
 % comando sin modificar la impresión de este. El valor de esta llave
 % \emph{siempre} debe pasarse entre llaves `|{ }|'.
 %
-% Por ejemplo:~|$\spdist[var=X,dist=N,read-arg={X sigue una distribución normal}]{\mu,\sigma^2}$|
-% imprimirá `$\spdist[var=X,dist=N,read-arg={X sigue una distribución normal}]{\mu,\sigma^2}$'
-% en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT} verbalizará \emph{«X
-% sigue una distribución normal»}.
+% Como ejemplo, el comando |$\spdist[var=X,dist=N,read-arg={X| |sigue| |una|
+% |distribución| |normal}]| |{\mu,\sigma^2}$| imprimirá
+% `$\spdist[var=X,dist=N,read-arg={X sigue una distribución
+% normal}]{\mu,\sigma^2}$' en la salida \texttt{PDF} y \mynvmath{NVDA/MathCAT}
+% verbalizará \emph{«X sigue una distribución normal»}.
 %
 % \keyexampcmd{silent}{true \textnormal{\textcolor{lightgray}{\textbar}}
 %   false}{false}[spdist]
@@ -7324,60 +7330,24 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \begin{description}[font=\small\sffamily\bfseries,leftmargin=1.1\descrwidth,labelwidth=\dimexpr1.1\descrwidth-0.5em\relax,labelsep=0.5em,itemindent=0pt,nosep,itemsep=0pt]
 %  \item [\fileversion{} (ctan), \filedate]
 %    \begin{itemize}
-%      \item New command |\spdist| writes the probability distributions, such
-%        as $X \sim N(\mu,\sigma^2)$ or $X \sim \mathrm{Exp}(\lambda)$, with the
-%        notation in Spanish: the names of more than one letter are upright, and
-%        \mynvmath{MathCAT} reads \emph{\enquote{X se distribuye normal con media mu
-%        y varianza sigma al cuadrado}}. The family is chosen with the key |dist|
-%        and the variable with |var|; it also has |print-sty|, |read-sty|,
-%        |read-cmd|, |read-arg| and |silent|.
-%      \item |\spunit| accepts the prefix $\mathrm{µ}$ glued to a unit
-%        ($\mathrm{µm}$, $\mathrm{µg}$) and the units in everyday use and
-%        computing that \mynvmath{MathCAT} knows (|kWh|, |kcal|, |mmHg|,
-%        |dpi|\ldots), and agrees their name with the number, as in
-%        \emph{\enquote{un grado Celsius}}. Their symbols can no longer be
+%      \item Documentation: the long names set with |\myhlc| may break
+%        after an underscore, which removes the overfull and underfull boxes of
+%        the manual.
+%      \item New commands |\spdist|, for the probability distributions, and
+%        |\spnord|, for the ordinal numbers from 1 to 99. |\spsiglo| has the new
+%        keys |ordinal| and |gender|.
+%      \item |\spunit| accepts the prefix $\mathrm{µ}$, the units in everyday use
+%        and computing, the legal units and more Unicode input, and agrees the
+%        name of the unit with the number. Their symbols can no longer be
 %        defined with |\spnewunit|.
-%      \item |\spunit| reads \emph{\enquote{vatios}} for |w| (printed as |W|),
-%        \emph{\enquote{micro}} for the lone prefix |µ| and
-%        \emph{\enquote{grados kelvin}} for |°K|, which \mynvmath{MathCAT}
-%        spelled out letter by letter.
-%      \item |\spunit| accepts more Unicode input: the kelvin, ohm and
-%        angstrom signs, the ordinal indicator and the ring above as the degree
-%        symbol, the Unicode minus sign in exponents, the middle dot and the dot
-%        operator as product, the division slash, exponents in superscript
-%        and the square compatibility symbols for units. The compatibility
-%        symbols for picovolt and nanovolt were read as volt and kilovolt.
-%      \item |\spunit| reads |w| as watt, the lone prefix |µ| as \emph{\enquote{micro}}
-%        and |°K| as \emph{\enquote{grados kelvin}}. It accepts the legal units belio,
-%        área, barn, milla náutica, tex, gon, dioptría, quilate and vuelta by their
-%        name, the spellings ángstrom and ångström, and \myhlc{’} and \myhlc{”} as
-%        minute and second.
-%      \item |\spunit| prints the slash without an intent when \mykey{read-slash}
-%        is |por|, so that the units of the denominator are read in singular.
-%      \item |\spsiglo| has the new keys |ordinal| and |gender| to read the
-%        Roman numeral as an ordinal (\emph{\enquote{décimo}}) from 1 to 99.
-%      \item New command |\spnord| writes the ordinal numbers from 1 to 99, such
-%        as $1.^{\text{o}}$ or $21.^{\text{a}}$, which \mynvmath{MathCAT} reads
-%        as ordinals.
-%      \item |\spang| writes the minutes as an intent, so that \mynvmath{MathCAT}
-%        does not read \emph{\enquote{superíndice}} before \emph{\enquote{minutos}}.
-%      \item The lists and coordinates read a short pause in their commas, so
-%        that |A(1,2)| is not heard as \emph{\enquote{1 coma 2}}.
-%      \item The geometry commands no longer put an invisible separator between
-%        consecutive points, since \mynvmath{MathCAT} now reads each point on its
-%        own.
-%      \item A decimal with a comma inside a |\spfun| argument, as in
-%        |f(1{,}5)|, is now passed to |\spnum|, so that \mynvmath{MathCAT} reads
-%        \emph{\enquote{1 coma 5}} and not \emph{\enquote{15}}.
-%      \item The primes of a function name in |\spfun|, |\spdom|, |\sprec| and
-%        |\spcod| are read as \emph{\enquote{segunda}}, \emph{\enquote{tercera}}, \dots{}
-%        as documented, since the table with these names was not visible from the
-%        function code and \emph{\enquote{doble prima}} was read instead.
-%      \item The closing of |\spabs| is a single node, since \mynvmath{MathCAT}
-%        0.7.9-alpha.1 crashes on an |<mrow>| made of two invisible characters.
-%      \item The wording follows \mynvmath{MathCAT} and the \textsc{cmu} 2024:
-%        \emph{\enquote{fin del valor absoluto}}, \emph{\enquote{factorial de n}}
-%        and \emph{\enquote{f segunda}}.
+%      \item |\spunit| reads |w|, the lone |µ| and |°K| correctly, and prints
+%        the slash without an intent when \mykey{read-slash} is |por|.
+%      \item Reading fixes in |\spang|, in the pauses of lists and coordinates,
+%        in |\spfun| (decimals with a comma and primes) and in the geometry
+%        commands, which no longer separate consecutive points.
+%      \item The closing of |\spabs| is a single node, since
+%        \mynvmath{MathCAT} 0.7.9-alpha.1 crashes on an |<mrow>| of two
+%        invisible characters.
 %    \end{itemize}
 %  \item [v1.4 (ctan), 2026-11-02]
 %    \begin{itemize}
@@ -11204,9 +11174,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \l_@@_spread_read_arg_tl,
 %     \l_@@_spread_read_tmp_tl,
 %   }
-%   The variables \myhlc|\l_@@_spread_luaset_status_str| and
-%   \myhlc|\l_@@_spread_luaset_reading_str| are set by
-%   \myhlc|\@@_luafun_spread_new:nn|/\myhlc|\@@_luafun_spread_lookup:n|.
+%   The functions \myhlc|\@@_luafun_spread_new:nn| and \myhlc|\@@_luafun_spread_lookup:n| set the
+%   variables \myhlc|\l_@@_spread_luaset_status_str| and \myhlc|\l_@@_spread_luaset_reading_str|.
 %   The variable \myhlc|\l_@@_spread_read_arg_tl| stores \mykey{read-arg}.
 %    \begin{macrocode}
 \str_new:N \l_@@_spread_luaset_status_str
@@ -14321,11 +14290,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \l_@@_spinterval_delim_r_tl,
 %   }
 % The variables \myhlc|\l_@@_spinterval_sym_l_tl| and
-% \myhlc|\l_@@_spinterval_sym_r_tl| store the delimiter symbols, the variables
+% \myhlc|\l_@@_spinterval_sym_r_tl| store the delimiter symbols. The variables
 % \myhlc|\l_@@_spinterval_size_l_tl| and \myhlc|\l_@@_spinterval_size_r_tl|
-% store their size commands, and the variables
-% \myhlc|\l_@@_spinterval_delim_l_tl| and
-% \myhlc|\l_@@_spinterval_delim_r_tl| store the delimiters ready to be
+% store their size commands. The variables \myhlc|\l_@@_spinterval_delim_l_tl|
+% and \myhlc|\l_@@_spinterval_delim_r_tl| store the delimiters ready to be
 % typeset.
 %    \begin{macrocode}
 \tl_new:N \l_@@_spinterval_sym_l_tl
@@ -15619,9 +15587,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spfuncomp_exec:nn}
-%   Receives the optional \mymeta{keys} in `|#1|' and the \mymarg{argument}
-%   in `|#2|'. Parses first, reporting |spfuncomp-invalid-arg| on error
-%   whatever \mykey{silent} is.
+%   Receives the optional \mymeta{keys} in `|#1|' and the \mymarg{argument} in `|#2|'. The argument
+%   is parsed first, and |spfuncomp-invalid-arg| is reported on error whatever \mykey{silent} is.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spfuncomp_exec:nn
   {
@@ -17990,11 +17957,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \l_@@_spangle_intent_tl,
 %     \l_@@_spangle_print_sym_now_bool,
 %   }
-% The variable \myhlc|\l_@@_spangle_intent_tl| stores the concept word,
-% |ángulo| or |medida-del-ángulo|, with the suffix |-recto| when \mykey{recto}
-% is |true|. The variable \myhlc|\l_@@_spangle_print_sym_now_bool| tells
-% whether the symbol is typeset at this moment. Both are shared by
-% |\spangle| and |\spmangle|.
+% The variable \myhlc|\l_@@_spangle_intent_tl| holds the concept word, |ángulo|
+% or |medida-del-ángulo|, with the suffix |-recto| when \mykey{recto} is |true|.
+% The variable \myhlc|\l_@@_spangle_print_sym_now_bool| tells whether the symbol
+% is typeset at this moment. Both are shared by |\spangle| and |\spmangle|.
 %    \begin{macrocode}
 \tl_new:N   \l_@@_spangle_intent_tl
 \bool_new:N \l_@@_spangle_print_sym_now_bool
@@ -18123,12 +18089,10 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \subsubsection{Internal functions for \cs[no-index]{spangle} and \cs[no-index]{spmangle}}
 %
 % \begin{macro}[int]{\@@_spangle_sym:n}
-%   The internal function \myhlc|\@@_spangle_sym:n| branches on
-%   |#1|, \mykey{print-sym} and \mykey{recto} to select one of four
-%   symbols: |\angle|/|\rightanglesqr| when \mykey{print-sym} is
-%   |true|; |\measuredangle|/|\measuredrightangle| otherwise. When
-%   |#1| is |angle|, only \mykey{recto} applies, choosing between
-%   |\angle| and |\rightangle|.
+%   The internal function \myhlc|\@@_spangle_sym:n| branches on |#1|, \mykey{print-sym} and
+%   \mykey{recto} to select one of four symbols. When \mykey{print-sym} is |true|, it selects
+%   |\angle| or |\rightanglesqr|; otherwise, |\measuredangle| or |\measuredrightangle|. When |#1| is
+%   |angle|, only \mykey{recto} applies, choosing between |\angle| and |\rightangle|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spangle_sym:n
   {
@@ -19162,14 +19126,12 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     spAfig-sym-cardinality-conflict, spPfig-sym-cardinality-conflict,
 %     spAfig-read-arg-key, spPfig-read-arg-key,
 %   }
-%   The eight \enquote{error}s are generated by the same map, using the same
-%   |##1|/|##2| doubling convention as |\spside|/|\spmside|.
-%   \myhlc|\@@_spfig_exec:nnn| raises |spAfig-invalid-arg| or
-%   |spPfig-invalid-arg| for any parse failure. |spAfig-sym-letter-conflict|,
-%   |spPfig-sym-letter-conflict|, |spAfig-sym-cardinality-conflict| and
-%   |spPfig-sym-cardinality-conflict| are raised when
-%   \mykey[spAfig,spPfig]{print-sym} is forced to a value incompatible
-%   with the actual argument.
+%   The eight \enquote{error}s are generated by the same map, using the same |##1|/|##2| doubling
+%   convention as |\spside| and |\spmside|. \myhlc|\@@_spfig_exec:nnn| raises |spAfig-invalid-arg|
+%   or |spPfig-invalid-arg| for any parse failure. The errors |spAfig-sym-letter-conflict| and
+%   |spPfig-sym-letter-conflict|, as well as |spAfig-sym-cardinality-conflict| and
+%   |spPfig-sym-cardinality-conflict|, are raised when \mykey[spAfig,spPfig]{print-sym} is forced to
+%   a value incompatible with the actual argument.
 %    \begin{macrocode}
 \clist_map_inline:nn { Afig , Pfig }
   {
@@ -20236,11 +20198,11 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     \l_@@_spcirc_articulo_str,
 %     \l_@@_spcirc_word_tl,
 %   }
-% The variable \myhlc|\l_@@_spcirc_articulo_str| is set by
-% \myhlc|\@@_spcirc_word_and_article:| to |la| or |el|, matching the gender of
-% the chosen word. The variable \myhlc|\l_@@_spcirc_word_tl| stores that word,
-% |circunferencia| or |círculo|, or the \mykey[spcirc]{read-arg} override;
-% it is used by \myhlc|\@@_spcirc_exec:nn|.
+% The variable \myhlc|\l_@@_spcirc_articulo_str| is set to |la| or |el| by
+% \myhlc|\@@_spcirc_word_and_article:|, matching the gender of the chosen word.
+% The variable \myhlc|\l_@@_spcirc_word_tl| stores that word, |circunferencia|
+% or |círculo|, or the \mykey[spcirc]{read-arg} override; it is used by
+% \myhlc|\@@_spcirc_exec:nn|.
 %    \begin{macrocode}
 \str_new:N \l_@@_spcirc_articulo_str
 \tl_new:N  \l_@@_spcirc_word_tl
@@ -20470,9 +20432,8 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spcirc_radio_print:}
-%   Branches on \myhlc|\l_@@_geo_luaset_circ_radio_type_str|,
-%   reusing |\spnum|/|\spunit|/|\spside|/|\spmside| directly rather
-%   than reimplementing any parsing.
+%   Branches on \myhlc|\l_@@_geo_luaset_circ_radio_type_str|, reusing |\spnum|, |\spunit|, |\spside|
+%   and |\spmside| directly rather than reimplementing any parsing.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcirc_radio_print:
   {
@@ -20758,9 +20719,9 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{variable}
 %
 % \begin{variable}[int]{\l_@@_spcircfig_luaset_comma_str}
-% The variable \myhlc|\l_@@_spcircfig_luaset_comma_str| is set by
-% \myhlc|\@@_luafun_spcircfig_comma:n| and stores |true| when the argument has
-% a comma.
+% The function \myhlc|\@@_luafun_spcircfig_comma:n| sets the variable
+% \myhlc|\l_@@_spcircfig_luaset_comma_str|, which stores |true| when the
+% argument has a comma.
 %    \begin{macrocode}
 \str_new:N \l_@@_spcircfig_luaset_comma_str
 %    \end{macrocode}
@@ -21174,16 +21135,14 @@ spmmli-tool -o -p build/ ejemplo.tex
 % \end{macro}
 %
 % \begin{macro}[int]{\@@_spcircfig_mathml:nn}
-%   Renders \myhlc|\l_@@_spcircfig_intent_arg_tl|, already built by
-%   \myhlc|\@@_spcircfig_exec:nnn|. There are three cases: the short case
-%   prints the symbol with the short value as its subscript; an empty |#2|
-%   prints the symbol alone; a center prints the symbol, plus the optional
-%   \mykey{sub-index} subscript, and the center between parentheses. In every
-%   case a single native |\MathMLintent| wraps
-%   \myhlc|\@@_mathcal:n|\mymarg{A \textnormal{\textcolor{lightgray}{\textbar}} P}
-%   and the whole subscript. The center is read with
-%   \myhlc|\@@_mathmlarg_point:nnn|, referenced as |$pt|. Receives the short
-%   command name in `|#1|' and the argument in `|#2|'.
+%   Renders the variable \myhlc|\l_@@_spcircfig_intent_arg_tl|, already built by
+%   \myhlc|\@@_spcircfig_exec:nnn|. There are three cases: the short case prints the symbol with the
+%   short value as its subscript; an empty |#2| prints the symbol alone; a center prints the symbol,
+%   plus the optional \mykey{sub-index} subscript, and the center between parentheses. In every case
+%   a single native |\MathMLintent| wraps \myhlc|\@@_mathcal:n|\mymarg{A
+%   \textnormal{\textcolor{lightgray}{\textbar}} P} and the whole subscript. The center is read with
+%   \myhlc|\@@_mathmlarg_point:nnn|, referenced as |$pt|. Receives the short command name in `|#1|'
+%   and the argument in `|#2|'.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcircfig_mathml:nn
   {
@@ -22743,14 +22702,15 @@ spmmli-tool -o -p build/ ejemplo.tex
 %     spdist-invalid-print-sty,
 %     spdist-invalid-arg,
 %   }
-%   The \enquote{error} |spdist-missing-dist| is raised when the key
-%   \mykey[spdist]{dist} is empty. The \enquote{error}
-%   |spdist-invalid-family| is raised when its value is not in the table and
-%   the \enquote{error} |spdist-invalid-print-sty| when the key
-%   \mykey[spdist]{print-sty} does not belong to the family. The
-%   \enquote{error} |spdist-invalid-arg| is raised when the
-%   \mymarg{argument} does not have the number of parameters of the family
-%   or has an empty one, or when the key \mykey[spdist]{var} is not balanced.
+%   The following \enquote{error}s are raised:
+%   \begin{itemize}
+%   \item |spdist-missing-dist|, when the key \mykey[spdist]{dist} is empty;
+%   \item |spdist-invalid-family|, when its value is not in the table;
+%   \item |spdist-invalid-print-sty|, when the key \mykey[spdist]{print-sty} does not belong to the
+%   family;
+%   \item |spdist-invalid-arg|, when the \mymarg{argument} does not have the number of parameters of
+%   the family or has an empty one, or when the key \mykey[spdist]{var} is not balanced.
+%   \end{itemize}
 %    \begin{macrocode}
 \msg_new:nnnn { spintent } { spdist-missing-dist }
   {
@@ -22957,7 +22917,8 @@ spmmli-tool -o -p build/ ejemplo.tex
                     \@@_pause_sep: \@@_spdist_value:n { second }
                   }
                 \@@_spdist_sep:
-                \MathMLarg { c } { \@@_pause_sep: \@@_spdist_value:n { third } }
+                \MathMLarg { c }
+                  { \@@_pause_sep: \@@_spdist_value:n { third } }
               }
           }
       }
@@ -22977,7 +22938,10 @@ spmmli-tool -o -p build/ ejemplo.tex
     \@@_spdist_set_words:
     \str_if_eq:VnTF \l_@@_spdist_luaset_std_str { true }
       { \tl_set:Nn \l_@@_spdist_intent_tl { normal-estándar } }
-      { \tl_set:Ne \l_@@_spdist_intent_tl { \l_@@_spdist_luaset_head_str } }
+      {
+        \tl_set:Ne \l_@@_spdist_intent_tl
+          { \l_@@_spdist_luaset_head_str }
+      }
   }
 %    \end{macrocode}
 % \end{macro}
@@ -24626,17 +24590,16 @@ spmmli-tool -o -p build/ ejemplo.tex
 %   |\MathMLintent|, preceded by the outer ghost \myhlc|\@@_invisible_sep:|
 %   and by the inner ghost \myhlc|\@@_inner_sep:|.
 %
-%   With \mykey{silent}|=true| the intent is `\myhlc|_-|'. With \mykey{read-arg}
-%   given it is \myhlc|_|\mymeta{read-arg}|:nofix|. Otherwise the intent of the
-%   whole symbol is the concept followed by |-de|: with |one| argument it is
-%   \myhlc|_|\mymeta{concept}|-de:prefix($c)|, where |c| wraps the symbol with the
-%   intent \myhlc|_elementos:postfix($n)|; with |pair| it is
-%   \myhlc|_|\mymeta{concept}|-de:prefix($c)|, where |c| is the symbol, which
-%   carries its own intent \myhlc|_elementos-tomados-de-a:infix($n,$k)|, except for the binomial
-%   coefficient, whose single intent is \myhlc|_sobre:infix($n,$k)|; with |list| it is
-%   \myhlc|_|\mymeta{concept}|-de:prefix($c)|, where |c| is the symbol, which
-%   carries the intent \myhlc|_elementos-con-repeticiones:infix($n,$m)|, and |m| is the
-%   group of the multiplicities, typeset by \myhlc|\@@_spcomb_list:|.
+%   With \mykey{silent}|=true| the intent is `\myhlc|_-|'. With \mykey{read-arg} given it is
+%   \myhlc|_|\mymeta{read-arg}|:nofix|. Otherwise the intent of the whole symbol is the concept
+%   followed by |-de|: with |one| argument it is \myhlc|_|\mymeta{concept}|-de:prefix($c)|, where
+%   |c| is the symbol wrapped with the intent \myhlc|_elementos:postfix($n)|; with |pair| it is
+%   \myhlc|_|\mymeta{concept}|-de:prefix($c)|, where |c| is the symbol, which carries its own intent
+%   \myhlc|_elementos-tomados-de-a:infix($n,$k)|, except for the binomial coefficient, whose single
+%   intent is \myhlc|_sobre:infix($n,$k)|; with |list| it is
+%   \myhlc|_|\mymeta{concept}|-de:prefix($c)|, where |c| is the symbol, which carries the intent
+%   \myhlc|_elementos-con-repeticiones:infix($n,$m)|, and |m| is the group of the multiplicities,
+%   typeset by \myhlc|\@@_spcomb_list:|.
 %    \begin{macrocode}
 \cs_new_protected:Nn \@@_spcomb_mathml:
   {
