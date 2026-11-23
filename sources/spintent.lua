@@ -321,47 +321,15 @@ register_tex_cmd("luafun_inner_sep", function()
     node.write(noad)
 end, {})
 
--- \__spintent_point_sep: separador entre puntos consecutivos (AOB, ABC...).
--- Escribe <mo intent=":silent" mathvariant="normal">U+2063</mo>.
--- Tiene que ser <mo>: MathCAT (desde 1d864232, en 0.7.7) fusiona letras
--- <mi> seguidas en una sola palabra antes de leer el intent (heurística
--- "c o s"), aunque tengan arg; un <mi> silencioso entre ellas cuenta
--- como una letra más y no lo evita.
+-- \__spintent_pause_sep: escribe <mo intent=":silent:pause-short"
+-- mathvariant="normal">U+2063</mo>: no lee nada y MathCAT mete una pausa
+-- corta (coma de coordenadas, para que A(1,2) no suene como "1 coma 2").
 -- El noad es open: un signo que sigue al separador queda unario y no
--- recibe espacio de operador binario. Con mathml_table, sin
--- mathml_core, luamml usa el elemento tal cual (como luamml-array);
--- no basta con renombrar en mathml_filter. :nodes enlaza el glifo
--- con el elemento en el modo mathml-SE. El mathml_filter queda solo
--- como marca de "ya reclamado" para spintent_claim_target.
--- No se deduplica: va uno entre cada par de puntos. Sin marca sptmp: es
--- contenido real de la formula, spmmli-tool no debe quitarlo.
-register_tex_cmd("luafun_point_sep", function()
-    local kernel = node.new("math_char")
-    kernel.char  = 0x2063
-    kernel.fam   = 0
-    local noad   = node.new("noad")
-    noad.subtype = 6   -- noad_open, igual que los fantasmas
-    noad.nucleus = kernel
-
-    local properties = node.get_properties_table()
-    local p = properties[kernel] or {}
-    p.mathml_table = {
-        [0]          = "mo",
-        "\u{2063}",
-        intent       = ":silent",
-        mathvariant  = "normal",
-        [":nodes"]   = { kernel },
-    }
-    p.mathml_filter = function(result, core) return result, core end
-    properties[kernel] = p
-
-    node.write(noad)
-end, {})
-
--- \__spintent_pause_sep: como point_sep, pero con intent
--- ":silent:pause-short": no lee nada y MathCAT mete una pausa corta
--- (coma de coordenadas, para que A(1,2) no suene como "1 coma 2").
--- Contenido real de la formula: sin marca sptmp.
+-- recibe espacio de operador binario. Con mathml_table, sin mathml_core,
+-- luamml usa el elemento tal cual; :nodes enlaza el glifo con el elemento
+-- en el modo mathml-SE y mathml_filter queda solo como marca de "ya
+-- reclamado" para spintent_claim_target. Contenido real de la formula:
+-- sin marca sptmp.
 register_tex_cmd("luafun_pause_sep", function()
     local kernel = node.new("math_char")
     kernel.char  = 0x2063
@@ -605,6 +573,25 @@ end
 
 local spintent_strip_math_spaces = Cs((spintent_discard_space + P(1)) ^ 0)
 
+-- Entrada Unicode de las unidades: el signo menos (U+2212), el punto medio
+-- (·, ⋅, ∙) como producto, la barra de división (∕, ⁄), los exponentes en
+-- superíndice (m², s⁻¹) y º, ˚, ∘ como el símbolo de grado.
+local spintent_sup_digit =
+      P("⁰") / "0" + P("¹") / "1" + P("²") / "2" + P("³") / "3"
+    + P("⁴") / "4" + P("⁵") / "5" + P("⁶") / "6" + P("⁷") / "7"
+    + P("⁸") / "8" + P("⁹") / "9"
+local spintent_sup_exp =
+    Cs((P("⁻") / "-") ^ -1 * spintent_sup_digit ^ 1)
+    / function(e) return "^{" .. e .. "}" end
+local spintent_unit_input_unicode = Cs((
+      spintent_sup_exp
+    + P("−") / "-"
+    + (P("·") + P("⋅") + P("∙")) / "*"
+    + (P("∕") + P("⁄")) / "/"
+    + (P("º") + P("˚") + P("∘")) / "°"
+    + P(1)
+) ^ 0)
+
 register_tex_cmd("luafun_clean_split_and_set", function(raw_string)
     raw_string = spintent_trim(raw_string)
 
@@ -631,7 +618,7 @@ register_tex_cmd("luafun_clean_split_and_set", function(raw_string)
     local denom_has_numeric = "false"
 
     if r_extra then
-        local extra = spintent_trim(r_extra)
+        local extra = spintent_unit_input_unicode:match(spintent_trim(r_extra))
 
         if spintent_custom_spunit_aliases[extra] then
             extra = spintent_custom_spunit_aliases[extra]
@@ -735,7 +722,7 @@ local spintent_units = {
     ["km"]   = "km",   ["lm"]   = "lm",    ["lx"]   = "lx",   ["m"]    = "m",
     ["cm"]   = "cm",   ["min"]  = "min",   ["mm"]   = "mm",   ["mol"]  = "mol",
     ["pc"]   = "pc",   ["rad"]  = "rad",   ["rpm"]  = "rpm",  ["s"]    = "s",
-    ["sr"]   = "sr",   ["t"]    = "t",     ["u"]    = "u",    ["w"]    = "w",
+    ["sr"]   = "sr",   ["t"]    = "t",     ["u"]    = "u",    ["w"]    = "W",
     ["y"]    = "y",    ["°"]    = "°",     ["°C"]   = "°C",   ["°F"]   = "°F",
     ["Ω"]    = "Ω",    ["℧"]    = "℧",     ["′"]    = "′",    ["″"]    = "″",
     ["Å"]    = "Å",    ["µ"]    = "µ",
@@ -765,11 +752,18 @@ local spintent_units = {
     ["segundo"]  = "s",   ["segundos"] = "s",
     ["litro"]    = "l",   ["l-litro"]  = "l",
     ["gramo"]    = "g",   ["gramos"]   = "g",
-    ["angstrom"] = "Å",
+    ["angstrom"] = "Å",   ["ángstrom"] = "Å",   ["ångström"] = "Å",
     ["celsius"]  = "°C",  ["degC"]     = "°C",  ["℃"]        = "°C",
     ["degF"]     = "°F",  ["℉"]        = "°F",  ["micro"]    = "µ",
     ["minmin"]   = "′",   ["segseg"]   = "″",   ["u-masa"]   = "u",
     ["mho"]      = "℧",
+    -- Unidades legales (Real Decreto 2032/2009) que MathCAT no conoce: se
+    -- escriben por el nombre y se leen con un nombre propio (ver abajo).
+    ["belio"]    = "B",    ["area"]     = "a",    ["área"]     = "a",
+    ["barn"]     = "barn", ["tex"]      = "tex",  ["gon"]      = "gon",
+    ["milla-nautica"] = "M",   ["milla-náutica"] = "M",
+    ["dioptria"] = "dioptría", ["dioptría"] = "dioptría",
+    ["quilate"]  = "quilate",  ["vuelta"]   = "vuelta",
     -- Uso corriente en español e informática: MathCAT las conoce y concuerda
     -- el número con el nombre («un kilovatio hora», «5 kilovatios hora»).
     ["kcal"]  = "kcal",   ["Wh"]    = "Wh",     ["kWh"]   = "kWh",    ["MWh"]   = "MWh",
@@ -786,13 +780,21 @@ local spintent_units = {
     ["㎡"]   = "m^2",      ["㎢"]   = "km^2",     ["㎠"]   = "cm^2",     ["㎜²"]  = "mm^2",
     ["㎥"]   = "m^3",      ["㎦"]   = "km^3",     ["㎤"]   = "cm^3",     ["㎜³"]  = "mm^3",
     ["㎐"]   = "Hz",       ["㎑"]   = "kHz",      ["㎒"]   = "MHz",      ["㎓"]   = "GHz",      ["㎔"]   = "THz",
-    ["㎽"]   = "mW",       ["㎾"]   = "kW",       ["㎿"]   = "MW",       ["㎴"]   = "V",        ["㎵"]   = "kV",
+    ["㎽"]   = "mW",       ["㎾"]   = "kW",       ["㎿"]   = "MW",       ["㎴"]   = "pV",       ["㎵"]   = "nV",
     ["㎶"]   = "µV",       ["㎷"]   = "mV",       ["㎸"]   = "kV",       ["㎀"]   = "pA",       ["㎁"]   = "nA",
     ["㎂"]   = "µA",       ["㎃"]   = "mA",       ["㎄"]   = "kA",       ["㎫"]   = "MPa",      ["㎬"]   = "GPa",
     ["㎺"]   = "pW",       ["㎻"]   = "nW",       ["㎼"]   = "µW",
     ["㎍"]   = "µg",       ["㎎"]   = "mg",       ["㎏"]   = "kg",
     ["㎜"]   = "mm",       ["㎝"]   = "cm",       ["㎞"]   = "km",       ["㎛"]   = "µm",       ["㎕"]   = "µL",
-    ["㎖"]   = "mL",       ["㎗"]   = "dL",       ["㎘"]   = "kL",       ["㎭"]   = "rad"
+    ["㎖"]   = "mL",       ["㎗"]   = "dL",       ["㎘"]   = "kL",       ["㎭"]   = "rad",
+    ["㎅"]   = "KB",       ["㎆"]   = "MB",       ["㎇"]   = "GB",       ["㎈"]   = "cal",      ["㎉"]   = "kcal",
+    ["㎊"]   = "pF",       ["㎋"]   = "nF",       ["㎌"]   = "µF",       ["㎙"]   = "fm",       ["㎚"]   = "nm",
+    ["㎟"]   = "mm^2",     ["㎣"]   = "mm^3",     ["㎩"]   = "Pa",       ["㎪"]   = "kPa",      ["㎰"]   = "ps",
+    ["㎱"]   = "ns",       ["㎲"]   = "µs",       ["㎳"]   = "ms",       ["㎹"]   = "MV",       ["㏀"]   = "kΩ",
+    ["㏁"]   = "MΩ",       ["㏃"]   = "Bq",       ["㏄"]   = "cc",       ["㏅"]   = "cd",       ["㏈"]   = "dB",
+    ["㏉"]   = "Gy",       ["㏊"]   = "ha",       ["㏌"]   = "in",       ["㏐"]   = "lm",       ["㏓"]   = "lx",
+    ["㏖"]   = "mol",      ["㏛"]   = "sr",       ["㏜"]   = "Sv",       ["㏝"]   = "Wb",       ["㍱"]   = "hPa",
+    ["㍴"]   = "bar",      ["㍶"]   = "pc",       ["㍷"]   = "dm",       ["㍸"]   = "dm^2",     ["㍹"]   = "dm^3"
 }
 
 -- Los símbolos compactos con barra son alias: la barra y el exponente pasan
@@ -800,6 +802,9 @@ local spintent_units = {
 -- singular y el exponente queda solo en la unidad que lo lleva.
 spintent_custom_spunit_aliases["㎧"] = "m/s"
 spintent_custom_spunit_aliases["㎨"] = "m/s^2"
+spintent_custom_spunit_aliases["㏆"] = "C/kg"
+spintent_custom_spunit_aliases["㏞"] = "V/m"
+spintent_custom_spunit_aliases["㏟"] = "A/m"
 spintent_custom_spunit_aliases["㎮"] = "rad/s"
 spintent_custom_spunit_aliases["㎯"] = "rad/s^2"
 
@@ -814,13 +819,23 @@ local spintent_unit_compact_spoken_names = {
     ["segseg"] = "segundos",
     ["′"]      = "minutos",
     ["″"]      = "segundos",
+    -- µ suelta: con :unit MathCAT la deletrea («µs»); como literal se lee
+    -- «micro». Pegada a una unidad se trata aparte (prefijo, ver abajo).
+    ["µ"]      = "_micro",
+    -- Nombre fijo, sin concordar con el número: su símbolo lo usa otra unidad
+    -- en MathCAT (B, a, M).
+    ["belio"]  = "_belio",   ["area"]   = "_área",    ["área"]   = "_área",
+    ["milla-nautica"] = "_milla-náutica", ["milla-náutica"] = "_milla-náutica",
 }
 
 local spintent_custom_spunit_spoken_names = {}
 
 local spintent_normalizations = {
-    ["K"] = "K", ["Ω"] = "Ω", ["ℓ"] = "\\ell", ["μ"] = "µ", ["°K"] = "°K",
-    ["'"]  = "′", ["''"] = "″", ['"']  = "″", ["minmin"] = "′", ["segseg"] = "″"
+    ["\u{212A}"] = "K", ["\u{2126}"] = "Ω", ["ℓ"] = "\\ell", ["μ"] = "µ",
+    ["°\u{212A}"] = "°K",
+    ["\u{212B}"] = "Å",
+    ["'"]  = "′", ["''"] = "″", ['"']  = "″", ["minmin"] = "′", ["segseg"] = "″",
+    ["\u{2019}"] = "′", ["\u{201D}"] = "″"
 }
 
 local spintent_tex_accents = {
@@ -2072,6 +2087,7 @@ end
 
 -- Locales compartidos con la sección FUNCIONES; se asignan dentro del bloque de GEOMETRÍA PLANA
 local spintent_geo_primas, spintent_geo_normalize_primes, spintent_geo_build_body_nombre, spintent_geo_build_visual_nombre
+local spintent_fun_prima_ordinal
 
 -- GEOMETRÍA PLANA
 
@@ -2139,7 +2155,7 @@ local spintent_geo_prima_prefijo = {
 
 -- En las funciones las primas son derivadas: "f segunda", como en el
 -- CMU y en MathCAT; los puntos siguen con "A doble prima".
-local spintent_fun_prima_ordinal = {
+spintent_fun_prima_ordinal = {
     "prima", "segunda", "tercera", "cuarta"
 }
 
@@ -2844,6 +2860,257 @@ register_tex_cmd("luafun_spcoord_parse_and_set", function(raw_content)
     spintent_set_macro("spcoord_luaset_y_composite_str", y_comp)
 end, { "string" })
 
+-- Distribuciones de probabilidad
+
+-- \spdist: la familia llega por la llave dist, la variable por var y el
+-- argumento son los parámetros. La tabla es cerrada: cada familia dice las
+-- formas de impresión que acepta, su número de parámetros y las palabras de
+-- su lectura. Con df = true los parámetros son grados de libertad y se leen
+-- con "grados de libertad", en las dos formas.
+local spintent_dist_families = {
+    N   = { forms = { paren = true }, n = 2, word = "normal",         head = "con-media" },
+    B   = { forms = { paren = true }, n = 2, word = "binomial",       head = "con-parámetros", mid = "y-" },
+    Be  = { forms = { paren = true }, n = 1, word = "bernoulli",      head = "con-parámetro" },
+    P   = { forms = { paren = true }, n = 1, word = "poisson",        head = "con-parámetro" },
+    U   = { forms = { paren = true, brack = true, set = true }, n = 2, word = "uniforme", head = "entre",
+            mid = "y-", set = "uniforme-discreta-en-el-conjunto" },
+    Exp = { forms = { paren = true }, n = 1, word = "exponencial",    head = "con-parámetro" },
+    Ge  = { forms = { paren = true }, n = 1, word = "geométrica",     head = "con-parámetro" },
+    H   = { forms = { paren = true }, n = 3, word = "hipergeométrica", head = "con-parámetros", mid = "y-" },
+    t   = { forms = { paren = true, sub = true }, n = 1, df = true, word = "t-de-student", head = "con" },
+    chi = { forms = { paren = true, sub = true }, n = 1, df = true, word = "chi-cuadrado", head = "con" },
+    F   = { forms = { paren = true, sub = true }, n = 2, df = true, word = "f-de-snedecor", head = "con", mid = "y-" },
+    Gam = { forms = { paren = true }, n = 2, word = "gamma",          head = "con-parámetros", mid = "y-" },
+    Beta = { forms = { paren = true }, n = 2, word = "beta",          head = "con-parámetros", mid = "y-" },
+}
+
+-- valor de la llave dist: familia y nombre que se imprime
+local spintent_dist_values = {
+    N = { "N", "N" }, B = { "B", "B" }, Bi = { "B", "\\mathrm{Bi}" },
+    Bin = { "B", "\\mathrm{Bin}" }, Be = { "Be", "\\mathrm{Be}" },
+    Ber = { "Be", "\\mathrm{Ber}" }, P = { "P", "P" },
+    Po = { "P", "\\mathrm{Po}" }, U = { "U", "U" },
+    Exp = { "Exp", "\\mathrm{Exp}" }, Ge = { "Ge", "\\mathrm{Ge}" },
+    G = { "Ge", "G" }, Geo = { "Ge", "\\mathrm{Geo}" }, H = { "H", "H" },
+    Gamma = { "Gam", "\\Gamma" }, Beta = { "Beta", "\\mathrm{Beta}" },
+    t = { "t", "t" }, chi = { "chi", "\\chi^2" }, F = { "F", "F" },
+}
+
+local spintent_dist_digits = {
+    ["0"] = "cero", ["1"] = "uno", ["2"] = "dos", ["3"] = "tres",
+    ["4"] = "cuatro", ["5"] = "cinco", ["6"] = "seis", ["7"] = "siete",
+    ["8"] = "ocho", ["9"] = "nueve",
+}
+
+local spintent_dist_fields = {
+    "kind", "family", "df", "name", "head", "mid", "sep", "std", "nparam",
+    "plural", "lhs", "lhs_composite", "lhs_school", "first",
+    "first_composite", "first_school", "second", "second_composite",
+    "second_school", "third", "third_composite", "third_school",
+}
+
+local function spintent_dist_error(code)
+    spintent_set_macro("spdist_luaset_error_str", code)
+    for _, k in ipairs(spintent_dist_fields) do
+        spintent_set_macro("spdist_luaset_" .. k .. "_str", "")
+    end
+end
+
+local spintent_dist_structured = {
+    sqrt = true, frac = true, dfrac = true, tfrac = true, binom = true,
+    bar = true, hat = true, tilde = true, vec = true, dot = true,
+    ddot = true, overline = true, underline = true, widehat = true,
+    widetilde = true,
+}
+
+local function spintent_dist_composite(v)
+    if s_match(v, "[_^]") then
+        return "true"
+    end
+    for name in s_gmatch(v, "\\(%a+)") do
+        if spintent_dist_structured[name] then
+            return "true"
+        end
+    end
+    return "false"
+end
+
+-- intent literal de una letra con "mayúscula" o con subíndice: devuelve
+-- el cuerpo del intent, "X" o "X-sub-uno", o "" si no corresponde
+local function spintent_dist_school(piece, mode)
+    if mode ~= "school" then
+        return ""
+    end
+    local letter, sub = s_match(piece, "^(%a)_{([^{}]+)}$")
+    if not letter then
+        letter, sub = s_match(piece, "^(%a)_(%w)$")
+    end
+    if letter then
+        return letter .. "-sub-" .. (spintent_dist_digits[sub] or sub)
+    end
+    if s_match(piece, "^%u$") then
+        return piece
+    end
+    return ""
+end
+
+-- posiciones de ";" y "," a profundidad 0 de llaves, paréntesis,
+-- corchetes y \{ \}; devuelve primero si quedó equilibrado, y un cierre
+-- de más lo desequilibra de inmediato
+local function spintent_dist_scan(s)
+    local depth, semis, commas = 0, {}, {}
+    local i, n = 1, #s
+    while i <= n do
+        local c = s_sub(s, i, i)
+        if c == "\\" then
+            local d = s_sub(s, i + 1, i + 1)
+            if d == "{" then
+                depth = depth + 1
+            elseif d == "}" then
+                depth = depth - 1
+            end
+            i = i + 2
+        else
+            if c == "{" or c == "(" or c == "[" then
+                depth = depth + 1
+            elseif c == "}" or c == ")" or c == "]" then
+                depth = depth - 1
+            elseif depth == 0 then
+                if c == ";" then
+                    semis[#semis + 1] = i
+                elseif c == "," then
+                    commas[#commas + 1] = i
+                end
+            end
+            i = i + 1
+        end
+        if depth < 0 then
+            return false, semis, commas
+        end
+    end
+    return depth == 0, semis, commas
+end
+
+local function spintent_dist_split(s, positions)
+    local parts, from = {}, 1
+    for _, p in ipairs(positions) do
+        parts[#parts + 1] = spintent_trim(s_sub(s, from, p - 1))
+        from = p + 1
+    end
+    parts[#parts + 1] = spintent_trim(s_sub(s, from))
+    return parts
+end
+
+register_tex_cmd("luafun_spdist_parse_and_set",
+    function(var, dist, print_sty, read_sty, mode, raw_params)
+    var = spintent_trim(var)
+    dist = spintent_trim(dist)
+    local raw = spintent_trim(raw_params)
+
+    if dist == "" then
+        spintent_dist_error("nodist")
+        return
+    end
+    local value = spintent_dist_values[dist]
+    if not value then
+        spintent_dist_error("family")
+        return
+    end
+    local key, name = value[1], value[2]
+    local fam = spintent_dist_families[key]
+
+    local kind = print_sty
+    if kind == "auto" then
+        kind = fam.df and "sub" or "paren"
+    end
+    if not fam.forms[kind] then
+        spintent_dist_error("form")
+        return
+    end
+
+    local lhs_ok, _, lhs_commas = spintent_dist_scan(var)
+    if not lhs_ok then
+        spintent_dist_error("args")
+        return
+    end
+
+    local raw_ok, semis, commas = spintent_dist_scan(raw)
+    if raw == "" or not raw_ok then
+        spintent_dist_error("args")
+        return
+    end
+
+    local params, sep
+    if kind == "set" then
+        params, sep = { raw }, ","
+    elseif fam.n == 1 then
+        if #semis > 0 or #commas > 0 then
+            spintent_dist_error("args")
+            return
+        end
+        params, sep = { raw }, ","
+    elseif #semis > 0 then
+        if #semis ~= fam.n - 1 then
+            spintent_dist_error("args")
+            return
+        end
+        params, sep = spintent_dist_split(raw, semis), ";"
+    else
+        if #commas ~= fam.n - 1 then
+            spintent_dist_error("args")
+            return
+        end
+        params, sep = spintent_dist_split(raw, commas), ","
+    end
+    for _, p in ipairs(params) do
+        if p == "" then
+            spintent_dist_error("args")
+            return
+        end
+    end
+
+    local mid = fam.mid or ""
+    local std = "false"
+    if key == "N" then
+        local second = s_gsub(params[2], "%s+", "")
+        if read_sty == "std" then
+            mid = "y-desviación-estándar"
+        elseif s_match(second, "%^{?2}?$") or read_sty == "variance" then
+            mid = "y-varianza"
+        else
+            mid = "y-desviación-estándar"
+        end
+        if params[1] == "0" and params[2] == "1" then
+            std = "true"
+        end
+    end
+
+    spintent_set_macro("spdist_luaset_error_str", "false")
+    spintent_set_macro("spdist_luaset_kind_str", kind)
+    spintent_set_macro("spdist_luaset_family_str", key)
+    spintent_set_macro("spdist_luaset_df_str", fam.df and "true" or "false")
+    spintent_set_macro("spdist_luaset_name_str", name)
+    spintent_set_macro("spdist_luaset_head_str",
+        kind == "set" and fam.set or (fam.word .. "-" .. fam.head))
+    spintent_set_macro("spdist_luaset_mid_str", mid)
+    spintent_set_macro("spdist_luaset_sep_str", sep)
+    spintent_set_macro("spdist_luaset_std_str", std)
+    spintent_set_macro("spdist_luaset_nparam_str", tostring(#params))
+    spintent_set_macro("spdist_luaset_plural_str",
+        #lhs_commas > 0 and "true" or "false")
+    spintent_set_macro("spdist_luaset_lhs_str", var)
+    spintent_set_macro("spdist_luaset_lhs_composite_str", spintent_dist_composite(var))
+    spintent_set_macro("spdist_luaset_lhs_school_str", spintent_dist_school(var, mode))
+    for i, field in ipairs({ "first", "second", "third" }) do
+        local p = params[i] or ""
+        spintent_set_macro("spdist_luaset_" .. field .. "_str", p)
+        spintent_set_macro("spdist_luaset_" .. field .. "_composite_str",
+            p == "" and "" or spintent_dist_composite(p))
+        spintent_set_macro("spdist_luaset_" .. field .. "_school_str",
+            p == "" and "" or spintent_dist_school(p, mode))
+    end
+end, { "string", "string", "string", "string", "string", "string" })
+
 -- Intervalos
 
 -- \spinterval: delimitador ( [ ] a la izquierda y ) ] [ a la derecha; el
@@ -3370,13 +3637,18 @@ local spintent_fun_analyze
 -- Clasifica una lista de argumentos en crudo: devuelve { texto, tipo }
 -- por argumento ("true" un solo nodo, "false" expresión, "call" otra
 -- llamada ya validada de forma recursiva) o nil si alguno es inválido.
+-- Un decimal con coma entre llaves (1{,}5) se entrega a \spnum.
 local function spintent_fun_classify_args(args)
     for i = 1, #args do
         local a = spintent_trim(args[i])
         if a == "" then return nil end
         local kind
+        local ent, dec = s_match(a, "^([+-]?%d+){,}(%d+)$")
         if spintent_fun_is_simple(a) then
             kind = "true"
+        elseif ent then
+            a = "\\spnum{" .. ent .. "," .. dec .. "}"
+            kind = "false"
         elseif spintent_fun_is_call(a) then
             if not spintent_fun_analyze(a) then return nil end
             kind = "call"

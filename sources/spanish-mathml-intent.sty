@@ -157,10 +157,6 @@
   {
     \__spintent_luafun_inner_sep:
   }
-\cs_new_protected:Nn \__spintent_point_sep:
-  {
-    \__spintent_luafun_point_sep:
-  }
 \cs_new_protected:Nn \__spintent_pause_sep:
   {
     \__spintent_luafun_pause_sep:
@@ -661,6 +657,13 @@
     \str_case:VnF \l__spintent_spunit_luaset_canonical_str
       {
         { ℓ } { \ell }
+        { °K }
+          {
+            {
+              \MathMLintent { :unit } { \mathrm { ° } }
+              \MathMLintent { :unit } { \mathrm { K } }
+            }
+          }
       }
       { \mathrm { \l__spintent_spunit_luaset_canonical_str } }
   }
@@ -4532,7 +4535,7 @@
             \bool_if:NT \l__spintent_spabs_close_bool
               {
                 \MathMLintent { _fin-del-valor-absoluto }
-                  { \__spintent_inner_sep: \c__spintent_invisible_sep_int }
+                  { \c__spintent_invisible_sep_int }
               }
           }
           {
@@ -4570,9 +4573,6 @@
       { l__spintent_ #2 _silent_bool }
     \str_set_eq:Nc  \l__spintent_mathmlarg_point_mode_str  { l__spintent_ #2 _mode_str }
     \__spintent_invisible_sep:
-    \str_case:VnF \l__spintent_mathmlarg_point_ref_tl
-      { { pt } { } { pt1 } { } { pts1 } { } }
-      { \__spintent_point_sep: }
     \str_case:VnF \l__spintent_geo_luaset_tipo_str
       {
         { sub }
@@ -6278,13 +6278,6 @@
 \tl_new:N \l__spintent_geo_temp_tl
 \clist_map_inline:nn { Afig , Pfig }
   {
-    \msg_new:nnnn { spintent } { sp #1 -invalid-points }
-      {
-        Invalid~argument~'##2'~for~'\tl_trim_spaces:n {##1}'~\msg_line_context:.
-      }
-      {
-        The~argument~must~be~a~list~of~points~separated~by~commas.
-      }
     \msg_new:nnnn { spintent } { sp #1 -invalid-arg }
       {
         Invalid~argument~'##2'~for~'\tl_trim_spaces:n {##1}'~\msg_line_context:.
@@ -8326,6 +8319,454 @@
         \group_end:
       }
       { \msg_error:nnn { spintent } { need-math-mode } { \spFrec } }
+  }
+\str_new:N \l__spintent_spdist_luaset_error_str
+\str_new:N \l__spintent_spdist_luaset_kind_str
+\str_new:N \l__spintent_spdist_luaset_sep_str
+\str_new:N \l__spintent_spdist_luaset_nparam_str
+\str_new:N \l__spintent_spdist_luaset_std_str
+\str_new:N \l__spintent_spdist_luaset_plural_str
+\str_new:N \l__spintent_spdist_luaset_family_str
+\str_new:N \l__spintent_spdist_luaset_df_str
+\str_new:N \l__spintent_spdist_luaset_name_str
+\str_new:N \l__spintent_spdist_luaset_head_str
+\str_new:N \l__spintent_spdist_luaset_mid_str
+\str_new:N \l__spintent_spdist_luaset_lhs_str
+\str_new:N \l__spintent_spdist_luaset_lhs_composite_str
+\str_new:N \l__spintent_spdist_luaset_lhs_school_str
+\str_new:N \l__spintent_spdist_luaset_first_str
+\str_new:N \l__spintent_spdist_luaset_first_composite_str
+\str_new:N \l__spintent_spdist_luaset_first_school_str
+\str_new:N \l__spintent_spdist_luaset_second_str
+\str_new:N \l__spintent_spdist_luaset_second_composite_str
+\str_new:N \l__spintent_spdist_luaset_second_school_str
+\str_new:N \l__spintent_spdist_luaset_third_str
+\str_new:N \l__spintent_spdist_luaset_third_composite_str
+\str_new:N \l__spintent_spdist_luaset_third_school_str
+\tl_new:N  \l__spintent_spdist_var_tl
+\tl_new:N  \l__spintent_spdist_read_arg_tl
+\str_new:N \l__spintent_spdist_dist_str
+\str_new:N \l__spintent_spdist_print_sty_str
+\str_new:N \l__spintent_spdist_read_sty_str
+\str_new:N \l__spintent_spdist_read_cmd_str
+\tl_new:N  \l__spintent_spdist_intent_tl
+\tl_new:N  \l__spintent_spdist_root_tl
+\msg_new:nnnn { spintent } { spdist-missing-dist }
+  {
+    Missing~key~'dist'~for~'\token_to_str:N \spdist'~\msg_line_context:.
+  }
+  {
+    Use~'dist=N',~'dist=B',~'dist=Be',~'dist=P',~'dist=U',~'dist=Exp',~
+    'dist=Ge',~'dist=H',~'dist=Gamma',~'dist=Beta',~'dist=t',~'dist=chi'~or~
+    'dist=F'.
+  }
+\msg_new:nnnn { spintent } { spdist-invalid-family }
+  {
+    Invalid~distribution~'#1'~for~'\token_to_str:N \spdist'~\msg_line_context:.
+  }
+  {
+    Use~'N',~'B',~'Bi',~'Bin',~'Be',~'Ber',~'P',~'Po',~'U',~'Exp',~'Ge',~'G',~
+    'Geo',~'H',~'Gamma',~'Beta',~'t',~'chi'~or~'F'.
+  }
+\msg_new:nnnn { spintent } { spdist-invalid-print-sty }
+  {
+    Invalid~'print-sty=#2'~for~the~distribution~'#1'~\msg_line_context:.
+  }
+  {
+    The~'sub'~style~is~only~for~'t',~'chi'~and~'F',~and~'brack'~and~'set'~are~
+    only~for~'U'.
+  }
+\msg_new:nnnn { spintent } { spdist-invalid-arg }
+  {
+    Invalid~argument~'#1'~for~'\token_to_str:N \spdist'~\msg_line_context:.
+  }
+  {
+    The~argument~must~have~the~number~of~parameters~of~the~distribution,~
+    separated~by~commas~or,~if~there~are~decimal~commas,~by~semicolons.
+  }
+\keys_define:nn { spintent / spdist }
+  {
+    silent    .bool_set:N = \l__spintent_spdist_silent_bool,
+    silent    .initial:n = false,
+    silent    .value_required:n = true,
+    var       .tl_set:N = \l__spintent_spdist_var_tl,
+    var       .initial:n = ,
+    var       .value_required:n = true,
+    dist      .str_set:N = \l__spintent_spdist_dist_str,
+    dist      .initial:n = ,
+    dist      .value_required:n = true,
+    print-sty .choices:nn = { auto , paren , sub , brack , set }
+      {
+        \int_case:nn { \l_keys_choice_int }
+          {
+            {1} { \str_set:Nn \l__spintent_spdist_print_sty_str { auto } }
+            {2} { \str_set:Nn \l__spintent_spdist_print_sty_str { paren } }
+            {3} { \str_set:Nn \l__spintent_spdist_print_sty_str { sub } }
+            {4} { \str_set:Nn \l__spintent_spdist_print_sty_str { brack } }
+            {5} { \str_set:Nn \l__spintent_spdist_print_sty_str { set } }
+          }
+      },
+    print-sty .initial:n = auto,
+    print-sty .value_required:n = true,
+    print-sty / unknown .code:n =
+      \msg_error:nneee { spintent } { unknown-choice }
+        { print-sty } { auto,~paren,~sub,~brack,~set }
+        { \exp_not:n {#1} },
+    read-sty  .choices:nn =
+      { auto , std , variance , rate , mean , scale , discrete }
+      {
+        \int_case:nn { \l_keys_choice_int }
+          {
+            {1} { \str_set:Nn \l__spintent_spdist_read_sty_str { auto } }
+            {2} { \str_set:Nn \l__spintent_spdist_read_sty_str { std } }
+            {3} { \str_set:Nn \l__spintent_spdist_read_sty_str { variance } }
+            {4} { \str_set:Nn \l__spintent_spdist_read_sty_str { rate } }
+            {5} { \str_set:Nn \l__spintent_spdist_read_sty_str { mean } }
+            {6} { \str_set:Nn \l__spintent_spdist_read_sty_str { scale } }
+            {7} { \str_set:Nn \l__spintent_spdist_read_sty_str { discrete } }
+          }
+      },
+    read-sty  .initial:n = auto,
+    read-sty  .value_required:n = true,
+    read-sty / unknown .code:n =
+      \msg_error:nneee { spintent } { unknown-choice }
+        { read-sty } { auto,~std,~variance,~rate,~mean,~scale,~discrete }
+        { \exp_not:n {#1} },
+    read-cmd  .choices:nn = { school , mathcat }
+      {
+        \int_case:nn { \l_keys_choice_int }
+          {
+            {1} { \str_set:Nn \l__spintent_spdist_read_cmd_str { school } }
+            {2} { \str_set:Nn \l__spintent_spdist_read_cmd_str { mathcat } }
+          }
+      },
+    read-cmd  .initial:n = school,
+    read-cmd  .value_required:n = true,
+    read-cmd / unknown .code:n =
+      \msg_error:nneee { spintent } { unknown-choice }
+        { read-cmd } { school,~mathcat } { \exp_not:n {#1} },
+    read-arg  .code:n =
+      { \__spintent_sanitize_affix:Nn \l__spintent_spdist_read_arg_tl {#1} },
+    read-arg  .initial:n = ,
+    read-arg  .value_required:n = true,
+    unknown   .code:n =
+      {
+        \str_set:Nn \l__spintent_command_name_str { spdist }
+        \__spintent_unknown_keys_cmd:n {#1}
+      },
+  }
+\cs_new_protected:Nn \__spintent_spdist_value:n
+  {
+    \str_if_empty:cTF { l__spintent_spdist_luaset_ #1 _school_str }
+      {
+        \str_if_eq:eeT
+          { \str_use:c { l__spintent_spdist_luaset_ #1 _composite_str } } { true }
+          { \__spintent_inner_sep: }
+        \str_use:c { l__spintent_spdist_luaset_ #1 _str }
+      }
+      {
+        \MathMLintent { _ \str_use:c { l__spintent_spdist_luaset_ #1 _school_str } - }
+          {
+            \str_if_eq:eeT
+              { \str_use:c { l__spintent_spdist_luaset_ #1 _composite_str } } { true }
+              { \__spintent_inner_sep: }
+            \str_use:c { l__spintent_spdist_luaset_ #1 _str }
+          }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spdist_sep:
+  {
+    \MathMLintent { :silent } { \str_use:N \l__spintent_spdist_luaset_sep_str }
+  }
+\cs_new_protected:Nn \__spintent_spdist_params:n
+  {
+    \str_case:VnF \l__spintent_spdist_luaset_nparam_str
+      {
+        { 1 }
+          { \MathMLarg {#1} { \__spintent_spdist_value:n { first } } }
+        { 2 }
+          {
+            \MathMLarg {#1}
+              {
+                \MathMLintent { _ \l__spintent_spdist_luaset_mid_str :infix($a,$b) }
+                  {
+                    \MathMLarg { a } { \__spintent_spdist_value:n { first } }
+                    \__spintent_spdist_sep:
+                    \MathMLarg { b }
+                      { \__spintent_pause_sep: \__spintent_spdist_value:n { second } }
+                  }
+              }
+          }
+      }
+      {
+        \MathMLarg {#1}
+          {
+            \MathMLintent { _ \l__spintent_spdist_luaset_mid_str :infix($ab,$c) }
+              {
+                \MathMLarg { ab }
+                  {
+                    \__spintent_spdist_value:n { first }
+                    \__spintent_spdist_sep:
+                    \__spintent_pause_sep: \__spintent_spdist_value:n { second }
+                  }
+                \__spintent_spdist_sep:
+                \MathMLarg { c }
+                  { \__spintent_pause_sep: \__spintent_spdist_value:n { third } }
+              }
+          }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spdist_set_intent:
+  {
+    \__spintent_spdist_set_words:
+    \str_if_eq:VnTF \l__spintent_spdist_luaset_std_str { true }
+      { \tl_set:Nn \l__spintent_spdist_intent_tl { normal-estándar } }
+      {
+        \tl_set:Ne \l__spintent_spdist_intent_tl
+          { \l__spintent_spdist_luaset_head_str }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spdist_set_words:
+  {
+    \str_case:Vn \l__spintent_spdist_luaset_family_str
+      {
+        { Exp }
+          {
+            \str_case:Vn \l__spintent_spdist_read_sty_str
+              {
+                { rate }
+                  {
+                    \str_set:Nn \l__spintent_spdist_luaset_head_str
+                      { exponencial-con-tasa }
+                  }
+                { mean }
+                  {
+                    \str_set:Nn \l__spintent_spdist_luaset_head_str
+                      { exponencial-con-media }
+                  }
+              }
+          }
+        { U }
+          {
+            \bool_lazy_and:nnT
+              { \str_if_eq_p:Vn \l__spintent_spdist_read_sty_str { discrete } }
+              { \str_if_eq_p:Vn \l__spintent_spdist_luaset_kind_str { paren } }
+              {
+                \str_set:Nn \l__spintent_spdist_luaset_head_str
+                  { uniforme-discreta-entre }
+              }
+          }
+        { Gam }
+          {
+            \str_case:Vn \l__spintent_spdist_read_sty_str
+              {
+                { rate }
+                  {
+                    \str_set:Nn \l__spintent_spdist_luaset_head_str { gamma-con-forma }
+                    \str_set:Nn \l__spintent_spdist_luaset_mid_str { y-tasa }
+                  }
+                { scale }
+                  {
+                    \str_set:Nn \l__spintent_spdist_luaset_head_str { gamma-con-forma }
+                    \str_set:Nn \l__spintent_spdist_luaset_mid_str { y-escala }
+                  }
+              }
+          }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spdist_distribution:
+  {
+    \__spintent_spdist_set_intent:
+    \str_if_eq:VnTF \l__spintent_spdist_luaset_std_str { true }
+      {
+        \MathMLintent { _ \l__spintent_spdist_intent_tl }
+          {
+            \str_use:N \l__spintent_spdist_luaset_name_str
+            \lparen
+            \l__spintent_spdist_luaset_first_str ,
+            \l__spintent_spdist_luaset_second_str
+            \rparen
+          }
+      }
+      {
+        \str_case:VnF \l__spintent_spdist_luaset_kind_str
+          {
+            { set }
+              {
+                \MathMLintent { _ \l__spintent_spdist_intent_tl :prefix($s) }
+                  {
+                    \str_use:N \l__spintent_spdist_luaset_name_str
+                    \MathMLintent { :silent } { \lbrace }
+                    \MathMLarg { s } { \__spintent_spdist_value:n { first } }
+                    \MathMLintent { :silent } { \rbrace }
+                  }
+              }
+            { brack }
+              {
+                \MathMLintent { _ \l__spintent_spdist_intent_tl :prefix($p) }
+                  {
+                    \str_use:N \l__spintent_spdist_luaset_name_str
+                    \lbrack
+                    \__spintent_spdist_params:n { p }
+                    \rbrack
+                  }
+              }
+          }
+          {
+            \str_if_eq:VnTF \l__spintent_spdist_luaset_df_str { true }
+              {
+                \MathMLintent { _ \l__spintent_spdist_intent_tl :prefix($gl) }
+                  {
+                    \str_if_eq:VnTF \l__spintent_spdist_luaset_kind_str { paren }
+                      {
+                        \str_use:N \l__spintent_spdist_luaset_name_str
+                        \lparen
+                        \__spintent_spdist_df_arg:
+                        \rparen
+                      }
+                      {
+                        \__spintent_inner_sep:
+                        \str_use:N \l__spintent_spdist_luaset_name_str
+                        \c_math_subscript_token { \__spintent_spdist_df_arg: }
+                      }
+                  }
+              }
+              {
+                \MathMLintent { _ \l__spintent_spdist_intent_tl :prefix($p) }
+                  {
+                    \str_use:N \l__spintent_spdist_luaset_name_str
+                    \lparen
+                    \__spintent_spdist_params:n { p }
+                    \rparen
+                  }
+              }
+          }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spdist_df_arg:
+  {
+    \MathMLarg { gl }
+      {
+        \MathMLintent { _grados-de-libertad:postfix($z) }
+          {
+            \__spintent_inner_sep:
+            \__spintent_spdist_params:n { z }
+          }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spdist_content:
+  {
+    \str_if_empty:NTF \l__spintent_spdist_luaset_lhs_str
+      { \__spintent_spdist_distribution: }
+      {
+        \tl_set:Ne \l__spintent_spdist_root_tl
+          {
+            se-distribuye
+            \str_if_eq:VnT \l__spintent_spdist_luaset_plural_str { true } { n }
+          }
+        \MathMLintent { _ \l__spintent_spdist_root_tl :infix($x,$d) }
+          {
+            \MathMLarg { x } { \__spintent_spdist_value:n { lhs } }
+            \mathrel { \MathMLintent { :silent } { \sim } }
+            \MathMLarg { d } { \__spintent_spdist_distribution: }
+          }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spdist_plain_params:
+  {
+    \str_use:N \l__spintent_spdist_luaset_first_str
+    \str_case:Vn \l__spintent_spdist_luaset_nparam_str
+      {
+        { 2 }
+          {
+            \str_use:N \l__spintent_spdist_luaset_sep_str
+            \str_use:N \l__spintent_spdist_luaset_second_str
+          }
+        { 3 }
+          {
+            \str_use:N \l__spintent_spdist_luaset_sep_str
+            \str_use:N \l__spintent_spdist_luaset_second_str
+            \str_use:N \l__spintent_spdist_luaset_sep_str
+            \str_use:N \l__spintent_spdist_luaset_third_str
+          }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spdist_plain:
+  {
+    \str_if_empty:NF \l__spintent_spdist_luaset_lhs_str
+      {
+        \str_use:N \l__spintent_spdist_luaset_lhs_str
+        \mathrel { \sim }
+      }
+    \str_use:N \l__spintent_spdist_luaset_name_str
+    \str_case:Vn \l__spintent_spdist_luaset_kind_str
+      {
+        { paren }
+          { \lparen \__spintent_spdist_plain_params: \rparen }
+        { brack }
+          { \lbrack \__spintent_spdist_plain_params: \rbrack }
+        { sub }
+          { \c_math_subscript_token { \__spintent_spdist_plain_params: } }
+        { set }
+          { \lbrace \__spintent_spdist_plain_params: \rbrace }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spdist_mathml:
+  {
+    \bool_if:NTF \l__spintent_spdist_silent_bool
+      { \MathMLintent { _- } { \__spintent_spdist_plain: } }
+      {
+        \tl_if_empty:NTF \l__spintent_spdist_read_arg_tl
+          { \__spintent_spdist_content: }
+          {
+            \MathMLintent { _ \tl_use:N \l__spintent_spdist_read_arg_tl :nofix }
+              { \__spintent_spdist_plain: }
+          }
+      }
+  }
+\cs_new_protected:Nn \__spintent_spdist_exec:nn
+  {
+    \keys_set:nn { spintent / spdist } {#1}
+    \__spintent_luafun_spdist_parse_and_set:nnnnnn
+      { \exp_not:V \l__spintent_spdist_var_tl }
+      { \exp_not:V \l__spintent_spdist_dist_str }
+      { \exp_not:V \l__spintent_spdist_print_sty_str }
+      { \exp_not:V \l__spintent_spdist_read_sty_str }
+      { \exp_not:V \l__spintent_spdist_read_cmd_str }
+      { \exp_not:n {#2} }
+    \str_case:VnF \l__spintent_spdist_luaset_error_str
+      {
+        { false }
+          {
+            \__spintent_invisible_sep:
+            \__spintent_spdist_mathml:
+          }
+        { nodist }
+          { \msg_error:nn { spintent } { spdist-missing-dist } }
+        { family }
+          {
+            \msg_error:nne { spintent } { spdist-invalid-family }
+              { \exp_not:V \l__spintent_spdist_dist_str }
+          }
+        { form }
+          {
+            \msg_error:nnee { spintent } { spdist-invalid-print-sty }
+              { \exp_not:V \l__spintent_spdist_dist_str }
+              { \exp_not:V \l__spintent_spdist_print_sty_str }
+          }
+      }
+      { \msg_error:nne { spintent } { spdist-invalid-arg } { \exp_not:n {#2} } }
+  }
+\NewDocumentCommand \spdist { O{} m }
+  {
+    \mode_if_math:TF
+      {
+        \group_begin:
+          \attribute \l__spintent_scope_attr_int = 1
+          \__spintent_spdist_exec:nn {#1} {#2}
+        \group_end:
+      }
+      { \msg_error:nnn { spintent } { need-math-mode } { \spdist } }
   }
 \str_new:N \l__spintent_spcase_sub_index_str
 \tl_new:N  \l__spintent_spcase_read_arg_tl
