@@ -927,17 +927,16 @@ local function release_target()
     end
   end
 
-  -- 7. Perform CTAN upload dry run. With --debug l3build prints the fields of
-  -- the form and then posts it to httpbin.org, which can refuse the zip (body
-  -- too large) or be down; l3build exits with status 1 in any case. So the
-  -- check looks at the fields that l3build prints (package and version), not
-  -- at the answer of the server.
-  os_message("Running dry-run upload check")
-  local dryrun = os_capture("l3build upload -F ctan.ann --debug 2>&1", true)
-  local okpkg = string.find(dryrun, "ctan-upload | pkg: " .. ctanpkg .. "\n", 1, true)
-  local okver = string.find(dryrun, "ctan-upload | version: " .. uploadconfig.version .. "\n", 1, true)
-  if not (okpkg and okver) then
-    error("** Error!!: dry-run upload check failed; nothing was tagged or pushed")
+  -- 7. Validate the upload at CTAN without uploading (--dry-run posts the
+  -- form and the zip to https://ctan.org/submit/validate). --debug is not
+  -- used: httpbin.org rejects bodies over 1 MB and the zip is larger. Any
+  -- answer other than a clean validation (errors or warnings) is shown and
+  -- stops the release.
+  os_message("Running dry-run upload check (CTAN validation)")
+  local dryrun = os_capture("l3build upload --dry-run -F ctan.ann 2>&1", true)
+  if not string.find(dryrun, "CTAN validation successful", 1, true) then
+    print(dryrun)
+    error("** Error!!: CTAN validation failed or gave warnings; nothing was tagged or pushed")
   end
 
   -- 8. Commit what 'l3build example' and 'l3build ctan' regenerated (the PDFs
